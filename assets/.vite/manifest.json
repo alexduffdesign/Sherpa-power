@@ -1,12 +1,12 @@
 {
   "frontend/entrypoints/chatbot-core-file.js": {
-    "file": "vite-chatbot-core.js",
-    "name": "chatbot-core",
+    "file": "chatbot-core-file-DSNUCj4c.js",
+    "name": "chatbot-core-file",
     "src": "frontend/entrypoints/chatbot-core-file.js",
     "isEntry": true
   },
   "frontend/entrypoints/chatbot-main.js": {
-    "file": "vite-chatbot-main.js",
+    "file": "chatbot-main-CA3IzxwZ.js",
     "name": "chatbot-main",
     "src": "frontend/entrypoints/chatbot-main.js",
     "isEntry": true,

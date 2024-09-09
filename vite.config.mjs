@@ -3,28 +3,23 @@ import shopify from "vite-plugin-shopify";
 import { resolve } from "path";
 
 export default defineConfig({
-  plugins: [shopify()],
+  plugins: [
+    shopify({
+      emptyOutDir: false,
+      snippetFile: "vite-tag.liquid",
+      additionalEntrypoints: [
+        "frontend/entrypoints/chatbot-core-file.js",
+        "frontend/entrypoints/chatbot-main.js",
+      ],
+    }),
+  ],
   build: {
+    sourcemap: true,
     emptyOutDir: false,
-    rollupOptions: {
-      input: {
-        "chatbot-core": resolve(
-          __dirname,
-          "frontend/entrypoints/chatbot-core-file.js"
-        ),
-        "chatbot-main": resolve(
-          __dirname,
-          "frontend/entrypoints/chatbot-main.js"
-        ),
-      },
-      output: {
-        entryFileNames: "vite-[name].js",
-        format: "es",
-      },
-    },
-    minify: false, // This can help with debugging
   },
-  optimizeDeps: {
-    exclude: ["assets/theme.css"],
+  resolve: {
+    alias: {
+      "@": resolve(__dirname, "frontend"),
+    },
   },
 });
