@@ -1,101 +1,120 @@
 <style>
-.carousel {
-  position: relative;
-  width: 100%;
-  overflow: hidden;
-  margin-bottom: var(--spacing-4);
-}
+  .carousel {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    margin-bottom: var(--spacing-4);
+  }
 
-.carousel__container {
-  display: flex;
-  transition: transform 0.3s ease-out;
-}
+  .carousel__container {
+    display: flex;
+    transition: transform 0.3s ease-out;
+  }
 
-.carousel__item {
-  flex: 0 0 100%;
-  display: flex;
-  gap: var(--spacing-4);
-  padding: 0 var(--spacing-2);
-  box-sizing: border-box;
-}
+  .carousel__item {
+    flex: 0 0 100%;
+    display: flex;
+    gap: var(--spacing-4);
+    box-sizing: border-box;
+  }
 
-.carousel__item-wrapper {
-  flex: 0 0 calc(50% - var(--spacing-2));
-  max-width: calc(50% - var(--spacing-2));
-}
+  .carousel__item-wrapper {
+    flex: 0 0 calc(50% - var(--spacing-2));
+    max-width: calc(50% - var(--spacing-2));
+  }
 
-.carousel__button {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  background: rgba(255, 255, 255, 0.8);
-  border: solid 1px #403545;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  z-index: 2;
-  margin-block-start: var(--spacing-0) !important;
-}
+  .carousel__button {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(255, 255, 255, 0.8);
+    border: solid 1px #403545;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 2;
+    margin-block-start: var(--spacing-0) !important;
+  }
 
-.carousel__button--left {
-  left: 10px;
-}
+  .carousel__button--left {
+    left: 10px;
+  }
 
-.carousel__button--right {
-  right: 10px;
-}
+  .carousel__button--right {
+    right: 10px;
+  }
 
-.carousel__item-content {
-  background: #FFFFFF;
-  border-radius: 8px;
-  padding: var(--spacing-4);
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-}
+  .carousel__item-content {
+    background: #FFFFFF;
+    border-radius: 8px;
+    padding: var(--spacing-4);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
 
-.carousel__item-image {
-  width: 100%;
-  height: auto;
-  border-radius: 8px;
-  margin-bottom: var(--spacing-2);
-  object-fit: cover;
-}
+  .carousel__item-image {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    margin-bottom: var(--spacing-2);
+    object-fit: cover;
+  }
 
-.carousel__item-title {
-  font-weight: bold;
-  margin-bottom: var(--spacing-0);
-}
+  .carousel__item-title {
+    font-weight: bold;
+    margin-bottom: var(--spacing-0);
+  }
 
-.carousel__item-description {
-  margin-bottom: var(--spacing-4);
-  color: #403545 !important;
-  flex-grow: 1;
-}
+  .carousel__item-description {
+    margin-bottom: var(--spacing-4);
+    color: #403545 !important;
+    flex-grow: 1;
+  }
 
-.carousel__item-button {
-  margin-top: auto;
-  margin-block-start: 0 !important;
-}
-  </style>
+  .carousel__item-button {
+    margin-top: auto;
+    margin-block-start: 0 !important;
+  }
+</style>
 
 <div class="carousel">
   <div class="carousel__container">
     <!-- Carousel items will be dynamically added here -->
   </div>
   <button class="carousel__button carousel__button--left" aria-label="Previous slide">
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M15 18L9 12L15 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    <svg
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg">
+      <path
+        d="M15 18L9 12L15 6"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round" />
     </svg>
   </button>
   <button class="carousel__button carousel__button--right" aria-label="Next slide">
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M9 18L15 12L9 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    <svg
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg">
+      <path
+        d="M9 18L15 12L9 6"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round" />
     </svg>
   </button>
 </div>
