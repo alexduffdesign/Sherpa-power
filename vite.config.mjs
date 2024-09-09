@@ -24,6 +24,7 @@ export default defineConfig({
         preserveModulesRoot: "frontend/entrypoints",
       },
     },
+    minify: false, // This can help with debugging
   },
   optimizeDeps: {
     exclude: ["assets/theme.css"],
