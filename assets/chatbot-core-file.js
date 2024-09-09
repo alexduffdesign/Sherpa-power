@@ -1,5 +1,5 @@
 // chatbot-core.js
-console.log("ChatbotCore module loading");
+console.log("Recent changes check : 1");
 
 export class ChatbotCore {
   constructor(config) {
@@ -8,15 +8,15 @@ export class ChatbotCore {
     this.userID = this.loadUserID();
     this.messageContainer = null;
     this.typingIndicator = null;
-    
+
     // Bind methods
     this.sendMessage = this.sendMessage.bind(this);
     this.gadgetInteract = this.gadgetInteract.bind(this);
     this.addMessage = this.addMessage.bind(this);
-    
+
     console.log("ChatbotCore instance created:", this);
   }
-  
+
   loadUserID() {
     let userID = localStorage.getItem("chatbotUserID");
     if (!userID) {
@@ -28,7 +28,10 @@ export class ChatbotCore {
   }
 
   setDOMElements(messageContainer, typingIndicator) {
-    console.log("setDOMElements called:", { messageContainer, typingIndicator });
+    console.log("setDOMElements called:", {
+      messageContainer,
+      typingIndicator,
+    });
     this.messageContainer = messageContainer;
     this.typingIndicator = typingIndicator;
     console.log("DOM elements set:", this);
@@ -144,7 +147,9 @@ export class ChatbotCore {
       const buttonElement = document.createElement("button");
       buttonElement.classList.add("button");
       buttonElement.textContent = button.name;
-      buttonElement.addEventListener("click", () => this.handleButtonClick(button));
+      buttonElement.addEventListener("click", () =>
+        this.handleButtonClick(button)
+      );
       buttonContainer.appendChild(buttonElement);
     });
 
@@ -157,7 +162,8 @@ export class ChatbotCore {
   }
 
   removeButtons() {
-    const buttonContainers = this.messageContainer.querySelectorAll(".button-container");
+    const buttonContainers =
+      this.messageContainer.querySelectorAll(".button-container");
     buttonContainers.forEach((container) => container.remove());
   }
 
@@ -165,7 +171,7 @@ export class ChatbotCore {
     console.log("Button clicked:", button);
     this.removeButtons();
     this.addMessage("user", button.name);
-    
+
     this.showTypingIndicator();
     try {
       const response = await this.gadgetInteract({
