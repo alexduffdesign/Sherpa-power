@@ -5,6 +5,16 @@
     "src": "frontend/entrypoints/chatbot-core-file.js",
     "isEntry": true
   },
+  "frontend/entrypoints/chatbot-drawer.js": {
+    "file": "chatbot-drawer-BYge3Qec.js",
+    "name": "chatbot-drawer",
+    "src": "frontend/entrypoints/chatbot-drawer.js",
+    "isEntry": true,
+    "imports": [
+      "frontend/entrypoints/chatbot-main.js",
+      "frontend/entrypoints/chatbot-core-file.js"
+    ]
+  },
   "frontend/entrypoints/chatbot-main.js": {
     "file": "chatbot-main-CA3IzxwZ.js",
     "name": "chatbot-main",
