@@ -126,7 +126,7 @@ export class ChatbotCore {
       messageDiv.classList.add("message", `message--${sender}`);
       messageDiv.innerHTML = this.markdownToHtml(content);
       this.messageContainer.appendChild(messageDiv);
-      this.scrollToBottom();
+      this.scrollToBottom(); // Scroll after adding a message
     }
   }
 
