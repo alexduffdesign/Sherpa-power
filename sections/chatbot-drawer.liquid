@@ -126,7 +126,9 @@
 
 <script type="module">
 import { Drawer } from "{{ 'theme.js' | asset_url }}";
-import MainChatbot from "{{ 'vite-chatbot-main.js' | asset_url }}";
+import { MainChatbot } from "{{ 'vite-chatbot-main.js' | asset_url }}";
+import { MainChatbot } from "./chatbot-main.js";
+
 
 console.log("yeah got something here");
 
