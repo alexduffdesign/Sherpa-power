@@ -64,6 +64,18 @@ class MainChatbot {
       }
     });
 
+    this.element.addEventListener("click", async (e) => {
+      if (e.target.matches(".button-container button")) {
+        const buttonData = JSON.parse(e.target.dataset.buttonData);
+        try {
+          const response = await this.core.handleButtonClick(buttonData);
+          await this.handleAgentResponse(response);
+        } catch (error) {
+          console.error("Error handling button click:", error);
+        }
+      }
+    });
+
     this.eventListenersAttached = true;
   }
 

@@ -147,9 +147,7 @@ export class ChatbotCore {
       const buttonElement = document.createElement("button");
       buttonElement.classList.add("button");
       buttonElement.textContent = button.name;
-      buttonElement.addEventListener("click", () =>
-        this.handleButtonClick(button)
-      );
+      buttonElement.dataset.buttonData = JSON.stringify(button);
       buttonContainer.appendChild(buttonElement);
     });
 
@@ -179,7 +177,7 @@ export class ChatbotCore {
         userAction: button.request,
       });
       this.hideTypingIndicator();
-      return response;
+      return response; // Return the response instead of handling it here
     } catch (error) {
       console.error("Error handling button click:", error);
       this.hideTypingIndicator();
