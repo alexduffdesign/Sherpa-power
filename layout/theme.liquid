@@ -15,12 +15,6 @@
   dir="{% render 'direction' %}">
   <head>
 
-    {% liquid
-      # Relative to entrypointsDir
-      render 'vite-tag' with 'chatbot-core-file.js'
-      render 'vite-tag' with 'chatbot-main.js'
-    %}
-
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, height=device-height, minimum-scale=1.0, maximum-scale=1.0">
     <meta name="theme-color" content="{{ settings.header_background }}">
@@ -86,7 +80,15 @@
     {{ content_for_header }}
 
     {{- 'theme.css' | asset_url | stylesheet_tag: preload: true -}}
-    {% include 'pagefly-app-header' %}</head>
+    {% include 'pagefly-app-header' %}
+
+    {% liquid
+      # Relative to entrypointsDir
+      render 'vite-tag' with 'chatbot-core-file.js'
+      render 'vite-tag' with 'chatbot-main.js'
+    %}
+
+  </head>
 
   <body class="{% if settings.show_page_transition %}page-transition{% endif %} {% if settings.zoom_image_on_hover %}zoom-image--enabled{% endif %}">
     {%- render 'shadow-dom-templates' -%}
