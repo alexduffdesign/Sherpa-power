@@ -14,6 +14,13 @@
   lang="{{ request.locale.iso_code }}"
   dir="{% render 'direction' %}">
   <head>
+
+    {% liquid
+      # Relative to entrypointsDir
+      render 'vite-tag' with 'chatbot-core-file.js'
+      render 'vite-tag' with 'chatbot-main.js'
+    %}
+
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, height=device-height, minimum-scale=1.0, maximum-scale=1.0">
     <meta name="theme-color" content="{{ settings.header_background }}">
@@ -21,12 +28,6 @@
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
-
-    {% liquid
-      # Relative to entrypointsDir
-      render 'vite-tag' with 'chatbot-core-file.js'
-      render 'vite-tag' with 'chatbot-main.js'
-    %}
 
     <title>
       {% if page_title == blank %}
