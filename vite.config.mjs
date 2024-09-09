@@ -20,8 +20,6 @@ export default defineConfig({
       output: {
         entryFileNames: "vite-[name].js",
         format: "es",
-        preserveModules: true,
-        preserveModulesRoot: "frontend/entrypoints",
       },
     },
     minify: false, // This can help with debugging
