@@ -3,7 +3,7 @@ import MainChatbot from "./chatbot-main.js";
 
 console.log("Chatbot drawer script loaded");
 
-export function initChatbotDrawer(drawerId) {
+function initChatbotDrawer(drawerId) {
   // Define the MainChatbot custom element
   class MainChatbotElement extends HTMLElement {
     constructor() {
@@ -84,4 +84,12 @@ export function initChatbotDrawer(drawerId) {
       console.log("Chatbot drawer closed");
     }
   });
+}
+
+// Expose the function to the global scope
+window.initChatbotDrawer = initChatbotDrawer;
+
+// Immediately invoke the function if the drawer ID is available
+if (window.chatbotDrawerId) {
+  initChatbotDrawer(window.chatbotDrawerId);
 }
