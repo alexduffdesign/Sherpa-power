@@ -1,30 +1,32 @@
+// chatbot-main.js
+
 import { ChatbotCore } from "./chatbot-core-file.js";
 
 console.log("MainChatbot module loading");
 
 export class MainChatbot {
   constructor(element, config) {
-  console.log("MainChatbot constructor called with config:", config);
-  this.element = element;
-  this.voiceflowEndpoint = config.voiceflowEndpoint;
-  
-  this.core = new ChatbotCore({ apiEndpoint: this.voiceflowEndpoint });
-  console.log("ChatbotCore instance created:", this.core);
-  
-  this.conversationHistory = [];
-  this.hasLaunched = localStorage.getItem("chatHasLaunched") === "true";
+    console.log("MainChatbot constructor called with config:", config);
+    this.element = element;
+    this.voiceflowEndpoint = config.voiceflowEndpoint;
 
-  // Make sure eventListenersAttached starts as false
-  this.eventListenersAttached = false;
+    this.core = new ChatbotCore({ apiEndpoint: this.voiceflowEndpoint });
+    console.log("ChatbotCore instance created:", this.core);
 
-  this.initializeElements();
-  this.setupEventListeners();
+    this.conversationHistory = [];
+    this.hasLaunched = localStorage.getItem("chatHasLaunched") === "true";
 
-  if (this.hasLaunched) {
-    this.loadConversationFromStorage();
-    this.displaySavedConversation();
+    // Make sure eventListenersAttached starts as false
+    this.eventListenersAttached = false;
+
+    this.initializeElements();
+    this.setupEventListeners();
+
+    if (this.hasLaunched) {
+      this.loadConversationFromStorage();
+      this.displaySavedConversation();
+    }
   }
-}
 
   initializeElements() {
     console.log("MainChatbot initializeElements called");
@@ -41,29 +43,29 @@ export class MainChatbot {
   }
 
   setupEventListeners() {
-  if (this.eventListenersAttached) return;
-  
-  console.log("MainChatbot setupEventListeners called");
-  const form = this.element.querySelector("#chatForm");
-  const input = this.element.querySelector("#userInput");
+    if (this.eventListenersAttached) return;
 
-  if (!form || !input) {
-    console.error("Chat form or input not found");
-    return;
-  }
+    console.log("MainChatbot setupEventListeners called");
+    const form = this.element.querySelector("#chatForm");
+    const input = this.element.querySelector("#userInput");
 
-  form.addEventListener("submit", async (e) => {
-    e.preventDefault();
-    const message = input.value.trim();
-    if (message) {
-      console.log("Form submitted with message:", message);
-      await this.handleUserMessage(message);
-      input.value = "";
+    if (!form || !input) {
+      console.error("Chat form or input not found");
+      return;
     }
-  });
 
-  this.eventListenersAttached = true;
-}
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const message = input.value.trim();
+      if (message) {
+        console.log("Form submitted with message:", message);
+        await this.handleUserMessage(message);
+        input.value = "";
+      }
+    });
+
+    this.eventListenersAttached = true;
+  }
 
   async handleUserMessage(message) {
     this.core.addMessage("user", message);
@@ -156,13 +158,13 @@ export class MainChatbot {
     this.saveConversationToStorage();
   }
 
-  // < Carousel JS > // 
+  // < Carousel JS > //
 
   addCarousel(carouselData) {
-  console.log("Adding carousel:", carouselData);
-  const carouselElement = document.createElement("div");
-  carouselElement.className = "carousel";
-  carouselElement.innerHTML = `
+    console.log("Adding carousel:", carouselData);
+    const carouselElement = document.createElement("div");
+    carouselElement.className = "carousel";
+    carouselElement.innerHTML = `
     <div class="carousel__container">
       <!-- Carousel items will be dynamically added here -->
     </div>
@@ -178,10 +180,13 @@ export class MainChatbot {
     </button>
   `;
 
-  const carousel = new Carousel(carouselElement);
+    const carousel = new Carousel(carouselElement);
 
-  for (let i = 0; i < carouselData.cards.length; i += 2) {
-    const itemContent = carouselData.cards.slice(i, i + 2).map(card => `
+    for (let i = 0; i < carouselData.cards.length; i += 2) {
+      const itemContent = carouselData.cards
+        .slice(i, i + 2)
+        .map(
+          (card) => `
       <div class="carousel__item-wrapper">
         <div class="carousel__item-content">
           <img src="${card.imageUrl}" alt="${card.title}" class="carousel__item-image">
@@ -190,28 +195,38 @@ export class MainChatbot {
           <button class="button carousel__item-button" data-button-index="0">${card.buttons[0].name}</button>
         </div>
       </div>
-    `).join('');
+    `
+        )
+        .join("");
 
-    carousel.addItem(itemContent);
-  }
+      carousel.addItem(itemContent);
+    }
 
-  const buttons = carouselElement.querySelectorAll(".carousel__item-button");
-  buttons.forEach((button, index) => {
-    button.addEventListener("click", () => {
-      const cardIndex = Math.floor(index / carouselData.cards[0].buttons.length);
-      const buttonIndex = index % carouselData.cards[0].buttons.length;
-      this.handleButtonClick(carouselData.cards[cardIndex].buttons[buttonIndex]);
+    const buttons = carouselElement.querySelectorAll(".carousel__item-button");
+    buttons.forEach((button, index) => {
+      button.addEventListener("click", async () => {
+        const cardIndex = Math.floor(
+          index / carouselData.cards[0].buttons.length
+        );
+        const buttonIndex = index % carouselData.cards[0].buttons.length;
+        const buttonData = carouselData.cards[cardIndex].buttons[buttonIndex];
+        try {
+          const response = await this.core.handleButtonClick(buttonData);
+          await this.handleAgentResponse(response);
+        } catch (error) {
+          console.error("Error handling carousel button click:", error);
+        }
+      });
     });
-  });
 
-  const messageContainer = this.element.querySelector("#messageContainer");
-  if (messageContainer) {
-    messageContainer.appendChild(carouselElement);
-    this.core.scrollToBottom();
-  } else {
-    console.error("Message container not found when adding carousel");
+    const messageContainer = this.element.querySelector("#messageContainer");
+    if (messageContainer) {
+      messageContainer.appendChild(carouselElement);
+      this.core.scrollToBottom();
+    } else {
+      console.error("Message container not found when adding carousel");
+    }
   }
-}
 }
 
 class Carousel {
@@ -240,7 +255,10 @@ class Carousel {
     if (direction === "left") {
       this.currentIndex = Math.max(0, this.currentIndex - 1);
     } else {
-      this.currentIndex = Math.min(this.items.length - 1, this.currentIndex + 1);
+      this.currentIndex = Math.min(
+        this.items.length - 1,
+        this.currentIndex + 1
+      );
     }
     this.updatePosition();
     this.updateVisibility();
@@ -253,7 +271,8 @@ class Carousel {
 
   updateVisibility() {
     this.leftButton.style.display = this.currentIndex === 0 ? "none" : "flex";
-    this.rightButton.style.display = this.currentIndex === this.items.length - 1 ? "none" : "flex";
+    this.rightButton.style.display =
+      this.currentIndex === this.items.length - 1 ? "none" : "flex";
   }
 }
 console.log("MainChatbot module loaded");
