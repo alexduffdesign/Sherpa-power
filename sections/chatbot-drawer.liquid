@@ -1,0 +1,221 @@
+{%- assign drawer_id = 'header-ai-trigger' -%}
+
+<!-- Styling for the main drawer chatbot -->
+
+<style>
+
+  /* Ensure the chatbot container and its children respect the width */
+  .chatbot-container,
+  .chatbot-content,
+  .chat-messages,
+  .message-container {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+  
+  /* Prevent content from overflowing */
+  .message {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+  }
+
+  .drawer.sherpa-guide {
+    min-width: auto !important;
+    width: auto !important;
+  }
+
+  main-chatbot {
+    height: 100%;
+    width: 600px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  #{{ drawer_id }} .chatbot-container {
+    height: 100%;
+    color: rgb(var(--text-color, 255 255 255));
+    position: relative;
+    overflow: hidden;
+    padding: var(--spacing-4);
+  }
+  
+   #{{ drawer_id }} .chatbot-content {
+    height: 100%;
+    padding-bottom: 2rem;
+  }
+  
+  #{{ drawer_id }} .chat-messages {
+    overflow: hidden;
+    height: 100%;
+  }
+  
+  #{{ drawer_id }} .chat-form {
+  margin-top: 0;
+  }  
+  
+  #{{ drawer_id }}::part(content) {
+    background-color: #403545;
+    border: 2px solid #DB9BFB;
+    border-radius: var(--rounded);
+    position: relative;
+    z-index: 1;
+    overflow: hidden;
+  }
+  
+  #{{ drawer_id }}::part(header) {
+    background-color: #403545;
+    padding: var(--spacing-4) var(--spacing-6);
+    color: white;
+    border-bottom: solid 1px white;
+  }
+  
+   #{{ drawer_id }}:not([header-bordered])::part(header):after {
+    height: var(--spacing-6);
+    background: linear-gradient(to bottom, rgb(64 53 69), rgb(64 53 69 / 52%) 50%, rgb(64 53 69 / 0%));
+    z-index: 3;
+    pointer-events: none;
+  }
+  
+  #{{ drawer_id }}::part(body) {
+    background-color: #403545;
+    padding: var(--spacing-0);
+  }
+  
+  .form {
+    width: 100%;
+    padding: var(--spacing-4);
+    position: sticky;
+    bottom: 0;
+    background: linear-gradient(to bottom, rgb(64 53 69 / 0%), rgb(64 53 70) 22%, rgb(64 53 69));
+    z-index: 2;
+  }
+  
+  @media screen and (min-width: 700px) {
+  .sherpa-guide #{{ drawer_id }} {
+    width: 650px !important;
+  }
+  }
+      
+</style>
+
+{% capture form %}
+
+  <form id="chatForm" class="chat-form">
+      <input type="text" id="userInput" placeholder="Type your message here..." autocomplete="off" required>
+      <button type="submit">
+        <svg width="20" height="18" viewBox="0 0 20 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M1.4 17.3984L18.85 9.91844C19.0304 9.84159 19.1842 9.71341 19.2923 9.54984C19.4004 9.38626 19.4581 9.19451 19.4581 8.99844C19.4581 8.80236 19.4004 8.61061 19.2923 8.44704C19.1842 8.28346 19.0304 8.15528 18.85 8.07844L1.4 0.598438C1.2489 0.532533 1.08377 0.505281 0.919509 0.519141C0.755246 0.533002 0.597018 0.587538 0.459098 0.67783C0.321179 0.768123 0.207908 0.891331 0.129505 1.03634C0.0511009 1.18135 0.010031 1.34359 0.00999999 1.50844L0 6.11844C0 6.61844 0.37 7.04844 0.87 7.10844L15 8.99844L0.87 10.8784C0.37 10.9484 0 11.3784 0 11.8784L0.00999999 16.4884C0.00999999 17.1984 0.74 17.6884 1.4 17.3984Z" fill="#231F25"/>
+        </svg>
+      </button>
+    </form>
+
+{% endcapture %}
+            
+  <x-drawer id="{{ drawer_id }}" class="drawer sherpa-guide">
+    <h2 class="h6" slot="header">Sherpa Guide</h2>
+       <main-chatbot api-endpoint="https://chatbottings--development.gadget.app/voiceflow" class="main-chatbot" >
+        {% render 'chatbot-template' %}
+         <footer class="form">
+           {{ form }}
+         </footer>
+      </main-chatbot>
+  </x-drawer>
+
+
+<script type="module">
+import { Drawer } from "{{ 'theme.js' | asset_url }}";
+import { MainChatbot } from "{{ 'chatbot-main.js' | asset_url }}";
+
+  console.log("yeah got something here");
+
+// Define the MainChatbot custom element
+class MainChatbotElement extends HTMLElement {
+  constructor() {
+    super();
+    if (!MainChatbotElement.instance) {
+      MainChatbotElement.instance = this;
+      this.mainChatbot = null;
+    }
+    return MainChatbotElement.instance;
+  }
+
+  connectedCallback() {
+    if (!this.mainChatbot) {
+      console.log('MainChatbotElement connected');
+      const config = {
+        voiceflowEndpoint: 'https://chatbottings--development.gadget.app/voiceflow',
+      };
+      this.mainChatbot = new MainChatbot(this, config);
+      this.mainChatbot.initializeChat();
+    }
+  }
+}
+
+// Define the ChatbotDrawer class
+class ChatbotDrawer extends Drawer {
+  constructor() {
+    super();
+    this.mainChatbot = null;
+    this.initialized = false;
+  }
+
+  connectedCallback() {
+    super.connectedCallback();
+    this.mainChatbot = this.querySelector('main-chatbot');
+    if (!this.mainChatbot) {
+      console.error('MainChatbot not found in ChatbotDrawer');
+    }
+  }
+
+  show() {
+    super.show();
+    if (this.mainChatbot && !this.initialized) {
+      this.mainChatbot.initializeChat();
+      this.initialized = true;
+    }
+  }
+}
+
+// Define custom elements
+customElements.define('main-chatbot', MainChatbotElement);
+customElements.define('chatbot-drawer', ChatbotDrawer);
+
+// Initialize the drawer
+document.addEventListener('DOMContentLoaded', () => {
+  const chatbotDrawer = document.getElementById('{{ drawer_id }}');
+  const chatbotTrigger = document.querySelector(`button[aria-controls="{{ drawer_id }}"]`);
+  if (chatbotDrawer && chatbotTrigger) {
+    chatbotTrigger.addEventListener('click', () => {
+      chatbotDrawer.show();
+    });
+  } else {
+    console.error('Chatbot drawer or trigger not found');
+  }
+});
+
+// Event listeners for drawer open/close events
+document.addEventListener('dialog:after-show', (event) => {
+  if (event.target.id === '{{ drawer_id }}') {
+    console.log('Chatbot drawer opened');
+  }
+});
+
+document.addEventListener('dialog:after-hide', (event) => {
+  if (event.target.id === '{{ drawer_id }}') {
+    console.log('Chatbot drawer closed');
+  }
+});
+  
+</script>
+
+
+{% schema %}
+{
+  "name": "Chatbot Drawer",
+  "tag": "section",
+  "class": "chatbot-drawer-section",
+  "settings": []
+}
+{% endschema %}

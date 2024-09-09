@@ -1,0 +1,74 @@
+{% if product.available %}
+{% unless product.tags contains 'pre-order' or product.tags contains 'coming-soon' %}
+<div class="product-info__estimated-shipping">
+<div class="estimated-shipping-wrap">
+  <img class="estimated-shipping-icon" src="https://cdn.shopify.com/s/files/1/0641/4290/1439/files/Shipping_Info.png?v=1712333861"> 
+  <p> Order today to get yours by: 
+    <strong id="fromDate">~</strong>
+    <strong> - </strong>
+    <strong id="toDate">~</strong>
+  </p>
+</div>
+</div>
+
+<style>
+.estimated-shipping-wrap {
+margin-top: 2rem;
+margin-bottom: 2rem;
+display: flex;
+flex-direction: row;
+justify-content: start;
+align-items: center;
+flex-wrap: wrap;
+grid-gap: 0.5rem 0.5rem;
+}
+
+.estimated-shipping-icon {
+width: 2rem;
+object-fit: contain;
+}
+
+@media screen and (max-width: 767px) {
+.estimated-shipping-icon {
+width: 10%;
+}
+}
+</style>
+
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/datejs/1.0/date.min.js"></script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  const minDays = {{ block.settings.shipping_min_days }};
+  const maxDays = {{ block.settings.shipping_max_days }};
+
+  const addBusinessDays = (date, daysToAdd) => {
+    let daysAdded = 0;
+    while (daysAdded < daysToAdd) {
+      date.setDate(date.getDate() + 1); // Increment date
+      // If it's not a weekend, increment daysAdded
+      if (date.getDay() !== 0 && date.getDay() !== 6) {
+        daysAdded++;
+      }
+    }
+    return date;
+  };
+
+  const formatDate = (date) => {
+    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+    return date.toLocaleDateString(undefined, options);
+  };
+
+  const fromDate = new Date();
+  const toDate = new Date();
+
+  addBusinessDays(fromDate, minDays);
+  addBusinessDays(toDate, maxDays);
+
+  document.getElementById('fromDate').textContent = formatDate(fromDate);
+  document.getElementById('toDate').textContent = formatDate(toDate);
+});
+
+</script>
+{% endunless %}
+{% endif %}

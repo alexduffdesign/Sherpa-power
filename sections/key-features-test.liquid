@@ -1,0 +1,23 @@
+{%- comment -%}
+  This snippet is used for debugging purposes to display the structure and content of product metafields.
+{%- endcomment -%}
+
+<div class="debug-metafields">
+  {%- assign key_features = product.metafields.custom.key_features -%}
+  
+  <h2>Debug: Product Metafields</h2>
+  
+  {%- if key_features -%}
+    <h3>Key Features Metaobject:</h3>
+    <pre>{{ key_features | json }}</pre>
+    
+    <h3>Individual Key Features:</h3>
+    <ul>
+      {%- for feature in key_features -%}
+        <li><strong>{{ feature | first }}:</strong> {{ feature | last }}</li>
+      {%- endfor -%}
+    </ul>
+  {%- else -%}
+    <p>No key features metafields found.</p>
+  {%- endif -%}
+</div>
