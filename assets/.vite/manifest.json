@@ -6,11 +6,12 @@
     "isEntry": true
   },
   "frontend/entrypoints/chatbot-drawer.js": {
-    "file": "chatbot-drawer-BYge3Qec.js",
+    "file": "chatbot-drawer-CL428ewe.js",
     "name": "chatbot-drawer",
     "src": "frontend/entrypoints/chatbot-drawer.js",
     "isEntry": true,
     "imports": [
+      "frontend/entrypoints/theme.js",
       "frontend/entrypoints/chatbot-main.js",
       "frontend/entrypoints/chatbot-core-file.js"
     ]
@@ -23,5 +24,11 @@
     "imports": [
       "frontend/entrypoints/chatbot-core-file.js"
     ]
+  },
+  "frontend/entrypoints/theme.js": {
+    "file": "theme-BsyOvK_L.js",
+    "name": "theme",
+    "src": "frontend/entrypoints/theme.js",
+    "isEntry": true
   }
 }
