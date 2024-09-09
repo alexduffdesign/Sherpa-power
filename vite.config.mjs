@@ -5,7 +5,7 @@ import { resolve } from "path";
 export default defineConfig({
   plugins: [shopify()],
   build: {
-    emptyOutDir: false, // Prevent Vite from clearing the assets directory
+    emptyOutDir: false,
     rollupOptions: {
       input: {
         "chatbot-core": resolve(
@@ -18,14 +18,14 @@ export default defineConfig({
         ),
       },
       output: {
-        dir: "assets",
         entryFileNames: "vite-[name].js",
-        chunkFileNames: "vite-[name]-[hash].js",
-        assetFileNames: "vite-[name]-[hash][extname]",
+        format: "es",
+        preserveModules: true,
+        preserveModulesRoot: "frontend/entrypoints",
       },
     },
   },
   optimizeDeps: {
-    exclude: ["assets/theme.css"], // Exclude the main theme CSS from Vite processing
+    exclude: ["assets/theme.css"],
   },
 });

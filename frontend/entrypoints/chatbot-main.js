@@ -4,7 +4,7 @@ import { ChatbotCore } from "./chatbot-core-file.js";
 
 console.log("MainChatbot module loading");
 
-export class MainChatbot {
+class MainChatbot {
   constructor(element, config) {
     console.log("MainChatbot constructor called with config:", config);
     this.element = element;
@@ -276,3 +276,5 @@ class Carousel {
   }
 }
 console.log("MainChatbot module loaded");
+
+export default MainChatbot;
