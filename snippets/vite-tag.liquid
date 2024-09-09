@@ -4,8 +4,8 @@
 {% endcomment %}
 {% assign path = vite-tag | replace: '~/', '../' | replace: '@/', '../' %}
 {% if path == "/frontend/entrypoints/chatbot-core-file.js" or path == "chatbot-core-file.js" %}
-  <script src="{{ 'chatbot-core-file-DSNUCj4c.js' | asset_url | split: '?' | first }}" type="module" crossorigin="anonymous"></script>
+  <script src="{{ 'vite-chatbot-core.js' | asset_url | split: '?' | first }}" type="module" crossorigin="anonymous"></script>
 {% elsif path == "/frontend/entrypoints/chatbot-main.js" or path == "chatbot-main.js" %}
-  <script src="{{ 'chatbot-main-CA3IzxwZ.js' | asset_url | split: '?' | first }}" type="module" crossorigin="anonymous"></script>
-  <link rel="modulepreload" href="{{ 'chatbot-core-file-DSNUCj4c.js' | asset_url | split: '?' | first }}" crossorigin="anonymous">
+  <script src="{{ 'vite-chatbot-main.js' | asset_url | split: '?' | first }}" type="module" crossorigin="anonymous"></script>
+  <link rel="modulepreload" href="{{ 'vite-chatbot-core.js' | asset_url | split: '?' | first }}" crossorigin="anonymous">
 {% endif %}

@@ -82,11 +82,8 @@
     {{- 'theme.css' | asset_url | stylesheet_tag: preload: true -}}
     {% include 'pagefly-app-header' %}
 
-    {% liquid
-      # Relative to entrypointsDir
-      render 'vite-tag' with 'chatbot-core-file.js'
-      render 'vite-tag' with 'chatbot-main.js'
-    %}
+    {% render 'vite-tag' with 'vite-chatbot-core.js' %}
+    {% render 'vite-tag' with 'vite-chatbot-main.js' %}
 
   </head>
 
