@@ -10,6 +10,7 @@ export default defineConfig({
         "frontend/entrypoints/chatbot-core-file.js",
         "frontend/entrypoints/chatbot-main.js",
         "frontend/entrypoints/chatbot-drawer.js",
+        "frontend/entrypoints/chatbot-section.js",
         "frontend/entrypoints/theme.js",
       ],
     }),
