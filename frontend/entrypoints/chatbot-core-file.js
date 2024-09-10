@@ -5,6 +5,7 @@ export class ChatbotCore {
   constructor(config) {
     console.log("ChatbotCore constructor called with config:", config);
     this.apiEndpoint = config.apiEndpoint;
+    this.userIDPrefix = config.userIDPrefix || "chatbot";
     this.userID = this.loadUserID();
     this.messageContainer = null;
     this.typingIndicator = null;
@@ -19,12 +20,15 @@ export class ChatbotCore {
   }
 
   loadUserID() {
-    let userID = localStorage.getItem("chatbotUserID");
+    const key = `${this.userIDPrefix}UserID`;
+    let userID = localStorage.getItem(key);
     if (!userID) {
-      userID = `user_${Math.floor(Math.random() * 1000000000000000)}`;
-      localStorage.setItem("chatbotUserID", userID);
+      userID = `${this.userIDPrefix}_${Math.floor(
+        Math.random() * 1000000000000000
+      )}`;
+      localStorage.setItem(key, userID);
     }
-    console.log("ChatbotCore userID loaded:", userID);
+    console.log(`${this.userIDPrefix} userID loaded:`, userID);
     return userID;
   }
 

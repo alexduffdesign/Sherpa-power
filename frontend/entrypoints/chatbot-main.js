@@ -10,7 +10,10 @@ class MainChatbot {
     this.element = element;
     this.voiceflowEndpoint = config.voiceflowEndpoint;
 
-    this.core = new ChatbotCore({ apiEndpoint: this.voiceflowEndpoint });
+    this.core = new ChatbotCore({
+      apiEndpoint: this.voiceflowEndpoint,
+      userIDPrefix: "mainChatbot",
+    });
     console.log("ChatbotCore instance created:", this.core);
 
     this.conversationHistory = [];

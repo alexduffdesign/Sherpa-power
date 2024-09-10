@@ -19,12 +19,22 @@ class SectionChatbot extends HTMLElement {
     console.log("SectionChatbot initializing");
     const config = {
       apiEndpoint: "https://chatbottings--development.gadget.app/voiceflow",
+      userIDPrefix: "sectionChatbot",
     };
     this.core = new ChatbotCore(config);
-    console.log("ChatbotCore instance created:", this.core);
 
     this.initializeElements();
     this.setupEventListeners();
+
+    // Ensure the grid is initialized
+    this.applicationsGrid = this.querySelector(".applications-grid");
+    if (!this.applicationsGrid) {
+      console.error("Applications grid not found during initialization");
+    } else {
+      console.log("Applications grid found during initialization");
+    }
+
+    this.loadSavedDevices();
     this.initializeChat();
   }
 
@@ -113,9 +123,11 @@ class SectionChatbot extends HTMLElement {
     this.core.scrollToBottom();
   }
 
-  handleDeviceAnswer(payload) {
-    console.log("Handling device answer:", payload);
-    let devices = Array.isArray(payload) ? payload : payload.devices;
+  handleDeviceAnswer(deviceAnswer) {
+    console.log("Handling device answer:", deviceAnswer);
+    let devices = Array.isArray(deviceAnswer)
+      ? deviceAnswer
+      : deviceAnswer.devices;
 
     if (!Array.isArray(devices)) {
       console.error("Invalid devices data:", devices);
@@ -130,7 +142,11 @@ class SectionChatbot extends HTMLElement {
       this.insertCard(card);
     });
 
-    this.updateDevicesView();
+    try {
+      this.updateDevicesView();
+    } catch (error) {
+      console.error("Error in updateDevicesView:", error);
+    }
   }
 
   createDeviceCard(device) {
@@ -178,19 +194,40 @@ class SectionChatbot extends HTMLElement {
   }
 
   updateDevicesView() {
+    console.log("Updating devices view");
+    this.applicationsGrid = this.querySelector(".applications-grid");
+    if (!this.applicationsGrid) {
+      console.error("Applications grid not found");
+      return;
+    }
+
+    console.log("Applications grid found:", this.applicationsGrid);
+
     const allCards = this.applicationsGrid.querySelectorAll(
       ".application-card.chatbot-card"
     );
+    console.log("Number of cards found:", allCards.length);
+
     const viewMoreButton = this.querySelector(".view-more-button");
     const devicesPerPage = 3;
 
     if (allCards.length > devicesPerPage) {
-      viewMoreButton.style.display = "block";
+      if (viewMoreButton) {
+        viewMoreButton.style.display = "block";
+        console.log("View more button displayed");
+      } else {
+        console.warn("View more button not found");
+      }
       allCards.forEach((card, index) => {
         card.style.display = index < devicesPerPage ? "flex" : "none";
       });
     } else {
-      viewMoreButton.style.display = "none";
+      if (viewMoreButton) {
+        viewMoreButton.style.display = "none";
+        console.log("View more button hidden");
+      } else {
+        console.warn("View more button not found");
+      }
     }
   }
 
@@ -224,6 +261,16 @@ class SectionChatbot extends HTMLElement {
     } catch (error) {
       console.error("Error in section chatbot send launch:", error);
     }
+  }
+
+  loadSavedDevices() {
+    const key = `${this.getAttribute("product-title")}_devices`;
+    const savedDevices = JSON.parse(localStorage.getItem(key) || "[]");
+    savedDevices.forEach((device) => {
+      const card = this.createDeviceCard(device);
+      this.insertCard(card);
+    });
+    this.updateDevicesView();
   }
 }
 
