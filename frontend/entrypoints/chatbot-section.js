@@ -2,25 +2,13 @@ import { ChatbotCore } from "./chatbot-core-file.js";
 
 class SectionChatbot extends ChatbotCore {
   constructor() {
-    // Ensure super() is called before accessing 'this'
-    const config = {
-      apiEndpoint: "https://chatbottings--development.gadget.app/voiceflow",
-      chatFormId: "chatForm",
-      userInputId: "userInput",
-      chatMessagesId: "chatMessages",
-      messageContainerId: "messageContainer",
-      typingIndicatorSelector: ".chat-typing",
-    };
-
-    super(config); // Call super first, passing the config object
-    this.userID = `section_${Math.floor(Math.random() * 1000000000000000)}`; // Now it's safe to access 'this'
+    super();
+    this.userID = `section_${Math.floor(Math.random() * 1000000000000000)}`;
   }
 
   connectedCallback() {
     console.log("SectionChatbot connected to the DOM");
-
-    // Perform additional setup after the element is attached to the DOM
-    this.init(); // Initialize form interaction
+    this.init();
   }
 
   initialize(config) {
@@ -28,6 +16,14 @@ class SectionChatbot extends ChatbotCore {
     this.productTitle = config.productTitle;
     this.productCapacity = config.productCapacity;
     this.productDetails = `Power Station: ${this.productTitle}, Wattage: ${this.productCapacity}`;
+
+    // Initialize applicationsGrid
+    this.applicationsGrid = this.querySelector(".applications-grid");
+    if (!this.applicationsGrid) {
+      console.error("Applications grid not found");
+      return;
+    }
+
     this.setupEventListeners();
     this.loadSavedDevices();
   }
@@ -207,14 +203,13 @@ class SectionChatbot extends ChatbotCore {
 
 // Ensure DOM is fully loaded before initializing the SectionChatbot
 document.addEventListener("DOMContentLoaded", () => {
-  const sectionChatbot = document.querySelector(".section-chatbot");
-  console.log("this is the section chatbot", sectionChatbot);
+  const sectionChatbot = document.querySelector("section-chatbot");
   if (sectionChatbot) {
     const productTitle = sectionChatbot.getAttribute("product-title");
     const productCapacity = sectionChatbot.getAttribute("product-capacity");
 
     const config = {
-      apiEndpoint: "https://chatbottings--development.gadget.app/voiceflow", // Set a valid API endpoint
+      apiEndpoint: "https://chatbottings--development.gadget.app/voiceflow",
       chatFormId: "chatForm",
       userInputId: "userInput",
       chatMessagesId: "chatMessages",
@@ -224,8 +219,6 @@ document.addEventListener("DOMContentLoaded", () => {
       productCapacity,
     };
 
-    customElements.define("section-chatbot", SectionChatbot);
-    const chatbotInstance = new SectionChatbot();
-    chatbotInstance.initialize(config);
+    sectionChatbot.initialize(config);
   }
 });
