@@ -1,23 +1,37 @@
 import { ChatbotCore } from "./chatbot-core-file.js";
 
-class SectionChatbot extends ChatbotCore {
+class SectionChatbot extends HTMLElement {
   constructor() {
     super();
+    this.chatbotCore = new ChatbotCore();
     this.userID = `section_${Math.floor(Math.random() * 1000000000000000)}`;
   }
 
   connectedCallback() {
     console.log("SectionChatbot connected to the DOM");
-    this.init();
+    this.initialize();
   }
 
-  initialize(config) {
-    console.log("Initializing SectionChatbot with config:", config);
-    this.productTitle = config.productTitle;
-    this.productCapacity = config.productCapacity;
+  initialize() {
+    const productTitle = this.getAttribute("product-title");
+    const productCapacity = this.getAttribute("product-capacity");
+
+    const config = {
+      apiEndpoint: "https://chatbottings--development.gadget.app/voiceflow",
+      chatFormId: "chatForm",
+      userInputId: "userInput",
+      chatMessagesId: "chatMessages",
+      messageContainerId: "messageContainer",
+      typingIndicatorSelector: ".chat-typing",
+      productTitle,
+      productCapacity,
+    };
+
+    this.chatbotCore.initialize(config);
+    this.productTitle = productTitle;
+    this.productCapacity = productCapacity;
     this.productDetails = `Power Station: ${this.productTitle}, Wattage: ${this.productCapacity}`;
 
-    // Initialize applicationsGrid
     this.applicationsGrid = this.querySelector(".applications-grid");
     if (!this.applicationsGrid) {
       console.error("Applications grid not found");
@@ -62,17 +76,17 @@ class SectionChatbot extends ChatbotCore {
 
   async sendMessage(message) {
     try {
-      const res = await this.gadgetInteract({
+      const res = await this.chatbotCore.gadgetInteract({
         userAction: {
           type: "text",
           payload: message,
         },
       });
-      this.hideTypingIndicator();
+      this.chatbotCore.hideTypingIndicator();
       this.handleAgentResponse(res);
     } catch (error) {
       console.error("Error sending message:", error);
-      this.hideTypingIndicator();
+      this.chatbotCore.hideTypingIndicator();
     }
   }
 
@@ -89,7 +103,7 @@ class SectionChatbot extends ChatbotCore {
     };
 
     try {
-      const res = await this.gadgetInteract(interactPayload);
+      const res = await this.chatbotCore.gadgetInteract(interactPayload);
       console.log("Launch response:", res);
       this.hideTypingIndicator();
       this.handleAgentResponse(res);
@@ -201,24 +215,4 @@ class SectionChatbot extends ChatbotCore {
   }
 }
 
-// Ensure DOM is fully loaded before initializing the SectionChatbot
-document.addEventListener("DOMContentLoaded", () => {
-  const sectionChatbot = document.querySelector("section-chatbot");
-  if (sectionChatbot) {
-    const productTitle = sectionChatbot.getAttribute("product-title");
-    const productCapacity = sectionChatbot.getAttribute("product-capacity");
-
-    const config = {
-      apiEndpoint: "https://chatbottings--development.gadget.app/voiceflow",
-      chatFormId: "chatForm",
-      userInputId: "userInput",
-      chatMessagesId: "chatMessages",
-      messageContainerId: "messageContainer",
-      typingIndicatorSelector: ".chat-typing",
-      productTitle,
-      productCapacity,
-    };
-
-    sectionChatbot.initialize(config);
-  }
-});
+customElements.define("section-chatbot", SectionChatbot);
