@@ -1,4 +1,4 @@
-import { ChatbotCore } from "./chatbot-core.js";
+import { ChatbotCore } from "./chatbot-core-file.js";
 
 class SectionChatbot extends ChatbotCore {
   constructor() {

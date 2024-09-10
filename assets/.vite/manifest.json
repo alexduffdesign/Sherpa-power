@@ -25,6 +25,15 @@
       "frontend/entrypoints/chatbot-core-file.js"
     ]
   },
+  "frontend/entrypoints/chatbot-section.js": {
+    "file": "chatbot-section-CIbN6slS.js",
+    "name": "chatbot-section",
+    "src": "frontend/entrypoints/chatbot-section.js",
+    "isEntry": true,
+    "imports": [
+      "frontend/entrypoints/chatbot-core-file.js"
+    ]
+  },
   "frontend/entrypoints/theme.js": {
     "file": "theme-Bz2ETus0.js",
     "name": "theme",
