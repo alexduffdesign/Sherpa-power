@@ -43,6 +43,8 @@ export class ChatbotCore {
   scrollToBottom() {
     if (this.chatMessages) {
       this.chatMessages.scrollTop = this.chatMessages.scrollHeight;
+    } else {
+      console.error("Chat messages element not found for scrolling");
     }
   }
 
@@ -119,14 +121,6 @@ export class ChatbotCore {
     if (this.typingIndicator) {
       this.typingIndicator.style.display = "none";
       this.typingIndicator.classList.remove("active");
-    }
-  }
-
-  scrollToBottom() {
-    if (this.chatBodyElement) {
-      this.chatBodyElement.scrollTop = this.chatBodyElement.scrollHeight;
-    } else {
-      console.error("Chat body element not found for scrolling");
     }
   }
 
