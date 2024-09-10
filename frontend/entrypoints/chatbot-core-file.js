@@ -70,23 +70,19 @@ export class ChatbotCore {
     }
   }
 
-  async sendLaunch() {
-    console.log("ChatbotCore sendLaunch called");
+  async sendLaunch(payload = {}) {
+    console.log("ChatbotCore sendLaunch called with payload:", payload);
     this.showTypingIndicator();
-    const interactPayload = {
-      userAction: {
-        type: "launch",
-      },
-    };
+
     try {
-      const res = await this.gadgetInteract(interactPayload);
+      const res = await this.gadgetInteract(payload);
       console.log("Launch response:", res);
-      this.hideTypingIndicator();
       return res;
     } catch (error) {
       console.error("Error launching conversation:", error);
-      this.hideTypingIndicator();
       throw error;
+    } finally {
+      this.hideTypingIndicator();
     }
   }
 

@@ -142,17 +142,19 @@ class MainChatbot {
   }
 
   async sendLaunch() {
-    console.log("Sending launch request");
-    this.core.showTypingIndicator();
+    console.log("Sending main chatbot launch request");
+
+    const interactPayload = {
+      userAction: {
+        type: "launch",
+      },
+    };
+
     try {
-      const response = await this.core.sendLaunch();
+      const response = await this.core.sendLaunch(interactPayload);
       await this.handleAgentResponse(response);
-      this.hasLaunched = true;
-      localStorage.setItem("chatHasLaunched", "true");
     } catch (error) {
-      console.error("Error in send launch:", error);
-    } finally {
-      this.core.hideTypingIndicator();
+      console.error("Error in main chatbot send launch:", error);
     }
   }
 

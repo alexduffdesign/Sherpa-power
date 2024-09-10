@@ -201,15 +201,28 @@ class SectionChatbot extends HTMLElement {
   }
 
   async sendLaunch() {
-    console.log("Sending launch request");
-    this.core.showTypingIndicator();
+    console.log("Sending section chatbot launch request");
+
+    // Prepare the product details
+    const productTitle = this.getAttribute("product-title");
+    const productCapacity = this.getAttribute("product-capacity");
+    const productDetails = `Power Station: ${productTitle}, Capacity: ${productCapacity}`;
+
+    const interactPayload = {
+      userAction: {
+        type: "launch",
+        payload: {
+          startBlock: "shopifySection",
+          powerStationDetails: productDetails,
+        },
+      },
+    };
+
     try {
-      const response = await this.core.sendLaunch();
+      const response = await this.core.sendLaunch(interactPayload);
       await this.handleAgentResponse(response);
     } catch (error) {
-      console.error("Error in send launch:", error);
-    } finally {
-      this.core.hideTypingIndicator();
+      console.error("Error in section chatbot send launch:", error);
     }
   }
 }
