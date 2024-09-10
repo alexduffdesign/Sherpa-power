@@ -4,44 +4,47 @@ import { ChatbotCore } from "./chatbot-core-file.js";
 
 console.log("MainChatbot module loading");
 
-class MainChatbot {
-  constructor(element, config) {
-    console.log("MainChatbot constructor called with config:", config);
-    this.element = element;
-    this.voiceflowEndpoint = config.voiceflowEndpoint;
+constructor(element, config) {
+  console.log("MainChatbot constructor called with config:", config);
+  this.element = element;
+  this.voiceflowEndpoint = config.voiceflowEndpoint;
 
-    this.core = new ChatbotCore({ apiEndpoint: this.voiceflowEndpoint });
-    console.log("ChatbotCore instance created:", this.core);
+  this.core = new ChatbotCore({ apiEndpoint: this.voiceflowEndpoint });
+  console.log("ChatbotCore instance created:", this.core);
 
-    this.conversationHistory = [];
-    this.hasLaunched = localStorage.getItem("chatHasLaunched") === "true";
+  this.conversationHistory = [];
+  this.hasLaunched = localStorage.getItem("chatHasLaunched") === "true";
 
-    this.eventListenersAttached = false;
+  this.eventListenersAttached = false;
 
-    this.initializeElements();
-    this.setupEventListeners();
+  this.initializeElements();
+  this.setupEventListeners();
 
-    if (this.hasLaunched) {
-      this.loadConversationFromStorage();
-      this.displaySavedConversation();
-    }
+  if (this.hasLaunched) {
+    this.loadConversationFromStorage();
+    this.displaySavedConversation();
+  }
+}
+
+initializeElements() {
+  console.log("MainChatbot initializeElements called");
+  const messageContainer = this.element.querySelector("#messageContainer");
+  const typingIndicator = this.element.querySelector(".chat-typing");
+  const drawer = this.element.closest('x-drawer');
+  let drawerBody = null;
+
+  if (drawer && drawer.shadowRoot) {
+    drawerBody = drawer.shadowRoot.querySelector('[part="body"]');
   }
 
-  initializeElements() {
-    console.log("MainChatbot initializeElements called");
-    const messageContainer = this.element.querySelector("#messageContainer");
-    const typingIndicator = this.element.querySelector(".chat-typing");
-    const drawer = this.element.closest("x-drawer");
-    const drawerBody = drawer ? drawer.querySelector('[part="body"]') : null;
-
-    if (!messageContainer || !typingIndicator || !drawerBody) {
-      console.error("Required DOM elements not found");
-      return;
-    }
-
-    this.core.setDOMElements(messageContainer, typingIndicator, drawerBody);
-    console.log("DOM elements set in ChatbotCore:", this.core);
+  if (!messageContainer || !typingIndicator || !drawerBody) {
+    console.error("Required DOM elements not found");
+    return;
   }
+
+  this.core.setDOMElements(messageContainer, typingIndicator, drawerBody);
+  console.log("DOM elements set in ChatbotCore:", this.core);
+}
 
   setupEventListeners() {
     if (this.eventListenersAttached) return;
