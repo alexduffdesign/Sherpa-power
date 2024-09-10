@@ -1,10 +1,13 @@
 import { ChatbotCore } from "./chatbot-core-file.js";
 
+console.log("SectionChatbot module loading");
+
 class SectionChatbot extends HTMLElement {
   constructor() {
     super();
-    this.chatbotCore = new ChatbotCore();
-    this.userID = `section_${Math.floor(Math.random() * 1000000000000000)}`;
+    console.log("SectionChatbot constructor called");
+    this.core = null;
+    this.eventListenersAttached = false;
   }
 
   connectedCallback() {
@@ -13,128 +16,103 @@ class SectionChatbot extends HTMLElement {
   }
 
   initialize() {
-    const productTitle = this.getAttribute("product-title");
-    const productCapacity = this.getAttribute("product-capacity");
-
+    console.log("SectionChatbot initializing");
     const config = {
       apiEndpoint: "https://chatbottings--development.gadget.app/voiceflow",
-      chatFormId: "chatForm",
-      userInputId: "userInput",
-      chatMessagesId: "chatMessages",
-      messageContainerId: "messageContainer",
-      typingIndicatorSelector: ".chat-typing",
-      productTitle,
-      productCapacity,
     };
+    this.core = new ChatbotCore(config);
+    console.log("ChatbotCore instance created:", this.core);
 
-    this.chatbotCore.initialize(config);
-    this.productTitle = productTitle;
-    this.productCapacity = productCapacity;
-    this.productDetails = `Power Station: ${this.productTitle}, Wattage: ${this.productCapacity}`;
+    this.initializeElements();
+    this.setupEventListeners();
+    this.initializeChat();
+  }
 
-    this.applicationsGrid = this.querySelector(".applications-grid");
-    if (!this.applicationsGrid) {
-      console.error("Applications grid not found");
+  initializeElements() {
+    console.log("SectionChatbot initializeElements called");
+    const messageContainer = this.querySelector("#messageContainer");
+    const typingIndicator = this.querySelector(".chat-typing");
+    const applicationsGrid = this.querySelector(".applications-grid");
+
+    if (!messageContainer || !typingIndicator || !applicationsGrid) {
+      console.error("Required DOM elements not found");
       return;
     }
 
-    this.setupEventListeners();
-    this.loadSavedDevices();
+    this.core.setDOMElements(messageContainer, typingIndicator, this);
+    this.applicationsGrid = applicationsGrid;
+    console.log("DOM elements set in ChatbotCore:", this.core);
   }
 
   setupEventListeners() {
-    if (this.viewMoreButton) {
-      this.viewMoreButton.addEventListener("click", () =>
-        this.toggleDevicesView()
-      );
-    }
-  }
+    if (this.eventListenersAttached) return;
 
-  toggleDevicesView() {
-    this.isExpanded = !this.isExpanded;
-    this.updateDevicesView();
-  }
+    console.log("SectionChatbot setupEventListeners called");
+    const form = this.querySelector("#chatForm");
+    const input = this.querySelector("#userInput");
 
-  updateDevicesView() {
-    const allCards = this.applicationsGrid.querySelectorAll(
-      ".application-card.chatbot-card"
-    );
-    if (allCards.length > this.devicesPerPage) {
-      this.viewMoreButton.style.display = "block";
-      this.viewMoreButton.textContent = this.isExpanded
-        ? "View Less"
-        : "View More";
-
-      allCards.forEach((card, index) => {
-        card.style.display =
-          index < this.devicesPerPage || this.isExpanded ? "flex" : "none";
-      });
-    } else {
-      this.viewMoreButton.style.display = "none";
-    }
-  }
-
-  async sendMessage(message) {
-    try {
-      const res = await this.chatbotCore.gadgetInteract({
-        userAction: {
-          type: "text",
-          payload: message,
-        },
-      });
-      this.chatbotCore.hideTypingIndicator();
-      this.handleAgentResponse(res);
-    } catch (error) {
-      console.error("Error sending message:", error);
-      this.chatbotCore.hideTypingIndicator();
-    }
-  }
-
-  async sendLaunch() {
-    this.showTypingIndicator();
-    const interactPayload = {
-      userAction: {
-        type: "launch",
-        payload: {
-          startBlock: "shopifySection",
-          powerStationDetails: this.productDetails,
-        },
-      },
-    };
-
-    try {
-      const res = await this.chatbotCore.gadgetInteract(interactPayload);
-      console.log("Launch response:", res);
-      this.hideTypingIndicator();
-      this.handleAgentResponse(res);
-    } catch (error) {
-      console.error("Error launching conversation:", error);
-      this.hideTypingIndicator();
-    }
-  }
-
-  handleDeviceAnswer(payload) {
-    console.log("Raw device answer payload:", payload);
-
-    let deviceData;
-
-    if (typeof payload === "string") {
-      try {
-        deviceData = JSON.parse(payload);
-      } catch (error) {
-        console.error("Failed to parse payload string:", error);
-        return;
-      }
-    } else if (typeof payload === "object" && payload !== null) {
-      deviceData = payload;
-    } else {
-      console.error("Invalid payload type:", typeof payload);
+    if (!form || !input) {
+      console.error("Chat form or input not found");
       return;
     }
 
-    console.log("Processed device data:", deviceData);
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const message = input.value.trim();
+      if (message) {
+        console.log("Form submitted with message:", message);
+        input.value = ""; // Clear the input field immediately
+        await this.handleUserMessage(message);
+      }
+    });
 
-    let devices = Array.isArray(deviceData) ? deviceData : deviceData.devices;
+    this.addEventListener("click", async (e) => {
+      if (e.target.matches(".button-container button")) {
+        const buttonData = JSON.parse(e.target.dataset.buttonData);
+        try {
+          const response = await this.core.handleButtonClick(buttonData);
+          await this.handleAgentResponse(response);
+        } catch (error) {
+          console.error("Error handling button click:", error);
+        }
+      }
+    });
+
+    this.eventListenersAttached = true;
+  }
+
+  async handleUserMessage(message) {
+    this.core.addMessage("user", message);
+
+    this.core.showTypingIndicator();
+    try {
+      const response = await this.core.sendMessage(message);
+      console.log("Response from sendMessage:", response);
+      await this.handleAgentResponse(response);
+    } catch (error) {
+      console.error("Error in send message:", error);
+    } finally {
+      this.core.hideTypingIndicator();
+      this.core.scrollToBottom();
+    }
+  }
+
+  async handleAgentResponse(response) {
+    console.log("Handling agent response:", response);
+    for (const trace of response) {
+      if (trace.type === "device_answer") {
+        this.handleDeviceAnswer(trace.payload);
+      } else {
+        // Let ChatbotCore handle text and choice traces
+        await this.core.handleAgentResponse([trace]);
+      }
+    }
+    this.core.scrollToBottom();
+  }
+
+  handleDeviceAnswer(payload) {
+    console.log("Handling device answer:", payload);
+    let devices = Array.isArray(payload) ? payload : payload.devices;
 
     if (!Array.isArray(devices)) {
       console.error("Invalid devices data:", devices);
@@ -157,7 +135,10 @@ class SectionChatbot extends HTMLElement {
     card.className = "application-card chatbot-card";
     card.innerHTML = `
       <div class="application-card__image">
-        <svg>...</svg>
+        <svg width="50" height="50" viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect width="50" height="50" rx="25" fill="#DB9BFB"/>
+          <path d="M35.2941 18.5294H14.7059C13.7647 18.5294 13 19.2941 13 20.2353V32.7647C13 33.7059 13.7647 34.4706 14.7059 34.4706H35.2941C36.2353 34.4706 37 33.7059 37 32.7647V20.2353C37 19.2941 36.2353 18.5294 35.2941 18.5294ZM35.2941 32.7647H14.7059V20.2353H35.2941V32.7647ZM34.4412 15.5882L36.1471 13.8824C36.4412 13.5882 36.4412 13.1471 36.1471 12.8529C35.8529 12.5588 35.4118 12.5588 35.1176 12.8529L33.4118 14.5588C31.9412 13.5882 30.1765 13 28.2647 13H21.7353C19.8235 13 18.0588 13.5882 16.5882 14.5588L14.8824 12.8529C14.5882 12.5588 14.1471 12.5588 13.8529 12.8529C13.5588 13.1471 13.5588 13.5882 13.8529 13.8824L15.5588 15.5882C13.7941 17.3529 12.7059 19.7059 12.7059 22.2941V23.1471H37.2941V22.2941C37.2941 19.7059 36.2059 17.3529 34.4412 15.5882ZM20.8824 20.2353H18.3235V17.6765H20.8824V20.2353ZM31.6765 20.2353H29.1176V17.6765H31.6765V20.2353Z" fill="white"/>
+        </svg>
       </div>
       <div class="application-card__content">
         <div class="application-card__title">${device.name}</div>
@@ -181,7 +162,7 @@ class SectionChatbot extends HTMLElement {
   }
 
   saveDeviceEstimate(device) {
-    const key = `${this.productTitle}_devices`;
+    const key = `${this.getAttribute("product-title")}_devices`;
     let devices = JSON.parse(localStorage.getItem(key) || "[]");
 
     const existingIndex = devices.findIndex((d) => d.name === device.name);
@@ -193,26 +174,43 @@ class SectionChatbot extends HTMLElement {
     localStorage.setItem(key, JSON.stringify(devices));
   }
 
-  loadSavedDevices() {
-    const key = `${this.productTitle}_devices`;
-    const devices = JSON.parse(localStorage.getItem(key) || "[]");
+  updateDevicesView() {
+    const allCards = this.applicationsGrid.querySelectorAll(
+      ".application-card.chatbot-card"
+    );
+    const viewMoreButton = this.querySelector(".view-more-button");
+    const devicesPerPage = 3;
 
-    devices.forEach((device) => {
-      const card = this.createDeviceCard(device);
-      this.insertCard(card);
-    });
-
-    this.updateDevicesView();
+    if (allCards.length > devicesPerPage) {
+      viewMoreButton.style.display = "block";
+      allCards.forEach((card, index) => {
+        card.style.display = index < devicesPerPage ? "flex" : "none";
+      });
+    } else {
+      viewMoreButton.style.display = "none";
+    }
   }
 
-  async handleAgentResponse(response) {
-    await super.handleAgentResponse(response);
-    for (const trace of response) {
-      if (trace.type === "device_answer") {
-        this.handleDeviceAnswer(trace.payload);
-      }
+  async initializeChat() {
+    console.log("Initializing chat");
+    await this.sendLaunch();
+    console.log("Chat initialized");
+  }
+
+  async sendLaunch() {
+    console.log("Sending launch request");
+    this.core.showTypingIndicator();
+    try {
+      const response = await this.core.sendLaunch();
+      await this.handleAgentResponse(response);
+    } catch (error) {
+      console.error("Error in send launch:", error);
+    } finally {
+      this.core.hideTypingIndicator();
     }
   }
 }
 
 customElements.define("section-chatbot", SectionChatbot);
+
+console.log("SectionChatbot module loaded");
