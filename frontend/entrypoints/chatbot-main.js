@@ -27,6 +27,8 @@ class MainChatbot {
     if (this.hasLaunched) {
       this.loadConversationFromStorage();
       this.displaySavedConversation();
+    } else {
+      this.initializeChat(); // Call initializeChat if it hasn't launched before
     }
   }
 
@@ -140,6 +142,8 @@ class MainChatbot {
     if (!this.hasLaunched) {
       console.log("Initializing chat for the first time");
       await this.sendLaunch();
+      this.hasLaunched = true;
+      localStorage.setItem("chatHasLaunched", "true");
     }
     console.log("Chat initialized");
   }
