@@ -220,14 +220,12 @@ document.addEventListener("DOMContentLoaded", () => {
       chatMessagesId: "chatMessages",
       messageContainerId: "messageContainer",
       typingIndicatorSelector: ".chat-typing",
-      productTitle: productTitle,
-      productCapacity: productCapacity,
+      productTitle,
+      productCapacity,
     };
 
-    sectionChatbot.initialize(config);
-  } else {
-    console.error("section-chatbot element not found");
+    customElements.define("section-chatbot", SectionChatbot);
+    const chatbotInstance = new SectionChatbot();
+    chatbotInstance.initialize(config);
   }
 });
-
-customElements.define("section-chatbot", SectionChatbot);
