@@ -4,15 +4,15 @@
 {% endcomment %}
 {% assign path = vite-tag | replace: '@/', '../' | replace: '~/', '../' %}
 {% if path == "/frontend/entrypoints/chatbot-core-file.js" or path == "chatbot-core-file.js" %}
-  <script src="{{ 'chatbot-core-file-CqVtwuzf.js' | asset_url | split: '?' | first }}" type="module" crossorigin="anonymous"></script>
+  <script src="{{ 'chatbot-core-file-CikaHu9r.js' | asset_url | split: '?' | first }}" type="module" crossorigin="anonymous"></script>
 {% elsif path == "/frontend/entrypoints/chatbot-drawer.js" or path == "chatbot-drawer.js" %}
-  <script src="{{ 'chatbot-drawer-B_WgEF3v.js' | asset_url | split: '?' | first }}" type="module" crossorigin="anonymous"></script>
+  <script src="{{ 'chatbot-drawer-BGdfIdPS.js' | asset_url | split: '?' | first }}" type="module" crossorigin="anonymous"></script>
   <link rel="modulepreload" href="{{ 'theme-Bz2ETus0.js' | asset_url | split: '?' | first }}" crossorigin="anonymous">
-  <link rel="modulepreload" href="{{ 'chatbot-main-DgxUZmWT.js' | asset_url | split: '?' | first }}" crossorigin="anonymous">
-  <link rel="modulepreload" href="{{ 'chatbot-core-file-CqVtwuzf.js' | asset_url | split: '?' | first }}" crossorigin="anonymous">
+  <link rel="modulepreload" href="{{ 'chatbot-main-DlZtoqoF.js' | asset_url | split: '?' | first }}" crossorigin="anonymous">
+  <link rel="modulepreload" href="{{ 'chatbot-core-file-CikaHu9r.js' | asset_url | split: '?' | first }}" crossorigin="anonymous">
 {% elsif path == "/frontend/entrypoints/chatbot-main.js" or path == "chatbot-main.js" %}
-  <script src="{{ 'chatbot-main-DgxUZmWT.js' | asset_url | split: '?' | first }}" type="module" crossorigin="anonymous"></script>
-  <link rel="modulepreload" href="{{ 'chatbot-core-file-CqVtwuzf.js' | asset_url | split: '?' | first }}" crossorigin="anonymous">
+  <script src="{{ 'chatbot-main-DlZtoqoF.js' | asset_url | split: '?' | first }}" type="module" crossorigin="anonymous"></script>
+  <link rel="modulepreload" href="{{ 'chatbot-core-file-CikaHu9r.js' | asset_url | split: '?' | first }}" crossorigin="anonymous">
 {% elsif path == "/frontend/entrypoints/theme.js" or path == "theme.js" %}
   <script src="{{ 'theme-Bz2ETus0.js' | asset_url | split: '?' | first }}" type="module" crossorigin="anonymous"></script>
 {% endif %}

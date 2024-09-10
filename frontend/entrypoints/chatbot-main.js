@@ -31,7 +31,7 @@ class MainChatbot {
     console.log("MainChatbot initializeElements called");
     const messageContainer = this.element.querySelector("#messageContainer");
     const typingIndicator = this.element.querySelector(".chat-typing");
-    const chatMessages = this.element.querySelector(".chat-messages");
+    const chatMessages = this.element;
 
     if (!messageContainer || !typingIndicator || !chatMessages) {
       console.error("Required DOM elements not found");
