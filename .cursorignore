@@ -1,0 +1,7 @@
+# Ignore everything
+*
+
+# Allow only these specific files
+!chatbot-core-file.js
+!chatbot-drawer.js
+!chatbot-main.js
