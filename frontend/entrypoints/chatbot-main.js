@@ -5,48 +5,44 @@ import { ChatbotCore } from "./chatbot-core-file.js";
 console.log("MainChatbot module loading");
 
 class MainChatbot {
-  constructor(element, config) {
-    console.log("MainChatbot constructor called with config:", config);
-    this.element = element;
-    this.voiceflowEndpoint = config.voiceflowEndpoint;
-
-    this.core = new ChatbotCore({ apiEndpoint: this.voiceflowEndpoint });
-    console.log("ChatbotCore instance created:", this.core);
-
+  constructor() {
+    super();
+    this.core = null;
     this.conversationHistory = [];
     this.hasLaunched = localStorage.getItem("chatHasLaunched") === "true";
-
-    // Make sure eventListenersAttached starts as false
     this.eventListenersAttached = false;
+  }
 
-    this.initializeElements();
-    this.setupEventListeners();
+  connectedCallback() {
+    if (!this.core) {
+      const apiEndpoint = this.getAttribute("api-endpoint");
+      this.core = new ChatbotCore({ apiEndpoint });
+      this.initializeElements();
+      this.setupEventListeners();
 
-    if (this.hasLaunched) {
-      this.loadConversationFromStorage();
-      this.displaySavedConversation();
+      if (this.hasLaunched) {
+        this.loadConversationFromStorage();
+        this.displaySavedConversation();
+      }
     }
   }
 
   initializeElements() {
     console.log("MainChatbot initializeElements called");
-    const messageContainer = this.element.querySelector("#messageContainer");
-    const typingIndicator = this.element.querySelector(".chat-typing");
-    const chatBodyElement = this.element.querySelector(
-      "#header-ai-trigger::part(body)"
-    );
+    const messageContainer = this.querySelector("#messageContainer");
+    const typingIndicator = this.querySelector(".chat-typing");
 
-    if (!messageContainer || !typingIndicator || !chatBodyElement) {
+    if (!messageContainer || !typingIndicator) {
       console.error("Required DOM elements not found");
       return;
     }
 
-    this.core.setDOMElements(
-      messageContainer,
-      typingIndicator,
-      chatBodyElement
-    );
+    this.core.setDOMElements(messageContainer, typingIndicator, this);
     console.log("DOM elements set in ChatbotCore:", this.core);
+  }
+
+  scrollToBottom() {
+    this.scrollTop = this.scrollHeight;
   }
 
   setupEventListeners() {

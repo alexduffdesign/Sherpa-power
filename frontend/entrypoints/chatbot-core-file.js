@@ -28,15 +28,16 @@ export class ChatbotCore {
     return userID;
   }
 
-  setDOMElements(messageContainer, typingIndicator, chatBodyElement) {
-    console.log("setDOMElements called:", {
-      messageContainer,
-      typingIndicator,
-    });
+  setDOMElements(messageContainer, typingIndicator, scrollableElement) {
     this.messageContainer = messageContainer;
     this.typingIndicator = typingIndicator;
-    this.chatBodyElement = chatBodyElement;
-    console.log("DOM elements set:", this);
+    this.scrollableElement = scrollableElement;
+  }
+
+  scrollToBottom() {
+    if (this.scrollableElement) {
+      this.scrollableElement.scrollTop = this.scrollableElement.scrollHeight;
+    }
   }
 
   async sendMessage(message) {

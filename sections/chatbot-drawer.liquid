@@ -27,10 +27,10 @@
 
   main-chatbot {
     height: 100%;
-    width: 600px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    overflow-y: auto;
   }
 
   #{{ drawer_id }} .chatbot-container {
@@ -81,6 +81,7 @@
   #{{ drawer_id }}::part(body) {
     background-color: #403545;
     padding: var(--spacing-0);
+    overflow-y: hidden;
   }
   
   .footer-form {
@@ -93,8 +94,8 @@
   }
   
   @media screen and (min-width: 700px) {
-  .sherpa-guide #{{ drawer_id }} {
-    width: 650px !important;
+  main-chatbot {
+    width: 600px;  
   }
   }
       
