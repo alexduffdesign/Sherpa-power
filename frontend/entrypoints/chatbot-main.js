@@ -93,7 +93,7 @@ class MainChatbot {
       console.error("Error in send message:", error);
     } finally {
       this.core.hideTypingIndicator();
-      this.core.scrollToBottom(); // Ensure we scroll to bottom after response
+      this.core.scrollToBottom();
     }
   }
 
@@ -169,7 +169,7 @@ class MainChatbot {
       }
     }
     this.saveConversationToStorage();
-    this.core.scrollToBottom(); // Ensure we scroll to bottom after handling response
+    this.core.scrollToBottom();
   }
 
   // < Carousel JS > //
