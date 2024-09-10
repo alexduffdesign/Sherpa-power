@@ -8,12 +8,12 @@ export class ChatbotCore {
     this.userID = this.loadUserID();
     this.messageContainer = null;
     this.typingIndicator = null;
+    this.chatMessages = null;
 
     // Bind methods
     this.sendMessage = this.sendMessage.bind(this);
     this.gadgetInteract = this.gadgetInteract.bind(this);
     this.addMessage = this.addMessage.bind(this);
-    this.chatBodyElement = null;
 
     console.log("ChatbotCore instance created:", this);
   }
@@ -28,15 +28,21 @@ export class ChatbotCore {
     return userID;
   }
 
-  setDOMElements(messageContainer, typingIndicator, scrollableElement) {
+  setDOMElements(messageContainer, typingIndicator, chatMessages) {
+    console.log("setDOMElements called:", {
+      messageContainer,
+      typingIndicator,
+      chatMessages,
+    });
     this.messageContainer = messageContainer;
     this.typingIndicator = typingIndicator;
-    this.scrollableElement = scrollableElement;
+    this.chatMessages = chatMessages;
+    console.log("DOM elements set:", this);
   }
 
   scrollToBottom() {
-    if (this.scrollableElement) {
-      this.scrollableElement.scrollTop = this.scrollableElement.scrollHeight;
+    if (this.chatMessages) {
+      this.chatMessages.scrollTop = this.chatMessages.scrollHeight;
     }
   }
 
@@ -131,7 +137,7 @@ export class ChatbotCore {
       messageDiv.classList.add("message", `message--${sender}`);
       messageDiv.innerHTML = this.markdownToHtml(content);
       this.messageContainer.appendChild(messageDiv);
-      this.scrollToBottom(); // Scroll after adding a message
+      this.scrollToBottom();
     }
   }
 
