@@ -32,9 +32,9 @@ class SectionChatbot extends HTMLElement {
     console.log("SectionChatbot initializeElements called");
     const messageContainer = this.querySelector("#messageContainer");
     const typingIndicator = this.querySelector(".chat-typing");
-    const applicationsGrid = this.querySelector(".applications-grid");
+    const applicationsGrid = document.querySelector(".applications-grid");
 
-    if (!messageContainer || !typingIndicator || !applicationsGrid) {
+    if (!messageContainer || !typingIndicator) {
       console.error("Required DOM elements not found");
       return;
     }
@@ -100,11 +100,14 @@ class SectionChatbot extends HTMLElement {
   async handleAgentResponse(response) {
     console.log("Handling agent response:", response);
     for (const trace of response) {
-      if (trace.type === "device_answer") {
+      if (trace.type === "text") {
+        this.core.addMessage("assistant", trace.payload.message);
+      } else if (trace.type === "choice") {
+        this.core.addButtons(trace.payload.buttons);
+      } else if (trace.type === "device_answer") {
         this.handleDeviceAnswer(trace.payload);
       } else {
-        // Let ChatbotCore handle text and choice traces
-        await this.core.handleAgentResponse([trace]);
+        console.log("Unknown trace type:", trace.type);
       }
     }
     this.core.scrollToBottom();
