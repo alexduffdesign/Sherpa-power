@@ -8,7 +8,7 @@ export class ChatbotCore {
     this.userID = this.loadUserID();
     this.messageContainer = null;
     this.typingIndicator = null;
-    this.chatMessages = null;
+    this.drawerBody = null;
 
     // Bind methods
     this.sendMessage = this.sendMessage.bind(this);
@@ -28,23 +28,25 @@ export class ChatbotCore {
     return userID;
   }
 
-  setDOMElements(messageContainer, typingIndicator, chatMessages) {
+  setDOMElements(messageContainer, typingIndicator, drawerBody) {
     console.log("setDOMElements called:", {
       messageContainer,
       typingIndicator,
-      chatMessages,
+      drawerBody,
     });
     this.messageContainer = messageContainer;
     this.typingIndicator = typingIndicator;
-    this.chatMessages = chatMessages;
+    this.drawerBody = drawerBody;
     console.log("DOM elements set:", this);
   }
 
   scrollToBottom() {
-    if (this.chatMessages) {
-      this.chatMessages.scrollTop = this.chatMessages.scrollHeight;
+    if (this.drawerBody) {
+      setTimeout(() => {
+        this.drawerBody.scrollTop = this.drawerBody.scrollHeight;
+      }, 100); // Small delay to ensure content has rendered
     } else {
-      console.error("Chat messages element not found for scrolling");
+      console.error("Drawer body element not found for scrolling");
     }
   }
 

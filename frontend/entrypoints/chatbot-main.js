@@ -31,14 +31,15 @@ class MainChatbot {
     console.log("MainChatbot initializeElements called");
     const messageContainer = this.element.querySelector("#messageContainer");
     const typingIndicator = this.element.querySelector(".chat-typing");
-    const chatMessages = this.element;
+    const drawer = this.element.closest("x-drawer");
+    const drawerBody = drawer ? drawer.querySelector('[part="body"]') : null;
 
-    if (!messageContainer || !typingIndicator || !chatMessages) {
+    if (!messageContainer || !typingIndicator || !drawerBody) {
       console.error("Required DOM elements not found");
       return;
     }
 
-    this.core.setDOMElements(messageContainer, typingIndicator, chatMessages);
+    this.core.setDOMElements(messageContainer, typingIndicator, drawerBody);
     console.log("DOM elements set in ChatbotCore:", this.core);
   }
 
