@@ -32,13 +32,20 @@ class MainChatbot {
     console.log("MainChatbot initializeElements called");
     const messageContainer = this.element.querySelector("#messageContainer");
     const typingIndicator = this.element.querySelector(".chat-typing");
+    const chatBodyElement = this.element.querySelector(
+      "#header-ai-trigger::part(body)"
+    );
 
-    if (!messageContainer || !typingIndicator) {
+    if (!messageContainer || !typingIndicator || !chatBodyElement) {
       console.error("Required DOM elements not found");
       return;
     }
 
-    this.core.setDOMElements(messageContainer, typingIndicator);
+    this.core.setDOMElements(
+      messageContainer,
+      typingIndicator,
+      chatBodyElement
+    );
     console.log("DOM elements set in ChatbotCore:", this.core);
   }
 
@@ -59,8 +66,8 @@ class MainChatbot {
       const message = input.value.trim();
       if (message) {
         console.log("Form submitted with message:", message);
+        input.value = ""; // Clear the input field immediately
         await this.handleUserMessage(message);
-        input.value = "";
       }
     });
 

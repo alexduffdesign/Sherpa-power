@@ -1,5 +1,5 @@
 // chatbot-core.js
-console.log("Recent changes check : 1");
+console.log("Recent changes check : 2");
 
 export class ChatbotCore {
   constructor(config) {
