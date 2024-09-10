@@ -19,15 +19,15 @@ class SectionChatbot extends HTMLElement {
     console.log("SectionChatbot initializing");
     const config = {
       apiEndpoint: "https://chatbottings--development.gadget.app/voiceflow",
-      userIDPrefix: "sectionChatbot",
+      userIDPrefix: "sectionChatBot",
     };
     this.core = new ChatbotCore(config);
 
     this.initializeElements();
     this.setupEventListeners();
 
-    // Ensure the grid is initialized
-    this.applicationsGrid = this.querySelector(".applications-grid");
+    // Use document.querySelector for the applications grid
+    this.applicationsGrid = document.querySelector(".applications-grid");
     if (!this.applicationsGrid) {
       console.error("Applications grid not found during initialization");
     } else {
@@ -170,6 +170,12 @@ class SectionChatbot extends HTMLElement {
   }
 
   insertCard(card) {
+    this.applicationsGrid = document.querySelector(".applications-grid");
+    if (!this.applicationsGrid) {
+      console.error("Applications grid not found when inserting card");
+      return;
+    }
+
     const firstChatbotCard = this.applicationsGrid.querySelector(
       ".application-card.chatbot-card"
     );
@@ -195,7 +201,8 @@ class SectionChatbot extends HTMLElement {
 
   updateDevicesView() {
     console.log("Updating devices view");
-    this.applicationsGrid = this.querySelector(".applications-grid");
+    // Always use document.querySelector here to ensure we're getting the latest reference
+    this.applicationsGrid = document.querySelector(".applications-grid");
     if (!this.applicationsGrid) {
       console.error("Applications grid not found");
       return;
@@ -208,7 +215,7 @@ class SectionChatbot extends HTMLElement {
     );
     console.log("Number of cards found:", allCards.length);
 
-    const viewMoreButton = this.querySelector(".view-more-button");
+    const viewMoreButton = document.querySelector(".view-more-button");
     const devicesPerPage = 3;
 
     if (allCards.length > devicesPerPage) {
