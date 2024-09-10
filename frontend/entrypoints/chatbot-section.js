@@ -19,7 +19,7 @@ class SectionChatbot extends HTMLElement {
     console.log("SectionChatbot initializing");
     const config = {
       apiEndpoint: "https://chatbottings--development.gadget.app/voiceflow",
-      userIDPrefix: "sectionChatbot",
+      userIDPrefix: "sectionChatBot",
     };
     this.core = new ChatbotCore(config);
 
@@ -35,7 +35,7 @@ class SectionChatbot extends HTMLElement {
     }
 
     this.loadSavedDevices();
-    // Remove this line: this.initializeChat();
+    this.initializeChat();
   }
 
   initializeElements() {
