@@ -13,6 +13,7 @@ export class ChatbotCore {
     this.sendMessage = this.sendMessage.bind(this);
     this.gadgetInteract = this.gadgetInteract.bind(this);
     this.addMessage = this.addMessage.bind(this);
+    this.chatBodyElement = null;
 
     console.log("ChatbotCore instance created:", this);
   }
@@ -27,13 +28,14 @@ export class ChatbotCore {
     return userID;
   }
 
-  setDOMElements(messageContainer, typingIndicator) {
+  setDOMElements(messageContainer, typingIndicator, chatBodyElement) {
     console.log("setDOMElements called:", {
       messageContainer,
       typingIndicator,
     });
     this.messageContainer = messageContainer;
     this.typingIndicator = typingIndicator;
+    this.chatBodyElement = chatBodyElement;
     console.log("DOM elements set:", this);
   }
 
@@ -114,8 +116,10 @@ export class ChatbotCore {
   }
 
   scrollToBottom() {
-    if (this.messageContainer) {
-      this.messageContainer.scrollTop = this.messageContainer.scrollHeight;
+    if (this.chatBodyElement) {
+      this.chatBodyElement.scrollTop = this.chatBodyElement.scrollHeight;
+    } else {
+      console.error("Chat body element not found for scrolling");
     }
   }
 
