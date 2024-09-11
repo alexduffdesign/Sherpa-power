@@ -20,24 +20,16 @@ export class ChatbotCore {
   }
 
   loadUserID() {
-    if (this.userIDPrefix === "sectionChatbot") {
-      // Generate a new ID each time for the section chatbot
-      return `${this.userIDPrefix}_${Math.floor(
+    const key = `${this.userIDPrefix}UserID`;
+    let userID = localStorage.getItem(key);
+    if (!userID) {
+      userID = `${this.userIDPrefix}_${Math.floor(
         Math.random() * 1000000000000000
       )}`;
-    } else {
-      // For other chatbots (e.g., main chatbot), use the existing logic
-      const key = `${this.userIDPrefix}UserID`;
-      let userID = localStorage.getItem(key);
-      if (!userID) {
-        userID = `${this.userIDPrefix}_${Math.floor(
-          Math.random() * 1000000000000000
-        )}`;
-        localStorage.setItem(key, userID);
-      }
-      console.log(`${this.userIDPrefix} userID loaded:`, userID);
-      return userID;
+      localStorage.setItem(key, userID);
     }
+    console.log(`${this.userIDPrefix} userID loaded:`, userID);
+    return userID;
   }
 
   setDOMElements(messageContainer, typingIndicator, drawerBody) {

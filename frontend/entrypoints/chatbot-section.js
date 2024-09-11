@@ -21,6 +21,7 @@ class SectionChatbot extends HTMLElement {
     this.initializeElements();
     this.setupEventListeners();
     this.loadSavedDevices();
+    this.initializeChatIfNeeded(); // Add this line
   }
 
   initializeElements() {
