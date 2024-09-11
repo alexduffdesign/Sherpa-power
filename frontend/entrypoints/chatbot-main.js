@@ -193,42 +193,37 @@ class MainChatbot {
     const carouselElement = document.createElement("div");
     carouselElement.className = "carousel";
     carouselElement.innerHTML = `
-    <div class="carousel__container">
-      <!-- Carousel items will be dynamically added here -->
-    </div>
-    <button class="carousel__button carousel__button--left" aria-label="Previous slide">
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M15 18L9 12L15 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-      </svg>
-    </button>
-    <button class="carousel__button carousel__button--right" aria-label="Next slide">
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M9 18L15 12L9 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-      </svg>
-    </button>
-  `;
+      <div class="carousel__container">
+        <!-- Carousel items will be dynamically added here -->
+      </div>
+      <button class="carousel__button carousel__button--left" aria-label="Previous slide">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M15 18L9 12L15 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+      <button class="carousel__button carousel__button--right" aria-label="Next slide">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M9 18L15 12L9 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+    `;
 
     const carousel = new Carousel(carouselElement);
 
-    for (let i = 0; i < carouselData.cards.length; i += 2) {
-      const itemContent = carouselData.cards
-        .slice(i, i + 2)
-        .map(
-          (card) => `
-      <div class="carousel__item-wrapper">
-        <div class="carousel__item-content">
-          <img src="${card.imageUrl}" alt="${card.title}" class="carousel__item-image">
-          <h6 class="carousel__item-title">${card.title}</h6>
-          <p class="carousel__item-description">${card.description.text}</p>
-          <button class="button carousel__item-button" data-button-index="0">${card.buttons[0].name}</button>
+    carouselData.cards.forEach((card, index) => {
+      const itemContent = `
+        <div class="carousel__item-wrapper">
+          <div class="carousel__item-content">
+            <img src="${card.imageUrl}" alt="${card.title}" class="carousel__item-image">
+            <h6 class="carousel__item-title">${card.title}</h6>
+            <p class="carousel__item-description">${card.description.text}</p>
+            <button class="button carousel__item-button" data-button-index="${index}">${card.buttons[0].name}</button>
+          </div>
         </div>
-      </div>
-    `
-        )
-        .join("");
+      `;
 
       carousel.addItem(itemContent);
-    }
+    });
 
     const buttons = carouselElement.querySelectorAll(".carousel__item-button");
     buttons.forEach((button, index) => {
@@ -269,8 +264,20 @@ class Carousel {
     this.items = [];
     this.currentIndex = 0;
 
+    this.mediaQuery = window.matchMedia("(min-width: 1000px)");
+    this.isDesktop = this.mediaQuery.matches;
+
     this.leftButton.addEventListener("click", () => this.move("left"));
     this.rightButton.addEventListener("click", () => this.move("right"));
+
+    this.mediaQuery.addListener(this.handleMediaQueryChange.bind(this));
+  }
+
+  handleMediaQueryChange(e) {
+    this.isDesktop = e.matches;
+    this.currentIndex = 0;
+    this.updatePosition();
+    this.updateVisibility();
   }
 
   addItem(content) {
@@ -283,12 +290,13 @@ class Carousel {
   }
 
   move(direction) {
+    const itemsPerSlide = this.isDesktop ? 2 : 1;
     if (direction === "left") {
-      this.currentIndex = Math.max(0, this.currentIndex - 1);
+      this.currentIndex = Math.max(0, this.currentIndex - itemsPerSlide);
     } else {
       this.currentIndex = Math.min(
-        this.items.length - 1,
-        this.currentIndex + 1
+        this.items.length - itemsPerSlide,
+        this.currentIndex + itemsPerSlide
       );
     }
     this.updatePosition();
@@ -296,16 +304,19 @@ class Carousel {
   }
 
   updatePosition() {
-    const offset = -this.currentIndex * 100;
+    const itemsPerSlide = this.isDesktop ? 2 : 1;
+    const offset = -(this.currentIndex / itemsPerSlide) * 100;
     this.container.style.transform = `translateX(${offset}%)`;
   }
 
   updateVisibility() {
+    const itemsPerSlide = this.isDesktop ? 2 : 1;
     this.leftButton.style.display = this.currentIndex === 0 ? "none" : "flex";
     this.rightButton.style.display =
-      this.currentIndex === this.items.length - 1 ? "none" : "flex";
+      this.currentIndex >= this.items.length - itemsPerSlide ? "none" : "flex";
   }
 }
+
 console.log("MainChatbot module loaded");
 
 export default MainChatbot;
