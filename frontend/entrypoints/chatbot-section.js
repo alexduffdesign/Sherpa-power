@@ -63,53 +63,24 @@ class SectionChatbot extends HTMLElement {
       }
     });
 
-    this.messageContainer.addEventListener("click", async (e) => {
-      if (e.target.classList.contains("button")) {
-        const buttonData = JSON.parse(e.target.dataset.buttonData);
-        console.log("Button clicked:", buttonData);
-        await this.handleButtonClick(buttonData);
-      }
-    });
-
     this.eventListenersAttached = true;
-  }
-
-  async handleButtonClick(buttonData) {
-    console.log("Handling button click:", buttonData);
-    this.core.removeButtons();
-    this.core.addMessage("user", buttonData.name);
-
-    try {
-      const response = await this.core.handleButtonClick(buttonData);
-      await this.handleAgentResponse(response);
-    } catch (error) {
-      console.error("Error handling button click:", error);
-    }
   }
 
   async initializeChatIfNeeded() {
     if (!this.chatInitialized) {
-      console.log("Initializing chat");
+      console.log("Initializing section chatbot");
+      const config = {
+        apiEndpoint: "https://chatbottings--development.gadget.app/voiceflow",
+        userIDPrefix: "sectionChatbot",
+      };
+      this.core = new ChatbotCore(config);
+      this.core.setDOMElements(
+        this.messageContainer,
+        this.typingIndicator,
+        this
+      );
+      await this.sendLaunch();
       this.chatInitialized = true;
-
-      // Explicitly load or create the userID
-      const userID = this.chatbotCore.loadUserID();
-      console.log("Using userID:", userID);
-
-      try {
-        const response = await this.chatbotCore.sendLaunch({
-          userID, // Explicitly include the userID in the launch payload
-          userAction: {
-            type: "launch",
-            payload: {
-              savedDevices: this.savedDevices,
-            },
-          },
-        });
-        this.handleBotResponse(response);
-      } catch (error) {
-        console.error("Error initializing chat:", error);
-      }
     }
   }
 
