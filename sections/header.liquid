@@ -354,8 +354,7 @@ button.sherpa-guide::before {
       {%- endcomment -%}
 
       <div class="header__secondary-nav">
-        <!-- {%- if section.settings.header != 'drawer' and section.settings.secondary_menu.links.size > 0 -%}  <nav class="header__link-list" role="navigation">    <ul class="contents">
-              {%- for link in section.settings.secondary_menu.links -%}
+        <!-- {%- if section.settings.header != 'drawer' and section.settings.secondary_menu.links.size > 0 -%}  <nav class="header__link-list" role="navigation">    <ul class="contents">      {%- for link in section.settings.secondary_menu.links -%}
                 <li>
                   <a href="{{ link.url }}" class="link-faded-reverse">{{ link.title }}</a>
                 </li>
@@ -390,7 +389,8 @@ button.sherpa-guide::before {
             type="button"
             class="button tap-area sherpa-guide"
             aria-controls="header-ai-trigger">
-            SHERPA GUIDE
+            <span>SHERPA GUIDE</span>
+
             <svg
               class="sherpa-icon"
               width="28"
