@@ -137,6 +137,12 @@ export class ChatbotCore {
   addMessage(sender, content) {
     console.log(`Adding message from ${sender}: ${content}`);
     if (this.messageContainer) {
+      const messageWrapper = document.createElement("div");
+      messageWrapper.classList.add(
+        "message-wrapper",
+        `message-wrapper--${sender}`
+      );
+
       const messageDiv = document.createElement("div");
       messageDiv.classList.add("message", `message--${sender}`);
 
@@ -154,7 +160,8 @@ export class ChatbotCore {
         )}</div>`;
       }
 
-      this.messageContainer.appendChild(messageDiv);
+      messageWrapper.appendChild(messageDiv);
+      this.messageContainer.appendChild(messageWrapper);
       this.scrollToBottom();
     }
   }
