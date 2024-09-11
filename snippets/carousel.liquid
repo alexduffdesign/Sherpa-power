@@ -4,11 +4,15 @@
     width: 100%;
     overflow: hidden;
     margin-bottom: var(--spacing-4);
+    box-sizing: border-box;
+    /* Add this line */
   }
 
   .carousel__container {
     display: flex;
     transition: transform 0.3s ease-out;
+    max-width: 100%;
+    /* Add this line */
   }
 
   .carousel__item {
@@ -16,11 +20,15 @@
     display: flex;
     gap: var(--spacing-4);
     box-sizing: border-box;
+    max-width: 100%;
+    /* Add this line */
   }
 
   .carousel__item-wrapper {
     flex: 0 0 100%;
     max-width: 100%;
+    min-width: 0;
+    /* Add this line */
   }
 
   .carousel__button {
@@ -83,9 +91,16 @@
   }
 
   @media (min-width: 1000px) {
+    .carousel__item {
+      flex: 0 0 50%;
+      /* Change this line */
+      max-width: 50%;
+      /* Add this line */
+    }
+
     .carousel__item-wrapper {
-      flex: 0 0 calc(50% - var(--spacing-2));
-      max-width: calc(50% - var(--spacing-2));
+      flex: 0 0 calc(100% - var(--spacing-2));
+      max-width: calc(100% - var(--spacing-2));
     }
   }
 </style>
