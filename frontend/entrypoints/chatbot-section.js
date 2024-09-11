@@ -2,14 +2,11 @@ import { ChatbotCore } from "./chatbot-core-file.js";
 
 console.log("SectionChatbot module loading");
 
-export class SectionChatbot extends HTMLElement {
+class SectionChatbot extends HTMLElement {
   constructor() {
     super();
     this.chatInitialized = false;
-    this.chatbotCore = null; // Initialize this property
-    this.messageContainer = null;
-    this.typingIndicator = null;
-    this.applicationsGrid = null;
+    this.core = null;
   }
 
   connectedCallback() {
@@ -19,63 +16,62 @@ export class SectionChatbot extends HTMLElement {
   initialize() {
     console.log("SectionChatbot initializing");
     this.initializeElements();
-    this.initializeChatbotCore(); // Add this method call
     this.setupEventListeners();
     this.loadSavedDevices();
   }
 
-  initializeChatbotCore() {
-    // Initialize the ChatbotCore instance
-    const apiEndpoint =
-      this.getAttribute("api-endpoint") || "/default-endpoint";
-    this.chatbotCore = new ChatbotCore({
-      apiEndpoint: apiEndpoint,
-      userIDPrefix: "section-chatbot",
+  initializeElements() {
+    console.log("SectionChatbot initializeElements called");
+    const messageContainer = this.querySelector("#messageContainer");
+    const typingIndicator = this.querySelector(".chat-typing");
+    const applicationsGrid = document.querySelector(".applications-grid");
+
+    if (!messageContainer || !typingIndicator) {
+      console.error("Required DOM elements not found");
+      return;
+    }
+
+    this.core.setDOMElements(messageContainer, typingIndicator, this);
+    this.applicationsGrid = applicationsGrid;
+    console.log("DOM elements set in ChatbotCore:", this.core);
+  }
+
+  setupEventListeners() {
+    if (this.eventListenersAttached) return;
+
+    console.log("SectionChatbot setupEventListeners called");
+    const form = this.querySelector("#chatForm");
+    const input = this.querySelector("#userInput");
+
+    if (!form || !input) {
+      console.error("Chat form or input not found");
+      return;
+    }
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const message = input.value.trim();
+      if (message) {
+        console.log("Form submitted with message:", message);
+        input.value = ""; // Clear the input field immediately
+        await this.initializeChatIfNeeded();
+        await this.handleUserMessage(message);
+      }
     });
 
-    // Set the DOM elements for the ChatbotCore instance
-    this.chatbotCore.setDOMElements(
-      this.messageContainer,
-      this.typingIndicator,
-      this.querySelector(".chat-drawer-body") // Adjust this selector as needed
-    );
+    this.eventListenersAttached = true;
   }
 
   async initializeChatIfNeeded() {
     if (!this.chatInitialized) {
-      console.log("Initializing chat");
+      console.log("Initializing section chatbot");
+      const config = {
+        apiEndpoint: "https://chatbottings--development.gadget.app/voiceflow",
+        userIDPrefix: "sectionChatbot",
+      };
+      this.core = new ChatbotCore(config);
+      await this.sendLaunch();
       this.chatInitialized = true;
-
-      // Now this should work correctly
-      const userID = this.chatbotCore.loadUserID();
-      console.log("Using userID:", userID);
-
-      try {
-        const response = await this.chatbotCore.sendLaunch({
-          userAction: {
-            type: "launch",
-            payload: {
-              savedDevices: this.savedDevices,
-            },
-          },
-        });
-        this.handleBotResponse(response);
-      } catch (error) {
-        console.error("Error initializing chat:", error);
-      }
-    }
-  }
-
-  async handleButtonClick(buttonData) {
-    console.log("Handling button click:", buttonData);
-    this.core.removeButtons();
-    this.core.addMessage("user", buttonData.name);
-
-    try {
-      const response = await this.core.handleButtonClick(buttonData);
-      await this.handleAgentResponse(response);
-    } catch (error) {
-      console.error("Error handling button click:", error);
     }
   }
 
