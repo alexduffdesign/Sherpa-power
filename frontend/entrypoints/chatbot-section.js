@@ -2,11 +2,11 @@ import { ChatbotCore } from "./chatbot-core-file.js";
 
 console.log("SectionChatbot module loading");
 
-class SectionChatbot extends HTMLElement {
+export class SectionChatbot extends HTMLElement {
   constructor() {
     super();
     this.chatInitialized = false;
-    this.core = null;
+    this.chatbotCore = null; // Initialize this property
     this.messageContainer = null;
     this.typingIndicator = null;
     this.applicationsGrid = null;
@@ -19,59 +19,51 @@ class SectionChatbot extends HTMLElement {
   initialize() {
     console.log("SectionChatbot initializing");
     this.initializeElements();
+    this.initializeChatbotCore(); // Add this method call
     this.setupEventListeners();
     this.loadSavedDevices();
   }
 
-  initializeElements() {
-    console.log("SectionChatbot initializeElements called");
-    this.messageContainer = this.querySelector("#messageContainer");
-    this.typingIndicator = this.querySelector(".chat-typing");
-    this.applicationsGrid = document.querySelector(".applications-grid");
+  initializeChatbotCore() {
+    // Initialize the ChatbotCore instance
+    const apiEndpoint =
+      this.getAttribute("api-endpoint") || "/default-endpoint";
+    this.chatbotCore = new ChatbotCore({
+      apiEndpoint: apiEndpoint,
+      userIDPrefix: "section-chatbot",
+    });
 
-    if (!this.messageContainer || !this.typingIndicator) {
-      console.error("Required DOM elements not found");
-    }
+    // Set the DOM elements for the ChatbotCore instance
+    this.chatbotCore.setDOMElements(
+      this.messageContainer,
+      this.typingIndicator,
+      this.querySelector(".chat-drawer-body") // Adjust this selector as needed
+    );
   }
 
-  setupEventListeners() {
-    if (this.eventListenersAttached) return;
+  async initializeChatIfNeeded() {
+    if (!this.chatInitialized) {
+      console.log("Initializing chat");
+      this.chatInitialized = true;
 
-    console.log("SectionChatbot setupEventListeners called");
-    const form = this.querySelector("#chatForm");
-    const input = this.querySelector("#userInput");
+      // Now this should work correctly
+      const userID = this.chatbotCore.loadUserID();
+      console.log("Using userID:", userID);
 
-    if (!form || !input) {
-      console.error("Chat form or input not found");
-      return;
+      try {
+        const response = await this.chatbotCore.sendLaunch({
+          userAction: {
+            type: "launch",
+            payload: {
+              savedDevices: this.savedDevices,
+            },
+          },
+        });
+        this.handleBotResponse(response);
+      } catch (error) {
+        console.error("Error initializing chat:", error);
+      }
     }
-
-    // Initialize chat when user focuses on the input
-    input.addEventListener("focus", async () => {
-      console.log("Input focused, initializing chat if needed");
-      await this.initializeChatIfNeeded();
-    });
-
-    form.addEventListener("submit", async (e) => {
-      e.preventDefault();
-      const message = input.value.trim();
-      if (message) {
-        console.log("Form submitted with message:", message);
-        input.value = ""; // Clear the input field immediately
-        await this.initializeChatIfNeeded(); // Ensure chat is initialized (in case focus event didn't trigger)
-        await this.handleUserMessage(message);
-      }
-    });
-
-    this.messageContainer.addEventListener("click", async (e) => {
-      if (e.target.classList.contains("button")) {
-        const buttonData = JSON.parse(e.target.dataset.buttonData);
-        console.log("Button clicked:", buttonData);
-        await this.handleButtonClick(buttonData);
-      }
-    });
-
-    this.eventListenersAttached = true;
   }
 
   async handleButtonClick(buttonData) {
@@ -84,32 +76,6 @@ class SectionChatbot extends HTMLElement {
       await this.handleAgentResponse(response);
     } catch (error) {
       console.error("Error handling button click:", error);
-    }
-  }
-
-  async initializeChatIfNeeded() {
-    if (!this.chatInitialized) {
-      console.log("Initializing chat");
-      this.chatInitialized = true;
-
-      // Explicitly load or create the userID
-      const userID = this.chatbotCore.loadUserID();
-      console.log("Using userID:", userID);
-
-      try {
-        const response = await this.chatbotCore.sendLaunch({
-          userID, // Explicitly include the userID in the launch payload
-          userAction: {
-            type: "launch",
-            payload: {
-              savedDevices: this.savedDevices,
-            },
-          },
-        });
-        this.handleBotResponse(response);
-      } catch (error) {
-        console.error("Error initializing chat:", error);
-      }
     }
   }
 
