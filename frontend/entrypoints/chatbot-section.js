@@ -65,8 +65,9 @@ class SectionChatbot extends HTMLElement {
 
     // Add button click event listener
     this.messageContainer.addEventListener("click", async (e) => {
-      if (e.target.classList.contains("button")) {
-        const buttonData = JSON.parse(e.target.dataset.buttonData);
+      const buttonElement = e.target.closest(".button");
+      if (buttonElement) {
+        const buttonData = JSON.parse(buttonElement.dataset.buttonData);
         console.log("Button clicked:", buttonData);
         try {
           const response = await this.core.handleButtonClick(buttonData);
@@ -79,6 +80,7 @@ class SectionChatbot extends HTMLElement {
 
     this.eventListenersAttached = true;
   }
+
   async initializeChatIfNeeded() {
     if (!this.chatInitialized) {
       console.log("Initializing section chatbot");
