@@ -7,6 +7,9 @@ class SectionChatbot extends HTMLElement {
     super();
     this.chatInitialized = false;
     this.core = null;
+    this.messageContainer = null;
+    this.typingIndicator = null;
+    this.applicationsGrid = null;
   }
 
   connectedCallback() {
@@ -22,18 +25,13 @@ class SectionChatbot extends HTMLElement {
 
   initializeElements() {
     console.log("SectionChatbot initializeElements called");
-    const messageContainer = this.querySelector("#messageContainer");
-    const typingIndicator = this.querySelector(".chat-typing");
-    const applicationsGrid = document.querySelector(".applications-grid");
+    this.messageContainer = this.querySelector("#messageContainer");
+    this.typingIndicator = this.querySelector(".chat-typing");
+    this.applicationsGrid = document.querySelector(".applications-grid");
 
-    if (!messageContainer || !typingIndicator) {
+    if (!this.messageContainer || !this.typingIndicator) {
       console.error("Required DOM elements not found");
-      return;
     }
-
-    this.core.setDOMElements(messageContainer, typingIndicator, this);
-    this.applicationsGrid = applicationsGrid;
-    console.log("DOM elements set in ChatbotCore:", this.core);
   }
 
   setupEventListeners() {
@@ -70,6 +68,11 @@ class SectionChatbot extends HTMLElement {
         userIDPrefix: "sectionChatbot",
       };
       this.core = new ChatbotCore(config);
+      this.core.setDOMElements(
+        this.messageContainer,
+        this.typingIndicator,
+        this
+      );
       await this.sendLaunch();
       this.chatInitialized = true;
     }
