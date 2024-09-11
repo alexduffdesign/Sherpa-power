@@ -19,8 +19,8 @@
   }
 
   .carousel__item-wrapper {
-    flex: 0 0 calc(50% - var(--spacing-2));
-    max-width: calc(50% - var(--spacing-2));
+    flex: 0 0 100%;
+    max-width: 100%;
   }
 
   .carousel__button {
@@ -80,6 +80,13 @@
   .carousel__item-button {
     margin-top: auto;
     margin-block-start: 0 !important;
+  }
+
+  @media (min-width: 1000px) {
+    .carousel__item-wrapper {
+      flex: 0 0 calc(50% - var(--spacing-2));
+      max-width: calc(50% - var(--spacing-2));
+    }
   }
 </style>
 
