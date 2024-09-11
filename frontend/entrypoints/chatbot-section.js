@@ -46,13 +46,19 @@ class SectionChatbot extends HTMLElement {
       return;
     }
 
+    // Initialize chat when user focuses on the input
+    input.addEventListener("focus", async () => {
+      console.log("Input focused, initializing chat if needed");
+      await this.initializeChatIfNeeded();
+    });
+
     form.addEventListener("submit", async (e) => {
       e.preventDefault();
       const message = input.value.trim();
       if (message) {
         console.log("Form submitted with message:", message);
         input.value = ""; // Clear the input field immediately
-        await this.initializeChatIfNeeded();
+        await this.initializeChatIfNeeded(); // Ensure chat is initialized (in case focus event didn't trigger)
         await this.handleUserMessage(message);
       }
     });
