@@ -5,37 +5,19 @@ console.log("SectionChatbot module loading");
 class SectionChatbot extends HTMLElement {
   constructor() {
     super();
-    console.log("SectionChatbot constructor called");
+    this.chatInitialized = false;
     this.core = null;
-    this.eventListenersAttached = false;
   }
 
   connectedCallback() {
-    console.log("SectionChatbot connected to the DOM");
     this.initialize();
   }
 
   initialize() {
     console.log("SectionChatbot initializing");
-    const config = {
-      apiEndpoint: "https://chatbottings--development.gadget.app/voiceflow",
-      userIDPrefix: "sectionChatBot",
-    };
-    this.core = new ChatbotCore(config);
-
     this.initializeElements();
     this.setupEventListeners();
-
-    // Use document.querySelector for the applications grid
-    this.applicationsGrid = document.querySelector(".applications-grid");
-    if (!this.applicationsGrid) {
-      console.error("Applications grid not found during initialization");
-    } else {
-      console.log("Applications grid found during initialization");
-    }
-
     this.loadSavedDevices();
-    this.initializeChat();
   }
 
   initializeElements() {
@@ -72,28 +54,29 @@ class SectionChatbot extends HTMLElement {
       if (message) {
         console.log("Form submitted with message:", message);
         input.value = ""; // Clear the input field immediately
+        await this.initializeChatIfNeeded();
         await this.handleUserMessage(message);
-      }
-    });
-
-    this.addEventListener("click", async (e) => {
-      if (e.target.matches(".button-container button")) {
-        const buttonData = JSON.parse(e.target.dataset.buttonData);
-        try {
-          const response = await this.core.handleButtonClick(buttonData);
-          await this.handleAgentResponse(response);
-        } catch (error) {
-          console.error("Error handling button click:", error);
-        }
       }
     });
 
     this.eventListenersAttached = true;
   }
 
+  async initializeChatIfNeeded() {
+    if (!this.chatInitialized) {
+      console.log("Initializing section chatbot");
+      const config = {
+        apiEndpoint: "https://chatbottings--development.gadget.app/voiceflow",
+        userIDPrefix: "sectionChatbot",
+      };
+      this.core = new ChatbotCore(config);
+      await this.sendLaunch();
+      this.chatInitialized = true;
+    }
+  }
+
   async handleUserMessage(message) {
     this.core.addMessage("user", message);
-
     this.core.showTypingIndicator();
     try {
       const response = await this.core.sendMessage(message);
