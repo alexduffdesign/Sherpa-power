@@ -239,6 +239,9 @@ class MainChatbot {
         const buttonIndex = index % carouselData.cards[0].buttons.length;
         const buttonData = carouselData.cards[cardIndex].buttons[buttonIndex];
         try {
+          // Remove the carousel element
+          carouselElement.remove();
+
           const response = await this.core.handleButtonClick(buttonData);
           await this.handleAgentResponse(response);
         } catch (error) {
