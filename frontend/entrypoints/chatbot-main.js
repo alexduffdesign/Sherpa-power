@@ -166,8 +166,14 @@ class MainChatbot {
   /// < Redirect Custom Action > ////
 
   handleProductRedirect(productHandle) {
+    if (!productHandle) {
+      console.error("Cannot redirect: Product handle is undefined or empty");
+      // You might want to show an error message to the user here
+      return;
+    }
+
     const baseUrl = "https://www.sherpapower.co.uk/products/";
-    const productUrl = `${baseUrl}${productHandle}`;
+    const productUrl = `${baseUrl}${encodeURIComponent(productHandle)}`;
     console.log(`Redirecting to product page: ${productUrl}`);
     window.location.href = productUrl;
   }
@@ -185,10 +191,20 @@ class MainChatbot {
         this.core.addButtons(trace.payload.buttons);
       } else if (trace.type === "carousel") {
         this.addCarousel(trace.payload);
-      } else if (trace.type === "RedirectToProduct") {
-        const productHandle = trace.payload.productHandle;
-        this.handleProductRedirect(productHandle);
-        return; // Exit the function early as we're redirecting
+      } else if (trace.type === "Product Redirect") {
+        // Handle the custom action for product redirection
+        console.log("Product Redirect trace:", trace); // Add this for debugging
+        const productHandle = trace.payload?.productHandle;
+        console.log("Extracted product handle:", productHandle); // Add this for debugging
+        if (productHandle) {
+          this.handleProductRedirect(productHandle);
+          return; // Exit the function early as we're redirecting
+        } else {
+          console.error(
+            "Product handle is undefined in the custom action payload"
+          );
+          // You might want to add some error handling here
+        }
       } else {
         console.log("Unknown trace type:", trace.type);
       }
