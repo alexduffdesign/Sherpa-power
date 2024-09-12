@@ -34,8 +34,13 @@ function initChatbotDrawer(drawerId) {
     }
 
     async initializeNewChat() {
+      console.log("MainChatbotElement initializeNewChat called");
       if (this.mainChatbot) {
         await this.mainChatbot.initializeNewChat();
+      } else {
+        console.error(
+          "MainChatbot not initialized when trying to initialize new chat"
+        );
       }
     }
   }
@@ -58,9 +63,16 @@ function initChatbotDrawer(drawerId) {
 
     async show() {
       super.show();
-      if (this.mainChatbot && !this.initialized) {
-        await this.mainChatbot.mainChatbot.initializeNewChat();
-        this.initialized = true;
+      if (this.mainChatbot) {
+        if (!this.initialized) {
+          console.log("Initializing new chat");
+          await this.mainChatbot.initializeNewChat();
+          this.initialized = true;
+        } else {
+          console.log("Chat already initialized");
+        }
+      } else {
+        console.error("MainChatbot not found when trying to show drawer");
       }
     }
   }

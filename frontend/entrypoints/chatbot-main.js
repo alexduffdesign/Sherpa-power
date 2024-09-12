@@ -115,7 +115,7 @@ class MainChatbot {
   }
 
   async initializeNewChat() {
-    console.log("Initializing new chat");
+    console.log("MainChatbot initializeNewChat called");
     if (!this.hasLaunched) {
       console.log("Initializing chat for the first time");
       await this.sendLaunch();
@@ -124,7 +124,6 @@ class MainChatbot {
     } else {
       console.log("Chat already initialized, ready for new messages");
     }
-    console.log("Chat initialized");
   }
 
   saveConversationToStorage() {
