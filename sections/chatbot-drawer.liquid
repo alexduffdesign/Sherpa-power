@@ -117,7 +117,7 @@
 
 {% endcapture %}
             
-  <x-drawer id="{{ drawer_id }}" class="drawer sherpa-guide">
+  <x-drawer id="{{ drawer_id }}" class="drawer sherpa-guide chatbot-drawer">
     <h2 class="h6" slot="header">SHERPA GUIDE</h2>
     <svg
               class="sherpa-icon"
@@ -158,6 +158,18 @@
         initChatbotDrawer('{{ drawer_id }}');
       } else {
         console.error('initChatbotDrawer function not found');
+      }
+
+      // Add this new code
+      const aiTrigger = document.getElementById('header-ai-trigger');
+      const chatbotDrawer = document.querySelector('.chatbot-drawer');
+      
+      if (aiTrigger && chatbotDrawer) {
+        aiTrigger.addEventListener('click', () => {
+          chatbotDrawer.show();
+        });
+      } else {
+        console.error('AI trigger button or chatbot drawer not found');
       }
     });
   </script>
