@@ -224,7 +224,7 @@ class SectionChatbot extends HTMLElement {
     console.log("Number of cards found:", allCards.length);
 
     const viewMoreButton = document.querySelector(".view-more-button");
-    const devicesPerPage = 3;
+    const devicesPerPage = 2;
 
     if (allCards.length > devicesPerPage) {
       if (viewMoreButton) {
