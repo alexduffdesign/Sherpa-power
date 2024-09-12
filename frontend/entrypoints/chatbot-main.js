@@ -191,7 +191,7 @@ class MainChatbot {
         this.core.addButtons(trace.payload.buttons);
       } else if (trace.type === "carousel") {
         this.addCarousel(trace.payload);
-      } else if (trace.type === "Product Redirect") {
+      } else if (trace.type === "RedirectToProduct") {
         // Handle the custom action for product redirection
         console.log("Product Redirect trace:", trace); // Add this for debugging
         const productHandle = trace.payload?.productHandle;
