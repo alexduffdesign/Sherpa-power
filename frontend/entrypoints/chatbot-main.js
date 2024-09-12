@@ -106,11 +106,25 @@ class MainChatbot {
   }
 
   loadConversationFromStorage() {
-    const savedConversation = localStorage.getItem("chatConversation");
-    this.conversationHistory = savedConversation
-      ? JSON.parse(savedConversation)
-      : [];
-    console.log("Loaded conversation from storage:", this.conversationHistory);
+    if (this.hasLaunched) {
+      console.log("Loading previous conversation");
+      this.conversationHistory = JSON.parse(
+        localStorage.getItem("chatConversation") || "[]"
+      );
+    }
+  }
+
+  async initializeNewChat() {
+    console.log("Initializing new chat");
+    if (!this.hasLaunched) {
+      console.log("Initializing chat for the first time");
+      await this.sendLaunch();
+      this.hasLaunched = true;
+      localStorage.setItem("chatHasLaunched", "true");
+    } else {
+      console.log("Chat already initialized, ready for new messages");
+    }
+    console.log("Chat initialized");
   }
 
   saveConversationToStorage() {
@@ -133,17 +147,6 @@ class MainChatbot {
     } else {
       console.error("Message container not found");
     }
-  }
-
-  async initializeChat() {
-    console.log("Initializing chat");
-    if (!this.hasLaunched) {
-      console.log("Initializing chat for the first time");
-      await this.sendLaunch();
-      this.hasLaunched = true;
-      localStorage.setItem("chatHasLaunched", "true");
-    }
-    console.log("Chat initialized");
   }
 
   async sendLaunch() {

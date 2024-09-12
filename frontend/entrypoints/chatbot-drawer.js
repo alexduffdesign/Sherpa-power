@@ -23,7 +23,19 @@ function initChatbotDrawer(drawerId) {
             "https://chatbottings--development.gadget.app/voiceflow",
         };
         this.mainChatbot = new MainChatbot(this, config);
-        this.mainChatbot.initializeChat();
+        this.loadPreviousConversation();
+      }
+    }
+
+    loadPreviousConversation() {
+      if (this.mainChatbot) {
+        this.mainChatbot.loadConversationFromStorage();
+      }
+    }
+
+    async initializeNewChat() {
+      if (this.mainChatbot) {
+        await this.mainChatbot.initializeNewChat();
       }
     }
   }
@@ -47,7 +59,7 @@ function initChatbotDrawer(drawerId) {
     async show() {
       super.show();
       if (this.mainChatbot && !this.initialized) {
-        await this.mainChatbot.mainChatbot.initializeChat();
+        await this.mainChatbot.mainChatbot.initializeNewChat();
         this.initialized = true;
       }
     }
