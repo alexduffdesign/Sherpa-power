@@ -56,7 +56,7 @@ function initChatbotDrawer(drawerId) {
     }
 
     async show() {
-      super.show();
+      await super.show();
       if (this.mainChatbotElement) {
         if (!this.initialized) {
           console.log("Initializing new chat");
