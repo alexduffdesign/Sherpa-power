@@ -18,7 +18,6 @@ class MainChatbot {
 
     this.conversationHistory = [];
     this.hasLaunched = localStorage.getItem("chatHasLaunched") === "true";
-    console.log("hasLaunched in constructor:", this.hasLaunched);
 
     this.eventListenersAttached = false;
 
@@ -26,11 +25,8 @@ class MainChatbot {
     this.setupEventListeners();
 
     if (this.hasLaunched) {
-      console.log("Chat has launched before, loading conversation");
       this.loadConversationFromStorage();
       this.displaySavedConversation();
-    } else {
-      console.log("Chat has not launched before");
     }
   }
 
@@ -110,25 +106,11 @@ class MainChatbot {
   }
 
   loadConversationFromStorage() {
-    if (this.hasLaunched) {
-      console.log("Loading previous conversation");
-      this.conversationHistory = JSON.parse(
-        localStorage.getItem("chatConversation") || "[]"
-      );
-    }
-  }
-
-  async initializeNewChat() {
-    console.log("MainChatbot initializeNewChat called");
-    if (!this.hasLaunched) {
-      console.log("Initializing chat for the first time");
-      await this.sendLaunch();
-      this.hasLaunched = true;
-      localStorage.setItem("chatHasLaunched", "true");
-      console.log("Chat initialized and localStorage updated");
-    } else {
-      console.log("Chat already initialized, ready for new messages");
-    }
+    const savedConversation = localStorage.getItem("chatConversation");
+    this.conversationHistory = savedConversation
+      ? JSON.parse(savedConversation)
+      : [];
+    console.log("Loaded conversation from storage:", this.conversationHistory);
   }
 
   saveConversationToStorage() {
@@ -151,6 +133,17 @@ class MainChatbot {
     } else {
       console.error("Message container not found");
     }
+  }
+
+  async initializeChat() {
+    console.log("Initializing chat");
+    if (!this.hasLaunched) {
+      console.log("Initializing chat for the first time");
+      await this.sendLaunch();
+      this.hasLaunched = true;
+      localStorage.setItem("chatHasLaunched", "true");
+    }
+    console.log("Chat initialized");
   }
 
   async sendLaunch() {
