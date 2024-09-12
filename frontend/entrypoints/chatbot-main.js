@@ -163,6 +163,15 @@ class MainChatbot {
     }
   }
 
+  /// < Redirect Custom Action > ////
+
+  handleProductRedirect(productHandle) {
+    const baseUrl = "https://www.sherpapower.co.uk/products/";
+    const productUrl = `${baseUrl}${productHandle}`;
+    console.log(`Redirecting to product page: ${productUrl}`);
+    window.location.href = productUrl;
+  }
+
   async handleAgentResponse(response) {
     console.log("Handling agent response:", response);
     for (const trace of response) {
@@ -176,6 +185,10 @@ class MainChatbot {
         this.core.addButtons(trace.payload.buttons);
       } else if (trace.type === "carousel") {
         this.addCarousel(trace.payload);
+      } else if (trace.type === "RedirectToProduct") {
+        const productHandle = trace.payload.productHandle;
+        this.handleProductRedirect(productHandle);
+        return; // Exit the function early as we're redirecting
       } else {
         console.log("Unknown trace type:", trace.type);
       }
