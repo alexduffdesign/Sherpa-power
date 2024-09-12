@@ -21,6 +21,7 @@ class SectionChatbot extends HTMLElement {
     this.initializeElements();
     this.setupEventListeners();
     this.loadSavedDevices();
+    this.setupViewMoreButton();
   }
 
   initializeElements() {
@@ -207,9 +208,40 @@ class SectionChatbot extends HTMLElement {
     localStorage.setItem(key, JSON.stringify(devices));
   }
 
+  setupViewMoreButton() {
+    this.viewMoreButton = document.querySelector(".view-more-button");
+    if (this.viewMoreButton) {
+      this.viewMoreButton.addEventListener("click", () =>
+        this.toggleDevicesView()
+      );
+    } else {
+      console.warn("View more button not found");
+    }
+  }
+
+  toggleDevicesView() {
+    const allCards = this.applicationsGrid.querySelectorAll(
+      ".application-card.chatbot-card"
+    );
+    const hiddenCards = Array.from(allCards).filter(
+      (card) => card.style.display === "none"
+    );
+
+    if (hiddenCards.length > 0) {
+      // Show all cards
+      hiddenCards.forEach((card) => (card.style.display = "flex"));
+      this.viewMoreButton.textContent = "Hide";
+    } else {
+      // Hide cards beyond the first two
+      Array.from(allCards)
+        .slice(2)
+        .forEach((card) => (card.style.display = "none"));
+      this.viewMoreButton.textContent = "View More";
+    }
+  }
+
   updateDevicesView() {
     console.log("Updating devices view");
-    // Always use document.querySelector here to ensure we're getting the latest reference
     this.applicationsGrid = document.querySelector(".applications-grid");
     if (!this.applicationsGrid) {
       console.error("Applications grid not found");
@@ -223,12 +255,13 @@ class SectionChatbot extends HTMLElement {
     );
     console.log("Number of cards found:", allCards.length);
 
-    const viewMoreButton = document.querySelector(".view-more-button");
+    this.viewMoreButton = document.querySelector(".view-more-button");
     const devicesPerPage = 2;
 
     if (allCards.length > devicesPerPage) {
-      if (viewMoreButton) {
-        viewMoreButton.style.display = "block";
+      if (this.viewMoreButton) {
+        this.viewMoreButton.style.display = "block";
+        this.viewMoreButton.textContent = "View More";
         console.log("View more button displayed");
       } else {
         console.warn("View more button not found");
@@ -237,8 +270,8 @@ class SectionChatbot extends HTMLElement {
         card.style.display = index < devicesPerPage ? "flex" : "none";
       });
     } else {
-      if (viewMoreButton) {
-        viewMoreButton.style.display = "none";
+      if (this.viewMoreButton) {
+        this.viewMoreButton.style.display = "none";
         console.log("View more button hidden");
       } else {
         console.warn("View more button not found");
