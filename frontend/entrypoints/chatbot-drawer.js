@@ -44,10 +44,10 @@ function initChatbotDrawer(drawerId) {
       }
     }
 
-    show() {
+    async show() {
       super.show();
       if (this.mainChatbot && !this.initialized) {
-        this.mainChatbot.initializeChat();
+        await this.mainChatbot.mainChatbot.initializeChat();
         this.initialized = true;
       }
     }
@@ -64,8 +64,8 @@ function initChatbotDrawer(drawerId) {
       `button[aria-controls="${drawerId}"]`
     );
     if (chatbotDrawer && chatbotTrigger) {
-      chatbotTrigger.addEventListener("click", () => {
-        chatbotDrawer.show();
+      chatbotTrigger.addEventListener("click", async () => {
+        await chatbotDrawer.show();
       });
     } else {
       console.error("Chatbot drawer or trigger not found");

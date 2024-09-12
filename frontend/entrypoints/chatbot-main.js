@@ -27,8 +27,6 @@ class MainChatbot {
     if (this.hasLaunched) {
       this.loadConversationFromStorage();
       this.displaySavedConversation();
-    } else {
-      this.initializeChat(); // Call initializeChat if it hasn't launched before
     }
   }
 
