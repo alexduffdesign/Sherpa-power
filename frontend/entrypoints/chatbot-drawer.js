@@ -54,11 +54,13 @@ function initChatbotDrawer(drawerId) {
         const hasLaunched = localStorage.getItem("chatHasLaunched") === "true";
         if (!hasLaunched) {
           console.log("Initializing new chat for the first time");
-          await this.mainChatbotElement.initializeNewChat();
+          await this.mainChatbotElement.mainChatbot.initializeNewChat();
           this.initialized = true;
+          localStorage.setItem("chatHasLaunched", "true");
         } else if (!this.initialized) {
           console.log("Loading previous conversation");
-          this.mainChatbotElement.loadPreviousConversation();
+          this.mainChatbotElement.mainChatbot.loadConversationFromStorage();
+          this.mainChatbotElement.mainChatbot.displaySavedConversation();
           this.initialized = true;
         } else {
           console.log("Chat already initialized");
