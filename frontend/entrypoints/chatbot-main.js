@@ -18,6 +18,7 @@ class MainChatbot {
 
     this.conversationHistory = [];
     this.hasLaunched = localStorage.getItem("chatHasLaunched") === "true";
+    console.log("hasLaunched in constructor:", this.hasLaunched);
 
     this.eventListenersAttached = false;
 
@@ -25,8 +26,11 @@ class MainChatbot {
     this.setupEventListeners();
 
     if (this.hasLaunched) {
+      console.log("Chat has launched before, loading conversation");
       this.loadConversationFromStorage();
       this.displaySavedConversation();
+    } else {
+      console.log("Chat has not launched before");
     }
   }
 
@@ -121,6 +125,7 @@ class MainChatbot {
       await this.sendLaunch();
       this.hasLaunched = true;
       localStorage.setItem("chatHasLaunched", "true");
+      console.log("Chat initialized and localStorage updated");
     } else {
       console.log("Chat already initialized, ready for new messages");
     }

@@ -38,30 +38,48 @@ function initChatbotDrawer(drawerId) {
       super();
       this.mainChatbotElement = null;
       this.initialized = false;
+      console.log("ChatbotDrawer constructor called");
     }
 
     connectedCallback() {
       super.connectedCallback();
+      console.log("ChatbotDrawer connectedCallback called");
       this.mainChatbotElement = this.querySelector("main-chatbot");
-      if (!this.mainChatbotElement) {
+      if (this.mainChatbotElement) {
+        console.log("MainChatbotElement found in ChatbotDrawer");
+      } else {
         console.error("MainChatbotElement not found in ChatbotDrawer");
       }
     }
 
     async show() {
       super.show();
+      console.log("ChatbotDrawer show method called");
       if (this.mainChatbotElement) {
+        console.log("MainChatbotElement exists in show method");
         const hasLaunched = localStorage.getItem("chatHasLaunched") === "true";
+        console.log("hasLaunched:", hasLaunched);
         if (!hasLaunched) {
           console.log("Initializing new chat for the first time");
-          await this.mainChatbotElement.mainChatbot.initializeNewChat();
-          this.initialized = true;
-          localStorage.setItem("chatHasLaunched", "true");
+          if (this.mainChatbotElement.mainChatbot) {
+            console.log("mainChatbot exists, calling initializeNewChat");
+            await this.mainChatbotElement.mainChatbot.initializeNewChat();
+            this.initialized = true;
+            localStorage.setItem("chatHasLaunched", "true");
+            console.log("Chat initialized and localStorage updated");
+          } else {
+            console.error("mainChatbot does not exist on MainChatbotElement");
+          }
         } else if (!this.initialized) {
           console.log("Loading previous conversation");
-          this.mainChatbotElement.mainChatbot.loadConversationFromStorage();
-          this.mainChatbotElement.mainChatbot.displaySavedConversation();
-          this.initialized = true;
+          if (this.mainChatbotElement.mainChatbot) {
+            this.mainChatbotElement.mainChatbot.loadConversationFromStorage();
+            this.mainChatbotElement.mainChatbot.displaySavedConversation();
+            this.initialized = true;
+            console.log("Previous conversation loaded and displayed");
+          } else {
+            console.error("mainChatbot does not exist on MainChatbotElement");
+          }
         } else {
           console.log("Chat already initialized");
         }
