@@ -1,25 +1,31 @@
+import { Drawer } from "./theme.js";
 import MainChatbot from "./chatbot-main.js";
 
 console.log("Chatbot drawer script loaded");
 
 function initChatbotDrawer(drawerId) {
+  // Define the MainChatbot custom element
   class MainChatbotElement extends HTMLElement {
     constructor() {
       super();
       this.mainChatbot = null;
-      console.log("MainChatbotElement constructor called");
     }
 
     connectedCallback() {
-      console.log("MainChatbotElement connectedCallback called");
       if (!this.mainChatbot) {
-        console.log("Creating new MainChatbot instance");
+        console.log("MainChatbotElement connected");
         const config = {
           voiceflowEndpoint:
             "https://chatbottings--development.gadget.app/voiceflow",
         };
         this.mainChatbot = new MainChatbot(this, config);
-        console.log("MainChatbot instance created:", this.mainChatbot);
+        this.loadPreviousConversation();
+      }
+    }
+
+    loadPreviousConversation() {
+      if (this.mainChatbot) {
+        this.mainChatbot.loadConversationFromStorage();
       }
     }
 
@@ -35,44 +41,75 @@ function initChatbotDrawer(drawerId) {
     }
   }
 
-  customElements.define("main-chatbot", MainChatbotElement);
-
-  function setupChatbotDrawer() {
-    const drawer = document.getElementById(drawerId);
-    const mainChatbotElement = drawer.querySelector("main-chatbot");
-
-    if (!drawer || !mainChatbotElement) {
-      console.error("Drawer or MainChatbotElement not found");
-      return;
+  // Define the ChatbotDrawer class
+  class ChatbotDrawer extends Drawer {
+    constructor() {
+      super();
+      this.mainChatbotElement = null;
+      this.initialized = false;
     }
 
-    drawer.addEventListener("dialog:after-show", async () => {
-      console.log("Chatbot drawer opened");
-      const hasLaunched = localStorage.getItem("chatHasLaunched") === "true";
-      console.log("hasLaunched:", hasLaunched);
-
-      if (!hasLaunched) {
-        console.log("Initializing new chat for the first time");
-        await mainChatbotElement.initializeNewChat();
-        localStorage.setItem("chatHasLaunched", "true");
-        console.log("Chat initialized and localStorage updated");
-      } else {
-        console.log("Chat has been launched before");
-        // You can add logic here to load previous conversation if needed
+    connectedCallback() {
+      super.connectedCallback();
+      this.mainChatbotElement = this.querySelector("main-chatbot");
+      if (!this.mainChatbotElement) {
+        console.error("MainChatbotElement not found in ChatbotDrawer");
       }
-    });
+    }
 
-    console.log("Chatbot drawer setup complete");
+    async show() {
+      super.show();
+      if (this.mainChatbotElement) {
+        if (!this.initialized) {
+          console.log("Initializing new chat");
+          await this.mainChatbotElement.initializeNewChat();
+          this.initialized = true;
+        } else {
+          console.log("Chat already initialized");
+        }
+      } else {
+        console.error("MainChatbot not found when trying to show drawer");
+      }
+    }
   }
 
-  document.addEventListener("DOMContentLoaded", setupChatbotDrawer);
+  // Define custom elements
+  customElements.define("main-chatbot", MainChatbotElement);
+  customElements.define("chatbot-drawer", ChatbotDrawer);
+
+  // Initialize the drawer
+  document.addEventListener("DOMContentLoaded", () => {
+    const chatbotDrawer = document.getElementById(drawerId);
+    const chatbotTrigger = document.querySelector(
+      `button[aria-controls="${drawerId}"]`
+    );
+    if (chatbotDrawer && chatbotTrigger) {
+      chatbotTrigger.addEventListener("click", async () => {
+        await chatbotDrawer.show();
+      });
+    } else {
+      console.error("Chatbot drawer or trigger not found");
+    }
+  });
+
+  // Event listeners for drawer open/close events
+  document.addEventListener("dialog:after-show", (event) => {
+    if (event.target.id === drawerId) {
+      console.log("Chatbot drawer opened");
+    }
+  });
+
+  document.addEventListener("dialog:after-hide", (event) => {
+    if (event.target.id === drawerId) {
+      console.log("Chatbot drawer closed");
+    }
+  });
 }
 
+// Expose the function to the global scope
 window.initChatbotDrawer = initChatbotDrawer;
 
+// Immediately invoke the function if the drawer ID is available
 if (window.chatbotDrawerId) {
-  console.log("Initializing chatbot drawer with ID:", window.chatbotDrawerId);
   initChatbotDrawer(window.chatbotDrawerId);
-} else {
-  console.error("chatbotDrawerId not found on window object");
 }
