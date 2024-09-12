@@ -93,9 +93,27 @@ function initChatbotDrawer(drawerId) {
   });
 
   // Event listeners for drawer open/close events
-  document.addEventListener("dialog:after-show", (event) => {
+  document.addEventListener("dialog:after-show", async (event) => {
     if (event.target.id === drawerId) {
       console.log("Chatbot drawer opened");
+      const chatbotDrawer = document.getElementById(drawerId);
+      if (chatbotDrawer) {
+        const mainChatbotElement = chatbotDrawer.querySelector("main-chatbot");
+        if (mainChatbotElement) {
+          const hasLaunched =
+            localStorage.getItem("chatHasLaunched") === "true";
+          if (!hasLaunched) {
+            console.log("First time opening chatbot, initializing new chat");
+            await mainChatbotElement.initializeNewChat();
+          } else {
+            console.log("Chatbot has been launched before");
+          }
+        } else {
+          console.error("MainChatbot element not found in drawer");
+        }
+      } else {
+        console.error("Chatbot drawer not found");
+      }
     }
   });
 
