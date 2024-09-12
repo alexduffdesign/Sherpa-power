@@ -6,7 +6,7 @@
     "isEntry": true
   },
   "frontend/entrypoints/chatbot-drawer.js": {
-    "file": "chatbot-drawer-mEu6TPXt.js",
+    "file": "chatbot-drawer-D0eTX1jg.js",
     "name": "chatbot-drawer",
     "src": "frontend/entrypoints/chatbot-drawer.js",
     "isEntry": true,
@@ -35,7 +35,7 @@
     ]
   },
   "frontend/entrypoints/theme.js": {
-    "file": "theme-Bz2ETus0.js",
+    "file": "theme-BsyOvK_L.js",
     "name": "theme",
     "src": "frontend/entrypoints/theme.js",
     "isEntry": true
