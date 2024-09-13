@@ -1,6 +1,5 @@
 // chatbot-drawer.js
 
-import { Drawer } from "./theme.js";
 import MainChatbot from "./chatbot-main.js";
 
 console.log("Chatbot drawer script loaded");
@@ -30,61 +29,34 @@ function initChatbotDrawer(drawerId) {
     }
   }
 
-  // Define the ChatbotDrawer class
-  class ChatbotDrawer extends Drawer {
-    constructor() {
-      super();
-      this.mainChatbotElement = null;
-      this.initialized = false;
-    }
-
-    connectedCallback() {
-      super.connectedCallback();
-      this.mainChatbotElement = this.querySelector("main-chatbot");
-      if (!this.mainChatbotElement) {
-        console.error("MainChatbot not found in ChatbotDrawer");
-      } else {
-        console.log(
-          "MainChatbotElement found in ChatbotDrawer:",
-          this.mainChatbotElement
-        );
-      }
-
-      // Listen to 'dialog:after-show' event to initialize the chatbot
-      this.addEventListener("dialog:after-show", this.onAfterShow.bind(this));
-    }
-
-    onAfterShow() {
-      console.log("dialog:after-show event received");
-      if (this.mainChatbotElement && !this.initialized) {
-        console.log("Initializing Chatbot on drawer open");
-        this.mainChatbotElement.mainChatbot.initializeChat();
-        this.initialized = true;
-      } else if (this.initialized) {
-        console.log("Chatbot already initialized");
-      } else {
-        console.error("mainChatbotElement or mainChatbot is missing");
-      }
-    }
-
-    // Optionally, handle 'dialog:after-hide' if needed
-    onAfterHide() {
-      console.log("dialog:after-hide event received");
-      // If you want to re-initialize chatbot every time the drawer is opened,
-      // set this.initialized to false here.
-      // this.initialized = false;
-    }
-  }
-
-  // Define custom elements
+  // Define the MainChatbot custom element if not already defined
   if (!window.customElements.get("main-chatbot")) {
     window.customElements.define("main-chatbot", MainChatbotElement);
   }
-  if (!window.customElements.get("chatbot-drawer")) {
-    window.customElements.define("chatbot-drawer", ChatbotDrawer);
-  }
 
-  // Initialize the drawer
+  // Listen to 'dialog:after-show' event globally
+  document.addEventListener("dialog:after-show", function (event) {
+    if (event.target.id === drawerId) {
+      console.log("Chatbot drawer opened");
+      const mainChatbotElement = event.target.querySelector("main-chatbot");
+      if (mainChatbotElement && mainChatbotElement.mainChatbot) {
+        console.log("Initializing Chatbot on drawer open");
+        mainChatbotElement.mainChatbot.initializeChat();
+      } else {
+        console.error("mainChatbotElement or mainChatbot not found");
+      }
+    }
+  });
+
+  // Optionally, listen to 'dialog:after-hide' event
+  document.addEventListener("dialog:after-hide", function (event) {
+    if (event.target.id === drawerId) {
+      console.log("Chatbot drawer closed");
+      // Optionally handle post-hide actions here
+    }
+  });
+
+  // Initialize the drawer trigger
   document.addEventListener("DOMContentLoaded", () => {
     const chatbotDrawer = document.getElementById(drawerId);
     const chatbotTrigger = document.querySelector(
@@ -96,21 +68,6 @@ function initChatbotDrawer(drawerId) {
       });
     } else {
       console.error("Chatbot drawer or trigger not found");
-    }
-  });
-
-  // Event listeners for drawer open/close events
-  document.addEventListener("dialog:after-show", (event) => {
-    if (event.target.id === drawerId) {
-      console.log("Chatbot drawer opened");
-      // Initialization is handled in ChatbotDrawer's onAfterShow
-    }
-  });
-
-  document.addEventListener("dialog:after-hide", (event) => {
-    if (event.target.id === drawerId) {
-      console.log("Chatbot drawer closed");
-      // Optionally handle post-hide actions
     }
   });
 }

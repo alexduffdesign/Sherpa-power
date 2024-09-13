@@ -90,12 +90,33 @@ class MainChatbot {
   async initializeChat() {
     console.log("Initializing chat");
     if (!this.hasLaunched) {
-      console.log("Initializing chat for the first time");
-      await this.sendLaunch();
-      this.hasLaunched = true;
-      localStorage.setItem("chatHasLaunched", "true");
+      try {
+        console.log("Initializing chat for the first time");
+        await this.sendLaunch();
+        this.hasLaunched = true;
+        localStorage.setItem("chatHasLaunched", "true");
+      } catch (error) {
+        console.error("Error during chat initialization:", error);
+      }
     }
     console.log("Chat initialized");
+  }
+
+  async sendLaunch(payload = {}) {
+    console.log("Sending main chatbot launch request");
+
+    const interactPayload = {
+      userAction: {
+        type: "launch",
+      },
+    };
+
+    try {
+      const response = await this.core.sendLaunch(interactPayload);
+      await this.handleAgentResponse(response);
+    } catch (error) {
+      console.error("Error in main chatbot send launch:", error);
+    }
   }
 
   async sendLaunch(payload = {}) {
