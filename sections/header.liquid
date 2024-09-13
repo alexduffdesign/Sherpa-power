@@ -105,7 +105,7 @@ button.sherpa-guide::before {
   mask-composite: exclude;
 }
 @media screen and (max-width: 1150px) {
-  .sherpa-icon {
+  .header-ai-text {
     display: none;
   }
 }
@@ -354,8 +354,7 @@ button.sherpa-guide::before {
       {%- endcomment -%}
 
       <div class="header__secondary-nav">
-        <!-- {%- if section.settings.header != 'drawer' and section.settings.secondary_menu.links.size > 0 -%}  <nav class="header__link-list" role="navigation">    <ul class="contents">      {%- for link in section.settings.secondary_menu.links -%}        <li>
-                  <a href="{{ link.url }}" class="link-faded-reverse">{{ link.title }}</a>
+        <!-- {%- if section.settings.header != 'drawer' and section.settings.secondary_menu.links.size > 0 -%}  <nav class="header__link-list" role="navigation">    <ul class="contents">      {%- for link in section.settings.secondary_menu.links -%}        <li>          <a href="{{ link.url }}" class="link-faded-reverse">{{ link.title }}</a>
                 </li>
               {%- endfor -%}
             </ul>
@@ -388,7 +387,7 @@ button.sherpa-guide::before {
             type="button"
             class="button tap-area sherpa-guide"
             aria-controls="header-ai-trigger">
-            <span>SHERPA GUIDE</span>
+            <span class="header-ai-text">SHERPA GUIDE</span>
 
             <svg
               class="sherpa-icon"
