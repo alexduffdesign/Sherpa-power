@@ -77,6 +77,12 @@ class MainChatbot {
         const buttonData = JSON.parse(e.target.dataset.buttonData);
         try {
           const response = await this.core.handleButtonClick(buttonData);
+          // Save button click as a message
+          this.conversationHistory.push({
+            type: "user",
+            message: buttonData.name,
+          });
+          this.saveConversationToStorage();
           await this.handleAgentResponse(response);
         } catch (error) {
           console.error("Error handling button click:", error);
@@ -90,10 +96,14 @@ class MainChatbot {
   async initializeChat() {
     console.log("Initializing chat");
     if (!this.hasLaunched) {
-      console.log("Initializing chat for the first time");
-      await this.sendLaunch();
-      this.hasLaunched = true;
-      localStorage.setItem("chatHasLaunched", "true");
+      try {
+        console.log("Initializing chat for the first time");
+        await this.sendLaunch();
+        this.hasLaunched = true;
+        localStorage.setItem("chatHasLaunched", "true");
+      } catch (error) {
+        console.error("Error during chat initialization:", error);
+      }
     }
     console.log("Chat initialized");
   }
@@ -155,7 +165,13 @@ class MainChatbot {
     if (messageContainer) {
       messageContainer.innerHTML = ""; // Clear existing messages
       this.conversationHistory.forEach((turn) => {
-        this.core.addMessage(turn.type, turn.message);
+        if (turn.type === "user" || turn.type === "assistant") {
+          this.core.addMessage(turn.type, turn.message);
+        } else if (turn.type === "choice") {
+          this.core.addButtons(turn.buttons);
+        } else if (turn.type === "carousel") {
+          this.addCarousel(turn.data);
+        }
       });
       this.core.scrollToBottom();
     } else {
@@ -163,7 +179,7 @@ class MainChatbot {
     }
   }
 
-  /// < Redirect Custom Action > ////
+  /// < Redirect Custom Action > //
 
   handleProductRedirect(productHandle) {
     if (!productHandle) {
@@ -194,8 +210,16 @@ class MainChatbot {
         });
       } else if (trace.type === "choice") {
         this.core.addButtons(trace.payload.buttons);
+        this.conversationHistory.push({
+          type: "choice",
+          buttons: trace.payload.buttons,
+        });
       } else if (trace.type === "carousel") {
         this.addCarousel(trace.payload);
+        this.conversationHistory.push({
+          type: "carousel",
+          data: trace.payload,
+        });
       } else {
         console.log("Unknown trace type:", trace.type);
       }
@@ -254,6 +278,13 @@ class MainChatbot {
         try {
           // Remove the carousel element
           carouselElement.remove();
+
+          // Save button click as a message
+          this.conversationHistory.push({
+            type: "user",
+            message: buttonData.name,
+          });
+          this.saveConversationToStorage();
 
           const response = await this.core.handleButtonClick(buttonData);
           await this.handleAgentResponse(response);
