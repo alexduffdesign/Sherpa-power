@@ -1,3 +1,6 @@
+import { Drawer } from "./theme.js";
+import MainChatbot from "./chatbot-main.js";
+
 function initChatbotDrawer(drawerId) {
   // Define the MainChatbot custom element
   class MainChatbotElement extends HTMLElement {
