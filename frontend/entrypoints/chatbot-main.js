@@ -181,7 +181,24 @@ class MainChatbot {
   async handleAgentResponse(response) {
     console.log("Handling agent response:", response);
     for (const trace of response) {
-      if (trace.type === "text") {
+      if (trace.type === "RedirectToProduct") {
+        console.log("Product Redirect trace:", trace);
+        console.log("Trace payload:", trace.payload);
+
+        // Extract the product handle from the nested structure
+        const productHandle = trace.payload?.body?.productHandle;
+
+        console.log("Extracted product handle:", productHandle);
+        if (productHandle) {
+          this.handleProductRedirect(productHandle);
+          return;
+        } else {
+          console.error(
+            "Product handle is undefined in the custom action payload"
+          );
+          // You might want to add some error handling here
+        }
+      } else if (trace.type === "text") {
         this.core.addMessage("assistant", trace.payload.message);
         this.conversationHistory.push({
           type: "assistant",
@@ -191,20 +208,6 @@ class MainChatbot {
         this.core.addButtons(trace.payload.buttons);
       } else if (trace.type === "carousel") {
         this.addCarousel(trace.payload);
-      } else if (trace.type === "RedirectToProduct") {
-        // Handle the custom action for product redirection
-        console.log("Product Redirect trace:", trace); // Add this for debugging
-        const productHandle = trace.payload?.productHandle;
-        console.log("Extracted product handle:", productHandle); // Add this for debugging
-        if (productHandle) {
-          this.handleProductRedirect(productHandle);
-          return; // Exit the function early as we're redirecting
-        } else {
-          console.error(
-            "Product handle is undefined in the custom action payload"
-          );
-          // You might want to add some error handling here
-        }
       } else {
         console.log("Unknown trace type:", trace.type);
       }
