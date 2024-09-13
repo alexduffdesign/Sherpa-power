@@ -168,7 +168,6 @@ class MainChatbot {
   handleProductRedirect(productHandle) {
     if (!productHandle) {
       console.error("Cannot redirect: Product handle is undefined or empty");
-      // You might want to show an error message to the user here
       return;
     }
 
@@ -182,21 +181,10 @@ class MainChatbot {
     console.log("Handling agent response:", response);
     for (const trace of response) {
       if (trace.type === "RedirectToProduct") {
-        console.log("Product Redirect trace:", trace);
-        console.log("Trace payload:", trace.payload);
-
-        // Extract the product handle from the nested structure
         const productHandle = trace.payload?.body?.productHandle;
-
-        console.log("Extracted product handle:", productHandle);
         if (productHandle) {
           this.handleProductRedirect(productHandle);
           return;
-        } else {
-          console.error(
-            "Product handle is undefined in the custom action payload"
-          );
-          // You might want to add some error handling here
         }
       } else if (trace.type === "text") {
         this.core.addMessage("assistant", trace.payload.message);
