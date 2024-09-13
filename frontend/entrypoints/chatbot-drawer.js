@@ -1,8 +1,3 @@
-import { Drawer } from "./theme.js";
-import MainChatbot from "./chatbot-main.js";
-
-console.log("Chatbot drawer script loaded");
-
 function initChatbotDrawer(drawerId) {
   // Define the MainChatbot custom element
   class MainChatbotElement extends HTMLElement {
@@ -23,7 +18,7 @@ function initChatbotDrawer(drawerId) {
             "https://chatbottings--development.gadget.app/voiceflow",
         };
         this.mainChatbot = new MainChatbot(this, config);
-        this.mainChatbot.initializeChat();
+        // Removed: this.mainChatbot.initializeChat();
       }
     }
   }
