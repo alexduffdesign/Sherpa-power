@@ -1,3 +1,5 @@
+// chatbot-main.js
+
 import { ChatbotCore } from "./chatbot-core-file.js";
 
 console.log("MainChatbot module loading");
@@ -10,14 +12,12 @@ class MainChatbot {
 
     this.core = new ChatbotCore({
       apiEndpoint: this.voiceflowEndpoint,
-      userIDPrefix: "mainChatbot", // Unique prefix
+      userIDPrefix: "mainChatbot",
     });
     console.log("ChatbotCore instance created:", this.core);
 
     this.conversationHistory = [];
-    this.hasLaunched =
-      localStorage.getItem(`${this.core.userIDPrefix}_chatHasLaunched`) ===
-      "true";
+    this.hasLaunched = localStorage.getItem("chatHasLaunched") === "true";
 
     this.eventListenersAttached = false;
 
@@ -68,17 +68,13 @@ class MainChatbot {
       if (message) {
         console.log("Form submitted with message:", message);
         input.value = ""; // Clear the input field immediately
-        await this.initializeChatIfNeeded(); // Ensure chat is initialized
         await this.handleUserMessage(message);
       }
     });
 
-    // Add button click event listener
-    this.messageContainer.addEventListener("click", async (e) => {
-      const buttonElement = e.target.closest(".button");
-      if (buttonElement) {
-        const buttonData = JSON.parse(buttonElement.dataset.buttonData);
-        console.log("Button clicked:", buttonData);
+    this.element.addEventListener("click", async (e) => {
+      if (e.target.matches(".button-container button")) {
+        const buttonData = JSON.parse(e.target.dataset.buttonData);
         try {
           const response = await this.core.handleButtonClick(buttonData);
           await this.handleAgentResponse(response);
@@ -91,21 +87,13 @@ class MainChatbot {
     this.eventListenersAttached = true;
   }
 
-  async initializeChatIfNeeded() {
-    if (!this.chatInitialized) {
-      console.log("Initializing main chatbot");
-      await this.initializeChat();
-      this.chatInitialized = true;
-    }
-  }
-
   async initializeChat() {
     console.log("Initializing chat");
     if (!this.hasLaunched) {
       console.log("Initializing chat for the first time");
       await this.sendLaunch();
       this.hasLaunched = true;
-      localStorage.setItem(`${this.core.userIDPrefix}_chatHasLaunched`, "true");
+      localStorage.setItem("chatHasLaunched", "true");
     }
     console.log("Chat initialized");
   }
@@ -122,7 +110,6 @@ class MainChatbot {
     try {
       const response = await this.core.sendLaunch(interactPayload);
       await this.handleAgentResponse(response);
-      this.saveConversationToStorage();
     } catch (error) {
       console.error("Error in main chatbot send launch:", error);
     }
@@ -146,45 +133,8 @@ class MainChatbot {
     }
   }
 
-  async handleAgentResponse(response) {
-    console.log("Handling agent response:", response);
-    for (const trace of response) {
-      if (trace.type === "RedirectToProduct") {
-        const productHandle = trace.payload?.body?.productHandle;
-        if (productHandle) {
-          this.handleProductRedirect(productHandle);
-          return;
-        }
-      } else if (trace.type === "text") {
-        this.core.addMessage("assistant", trace.payload.message);
-        this.conversationHistory.push({
-          type: "assistant",
-          message: trace.payload.message,
-        });
-      } else if (trace.type === "choice") {
-        this.core.addButtons(trace.payload.buttons);
-        this.conversationHistory.push({
-          type: "choice",
-          buttons: trace.payload.buttons,
-        });
-      } else if (trace.type === "carousel") {
-        this.addCarousel(trace.payload);
-        this.conversationHistory.push({
-          type: "carousel",
-          payload: trace.payload,
-        });
-      } else {
-        console.log("Unknown trace type:", trace.type);
-      }
-    }
-    this.saveConversationToStorage();
-    this.core.scrollToBottom();
-  }
-
   loadConversationFromStorage() {
-    const savedConversation = localStorage.getItem(
-      `${this.core.userIDPrefix}_chatConversation`
-    );
+    const savedConversation = localStorage.getItem("chatConversation");
     this.conversationHistory = savedConversation
       ? JSON.parse(savedConversation)
       : [];
@@ -193,7 +143,7 @@ class MainChatbot {
 
   saveConversationToStorage() {
     localStorage.setItem(
-      `${this.core.userIDPrefix}_chatConversation`,
+      "chatConversation",
       JSON.stringify(this.conversationHistory)
     );
     console.log("Saved conversation to storage");
@@ -205,16 +155,7 @@ class MainChatbot {
     if (messageContainer) {
       messageContainer.innerHTML = ""; // Clear existing messages
       this.conversationHistory.forEach((turn) => {
-        if (turn.type === "user" || turn.type === "assistant") {
-          this.core.addMessage(
-            turn.type === "user" ? "user" : "assistant",
-            turn.message
-          );
-        } else if (turn.type === "choice") {
-          this.core.addButtons(turn.buttons);
-        } else if (turn.type === "carousel") {
-          this.addCarousel(turn.payload);
-        }
+        this.core.addMessage(turn.type, turn.message);
       });
       this.core.scrollToBottom();
     } else {
