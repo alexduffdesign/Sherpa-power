@@ -179,6 +179,8 @@ class MainChatbot {
           if (!nextTurn || nextTurn.type !== "user") {
             this.addCarousel(turn.data);
           }
+        } else if (turn.type === "visual" && turn.data.visualType === "image") {
+          this.addVisualImage(turn.data);
         }
       });
       this.core.scrollToBottom();
@@ -228,12 +230,56 @@ class MainChatbot {
           type: "carousel",
           data: trace.payload,
         });
+      } else if (
+        trace.type === "visual" &&
+        trace.payload.visualType === "image"
+      ) {
+        this.addVisualImage(trace.payload);
+        this.conversationHistory.push({
+          type: "visual",
+          data: trace.payload,
+        });
       } else {
         console.log("Unknown trace type:", trace.type);
       }
     }
     this.saveConversationToStorage();
     this.core.scrollToBottom();
+  }
+
+  addVisualImage(payload) {
+    console.log("Adding visual image:", payload);
+    const messageContainer = this.element.querySelector("#messageContainer");
+    if (messageContainer) {
+      const imageWrapper = document.createElement("div");
+      imageWrapper.classList.add(
+        "message-wrapper",
+        "message-wrapper--assistant"
+      );
+
+      const imageElement = document.createElement("img");
+      imageElement.src = payload.image;
+      imageElement.alt = "Visual content";
+      imageElement.classList.add("chat-image");
+
+      // Set dimensions if available
+      if (payload.dimensions) {
+        imageElement.width = payload.dimensions.width;
+        imageElement.height = payload.dimensions.height;
+      }
+
+      // Add loading and error handling
+      imageElement.loading = "lazy";
+      imageElement.onerror = () => {
+        console.error("Failed to load image:", payload.image);
+        imageElement.alt = "Failed to load image";
+      };
+
+      imageWrapper.appendChild(imageElement);
+      messageContainer.appendChild(imageWrapper);
+    } else {
+      console.error("Message container not found when adding visual image");
+    }
   }
 
   // < Carousel JS > //
