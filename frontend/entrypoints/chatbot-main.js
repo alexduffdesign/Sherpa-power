@@ -164,13 +164,21 @@ class MainChatbot {
     const messageContainer = this.element.querySelector("#messageContainer");
     if (messageContainer) {
       messageContainer.innerHTML = ""; // Clear existing messages
-      this.conversationHistory.forEach((turn) => {
+      this.conversationHistory.forEach((turn, index) => {
         if (turn.type === "user" || turn.type === "assistant") {
           this.core.addMessage(turn.type, turn.message);
         } else if (turn.type === "choice") {
-          this.core.addButtons(turn.buttons);
+          // Check if next turn is 'user' type
+          const nextTurn = this.conversationHistory[index + 1];
+          if (!nextTurn || nextTurn.type !== "user") {
+            this.core.addButtons(turn.buttons);
+          }
         } else if (turn.type === "carousel") {
-          this.addCarousel(turn.data);
+          // Check if next turn is 'user' type
+          const nextTurn = this.conversationHistory[index + 1];
+          if (!nextTurn || nextTurn.type !== "user") {
+            this.addCarousel(turn.data);
+          }
         }
       });
       this.core.scrollToBottom();
