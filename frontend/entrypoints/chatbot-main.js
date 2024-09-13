@@ -104,7 +104,13 @@ class MainChatbot {
       } catch (error) {
         console.error("Error during chat initialization:", error);
       }
+    } else {
+      // Add this else block to handle existing conversations
+      this.loadConversationFromStorage();
+      this.displaySavedConversation();
     }
+    // Add this line to scroll to the bottom after initialization
+    this.core.scrollToBottom();
     console.log("Chat initialized");
   }
 
