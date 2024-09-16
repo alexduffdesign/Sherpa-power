@@ -73,6 +73,43 @@
 }
 }
 {%- endif -%}
+
+.button.sherpa-guide {
+  font-family: var(--heading-font-family);
+  background-color: #403545;
+  border-radius: var(--rounded) !important;
+  border: 2px solid transparent !important;
+  padding: var(--spacing-3);
+  margin-top: -0.5rem;
+  margin-bottom: -0.5rem;
+  color: rgb(var(--text-color, 255 255 255));
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  grid-gap: var(--spacing-1);
+}
+button.sherpa-guide::before {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  border: 2px solid transparent !important;
+  border-radius: inherit;
+  background: linear-gradient(to right, #9F92FF, #DB9BFB) border-box;
+  -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+  mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: destination-out;
+  mask-composite: exclude;
+}
+@media screen and (max-width: 1150px) {
+  .header-ai-text {
+    display: none;
+  }
+}
+
 </style>
 
 <height-observer variable="header">
@@ -316,12 +353,7 @@
       {%- endcomment -%}
 
       <div class="header__secondary-nav">
-        <!-- {%- if section.settings.header != 'drawer' and section.settings.secondary_menu.links.size > 0 -%}  <nav class="header__link-list" role="navigation">
-            <ul class="contents">
-              {%- for link in section.settings.secondary_menu.links -%}
-                <li>
-                  <a href="{{ link.url }}" class="link-faded-reverse">{{ link.title }}</a>
-                </li>
+        <!-- {%- if section.settings.header != 'drawer' and section.settings.secondary_menu.links.size > 0 -%}  <nav class="header__link-list" role="navigation">    <ul class="contents">      {%- for link in section.settings.secondary_menu.links -%}        <li>          <a href="{{ link.url }}" class="link-faded-reverse">{{ link.title }}</a>        </li>
               {%- endfor -%}
             </ul>
           </nav>

@@ -1,6 +1,6 @@
 .country-flags {
-  background: -webkit-image-set(url("//www.sherpapower.co.uk/cdn/shop/t/5/assets/country-flags.png?v=37230036826556269641708623452") 1x, url("//www.sherpapower.co.uk/cdn/shop/t/5/assets/country-flags-2x.png?v=119388446682176363021708623452") 2x) no-repeat top left;
-  background: image-set(url("//www.sherpapower.co.uk/cdn/shop/t/5/assets/country-flags.png?v=37230036826556269641708623452") 1x, url("//www.sherpapower.co.uk/cdn/shop/t/5/assets/country-flags-2x.png?v=119388446682176363021708623452") 2x) no-repeat top left;
+  background: -webkit-image-set(url("//www.sherpapower.co.uk/cdn/shop/t/7/assets/country-flags.png?v=37230036826556269641721044204") 1x, url("//www.sherpapower.co.uk/cdn/shop/t/7/assets/country-flags-2x.png?v=119388446682176363021721044204") 2x) no-repeat top left;
+  background: image-set(url("//www.sherpapower.co.uk/cdn/shop/t/7/assets/country-flags.png?v=37230036826556269641721044204") 1x, url("//www.sherpapower.co.uk/cdn/shop/t/7/assets/country-flags-2x.png?v=119388446682176363021721044204") 2x) no-repeat top left;
   width: 20px;
   height: 20px;
   flex-shrink: 0;
