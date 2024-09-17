@@ -132,10 +132,7 @@ class SectionChatbot extends HTMLElement {
   }
 
   handleDeviceAnswer(deviceAnswer) {
-    console.log(
-      "Handling device answer:",
-      JSON.stringify(deviceAnswer, null, 2)
-    );
+    console.log("Handling device answer:", deviceAnswer);
     let devices = Array.isArray(deviceAnswer)
       ? deviceAnswer
       : deviceAnswer.devices;
@@ -146,7 +143,7 @@ class SectionChatbot extends HTMLElement {
     }
 
     devices.forEach((device) => {
-      console.log("Processing device:", JSON.stringify(device, null, 2));
+      console.log("Processing device:", device);
       const { name, estimatedRuntime } = device;
       this.saveDeviceEstimate({ name, estimatedRuntime });
       const card = this.createDeviceCard(device);
@@ -174,7 +171,7 @@ class SectionChatbot extends HTMLElement {
       <div class="application-card__content">
         <div class="application-card__title">${device.name}</div>
         <div class="application-card__runtime">
-          ${device.estimatedRuntime}
+          ${device.estimatedRuntime.value} ${device.estimatedRuntime}
         </div>
       </div>
     `;
