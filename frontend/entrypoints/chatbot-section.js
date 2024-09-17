@@ -144,8 +144,8 @@ class SectionChatbot extends HTMLElement {
 
     devices.forEach((device) => {
       console.log("Processing device:", device);
-      const { name, estimatedRuntime, powerConsumption } = device;
-      this.saveDeviceEstimate({ name, estimatedRuntime, powerConsumption });
+      const { name, estimatedRuntime } = device;
+      this.saveDeviceEstimate({ name, estimatedRuntime });
       const card = this.createDeviceCard(device);
       this.insertCard(card);
     });
@@ -171,7 +171,7 @@ class SectionChatbot extends HTMLElement {
       <div class="application-card__content">
         <div class="application-card__title">${device.name}</div>
         <div class="application-card__runtime">
-          ${device.estimatedRuntime.value} ${device.estimatedRuntime.unit}
+          ${device.estimatedRuntime.value} ${device.estimatedRuntime}
         </div>
       </div>
     `;
