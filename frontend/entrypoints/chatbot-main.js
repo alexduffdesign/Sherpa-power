@@ -95,6 +95,7 @@ class MainChatbot {
     });
 
     const jumpToStartButton = this.element.querySelector(".back-to-start");
+    console.log("Jump to start button:", jumpToStartButton);
     if (jumpToStartButton) {
       jumpToStartButton.addEventListener("click", () => this.jumpToStart());
     } else {
