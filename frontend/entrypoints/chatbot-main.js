@@ -5,10 +5,6 @@ import { ChatbotCore } from "./chatbot-core-file.js";
 console.log("MainChatbot module loading");
 
 class MainChatbot {
-  static STATE_ENDPOINT =
-    "https://chatbottings--development.gadget.app/voiceflow-state";
-  static START_NODE_ID = "66e98d214920bd6fefd8ede0"; // Replace with your actual start node ID
-
   constructor(element, config) {
     console.log("MainChatbot constructor called with config:", config);
     this.element = element;
@@ -95,7 +91,6 @@ class MainChatbot {
     });
 
     const jumpToStartButton = document.querySelector(".back-to-start");
-    console.log("Jump to start button:", jumpToStartButton);
     if (jumpToStartButton) {
       jumpToStartButton.addEventListener("click", () => this.jumpToStart());
     } else {
@@ -204,6 +199,23 @@ class MainChatbot {
       this.core.scrollToBottom();
     } else {
       console.error("Message container not found");
+    }
+  }
+
+  // User clicks back to start button
+
+  async jumpToStart() {
+    console.log("MainChatbot jumpToStart called");
+    try {
+      const response = await this.core.gadgetInteract({
+        type: "custom",
+        payload: {
+          type: "ReturnToStart",
+        },
+      });
+      await this.handleAgentResponse(response);
+    } catch (error) {
+      console.error("Error in main chatbot jump to start:", error);
     }
   }
 
@@ -372,47 +384,6 @@ class MainChatbot {
       this.core.scrollToBottom();
     } else {
       console.error("Message container not found when adding carousel");
-    }
-  }
-
-  // User clicks back to start button
-
-  async jumpToStart() {
-    console.log("MainChatbot jumpToStart called");
-    try {
-      await this.updateState(MainChatbot.START_NODE_ID);
-      const response = await this.core.gadgetInteract({ type: "request" });
-      await this.handleAgentResponse(response);
-    } catch (error) {
-      console.error("Error in main chatbot jump to start:", error);
-    }
-  }
-
-  async updateState(nodeID) {
-    console.log(`Updating state to jump to node: ${nodeID}`);
-
-    try {
-      const response = await fetch(
-        `${MainChatbot.STATE_ENDPOINT}?userID=${this.core.userID}`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ nodeID: nodeID }),
-        }
-      );
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-
-      const result = await response.json();
-      console.log("State update response:", result);
-      return result;
-    } catch (error) {
-      console.error("Error updating state:", error);
-      throw error;
     }
   }
 }
