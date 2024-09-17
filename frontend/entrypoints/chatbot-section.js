@@ -171,7 +171,7 @@ class SectionChatbot extends HTMLElement {
       <div class="application-card__content">
         <div class="application-card__title">${device.name}</div>
         <div class="application-card__runtime">
-          ${device.estimatedRuntime.value} ${device.estimatedRuntime}
+          ${device.estimatedRuntime.value}
         </div>
       </div>
     `;
