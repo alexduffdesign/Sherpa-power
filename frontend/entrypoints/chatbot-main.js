@@ -5,6 +5,12 @@ import { ChatbotCore } from "./chatbot-core-file.js";
 console.log("MainChatbot module loading");
 
 class MainChatbot {
+  static GET_STATE_ENDPOINT =
+    "https://chatbottings--development.gadget.app/voiceflowAPI/voiceflow-state-retrieve";
+  static PUT_STATE_ENDPOINT =
+    "https://chatbottings--development.gadget.app/voiceflowAPI/voiceflow-state";
+  static START_NODE_ID = "66e98d214920bd6fefd8ede0"; // Replace with your actual start node ID
+
   constructor(element, config) {
     console.log("MainChatbot constructor called with config:", config);
     this.element = element;
@@ -204,31 +210,90 @@ class MainChatbot {
 
   // User clicks back to start button
 
+  // async jumpToStart() {
+  //   console.log("MainChatbot jumpToStart called");
+  //   try {
+  //     const response = await this.core.gadgetInteract({
+  //       userID: this.core.userID,
+  //       userAction: {
+  //         type: "intent",
+  //         payload: {
+  //           intent: {
+  //             name: "Main menu",
+  //           },
+  //           confidence: 1, // Added confidence field
+  //         },
+  //       },
+  //       config: {
+  //         // Added config object
+  //         tts: false,
+  //         stripSSML: true,
+  //         stopAll: true,
+  //       },
+  //     });
+  //     await this.handleAgentResponse(response);
+  //   } catch (error) {
+  //     console.error("Error in main chatbot jump to start:", error);
+  //   }
+  // }
+
   async jumpToStart() {
     console.log("MainChatbot jumpToStart called");
     try {
+      // First, get the current state
+      const currentState = await this.getState();
+      console.log("Current state:", currentState);
+
+      // Now, update the state to jump to the start node
+      await this.updateState(MainChatbot.START_NODE_ID);
+
+      // After updating the state, we need to interact with Voiceflow to get the new content
       const response = await this.core.gadgetInteract({
-        userID: this.core.userID,
-        userAction: {
-          type: "intent",
-          payload: {
-            intent: {
-              name: "Main menu",
-            },
-            confidence: 1, // Added confidence field
-          },
-        },
-        config: {
-          // Added config object
-          tts: false,
-          stripSSML: true,
-          stopAll: true,
-        },
+        type: "request",
+        payload: {},
       });
+
       await this.handleAgentResponse(response);
     } catch (error) {
       console.error("Error in main chatbot jump to start:", error);
     }
+  }
+
+  async getState() {
+    const response = await fetch(
+      `${MainChatbot.GET_STATE_ENDPOINT}?userID=${this.core.userID}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    return await response.json();
+  }
+
+  async updateState(nodeID) {
+    const response = await fetch(
+      `${MainChatbot.PUT_STATE_ENDPOINT}?userID=${this.core.userID}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ nodeID: nodeID }),
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    return await response.json();
   }
 
   /// < Redirect Custom Action > //
