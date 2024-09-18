@@ -204,32 +204,24 @@ class MainChatbot {
 
   // User clicks back to start button
 
-  // async jumpToStart() {
-  //   console.log("MainChatbot jumpToStart called");
-  //   try {
-  //     const response = await this.core.gadgetInteract({
-  //       userID: this.core.userID,
-  //       userAction: {
-  //         type: "intent",
-  //         payload: {
-  //           intent: {
-  //             name: "Main menu",
-  //           },
-  //           confidence: 1, // Added confidence field
-  //         },
-  //       },
-  //       config: {
-  //         // Added config object
-  //         tts: false,
-  //         stripSSML: true,
-  //         stopAll: true,
-  //       },
-  //     });
-  //     await this.handleAgentResponse(response);
-  //   } catch (error) {
-  //     console.error("Error in main chatbot jump to start:", error);
-  //   }
-  // }
+  async jumpToStart() {
+    console.log("MainChatbot jumpToStart called");
+    try {
+      const response = await this.core.gadgetInteract({
+        action: {
+          type: "intent",
+          payload: {
+            intent: {
+              name: "ReturnToStart",
+            },
+          },
+        },
+      });
+      await this.handleAgentResponse(response);
+    } catch (error) {
+      console.error("Error in main chatbot jump to start:", error);
+    }
+  }
 
   /// < Redirect Custom Action > //
 
@@ -281,8 +273,6 @@ class MainChatbot {
           type: "visual",
           data: trace.payload,
         });
-      } else if (trace.type === "path") {
-        console.log("Path trace:", trace);
       } else {
         console.log("Unknown trace type:", trace.type);
       }
