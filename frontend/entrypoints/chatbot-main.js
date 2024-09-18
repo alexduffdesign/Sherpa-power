@@ -278,6 +278,11 @@ class MainChatbot {
   }
 
   async updateState(nodeID) {
+    // Ensure nodeID is a string
+    const stringNodeID = String(nodeID);
+
+    console.log(`Updating state with nodeID: ${stringNodeID}`);
+
     const response = await fetch(
       `${MainChatbot.PUT_STATE_ENDPOINT}?userID=${this.core.userID}`,
       {
@@ -285,11 +290,13 @@ class MainChatbot {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ nodeID: nodeID }),
+        body: JSON.stringify({ nodeID: stringNodeID }),
       }
     );
 
     if (!response.ok) {
+      const errorText = await response.text();
+      console.error("Error response:", errorText);
       throw new Error(`HTTP error! status: ${response.status}`);
     }
 
