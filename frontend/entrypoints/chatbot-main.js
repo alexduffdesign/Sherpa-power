@@ -208,7 +208,8 @@ class MainChatbot {
     console.log("MainChatbot jumpToStart called");
     try {
       const response = await this.core.gadgetInteract({
-        action: {
+        userID: this.core.userID,
+        userAction: {
           type: "intent",
           payload: {
             intent: {
