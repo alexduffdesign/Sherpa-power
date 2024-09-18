@@ -212,10 +212,19 @@ class MainChatbot {
         userAction: {
           type: "intent",
           payload: {
+            query: "Go to main menu", // Add a query that might trigger this intent
             intent: {
               name: "Main menu",
             },
+            entities: [], // Add entities if your intent uses any
+            confidence: 1, // High confidence to ensure it triggers
           },
+        },
+        config: {
+          tts: false,
+          stripSSML: true,
+          stopAll: true,
+          excludeTypes: ["block", "debug", "flow"],
         },
       });
       await this.handleAgentResponse(response);
