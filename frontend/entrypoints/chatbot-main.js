@@ -213,7 +213,7 @@ class MainChatbot {
           type: "intent",
           payload: {
             intent: {
-              name: "ReturnToStart",
+              name: "Main menu",
             },
           },
         },
