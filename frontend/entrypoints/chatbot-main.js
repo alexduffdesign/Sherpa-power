@@ -281,6 +281,8 @@ class MainChatbot {
           type: "visual",
           data: trace.payload,
         });
+      } else if (trace.type === "path") {
+        console.log("Path trace:", trace);
       } else {
         console.log("Unknown trace type:", trace.type);
       }
