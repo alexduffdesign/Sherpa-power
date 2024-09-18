@@ -215,7 +215,14 @@ class MainChatbot {
             intent: {
               name: "Main menu",
             },
+            confidence: 1, // Added confidence field
           },
+        },
+        config: {
+          // Added config object
+          tts: false,
+          stripSSML: true,
+          stopAll: true,
         },
       });
       await this.handleAgentResponse(response);

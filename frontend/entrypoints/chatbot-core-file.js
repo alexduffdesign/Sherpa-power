@@ -90,11 +90,14 @@ export class ChatbotCore {
     }
   }
 
-  async gadgetInteract(payload) {
-    console.log("Sending payload to Gadget:", payload);
+  async gadgetInteract({ userID, userAction, config }) {
+    console.log("Sending payload to Gadget:", { userID, userAction, config });
     const fullPayload = {
-      userID: this.userID,
-      userAction: payload.userAction || payload,
+      userID: userID,
+      action: userAction, // Changed from userAction to action
+      config: config || {}, // Include config if provided
+      // Remove projectID if it's not required by Voiceflow
+      // projectID: VF_PROJECT_ID,
     };
     const response = await fetch(this.apiEndpoint, {
       method: "POST",
