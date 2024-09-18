@@ -94,7 +94,7 @@ export class ChatbotCore {
     console.log("Sending payload to Gadget:", { userID, userAction, config });
     const fullPayload = {
       userID: userID,
-      action: userAction, // Changed from userAction to action
+      userAction: userAction, // Changed from userAction to action
       config: config || {}, // Include config if provided
       // Remove projectID if it's not required by Voiceflow
       // projectID: VF_PROJECT_ID,
