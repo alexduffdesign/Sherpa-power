@@ -165,9 +165,8 @@ export class ChatbotCore {
     markdown = markdown.replace(/^# (.*)$/gm, '<h6 class="h4">$1</h6>');
     // Replace '## Header' with <h6 class="h5">Header</h6>
     markdown = markdown.replace(/^## (.*)$/gm, '<h6 class="h5">$1</h6>');
-    // Replace '### Header' with <h6 class="h6">Header</h6>
+    // Replace '### Header' and beyond with <h6 class="h6">Header</h6>
     markdown = markdown.replace(/^### (.*)$/gm, '<h6 class="h6">$1</h6>');
-    // Replace '#### Header' and beyond with <h6 class="h6">Header</h6>
     markdown = markdown.replace(/^####+ (.*)$/gm, '<h6 class="h6">$1</h6>');
 
     // Handle Bold (**text**)
