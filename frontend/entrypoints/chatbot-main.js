@@ -301,6 +301,7 @@ class MainChatbot {
     }
     this.saveConversationToStorage();
     this.core.scrollToBottom();
+    this.core.hideTypingIndicator();
   }
 
   addVisualImage(payload) {
