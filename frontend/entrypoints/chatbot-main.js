@@ -204,22 +204,31 @@ class MainChatbot {
 
   // User clicks back to start button
 
-  async jumpToStart() {
-    console.log("MainChatbot jumpToStart called");
+  async jumpToMainMenu() {
+    console.log("MainChatbot jumpToMainMenu called");
+    const mainMenuMessage = "Main menu"; // The message content to trigger the intent
+
     try {
+      // Send the message to Voiceflow
       const response = await this.core.gadgetInteract({
-        action: {
-          type: "intent",
+        userID: this.core.userID,
+        userAction: {
+          type: "text", // Change type from 'intent' to 'text'
           payload: {
-            intent: {
-              name: "ReturnToStart",
-            },
+            message: mainMenuMessage, // Set the message content
           },
         },
       });
+
+      // Handle the response from Voiceflow
       await this.handleAgentResponse(response);
     } catch (error) {
-      console.error("Error in main chatbot jump to start:", error);
+      console.error("Error in jumpToMainMenu:", error);
+      // Optionally, notify the user about the error
+      this.core.addMessage(
+        "assistant",
+        "Sorry, I couldn't navigate to the main menu. Please try again."
+      );
     }
   }
 
