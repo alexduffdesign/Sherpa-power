@@ -209,16 +209,21 @@ class MainChatbot {
     const mainMenuMessage = "Main menu"; // The message content to trigger the intent
 
     try {
-      // Send the message to Voiceflow
+      // Send the message to Voiceflow with payload as a string
       const response = await this.core.gadgetInteract({
         userID: this.core.userID,
         userAction: {
-          type: "text", // Change type from 'intent' to 'text'
-          payload: {
-            message: mainMenuMessage, // Set the message content
-          },
+          type: "text",
+          payload: mainMenuMessage, // Directly set payload to the string "Main menu"
         },
       });
+
+      // Optionally, add "Main menu" to the conversation history
+      this.conversationHistory.push({
+        type: "user",
+        message: mainMenuMessage,
+      });
+      this.saveConversationToStorage();
 
       // Handle the response from Voiceflow
       await this.handleAgentResponse(response);
@@ -227,7 +232,7 @@ class MainChatbot {
       // Optionally, notify the user about the error
       this.core.addMessage(
         "assistant",
-        "Sorry, I couldn't navigate to the main menu, Please try again."
+        "Sorry, I couldn't navigate to the main menu. Please try again."
       );
     }
   }
