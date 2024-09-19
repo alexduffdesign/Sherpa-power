@@ -160,45 +160,41 @@ export class ChatbotCore {
   }
 
   markdownToHtml(markdown) {
-    // Step 1: Replace double line breaks with a unique placeholder
-    markdown = markdown.replace(/\n{2,}/g, "[[DOUBLE_BREAK]]");
-
-    // Step 2: Handle Headers
+    // Handle Headers
+    // Replace '# Header' with <h6 class="h4">Header</h6>
     markdown = markdown.replace(/^# (.*)$/gm, '<h6 class="h4">$1</h6>');
+    // Replace '## Header' with <h6 class="h5">Header</h6>
     markdown = markdown.replace(/^## (.*)$/gm, '<h6 class="h5">$1</h6>');
+    // Replace '### Header' and beyond with <h6 class="h6">Header</h6>
     markdown = markdown.replace(/^### (.*)$/gm, '<h6 class="h6">$1</h6>');
     markdown = markdown.replace(/^####+ (.*)$/gm, '<h6 class="h6">$1</h6>');
 
-    // Step 3: Handle Bold and Italic
+    // Handle Bold (**text**)
     markdown = markdown.replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>");
+
+    // Handle Italic (*text*)
     markdown = markdown.replace(/\*(.*?)\*/g, "<em>$1</em>");
 
-    // Step 4: Handle Links
+    // Handle Links [text](url)
     markdown = markdown.replace(
       /\[(.*?)\]\((.*?)\)/g,
       '<a href="$2" target="_blank">$1</a>'
     );
 
-    // Step 5: Handle Unordered Lists
+    // Handle Unordered Lists
     markdown = markdown.replace(/^\s*-\s+(.*)$/gm, "<ul><li>$1</li></ul>");
 
-    // Step 6: Handle Ordered Lists
+    // Handle Ordered Lists
     markdown = markdown.replace(/^\s*\d+\.\s+(.*)$/gm, "<ol><li>$1</li></ol>");
 
-    // Step 7: Remove redundant <ul> and <ol> tags
+    // Replace multiple consecutive <ul> or <ol> tags with a single tag
     markdown = markdown.replace(/<\/?ul>/g, "");
     markdown = markdown.replace(/<\/?ol>/g, "");
     markdown = markdown.replace(/<li>(.*?)<\/li>/g, "<li>$1</li>");
     markdown = markdown.replace(/<\/li>\s*<li>/g, "</li><li>");
 
-    // Step 8: Restore double line breaks
-    markdown = markdown.replace(/\[\[DOUBLE_BREAK\]\]/g, "<br>");
-
-    // Step 9: Replace remaining single line breaks with <br>
+    // Handle Line Breaks hope
     markdown = markdown.replace(/\n/g, "<br>");
-
-    // Step 10: Collapse multiple <br> tags into a single <br>
-    markdown = markdown.replace(/(<br>){2,}/g, "<br>");
 
     return markdown;
   }
