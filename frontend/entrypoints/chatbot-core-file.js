@@ -193,7 +193,7 @@ export class ChatbotCore {
     markdown = markdown.replace(/<li>(.*?)<\/li>/g, "<li>$1</li>");
     markdown = markdown.replace(/<\/li>\s*<li>/g, "</li><li>");
 
-    // Handle Line Breaks
+    // Handle Line Breaks hope
     markdown = markdown.replace(/\n/g, "<br>");
 
     return markdown;
