@@ -90,9 +90,9 @@ class MainChatbot {
       }
     });
 
-    const jumpToStartButton = document.querySelector(".back-to-start");
-    if (jumpToStartButton) {
-      jumpToStartButton.addEventListener("click", () => this.jumpToStart());
+    const jumpToMainButton = document.querySelector(".back-to-start");
+    if (jumpToMainButton) {
+      jumpToMainButton.addEventListener("click", () => this.jumpToMainMenu());
     } else {
       console.error("Jump to start button not found");
     }
