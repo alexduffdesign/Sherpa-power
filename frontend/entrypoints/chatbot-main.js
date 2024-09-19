@@ -223,11 +223,11 @@ class MainChatbot {
       // Handle the response from Voiceflow
       await this.handleAgentResponse(response);
     } catch (error) {
-      console.error("Error in jumpToMainMenu:", error);
+      console.error("Error in jumpToMainMenu /:", error);
       // Optionally, notify the user about the error
       this.core.addMessage(
         "assistant",
-        "Sorry, I couldn't navigate to the main menu. Please try again."
+        "Sorry, I couldn't navigate to the main menu, Please try again."
       );
     }
   }
