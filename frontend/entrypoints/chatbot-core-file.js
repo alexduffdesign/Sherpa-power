@@ -164,18 +164,22 @@ export class ChatbotCore {
     markdown = markdown.replace(/\n{2,}/g, "[[DOUBLE_BREAK]]");
 
     // Step 2: Handle Headers
+    // Replace '# Header' with <h6 class="h4">Header</h6>
     markdown = markdown.replace(/^# (.*)$/gm, '<h6 class="h4">$1</h6>');
+    // Replace '## Header' with <h6 class="h5">Header</h6>
     markdown = markdown.replace(/^## (.*)$/gm, '<h6 class="h5">$1</h6>');
+    // Replace '### Header' with <h6 class="h6">Header</h6>
     markdown = markdown.replace(/^### (.*)$/gm, '<h6 class="h6">$1</h6>');
+    // Replace '#### Header' and beyond with <h6 class="h6">Header</h6>
     markdown = markdown.replace(/^####+ (.*)$/gm, '<h6 class="h6">$1</h6>');
 
-    // Step 3: Handle Bold
+    // Step 3: Handle Bold (**text**)
     markdown = markdown.replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>");
 
-    // Step 4: Handle Italic
+    // Step 4: Handle Italic (*text*)
     markdown = markdown.replace(/\*(.*?)\*/g, "<em>$1</em>");
 
-    // Step 5: Handle Links
+    // Step 5: Handle Links [text](url)
     markdown = markdown.replace(
       /\[(.*?)\]\((.*?)\)/g,
       '<a href="$2" target="_blank">$1</a>'
@@ -187,12 +191,11 @@ export class ChatbotCore {
     // Step 7: Handle Ordered Lists
     markdown = markdown.replace(/^\s*\d+\.\s+(.*)$/gm, "<ol><li>$1</li></ol>");
 
-    // Step 8: Remove redundant <ul> and <ol> tags (optional)
-    // If you prefer to keep the lists properly wrapped, comment out these lines
-    // markdown = markdown.replace(/<\/?ul>/g, '');
-    // markdown = markdown.replace(/<\/?ol>/g, '');
-    // markdown = markdown.replace(/<li>(.*?)<\/li>/g, '<li>$1</li>');
-    // markdown = markdown.replace(/<\/li>\s*<li>/g, '</li><li>');
+    // Step 8: Remove redundant <ul> and <ol> tags
+    markdown = markdown.replace(/<\/?ul>/g, "");
+    markdown = markdown.replace(/<\/?ol>/g, "");
+    markdown = markdown.replace(/<li>(.*?)<\/li>/g, "<li>$1</li>");
+    markdown = markdown.replace(/<\/li>\s*<li>/g, "</li><li>");
 
     // Step 9: Replace the placeholder with a single <br>
     markdown = markdown.replace(/\[\[DOUBLE_BREAK\]\]/g, "<br>");
