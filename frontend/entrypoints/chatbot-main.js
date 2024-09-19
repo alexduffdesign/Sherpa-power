@@ -212,6 +212,9 @@ class MainChatbot {
       // **Add the "Main menu" message to the UI**
       this.core.addMessage("user", mainMenuMessage);
 
+      // **Show the typing indicator**
+      this.core.showTypingIndicator();
+
       // **Update the conversation history**
       this.conversationHistory.push({
         type: "user",
@@ -232,7 +235,9 @@ class MainChatbot {
       await this.handleAgentResponse(response);
     } catch (error) {
       console.error("Error in jumpToMainMenu /:", error);
-      // Optionally, notify the user about the error
+      // **Hide the typing indicator in case of error**
+      this.core.hideTypingIndicator();
+      // **Optionally, notify the user about the error**
       this.core.addMessage(
         "assistant",
         "Sorry, I couldn't navigate to the main menu. Please try again."

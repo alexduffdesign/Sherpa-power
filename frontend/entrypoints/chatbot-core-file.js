@@ -160,11 +160,44 @@ export class ChatbotCore {
   }
 
   markdownToHtml(markdown) {
-    return markdown
-      .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>")
-      .replace(/\*(.*?)\*/g, "<em>$1</em>")
-      .replace(/\[(.*?)\]\((.*?)\)/g, '<a href="$2" target="_blank">$1</a>')
-      .replace(/\n/g, "<br>");
+    // Handle Headers
+    // Replace '# Header' with <h6 class="h4">Header</h6>
+    markdown = markdown.replace(/^# (.*)$/gm, '<h6 class="h4">$1</h6>');
+    // Replace '## Header' with <h6 class="h5">Header</h6>
+    markdown = markdown.replace(/^## (.*)$/gm, '<h6 class="h5">$1</h6>');
+    // Replace '### Header' with <h6 class="h6">Header</h6>
+    markdown = markdown.replace(/^### (.*)$/gm, '<h6 class="h6">$1</h6>');
+    // Replace '#### Header' and beyond with <h6 class="h6">Header</h6>
+    markdown = markdown.replace(/^####+ (.*)$/gm, '<h6 class="h6">$1</h6>');
+
+    // Handle Bold (**text**)
+    markdown = markdown.replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>");
+
+    // Handle Italic (*text*)
+    markdown = markdown.replace(/\*(.*?)\*/g, "<em>$1</em>");
+
+    // Handle Links [text](url)
+    markdown = markdown.replace(
+      /\[(.*?)\]\((.*?)\)/g,
+      '<a href="$2" target="_blank">$1</a>'
+    );
+
+    // Handle Unordered Lists
+    markdown = markdown.replace(/^\s*-\s+(.*)$/gm, "<ul><li>$1</li></ul>");
+
+    // Handle Ordered Lists
+    markdown = markdown.replace(/^\s*\d+\.\s+(.*)$/gm, "<ol><li>$1</li></ol>");
+
+    // Replace multiple consecutive <ul> or <ol> tags with a single tag
+    markdown = markdown.replace(/<\/?ul>/g, "");
+    markdown = markdown.replace(/<\/?ol>/g, "");
+    markdown = markdown.replace(/<li>(.*?)<\/li>/g, "<li>$1</li>");
+    markdown = markdown.replace(/<\/li>\s*<li>/g, "</li><li>");
+
+    // Handle Line Breaks
+    markdown = markdown.replace(/\n/g, "<br>");
+
+    return markdown;
   }
 
   addButtons(buttons) {
