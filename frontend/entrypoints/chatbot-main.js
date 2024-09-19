@@ -208,12 +208,10 @@ class MainChatbot {
     console.log("MainChatbot jumpToMainMenu called");
     const mainMenuMessage = "Main menu"; // The message content to trigger the intent
 
+    this.core.showTypingIndicator();
     try {
       // **Add the "Main menu" message to the UI**
       this.core.addMessage("user", mainMenuMessage);
-
-      // **Show the typing indicator**
-      this.core.showTypingIndicator();
 
       // **Update the conversation history**
       this.conversationHistory.push({
@@ -235,13 +233,14 @@ class MainChatbot {
       await this.handleAgentResponse(response);
     } catch (error) {
       console.error("Error in jumpToMainMenu /:", error);
-      // **Hide the typing indicator in case of error**
-      this.core.hideTypingIndicator();
       // **Optionally, notify the user about the error**
       this.core.addMessage(
         "assistant",
         "Sorry, I couldn't navigate to the main menu. Please try again."
       );
+    } finally {
+      // **Hide the typing indicator after handling response or error**
+      this.core.hideTypingIndicator();
     }
   }
 
@@ -301,7 +300,6 @@ class MainChatbot {
     }
     this.saveConversationToStorage();
     this.core.scrollToBottom();
-    this.core.hideTypingIndicator();
   }
 
   addVisualImage(payload) {
