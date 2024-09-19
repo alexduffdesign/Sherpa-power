@@ -187,10 +187,12 @@ export class ChatbotCore {
     // Step 7: Handle Ordered Lists
     markdown = markdown.replace(/^\s*\d+\.\s+(.*)$/gm, "<ol><li>$1</li></ol>");
 
-    markdown = markdown.replace(/<\/?ul>/g, "");
-    markdown = markdown.replace(/<\/?ol>/g, "");
-    markdown = markdown.replace(/<li>(.*?)<\/li>/g, "<li>$1</li>");
-    markdown = markdown.replace(/<\/li>\s*<li>/g, "</li><li>");
+    // Step 8: Remove redundant <ul> and <ol> tags (optional)
+    // If you prefer to keep the lists properly wrapped, comment out these lines
+    // markdown = markdown.replace(/<\/?ul>/g, '');
+    // markdown = markdown.replace(/<\/?ol>/g, '');
+    // markdown = markdown.replace(/<li>(.*?)<\/li>/g, '<li>$1</li>');
+    // markdown = markdown.replace(/<\/li>\s*<li>/g, '</li><li>');
 
     // Step 9: Replace the placeholder with a single <br>
     markdown = markdown.replace(/\[\[DOUBLE_BREAK\]\]/g, "<br>");
