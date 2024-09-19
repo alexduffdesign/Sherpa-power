@@ -197,9 +197,6 @@ export class ChatbotCore {
     markdown = markdown.replace(/<li>(.*?)<\/li>/g, "<li>$1</li>");
     markdown = markdown.replace(/<\/li>\s*<li>/g, "</li><li>");
 
-    // Step 9: Replace the placeholder with a single <br>
-    markdown = markdown.replace(/\[\[DOUBLE_BREAK\]\]/g, "<br>");
-
     // Step 10: Replace remaining single line breaks with <br>
     markdown = markdown.replace(/\n/g, "<br>");
 
