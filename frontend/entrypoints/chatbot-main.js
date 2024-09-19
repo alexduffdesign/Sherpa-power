@@ -209,7 +209,17 @@ class MainChatbot {
     const mainMenuMessage = "Main menu"; // The message content to trigger the intent
 
     try {
-      // Send the message to Voiceflow with payload as a string
+      // **Add the "Main menu" message to the UI**
+      this.core.addMessage("user", mainMenuMessage);
+
+      // **Update the conversation history**
+      this.conversationHistory.push({
+        type: "user",
+        message: mainMenuMessage,
+      });
+      this.saveConversationToStorage();
+
+      // **Send the message to Voiceflow with payload as a string**
       const response = await this.core.gadgetInteract({
         userID: this.core.userID,
         userAction: {
@@ -218,14 +228,7 @@ class MainChatbot {
         },
       });
 
-      // Optionally, add "Main menu" to the conversation history
-      this.conversationHistory.push({
-        type: "user",
-        message: mainMenuMessage,
-      });
-      this.saveConversationToStorage();
-
-      // Handle the response from Voiceflow
+      // **Handle the response from Voiceflow**
       await this.handleAgentResponse(response);
     } catch (error) {
       console.error("Error in jumpToMainMenu /:", error);
