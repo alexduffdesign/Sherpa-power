@@ -6,7 +6,7 @@ import cleanup from "@by-association-only/vite-plugin-shopify-clean"; // Import 
 
 export default defineConfig({
   plugins: [
-    cleanup(), // Add the cleanup plugin
+    cleanup(),
     shopify({
       snippetFile: "vite-tag.liquid",
       additionalEntrypoints: [
