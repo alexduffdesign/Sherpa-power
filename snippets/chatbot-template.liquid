@@ -60,6 +60,11 @@
     margin-bottom: var(--spacing-6);
   }
 
+  .chatbot-subtitle {
+    color: white;
+    opacity: 0.7;
+  }
+
   .message-container {
     display: flex;
     flex-direction: column;
@@ -185,7 +190,7 @@
   <div class="chatbot-content">
     {% if section.settings.is_section_chatbot %}
       <div class="chatbot-title">
-        <h5 class="h5">
+        <h5 class="h5 chatbot-subtitle">
           {%-
             render 'styled-text', content: section.settings.calculator_title | default: 'Find Out How Long The BASE 5.0 Will Power Your Appliance!', text_color: section.settings.heading_color, gradient: section.settings.heading_gradient
           -%}
