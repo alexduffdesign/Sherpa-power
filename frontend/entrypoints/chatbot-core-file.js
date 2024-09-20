@@ -159,44 +159,51 @@ export class ChatbotCore {
     }
   }
 
+  // chatbot-core.js (Refactored markdownToHtml)
+
   markdownToHtml(markdown) {
-    // Handle Headers
-    // Replace '# Header' with <h6 class="h4">Header</h6>
-    markdown = markdown.replace(/^# (.*)$/gm, '<h6 class="h4">$1</h6>');
-    // Replace '## Header' with <h6 class="h5">Header</h6>
-    markdown = markdown.replace(/^## (.*)$/gm, '<h6 class="h5">$1</h6>');
-    // Replace '### Header' and beyond with <h6 class="h6">Header</h6>
-    markdown = markdown.replace(/^### (.*)$/gm, '<h6 class="h6">$1</h6>');
-    markdown = markdown.replace(/^####+ (.*)$/gm, '<h6 class="h6">$1</h6>');
+    // Escape HTML to prevent XSS
+    const escapeHtml = (str) =>
+      str
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
 
-    // Handle Bold (**text**)
-    markdown = markdown.replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>");
+    let html = escapeHtml(markdown);
 
-    // Handle Italic (*text*)
-    markdown = markdown.replace(/\*(.*?)\*/g, "<em>$1</em>");
+    // Headers
+    html = html.replace(/^###### (.*)$/gm, '<h6 class="h6">$1</h6>');
+    html = html.replace(/^##### (.*)$/gm, '<h6 class="h5">$1</h6>');
+    html = html.replace(/^#### (.*)$/gm, '<h6 class="h4">$1</h6>');
+    html = html.replace(/^### (.*)$/gm, '<h6 class="h3">$1</h6>');
+    html = html.replace(/^## (.*)$/gm, '<h6 class="h2">$1</h6>');
+    html = html.replace(/^# (.*)$/gm, '<h6 class="h1">$1</h6>');
 
-    // Handle Links [text](url)
-    markdown = markdown.replace(
+    // Bold and Italic
+    html = html.replace(/\*\*\*(.*?)\*\*\*/g, "<strong><em>$1</em></strong>"); // Bold Italic
+    html = html.replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>"); // Bold
+    html = html.replace(/\*(.*?)\*/g, "<em>$1</em>"); // Italic
+
+    // Links
+    html = html.replace(
       /\[(.*?)\]\((.*?)\)/g,
-      '<a href="$2" target="_blank">$1</a>'
+      '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>'
     );
 
-    // Handle Unordered Lists
-    markdown = markdown.replace(/^\s*-\s+(.*)$/gm, "<ul><li>$1</li></ul>");
+    // Lists
+    html = html.replace(/^\s*-\s+(.*)$/gm, "<li>$1</li>");
+    html = html.replace(/^\s*\d+\.\s+(.*)$/gm, "<li>$1</li>");
 
-    // Handle Ordered Lists
-    markdown = markdown.replace(/^\s*\d+\.\s+(.*)$/gm, "<ol><li>$1</li></ol>");
+    // Wrap list items with <ul> or <ol>
+    html = html.replace(/(<li>.*<\/li>)/g, "<ul>$1</ul>");
+    html = html.replace(/(<li>.*<\/li>)/g, "<ol>$1</ol>");
 
-    // Replace multiple consecutive <ul> or <ol> tags with a single tag
-    markdown = markdown.replace(/<\/?ul>/g, "");
-    markdown = markdown.replace(/<\/?ol>/g, "");
-    markdown = markdown.replace(/<li>(.*?)<\/li>/g, "<li>$1</li>");
-    markdown = markdown.replace(/<\/li>\s*<li>/g, "</li><li>");
+    // Line Breaks
+    html = html.replace(/\n/g, "<br>");
 
-    // Handle Line Breaks hope
-    markdown = markdown.replace(/\n/g, "<br>");
-
-    return markdown;
+    return html;
   }
 
   addButtons(buttons) {
