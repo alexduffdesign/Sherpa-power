@@ -190,12 +190,12 @@
   <div class="chatbot-content">
     {% if section.settings.is_section_chatbot %}
       <div class="chatbot-title">
-        <h5 class="h5 chatbot-subtitle">
+        <h5 class="h5">
           {%-
             render 'styled-text', content: section.settings.calculator_title | default: 'Find Out How Long The BASE 5.0 Will Power Your Appliance!', text_color: section.settings.heading_color, gradient: section.settings.heading_gradient
           -%}
         </h5>
-        <p>
+        <p class="chatbot-subtitle">
           {{
             section.settings.calculator_subtitle | default: 'For best results be specific on your item e.g Macbook 15inch 2023'
           }}
