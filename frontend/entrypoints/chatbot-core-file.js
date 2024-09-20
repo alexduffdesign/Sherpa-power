@@ -186,6 +186,12 @@ export class ChatbotCore {
     html = html.replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>"); // Bold
     html = html.replace(/\*(.*?)\*/g, "<em>$1</em>"); // Italic
 
+    // Images
+    html = html.replace(
+      /!\[(.*?)\]\((.*?)\)/g,
+      '<img src="$2" alt="$1" class="markdown-image">'
+    );
+
     // Links
     html = html.replace(
       /\[(.*?)\]\((.*?)\)/g,
@@ -200,8 +206,24 @@ export class ChatbotCore {
     html = html.replace(/(<li>.*<\/li>)/g, "<ul>$1</ul>");
     html = html.replace(/(<li>.*<\/li>)/g, "<ol>$1</ol>");
 
-    // Line Breaks
-    html = html.replace(/\n/g, "<br>");
+    // Split content into paragraphs
+    const paragraphs = html.split(/\n\s*\n/);
+
+    // Wrap each paragraph with <p> tags, handling special cases
+    html = paragraphs
+      .map((para) => {
+        // Don't wrap headers, lists, or images in <p> tags
+        if (
+          para.startsWith("<h") ||
+          para.startsWith("<ul") ||
+          para.startsWith("<ol") ||
+          para.startsWith("<img")
+        ) {
+          return para;
+        }
+        return `<p>${para}</p>`;
+      })
+      .join("");
 
     return html;
   }
