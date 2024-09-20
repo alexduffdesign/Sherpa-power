@@ -16,6 +16,7 @@ export default defineConfig({
         "frontend/entrypoints/chatbot-section.js",
         "frontend/entrypoints/theme.js",
       ],
+      versionNumbers: true,
     }),
   ],
   build: {
@@ -23,9 +24,9 @@ export default defineConfig({
     emptyOutDir: false,
     rollupOptions: {
       output: {
-        entryFileNames: "[name].js",
-        chunkFileNames: "[name].js",
-        assetFileNames: "[name].[ext]",
+        entryFileNames: `[name].[hash].js`,
+        chunkFileNames: `[name].[hash].js`,
+        assetFileNames: `[name].[hash].[ext]`,
       },
     },
   },
