@@ -200,8 +200,14 @@ export class ChatbotCore {
     html = html.replace(/(<li>.*<\/li>)/g, "<ul>$1</ul>");
     html = html.replace(/(<li>.*<\/li>)/g, "<ol>$1</ol>");
 
-    // Line Breaks
-    html = html.replace(/\n/g, "<br>");
+    // Replace multiple consecutive line breaks with a single <br>
+    html = html.replace(/(\n\s*){2,}/g, "\n\n");
+
+    // Wrap paragraphs
+    html = html.replace(/(.+)(\n|$)/g, "<p>$1</p>");
+
+    // Replace single newlines with <br> inside paragraphs
+    html = html.replace(/<p>(.+)\n(.+)<\/p>/g, "<p>$1<br>$2</p>");
 
     return html;
   }
