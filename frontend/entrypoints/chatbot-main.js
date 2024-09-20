@@ -27,9 +27,14 @@ class MainChatbot {
     if (this.hasLaunched) {
       this.loadConversationFromStorage();
       this.displaySavedConversation();
+    } else {
+      this.initializeChat();
     }
   }
 
+  /**
+   * Initializes and sets the required DOM elements for the chatbot.
+   */
   initializeElements() {
     console.log("MainChatbot initializeElements called");
     const messageContainer = this.element.querySelector("#messageContainer");
@@ -42,14 +47,17 @@ class MainChatbot {
     }
 
     if (!messageContainer || !typingIndicator || !drawerBody) {
-      console.error("Required DOM elements not found");
+      console.error("MainChatbot: Required DOM elements not found");
       return;
     }
 
     this.core.setDOMElements(messageContainer, typingIndicator, drawerBody);
-    console.log("DOM elements set in ChatbotCore:", this.core);
+    console.log("MainChatbot: DOM elements set in ChatbotCore:", this.core);
   }
 
+  /**
+   * Sets up event listeners for form submission and button clicks.
+   */
   setupEventListeners() {
     if (this.eventListenersAttached) return;
 
@@ -58,22 +66,27 @@ class MainChatbot {
     const input = this.element.querySelector("#userInput");
 
     if (!form || !input) {
-      console.error("Chat form or input not found");
+      console.error("MainChatbot: Chat form or input not found");
       return;
     }
 
+    // Handle form submission (user sends a message)
     form.addEventListener("submit", async (e) => {
       e.preventDefault();
       const message = input.value.trim();
       if (message) {
-        console.log("Form submitted with message:", message);
+        console.log("MainChatbot: Form submitted with message:", message);
         input.value = ""; // Clear the input field immediately
         await this.handleUserMessage(message);
       }
     });
 
+    // Handle button clicks within the chat (e.g., choices, carousel buttons)
     this.element.addEventListener("click", async (e) => {
-      if (e.target.matches(".button-container button")) {
+      if (
+        e.target.matches(".button-container button") ||
+        e.target.matches(".carousel__item-button")
+      ) {
         const buttonData = JSON.parse(e.target.dataset.buttonData);
         try {
           const response = await this.core.handleButtonClick(buttonData);
@@ -85,95 +98,92 @@ class MainChatbot {
           this.saveConversationToStorage();
           await this.handleAgentResponse(response);
         } catch (error) {
-          console.error("Error handling button click:", error);
+          console.error("MainChatbot: Error handling button click:", error);
         }
       }
     });
 
-    const jumpToMainButton = document.querySelector(".back-to-start");
+    // Handle "Back to Start" or "Main Menu" button clicks
+    const jumpToMainButton = this.element.querySelector(".back-to-start");
     if (jumpToMainButton) {
       jumpToMainButton.addEventListener("click", () => this.jumpToMainMenu());
     } else {
-      console.error("Jump to start button not found");
+      console.error("MainChatbot: Jump to start button not found");
     }
 
     this.eventListenersAttached = true;
   }
 
+  /**
+   * Initializes the chat by sending a launch request if it's the first time.
+   */
   async initializeChat() {
-    console.log("Initializing chat");
+    console.log("MainChatbot: Initializing chat");
     if (!this.hasLaunched) {
       try {
-        console.log("Initializing chat for the first time");
-        await this.sendLaunch();
+        console.log("MainChatbot: Initializing chat for the first time");
+        const response = await this.core.sendLaunch();
+        await this.handleAgentResponse(response);
         this.hasLaunched = true;
         localStorage.setItem("chatHasLaunched", "true");
       } catch (error) {
-        console.error("Error during chat initialization:", error);
+        console.error("MainChatbot: Error during chat initialization:", error);
       }
-    } else {
-      // Add this else block to handle existing conversations
-      this.loadConversationFromStorage();
-      this.displaySavedConversation();
     }
-    // Add this line to scroll to the bottom after initialization
     this.core.scrollToBottom();
-    console.log("Chat initialized");
+    console.log("MainChatbot: Chat initialized");
   }
 
-  async sendLaunch(payload = {}) {
-    console.log("Sending main chatbot launch request");
-
-    const interactPayload = {
-      userAction: {
-        type: "launch",
-      },
-    };
-
-    try {
-      const response = await this.core.sendLaunch(interactPayload);
-      await this.handleAgentResponse(response);
-    } catch (error) {
-      console.error("Error in main chatbot send launch:", error);
-    }
-  }
-
+  /**
+   * Handles sending a user message and processing the response.
+   * @param {string} message - The user's message.
+   */
   async handleUserMessage(message) {
     this.core.addMessage("user", message);
     this.conversationHistory.push({ type: "user", message: message });
     this.saveConversationToStorage();
 
-    this.core.showTypingIndicator();
     try {
       const response = await this.core.sendMessage(message);
-      console.log("Response from sendMessage:", response);
+      console.log("MainChatbot: Response from sendMessage:", response);
       await this.handleAgentResponse(response);
     } catch (error) {
-      console.error("Error in send message:", error);
+      console.error("MainChatbot: Error in send message:", error);
     } finally {
-      this.core.hideTypingIndicator();
       this.core.scrollToBottom();
     }
   }
 
+  /**
+   * Loads the conversation history from local storage.
+   */
   loadConversationFromStorage() {
     const savedConversation = localStorage.getItem("chatConversation");
     this.conversationHistory = savedConversation
       ? JSON.parse(savedConversation)
       : [];
-    console.log("Loaded conversation from storage:", this.conversationHistory);
+    console.log(
+      "MainChatbot: Loaded conversation from storage:",
+      this.conversationHistory
+    );
   }
 
+  /**
+   * Saves the current conversation history to local storage.
+   */
   saveConversationToStorage() {
     localStorage.setItem(
       "chatConversation",
       JSON.stringify(this.conversationHistory)
     );
-    console.log("Saved conversation to storage");
+    console.log("MainChatbot: Saved conversation to storage");
   }
 
+  /**
+   * Displays the saved conversation in the chat interface.
+   */
   displaySavedConversation() {
-    console.log("Displaying saved conversation");
+    console.log("MainChatbot: Displaying saved conversation");
     const messageContainer = this.element.querySelector("#messageContainer");
     if (messageContainer) {
       messageContainer.innerHTML = ""; // Clear existing messages
@@ -198,29 +208,29 @@ class MainChatbot {
       });
       this.core.scrollToBottom();
     } else {
-      console.error("Message container not found");
+      console.error("MainChatbot: Message container not found");
     }
   }
 
-  // User clicks back to start button
-
+  /**
+   * Handles navigating back to the main menu.
+   */
   async jumpToMainMenu() {
-    console.log("MainChatbot jumpToMainMenu called");
+    console.log("MainChatbot: jumpToMainMenu called");
     const mainMenuMessage = "Main menu"; // The message content to trigger the intent
 
-    this.core.showTypingIndicator();
+    // Add the "Main menu" message to the UI
+    this.core.addMessage("user", mainMenuMessage);
+
+    // Update the conversation history
+    this.conversationHistory.push({
+      type: "user",
+      message: mainMenuMessage,
+    });
+    this.saveConversationToStorage();
+
     try {
-      // **Add the "Main menu" message to the UI**
-      this.core.addMessage("user", mainMenuMessage);
-
-      // **Update the conversation history**
-      this.conversationHistory.push({
-        type: "user",
-        message: mainMenuMessage,
-      });
-      this.saveConversationToStorage();
-
-      // **Send the message to Voiceflow with payload as a string**
+      // Send the message to Voiceflow
       const response = await this.core.gadgetInteract({
         userID: this.core.userID,
         userAction: {
@@ -229,37 +239,24 @@ class MainChatbot {
         },
       });
 
-      // **Handle the response from Voiceflow**
+      // Handle the response from Voiceflow
       await this.handleAgentResponse(response);
     } catch (error) {
-      console.error("Error in jumpToMainMenu /:", error);
-      // **Optionally, notify the user about the error**
+      console.error("MainChatbot: Error in jumpToMainMenu:", error);
+      // Optionally, notify the user about the error
       this.core.addMessage(
         "assistant",
         "Sorry, I couldn't navigate to the main menu. Please try again."
       );
-    } finally {
-      // **Hide the typing indicator after handling response or error**
-      this.core.hideTypingIndicator();
     }
   }
 
-  /// < Redirect Custom Action > //
-
-  handleProductRedirect(productHandle) {
-    if (!productHandle) {
-      console.error("Cannot redirect: Product handle is undefined or empty");
-      return;
-    }
-
-    const baseUrl = "https://www.sherpapower.co.uk/products/";
-    const productUrl = `${baseUrl}${encodeURIComponent(productHandle)}`;
-    console.log(`Redirecting to product page: ${productUrl}`);
-    window.location.href = productUrl;
-  }
-
+  /**
+   * Handles the response traces from Voiceflow and updates the chat interface accordingly.
+   * @param {Array} response - The array of response traces.
+   */
   async handleAgentResponse(response) {
-    console.log("Handling agent response:", response);
+    console.log("MainChatbot: Handling agent response:", response);
     for (const trace of response) {
       if (trace.type === "RedirectToProduct") {
         const productHandle = trace.payload?.body?.productHandle;
@@ -295,15 +292,37 @@ class MainChatbot {
           data: trace.payload,
         });
       } else {
-        console.log("Unknown trace type:", trace.type);
+        console.log("MainChatbot: Unknown trace type:", trace.type);
       }
     }
     this.saveConversationToStorage();
     this.core.scrollToBottom();
   }
 
+  /**
+   * Handles redirection to a product page.
+   * @param {string} productHandle - The handle of the product to redirect to.
+   */
+  handleProductRedirect(productHandle) {
+    if (!productHandle) {
+      console.error(
+        "MainChatbot: Cannot redirect - Product handle is undefined or empty"
+      );
+      return;
+    }
+
+    const baseUrl = "https://www.sherpapower.co.uk/products/";
+    const productUrl = `${baseUrl}${encodeURIComponent(productHandle)}`;
+    console.log(`MainChatbot: Redirecting to product page: ${productUrl}`);
+    window.location.href = productUrl;
+  }
+
+  /**
+   * Adds a visual image to the chat interface.
+   * @param {Object} payload - The payload containing image data.
+   */
   addVisualImage(payload) {
-    console.log("Adding visual image:", payload);
+    console.log("MainChatbot: Adding visual image:", payload);
     const messageContainer = this.element.querySelector("#messageContainer");
     if (messageContainer) {
       const imageWrapper = document.createElement("div");
@@ -326,21 +345,26 @@ class MainChatbot {
       // Add loading and error handling
       imageElement.loading = "lazy";
       imageElement.onerror = () => {
-        console.error("Failed to load image:", payload.image);
+        console.error("MainChatbot: Failed to load image:", payload.image);
         imageElement.alt = "Failed to load image";
       };
 
       imageWrapper.appendChild(imageElement);
       messageContainer.appendChild(imageWrapper);
+      this.core.scrollToBottom();
     } else {
-      console.error("Message container not found when adding visual image");
+      console.error(
+        "MainChatbot: Message container not found when adding visual image"
+      );
     }
   }
 
-  // < Carousel JS > //
-
+  /**
+   * Adds a carousel to the chat interface.
+   * @param {Object} carouselData - The data for the carousel.
+   */
   addCarousel(carouselData) {
-    console.log("Adding carousel:", carouselData);
+    console.log("MainChatbot: Adding carousel:", carouselData);
     const carouselElement = document.createElement("div");
     carouselElement.className = "carousel";
     carouselElement.innerHTML = `
@@ -365,10 +389,14 @@ class MainChatbot {
       const itemContent = `
         <div class="carousel__item-wrapper">
           <div class="carousel__item-content">
-            <img src="${card.imageUrl}" alt="${card.title}" class="carousel__item-image">
+            <img src="${card.imageUrl}" alt="${
+        card.title
+      }" class="carousel__item-image">
             <h6 class="carousel__item-title">${card.title}</h6>
             <p class="carousel__item-description">${card.description.text}</p>
-            <button class="button carousel__item-button" data-button-index="${index}">${card.buttons[0].name}</button>
+            <button class="button carousel__item-button" data-button-data='${JSON.stringify(
+              card.buttons[0]
+            )}'>${card.buttons[0].name}</button>
           </div>
         </div>
       `;
@@ -379,11 +407,7 @@ class MainChatbot {
     const buttons = carouselElement.querySelectorAll(".carousel__item-button");
     buttons.forEach((button, index) => {
       button.addEventListener("click", async () => {
-        const cardIndex = Math.floor(
-          index / carouselData.cards[0].buttons.length
-        );
-        const buttonIndex = index % carouselData.cards[0].buttons.length;
-        const buttonData = carouselData.cards[cardIndex].buttons[buttonIndex];
+        const buttonData = JSON.parse(button.dataset.buttonData);
         try {
           // Remove the carousel element
           carouselElement.remove();
@@ -398,7 +422,10 @@ class MainChatbot {
           const response = await this.core.handleButtonClick(buttonData);
           await this.handleAgentResponse(response);
         } catch (error) {
-          console.error("Error handling carousel button click:", error);
+          console.error(
+            "MainChatbot: Error handling carousel button click:",
+            error
+          );
         }
       });
     });
@@ -408,11 +435,17 @@ class MainChatbot {
       messageContainer.appendChild(carouselElement);
       this.core.scrollToBottom();
     } else {
-      console.error("Message container not found when adding carousel");
+      console.error(
+        "MainChatbot: Message container not found when adding carousel"
+      );
     }
   }
 }
 
+/**
+ * Carousel class to handle carousel functionalities.
+ * Note: Ensure that this class does not interfere with the typing indicator.
+ */
 class Carousel {
   constructor(element) {
     this.element = element;
