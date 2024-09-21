@@ -211,7 +211,6 @@
       <!-- Sherpa typing code -->
       <div class="chat-typing">
         <div class="logo-container">
-          <div class="logo-mask"></div>
           <div class="logo-background"></div>
         </div>
         <p>Sherpa Guide Is Typing...</p>
@@ -238,18 +237,6 @@
           overflow: hidden;
         }
 
-        .logo-mask {
-          width: 100%;
-          height: 100%;
-          background-image: url('https://cdn.shopify.com/s/files/1/0641/4290/1439/files/Transparent_Logo.png?v=1726927756');
-          background-size: contain;
-          background-repeat: no-repeat;
-          position: absolute;
-          top: 0;
-          left: 0;
-          z-index: 2;
-        }
-
         .logo-background {
           width: 400%;
           height: 400%;
@@ -259,7 +246,12 @@
           top: -150%;
           left: -150%;
           animation: moveBackgroundCircular 10s linear infinite;
-          z-index: 1;
+          -webkit-mask-image: url('https://cdn.shopify.com/s/files/1/0641/4290/1439/files/Transparent_Logo_2.png?v=1726928456');
+          mask-image: url('https://cdn.shopify.com/s/files/1/0641/4290/1439/files/Transparent_Logo_2.png?v=1726928456');
+          -webkit-mask-size: 30px 20px;
+          mask-size: 30px 20px;
+          -webkit-mask-repeat: no-repeat;
+          mask-repeat: no-repeat;
         }
 
         @keyframes moveBackgroundCircular {
