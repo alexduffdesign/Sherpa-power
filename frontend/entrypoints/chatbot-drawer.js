@@ -24,7 +24,6 @@ function initChatbotDrawer(drawerId) {
             "https://chatbottings--development.gadget.app/voiceflowAPI/voiceflow",
         };
         this.mainChatbot = new MainChatbot(this, config);
-        // Removed: this.mainChatbot.initializeChat();
       }
     }
   }
@@ -52,7 +51,6 @@ function initChatbotDrawer(drawerId) {
   document.addEventListener("dialog:after-hide", function (event) {
     if (event.target.id === drawerId) {
       console.log("Chatbot drawer closed");
-      // Optionally handle post-hide actions here
     }
   });
 
