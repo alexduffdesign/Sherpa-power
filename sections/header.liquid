@@ -88,7 +88,7 @@
   display: flex;
   flex-direction: row;
   align-items: center;
-  grid-gap: var(--spacing-1);
+  grid-gap: var(--spacing-2);
 }
 button.sherpa-guide::before {
   position: absolute;
@@ -353,8 +353,7 @@ button.sherpa-guide::before {
       {%- endcomment -%}
 
       <div class="header__secondary-nav">
-        <!-- {%- if section.settings.header != 'drawer' and section.settings.secondary_menu.links.size > 0 -%}  <nav class="header__link-list" role="navigation">    <ul class="contents">      {%- for link in section.settings.secondary_menu.links -%}        <li>          <a href="{{ link.url }}" class="link-faded-reverse">{{ link.title }}</a>        </li>      {%- endfor -%}    </ul>
-          </nav>
+        <!-- {%- if section.settings.header != 'drawer' and section.settings.secondary_menu.links.size > 0 -%}  <nav class="header__link-list" role="navigation">    <ul class="contents">      {%- for link in section.settings.secondary_menu.links -%}        <li>          <a href="{{ link.url }}" class="link-faded-reverse">{{ link.title }}</a>        </li>      {%- endfor -%}    </ul>  </nav>
         {%- endif -%} -->
         <div class="header__icon-list">
           {%- if section.settings.show_country_selector and localization.available_countries.size > 1 -%}
