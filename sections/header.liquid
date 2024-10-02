@@ -353,9 +353,7 @@ button.sherpa-guide::before {
       {%- endcomment -%}
 
       <div class="header__secondary-nav">
-        <!-- {%- if section.settings.header != 'drawer' and section.settings.secondary_menu.links.size > 0 -%}  <nav class="header__link-list" role="navigation">    <ul class="contents">      {%- for link in section.settings.secondary_menu.links -%}        <li>          <a href="{{ link.url }}" class="link-faded-reverse">{{ link.title }}</a>        </li>
-              {%- endfor -%}
-            </ul>
+        <!-- {%- if section.settings.header != 'drawer' and section.settings.secondary_menu.links.size > 0 -%}  <nav class="header__link-list" role="navigation">    <ul class="contents">      {%- for link in section.settings.secondary_menu.links -%}        <li>          <a href="{{ link.url }}" class="link-faded-reverse">{{ link.title }}</a>        </li>      {%- endfor -%}    </ul>
           </nav>
         {%- endif -%} -->
         <div class="header__icon-list">
@@ -385,30 +383,38 @@ button.sherpa-guide::before {
             class="button tap-area sherpa-guide"
             aria-controls="header-ai-trigger">
             <span class="header-ai-text">SHERPA GUIDE</span>
-
             <svg
-              class="sherpa-icon"
-              width="24"
-              height="25"
-              viewBox="0 0 28 29"
+              width="23"
+              height="23"
+              viewBox="0 0 23 23"
               fill="none"
               xmlns="http://www.w3.org/2000/svg">
-              <path d="M17.5 10.8086L14 0.308594L10.5 10.8086L0 14.3086L10.5 17.8086L14 28.3086L17.5 17.8086L28 14.3086L17.5 10.8086ZM4.66667 14.3086L11.6667 11.9753L12.8333 14.3086H4.66667ZM14 23.6419L11.6667 16.6419L14 15.4753V23.6419ZM14 4.97526L16.3333 11.9753L14 13.1419V4.97526ZM16.3333 16.6419L15.1667 14.3086H23.3333L16.3333 16.6419ZM10.15 20.4919L5.83333 22.4753L7.81667 18.1586L9.68333 18.7419L10.15 20.4919ZM20.1833 18.1586L22.1667 22.4753L17.85 20.4919L18.4333 18.6253L20.1833 18.1586ZM7.81667 10.4586L5.83333 6.14193L10.15 8.12526L9.56667 9.87526L7.81667 10.4586ZM17.85 8.12526L22.1667 6.14193L20.1833 10.4586L18.3167 9.87526L17.85 8.12526Z" fill="url(#paint0_linear_2944_124)" />
+              <path d="M3.32783 18.0945V22.2721L5.00839 21.2637L10.2908 18.0945H15.5299C16.7534 18.0945 17.7484 17.0995 17.7484 15.876V7.00176C17.7484 5.77822 16.7534 4.7832 15.5299 4.7832H2.21855C0.995022 4.7832 0 5.77822 0 7.00176V15.876C0 17.0995 0.995022 18.0945 2.21855 18.0945H3.32783ZM2.21855 7.00176H15.5299V15.876H9.67623L5.54639 18.3541V15.876H2.21855V7.00176Z" fill="url(#paint0_linear_3039_66)" />
+              <path d="M19.9669 0.345703H6.65557C5.43203 0.345703 4.43701 1.34072 4.43701 2.56426H17.7483C18.9719 2.56426 19.9669 3.55928 19.9669 4.78281V13.657C21.1904 13.657 22.1854 12.662 22.1854 11.4385V2.56426C22.1854 1.34072 21.1904 0.345703 19.9669 0.345703Z" fill="url(#paint1_linear_3039_66)" />
               <defs>
                 <linearGradient
-                  id="paint0_linear_2944_124"
-                  x1="14"
-                  y1="0.308594"
-                  x2="14"
-                  y2="28.3086"
+                  id="paint0_linear_3039_66"
+                  x1="8.87422"
+                  y1="4.7832"
+                  x2="8.87422"
+                  y2="22.2721"
                   gradientUnits="userSpaceOnUse">
-                  <stop stop-color="white" />
-                  <stop offset="1" stop-color="#DB9BFB" />
+                  <stop stop-color="#FEFBFF" />
+                  <stop offset="1" stop-color="#DD9FFC" />
+                </linearGradient>
+                <linearGradient
+                  id="paint1_linear_3039_66"
+                  x1="13.3112"
+                  y1="0.345703"
+                  x2="13.3112"
+                  y2="13.657"
+                  gradientUnits="userSpaceOnUse">
+                  <stop stop-color="#FEFBFF" />
+                  <stop offset="1" stop-color="#DD9FFC" />
                 </linearGradient>
               </defs>
             </svg>
           </button>
-
           <!-- AI BUTTON 🤖 -->
 
           <a
