@@ -75,9 +75,18 @@
 }
 
 .application-card__image {
-  width: 50px;
-  height: 50px;
+  width: 75%;
+  height: 75%;
   object-fit: contain;
+}
+
+.appliance-card__circle {
+  border-radius: 50%;
+  width: 2rem;
+  height: 2rem;
+  background-color: #403545;
+  border-color: #25C293;
+  border: solid 1px;
 }
 
 .application-card__content {
@@ -159,11 +168,13 @@
                 {% for appliance in appliance_data.appliances %}
                   <div class="application-card">
                     {% if appliance.image %}
-                      <img
-                        src="{{ appliance.image }}"
-                        alt="{{ appliance.name }}"
-                        class="application-card__image"
-                        loading="lazy">
+                      <div class="appliance-card__circle">
+                        <img
+                          src="{{ appliance.image }}"
+                          alt="{{ appliance.name }}"
+                          class="application-card__image"
+                          loading="lazy">
+                      </div>
                     {% endif %}
                     <div class="application-card__content">
                       <div class="application-card__title">{{ appliance.name }}</div>
