@@ -74,9 +74,15 @@
   gap: var(--spacing-4);
 }
 
-.application-card__image {
+.application-card .chatbot-card .application-card__image {
   width: 50px;
   height: 50px;
+  object-fit: contain;
+}
+
+.application-card__image {
+  width: 75%;
+  height: 75%;
   object-fit: contain;
 }
 
@@ -87,6 +93,8 @@
   background-color: #403545;
   border-color: #25C293;
   border: solid 1px;
+  display: flex;
+  -ms-flex-align: center;
 }
 
 .application-card__content {
