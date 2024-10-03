@@ -86,8 +86,7 @@ class SectionChatbot extends HTMLElement {
     if (!this.chatInitialized) {
       console.log("Initializing section chatbot");
       const config = {
-        apiEndpoint:
-          "https://chatbottings--development.gadget.app/voiceflowAPI/voiceflow",
+        apiEndpoint: "https://chatbottings.gadget.app/voiceflowAPI/voiceflow",
         userIDPrefix: "sectionChatbot",
       };
       this.core = new ChatbotCore(config);
