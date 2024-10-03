@@ -21,7 +21,7 @@ function initChatbotDrawer(drawerId) {
         console.log("MainChatbotElement connected");
         const config = {
           voiceflowEndpoint:
-            "https://chatbottings--development.gadget.app/voiceflowAPI/voiceflow",
+            "https://chatbottings.gadget.app/voiceflowAPI/voiceflow",
         };
         this.mainChatbot = new MainChatbot(this, config);
       }
