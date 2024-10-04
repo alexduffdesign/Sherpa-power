@@ -179,7 +179,7 @@ export class ChatbotCore {
     html = html.replace(/^#### (.*)$/gm, '<h6 class="h6">$1</h6>');
     html = html.replace(/^### (.*)$/gm, '<h6 class="h6">$1</h6>');
     html = html.replace(/^## (.*)$/gm, '<h6 class="h5">$1</h6>');
-    html = html.replace(/^# (.*)$/gm, '<h6 class="h4">$1</h6>');
+    html = html.replace(/^# (.*)$/gm, '<p class="p">$1</p>');
 
     // Bold and Italic
     html = html.replace(/\*\*\*(.*?)\*\*\*/g, "<strong><em>$1</em></strong>"); // Bold Italic
