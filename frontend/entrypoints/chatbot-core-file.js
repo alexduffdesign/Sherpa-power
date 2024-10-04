@@ -207,7 +207,7 @@ export class ChatbotCore {
     html = html.replace(/(<li>.*<\/li>)/g, "<ol>$1</ol>");
 
     // Split content into paragraphs
-    const paragraphs = html.split(/\n\s*\n/);
+    const paragraphs = html.split(/\n+/);
 
     // Wrap each paragraph with <p> tags, handling special cases
     html = paragraphs
@@ -217,7 +217,8 @@ export class ChatbotCore {
           para.startsWith("<h") ||
           para.startsWith("<ul") ||
           para.startsWith("<ol") ||
-          para.startsWith("<img")
+          para.startsWith("<img") ||
+          para.startsWith("<li>")
         ) {
           return para;
         }
