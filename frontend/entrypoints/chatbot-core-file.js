@@ -174,17 +174,20 @@ export class ChatbotCore {
     let html = escapeHtml(markdown);
 
     // Headers
-    html = html.replace(/^###### (.*)$/gm, '<h6 class="h6">$1</h6>');
-    html = html.replace(/^##### (.*)$/gm, '<h6 class="h6">$1</h6>');
-    html = html.replace(/^#### (.*)$/gm, '<h6 class="h6">$1</h6>');
-    html = html.replace(/^### (.*)$/gm, '<h6 class="h6">$1</h6>');
-    html = html.replace(/^## (.*)$/gm, '<h6 class="h5">$1</h6>');
-    html = html.replace(/^# (.*)$/gm, '<h6 class="h4">$1</h6>');
+    html = html.replace(/^###### (.*)$/gm, "<h6>$1</h6>");
+    html = html.replace(/^##### (.*)$/gm, "<h5>$1</h5>");
+    html = html.replace(/^#### (.*)$/gm, "<h4>$1</h4>");
+    html = html.replace(/^### (.*)$/gm, "<h3>$1</h3>");
+    html = html.replace(/^## (.*)$/gm, "<h2>$1</h2>");
+    html = html.replace(/^# (.*)$/gm, "<h1>$1</h1>");
 
     // Bold and Italic
-    html = html.replace(/\*\*\*(.*?)\*\*\*/g, "<b><em>$1</em></b>"); // Bold Italic
-    html = html.replace(/\*\*(.*?)\*\*/g, "<b>$1</b>"); // Bold
+    html = html.replace(/\*\*\*(.*?)\*\*\*/g, "<strong><em>$1</em></strong>"); // Bold Italic
+    html = html.replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>"); // Bold
     html = html.replace(/\*(.*?)\*/g, "<em>$1</em>"); // Italic
+
+    // Inline Code
+    html = html.replace(/`([^`]+)`/g, "<code>$1</code>");
 
     // Images
     html = html.replace(
@@ -199,11 +202,43 @@ export class ChatbotCore {
     );
 
     // Lists
-    html = html.replace(/^\s*-\s+(.*)$/gm, "<li>$1</li>");
-    html = html.replace(/^\s*\d+\.\s+(.*)$/gm, "<li>$1</li>");
+    let inList = false;
+    html = html
+      .split("\n")
+      .map((line) => {
+        if (line.match(/^\s*[-*+]\s/)) {
+          if (!inList) {
+            inList = true;
+            return "<ul>\n<li>" + line.replace(/^\s*[-*+]\s/, "") + "</li>";
+          }
+          return "<li>" + line.replace(/^\s*[-*+]\s/, "") + "</li>";
+        } else if (line.match(/^\s*\d+\.\s/)) {
+          if (!inList) {
+            inList = true;
+            return "<ol>\n<li>" + line.replace(/^\s*\d+\.\s/, "") + "</li>";
+          }
+          return "<li>" + line.replace(/^\s*\d+\.\s/, "") + "</li>";
+        } else if (inList && line.trim() === "") {
+          inList = false;
+          return "</ul>\n";
+        } else {
+          return line;
+        }
+      })
+      .join("\n");
 
-    // Wrap list items with <ul> or <ol>
-    html = html.replace(/(<li>(.*?)<\/li>)/g, "<ul>$1</ul>");
+    if (inList) {
+      html += "\n</ul>";
+    }
+
+    // Horizontal Rule
+    html = html.replace(/^---$/gm, "<hr>");
+
+    // Blockquotes
+    html = html.replace(/^>\s(.*)$/gm, "<blockquote>$1</blockquote>");
+
+    // Remove excessive asterisks (more than 3)
+    html = html.replace(/\*{4,}/g, "");
 
     // Split content into paragraphs
     const paragraphs = html.split(/\n{2,}/);
@@ -211,13 +246,14 @@ export class ChatbotCore {
     // Wrap each paragraph with <p> tags, handling special cases
     html = paragraphs
       .map((para) => {
-        // Don't wrap headers, lists, or images in <p> tags
+        // Don't wrap headers, lists, blockquotes, horizontal rules, or images in <p> tags
         if (
           para.startsWith("<h") ||
           para.startsWith("<ul") ||
           para.startsWith("<ol") ||
-          para.startsWith("<img") ||
-          para.startsWith("<li>")
+          para.startsWith("<blockquote") ||
+          para.startsWith("<hr") ||
+          para.startsWith("<img")
         ) {
           return para;
         }
