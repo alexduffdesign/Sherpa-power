@@ -111,17 +111,24 @@
             "content": "<p>Setting high standards for product performance and compatibility to offer a wider application and freedom to work and play while respecting our environment. Be free from grid reliance and start building the way of life you want. <br/><br/><strong>Sherpa was founded with people in mind</strong>, aiming to empower individuals through the delivery of high-quality, innovative power solutions. <br/><br/>We have observed the way the portable power market has evolved in recent years. With a growing demand for power and <strong>energy costs remaining high</strong>, there is a widespread desire for many to adopt a more energy efficient lifestyle, we have witnessed a substantial surge in the utilisation of portable power products in residential and commercial markets.</p><p>Aside from being a leisure solution, battery storage is gaining popularity as a practical means for individuals and businesses to <strong>save money</strong> and embrace energy ownership. </p><p>We believe in the value of versatile power solutions that<strong> eliminate the need for costly professional installations</strong>, and we are committed to reducing environmental impacts.</p><p><strong>We offer reliable customer service and expertise, along with affordable, sustainable solutions which are accessible to everyone.</strong></p>"
           }
         },
-        "subheading_WbBMBq": {
-          "type": "subheading",
+        "richtext_6GPUAz": {
+          "type": "richtext",
           "settings": {
-            "text": "Sherpa Power are proud to be partnered with Sunvault Energy Solutions https://sunvault.co.uk/"
+            "content": "<p>Sherpa Power are proud to be partnered with</p>"
+          }
+        },
+        "liquid_qdqAqM": {
+          "type": "liquid",
+          "settings": {
+            "liquid": "<a href=\"https://sunvault.co.uk/\">Sunvault Energy Solutions</a>"
           }
         }
       },
       "block_order": [
         "heading_wd3Fep",
         "richtext_ym3B7i",
-        "subheading_WbBMBq"
+        "richtext_6GPUAz",
+        "liquid_qdqAqM"
       ],
       "settings": {
         "full_width": true,
