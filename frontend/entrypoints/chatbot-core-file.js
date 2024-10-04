@@ -182,8 +182,8 @@ export class ChatbotCore {
     html = html.replace(/^# (.*)$/gm, '<h6 class="h4">$1</h6>');
 
     // Bold and Italic
-    html = html.replace(/\*\*\*(.*?)\*\*\*/g, "<strong><em>$1</em></strong>"); // Bold Italic
-    html = html.replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>"); // Bold
+    html = html.replace(/\*\*\*(.*?)\*\*\*/g, "<b><em>$1</em></b>"); // Bold Italic
+    html = html.replace(/\*\*(.*?)\*\*/g, "<b>$1</b>"); // Bold
     html = html.replace(/\*(.*?)\*/g, "<em>$1</em>"); // Italic
 
     // Images
@@ -203,11 +203,10 @@ export class ChatbotCore {
     html = html.replace(/^\s*\d+\.\s+(.*)$/gm, "<li>$1</li>");
 
     // Wrap list items with <ul> or <ol>
-    html = html.replace(/(<li>.*<\/li>)/g, "<ul>$1</ul>");
-    html = html.replace(/(<li>.*<\/li>)/g, "<ol>$1</ol>");
+    html = html.replace(/(<li>(.*?)<\/li>)/g, "<ul>$1</ul>");
 
     // Split content into paragraphs
-    const paragraphs = html.split(/\n+/);
+    const paragraphs = html.split(/\n{2,}/);
 
     // Wrap each paragraph with <p> tags, handling special cases
     html = paragraphs
@@ -224,7 +223,7 @@ export class ChatbotCore {
         }
         return `<p>${para}</p>`;
       })
-      .join("");
+      .join("\n");
 
     return html;
   }
