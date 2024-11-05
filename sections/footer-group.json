@@ -1,1 +1,77 @@
-{"type":"footer","name":"Footer group","sections":{"footer":{"type":"footer","blocks":{"newsletter":{"type":"newsletter","settings":{"image_width":150,"heading_size":"h3","title":"Sign Up To Become A Sherpa Follower","content":"<p>Enjoy a 5% discount on your purchases when you sign up to our newsletter.<\/p>"}},"links":{"type":"links","settings":{"menu":"footer","show_menu_title":true,"menu_title":""}},"links_RWe8LW":{"type":"links","settings":{"menu":"policies","show_menu_title":true,"menu_title":""}},"text":{"type":"text","settings":{"title":"Sherpa Power","content":"<p>Sherpa Tek Ltd. (trading as Sherpa Power)<br\/>Company Number 15251223<br\/>Address: Sherpa Tek Ltd.<br\/>6 Ocean Way,<br\/>Cardiff,<br\/>CF24 5HG,<\/p><p>support@sherpapower.co.uk<\/p><p>02920 028686<\/p>","enable_follow_on_shop":true}}},"block_order":["newsletter","links","links_RWe8LW","text"],"custom_css":[".footer {background-image: url(\"https:\/\/cdn.shopify.com\/s\/files\/1\/0641\/4290\/1439\/files\/Footer_Photo.jpg?v=1710252380\"); background-position: 0px 0px; background-size: cover; background-repeat: no-repeat; color: white;}",".form-control {border-width: 2px; border-color: white; border-radius: 30px;}",".footer .text-subdued {color: white;}",".input {color: white !important;}",".input:focus {border-radius: 40px; outline-offset: 5px; color: transparent; outline: 2px solid transparent;}"],"settings":{"show_social_media":true,"show_payment_icons":true,"show_country_selector":true,"show_country_flag":true,"show_country_name":true,"show_locale_selector":true}}},"order":["footer"]}
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "type": "footer",
+  "name": "Footer group",
+  "sections": {
+    "footer": {
+      "type": "footer",
+      "blocks": {
+        "newsletter": {
+          "type": "newsletter",
+          "settings": {
+            "image_width": 150,
+            "heading_size": "h3",
+            "title": "Sign Up To Become A Sherpa Follower",
+            "content": "<p>Enjoy a 5% discount on your purchases when you sign up to our newsletter.</p>"
+          }
+        },
+        "links": {
+          "type": "links",
+          "settings": {
+            "menu": "footer",
+            "show_menu_title": true,
+            "menu_title": ""
+          }
+        },
+        "links_RWe8LW": {
+          "type": "links",
+          "settings": {
+            "menu": "policies",
+            "show_menu_title": true,
+            "menu_title": ""
+          }
+        },
+        "text": {
+          "type": "text",
+          "settings": {
+            "title": "Sherpa Power",
+            "content": "<p>Sherpa Tek Ltd. (trading as Sherpa Power)<br/>Company Number 15251223<br/>Address: Sherpa Tek Ltd.<br/>6 Ocean Way,<br/>Cardiff,<br/>CF24 5HF,</p><p>support@sherpapower.co.uk</p><p>02920 028686</p>",
+            "enable_follow_on_shop": true
+          }
+        }
+      },
+      "block_order": [
+        "newsletter",
+        "links",
+        "links_RWe8LW",
+        "text"
+      ],
+      "custom_css": [
+        ".footer {background-image: url(\"https://cdn.shopify.com/s/files/1/0641/4290/1439/files/Footer_Photo.jpg?v=1710252380\"); background-position: 0px 0px; background-size: cover; background-repeat: no-repeat; color: white;}",
+        ".form-control {border-width: 2px; border-color: white; border-radius: 30px;}",
+        ".footer .text-subdued {color: white;}",
+        ".input {color: white !important;}",
+        ".input:focus {border-radius: 40px; outline-offset: 5px; color: transparent; outline: 2px solid transparent;}"
+      ],
+      "settings": {
+        "show_social_media": true,
+        "show_payment_icons": true,
+        "show_country_selector": true,
+        "show_country_flag": true,
+        "show_country_name": true,
+        "show_locale_selector": true
+      }
+    }
+  },
+  "order": [
+    "footer"
+  ]
+}
