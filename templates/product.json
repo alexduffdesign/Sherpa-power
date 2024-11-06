@@ -1,12 +1,12 @@
 /*
-* ------------------------------------------------------------
-* IMPORTANT: The contents of this file are auto-generated.
-*
-* This file may be updated by the Shopify admin theme editor
-* or related systems. Please exercise caution as any changes
-* made to this file may be overwritten.
-* ------------------------------------------------------------
-*/
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "main": {
@@ -291,7 +291,7 @@
         "background_gradient": "",
         "heading_color": "#f7f7f7",
         "heading_gradient": "",
-        "calculator_title": "Find Out How Long The BASE 5.0 Will Power Your Appliance!",
+        "calculator_title": "Find Out How Long The BASE 2.0-EB Will Power Your Appliance!",
         "calculator_subtitle": "For best results be specific on your item e.g Macbook 15inch 2023",
         "is_section_chatbot": true
       }
