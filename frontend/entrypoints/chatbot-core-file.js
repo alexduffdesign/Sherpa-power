@@ -98,6 +98,7 @@ export class ChatbotCore {
     };
     const response = await fetch(this.apiEndpoint, {
       method: "POST",
+      credentials: "include", // Add this line
       headers: {
         "Content-Type": "application/json",
       },
