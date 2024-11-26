@@ -202,6 +202,9 @@
           <section-chatbot
             product-title="{{ product.title }}"
             product-capacity="{{ product.metafields.custom.capacity | escape }}"
+            product-ac_output_continuous_power="{{ product.metafields.custom.ac_output_continuous_power | escape }}"
+            product-ac_output_peak_power="{{ product.metafields.custom.ac_output_peak_power | escape }}"
+            product-dc_output_power="{{ product.metafields.custom.dc_output_power | escape }}"
             class="section-chatbot section-stack__sidebar">
             {% render 'chatbot-template'
               , is_section_chatbot: section.settings.is_section_chatbot
