@@ -292,7 +292,19 @@ class SectionChatbot extends HTMLElement {
     // Prepare the product details
     const productTitle = this.getAttribute("product-title");
     const productCapacity = this.getAttribute("product-capacity");
-    const productDetails = `Power Station: ${productTitle}, Capacity: ${productCapacity}`;
+    const acOutputContinuousPower = this.getAttribute(
+      "product-ac-output-continuous-power"
+    );
+    const acOutputPeakPower = this.getAttribute("product-ac-output-peak-power");
+    const dcOutputPower = this.getAttribute("product-dc-output-power");
+
+    const productDetails = JSON.stringify({
+      powerStation: productTitle,
+      capacity: productCapacity,
+      acOutputContinuousPower: acOutputContinuousPower,
+      acOutputPeakPower: acOutputPeakPower,
+      dcOutputPower: dcOutputPower,
+    });
 
     const interactPayload = {
       userAction: {
