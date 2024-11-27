@@ -1,12 +1,12 @@
 /*
-* ------------------------------------------------------------
-* IMPORTANT: The contents of this file are auto-generated.
-*
-* This file may be updated by the Shopify admin theme editor
-* or related systems. Please exercise caution as any changes
-* made to this file may be overwritten.
-* ------------------------------------------------------------
-*/
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "image_with_text_overlay_gT6QRA": {
@@ -27,6 +27,12 @@
             "text": "Ask us about hire options of our portable power range. We can provide a greener solution to your event operations so you don't have to have noisy, smelly generators running to power your kit. We offer competitive rates and excellent customer support."
           }
         },
+        "richtext_Q48Bpb": {
+          "type": "richtext",
+          "settings": {
+            "content": "<p>Discounts apply to longer hire periods. </p><p>Discounts available on a Hire Before Buy option.</p><p></p>"
+          }
+        },
         "liquid_W3xzHg": {
           "type": "liquid",
           "settings": {
@@ -37,6 +43,7 @@
       "block_order": [
         "heading_kgHwRj",
         "subheading_y8XgbG",
+        "richtext_Q48Bpb",
         "liquid_W3xzHg"
       ],
       "settings": {
