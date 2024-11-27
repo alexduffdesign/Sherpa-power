@@ -100,12 +100,25 @@ export class ChatbotCore {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        Authorization: process.env.VF_API_KEY, // Make sure this is passed from your environment
+        versionID: "development",
       },
       body: JSON.stringify(fullPayload),
     });
+
+    console.log("Response status:", response.status);
+
     if (!response.ok) {
+      console.error("Error response:", await response.text());
       throw new Error(`Gadget API error: ${response.status}`);
     }
+
+    // For 204 responses, return an empty response object
+    if (response.status === 204) {
+      console.log("Received 204 No Content response");
+      return { traces: [] };
+    }
+
     return await response.json();
   }
 

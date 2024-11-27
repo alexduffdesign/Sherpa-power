@@ -1,0 +1,448 @@
+Overview
+The Dialog Manager API (DM API) allows any application to talk with a Voiceflow diagram using HTTP calls to the interact endpoint.
+
+Managing your conversation state when using DM API
+The DM API automatically creates and manages the conversation state. Identical requests to the DM API may produce different responses, depending on your diagram's logic and the previous request that the API received.
+
+Note that this means the DM API is not a REST API as it does not satisfy the statelessness property. The DM API's responses depend not only on the request, but also stored state within the server. Keep this in mind while working with the DM API.
+
+A diagram of how a conversation through the Dialog Management API works with example payloads, traces received, visual representations, and an example of how to integrate the Dialog Management API deeply into an app through a custom action.
+A diagram of how a conversation through the Dialog Management API works with example payloads, traces received, visual representations, and an example of how to integrate the Dialog Management API deeply into an app through a custom action.
+
+Tracking conversation state
+All endpoints take in a userID parameter, which is used to identify the caller and assign them a unique conversation state object.
+
+Multiple conversation sessions
+Multiple conversation sessions to the same Voiceflow project can be running simultaneously. Each session is identified by the userID that you specify.
+
+For example, customer A should communicate with /state/user/customerA/interact whereas customer B should communicate with /state/user/customerB/interact.
+
+When customer A gives a response, such as "I would like a large pizza", it will advance their specific conversation session identified by /state/user/customerA/interact. For example, the app might then ask what toppings customer A wants.
+
+Meanwhile, /state/user/customerB/interact's session remains unchanged, e.g, it might be waiting for customer B to give their order.
+
+Format of userID
+The format of userID is up to you. You can choose any string that fits your particular domain such as user1234 or 507f191e810c19729de860ea.
+
+There are a few best practices to defining a userID format:
+
+Unique - The userID should be unique to each user. Otherwise, if two users share the same userID, the Voiceflow app may leak information about user A's conversation to user B, which is a potential privacy violation.
+
+Non-sensitive - It is not recommended to use sensitive or private information in the userID such
+as emails, real names, or phone numbers.
+
+versionID
+DM API endpoints also accept a versionID header whose value is a version alias that points to a particular version of your Voiceflow project.
+
+The currently supported aliases are:
+
+development - The version displayed on the Voiceflow Creator's canvas
+
+production - The version that has been published
+
+Use the development alias whenever you are experimenting with your API, and the production version when integrating Voiceflow with your web app. Learn more about version and project IDs here.
+
+Updating your version
+To update the 'development' version exposed by the DM API, you must:
+
+Make your changes on the canvas and NLU manager
+
+Hit the blue Run button in the Voiceflow canvas to compile the diagram
+
+Hit the "Train Assistant" button in the Prototype tool to train the NLU model
+
+To update the 'production' version exposed by the DM API, you must:
+
+Make your changes on the canvas and NLU manager
+
+Hit the Publish button at the top-right corner of the Voiceflow canvas
+
+Interact Stream
+post
+https://general-runtime.voiceflow.com/v2/project/{projectID}/user/{userID}/interact/stream
+Sends a request to advance the conversation session with your Voiceflow project, recieving a stream of events back.
+
+This endpoint initiates a streaming interaction session with a Voiceflow agent. Clients connect to this endpoint to receive server-side events (SSE) using the text/event-stream format. This allows for real time events during progression through the flow.
+
+Streaming events can be used to drastically improve latency and provide a more natural conversation by sending information to the user as soon as it's ready, instead of waiting for the entire Voiceflow turn to be finished.
+
+In the block above, events would be sent as goes:
+
+The API immediately sends an event for Message 1 ("give me a moment")
+Then a long API Call holds up the rest of the answer
+Once the API call is finished, the API sends an event for Message 2 "got it...".
+Streaming allows us to respond first with Message 1 before going into the long API Call (long-running-api-request).
+
+From the user's perspective, the agent will respond "give me a moment...", and after the API finishes in 10 seconds, then "got it, your flight is booked for...". This helps prevent an awkward silence while the API runs in the background and prepares the user to wait for an action to be finished.
+
+Streaming is great for breaking up long-running, blocking steps such as: AI Set/AI Response/Prompt, API, JavaScript, Function, KB Search.
+
+The response is a stream of trace events, which each roughly corresponds with a step on the canvas, sent as the step is invoked. Visit Trace Types to learn about the different types of traces.
+
+An Authorization header is required to validate the request. Learn more at: https://docs.voiceflow.com/reference/authentication
+
+Your projectID is also required as part of the URL, find this in the agent settings page:
+
+Note: this is not the same ID in the URL creator.voiceflow.com/project/.../
+
+Example Request
+cURL
+
+curl --request POST \
+ --url https://general-runtime.voiceflow.com/v2/project/$PROJECT_ID/user/$userID/interact/stream \
+ --header 'Accept: text/event-stream' \
+ --header 'Authorization: $VOICEFLOW_API_KEY' \
+ --header 'content-type: application/json' \
+ --data '
+{
+"action": {
+"type": "launch"
+}
+}
+Example Response
+Response
+
+event: trace
+id: 1
+data: {
+"type": "text",
+"payload": {
+"message": "give me a moment...",
+},
+"time": 1725899197143
+}
+
+event: trace
+id: 2
+data: {
+"type": "debug",
+"payload": {
+"type": "api",
+"message": "API call successfully triggered"
+},
+"time": 1725899197146
+}
+
+event: trace
+id: 3
+data: {
+"type": "text",
+"payload": {
+"message": "got it, your flight is booked for June 2nd, from London to Sydney.",
+},
+"time": 1725899197143
+}
+
+event: end
+id: 4
+You can check out an example project here using the API: https://github.com/voiceflow/streaming-wizard
+
+For more details on advanced settings, reference dedicated documentation:
+
+completion_events to stream LLM responses as they are being generated, instead of waiting for the entire response
+Path Params
+projectID
+string
+required
+The ID of your Voiceflow project. You can find this in the settings for your agent. Note: this is not the same ID in the URL creator.voiceflow.com/project/.../
+
+userID
+string
+required
+A unique user ID specified by the caller.
+
+The Dialog Manager API creates an independent conversation session for each user ID, allowing your app to talk with different users simultaneously.
+
+Query Params
+environment
+string
+Defaults to development
+the environment of the project to run against, this was previously called versionID. aliases are supported, such as development and production.
+The development environment is only updated when "Run" is clicked on the Voiceflow canvas.
+
+development
+completion_events
+string
+Defaults to false
+[advanced] whether or not to break up LLM traces into streamed-in chunks - documentation
+
+false
+state
+string
+Defaults to false
+[advanced] send back the new user state as an event.
+
+false
+Body Params
+action
+object | null
+required
+The user's response, e.g, user requests starting a conversation or advances the conversation by providing some textual response.
+
+Launch Request
+
+Text Request
+
+Intent Request
+
+Event Request
+variables
+object
+The variables to update in the user's state. This object will be merged with the existing variables in the user's state.
+
+Merge Variables object
+Responses
+
+200
+A stream of events to display back to the user. The primary relevant event is trace. Other types of events include state and end
+
+Response body
+string
+400
+Bad Request.
+
+The environment query parameter is not a valid tag or objectID reference.
+
+401
+Unauthorized.
+HTTP request is missing a Dialog Manager API key in the Authorization header or the key is invalid.
+This can also occur because of an invalid projectID URL parameter that can not be accessed.
+
+404
+Not Found.
+
+The environment query parameter refers to an environment does not exist. For environment=production ensure you have published.
+
+429
+Too Many Requests.
+Rate limit hit for given project. This limit can vary depending on cloud.
+
+Interact
+post
+https://general-runtime.voiceflow.com/state/user/{userID}/interact
+Sends a request to advance the conversation session with your Voiceflow project.
+
+Requests
+There are different types of requests that can be sent. To see a list of all request types, check out the documentation for the action field below.
+
+To start a conversation, you should send a launch request. Then, to pass in your user's response, you should send a text request. If you have your own NLU matching, then you may want to directly send an intent request.
+
+See the Request Examples on the right panel for more examples of valid request bodies.
+
+Response Traces
+After processing your request, the Dialog Manager API will then respond with an array of "traces" which are pieces of the overall response from the project:
+
+JSON
+
+[{
+"type": "speak",
+"payload": {
+"type": "message",
+"message": "would you like fries with that?"
+}
+}, {
+"type": "visual",
+"payload": {
+"image": "https://voiceflow.com/pizza.png"
+}
+}]
+In the example above, the Voiceflow project responded by saying "would you like fries with that?" and an image of a pizza. You can then display the chatbot's response and the image in your app.
+
+There are many types of response traces. Each trace is produced by a particular block on your Voiceflow project. Expand the documentation for the 200 OK response below to see a list of possible response traces.
+
+Runtime Logs
+The logs query parameter can be used to enable debug logging, which includes log traces in the response.
+
+Legacy responses
+For legacy compatibility, you set the verbose query parameter to true to get a response similar to our legacy Stateless API.
+
+JSON
+
+// <- simplified verbose response body {
+"state": {
+"stack": [{
+"programID": "home flow",
+"nodeID": "yes no choice node"
+}],
+"storage": {},
+"variables": {
+"pizza_type": "pepperoni"
+}
+},
+"trace": [{
+"type": "speak",
+"payload": {
+"type": "message",
+"message": "would you like fries with that?"
+}
+}, {
+"type": "visual",
+"payload": {
+"image": "https://voiceflow.com/pizza.png"
+}
+}]
+}
+Path Params
+userID
+string
+required
+A unique user ID specified by the caller.
+
+The Dialog Manager API creates an independent conversation session for each user ID, allowing your app to talk with different users simultaneously.
+
+Query Params
+verbose
+boolean
+Enables verbose responses similar to the legacy Stateless API.
+
+This parameter exists for legacy compatibility reasons. New projects should always have this value set to false.
+
+logs
+Defaults to off
+configure debug logs
+
+Option 1
+
+Option 2
+Body Params
+action
+object | null
+The user's response, e.g, user requests starting a conversation or advances the conversation by providing some textual response.
+
+Launch Request
+
+Text Request
+
+Intent Request
+
+Event Request
+config
+object
+Optional settings to configure the response
+
+Config object
+state
+object
+
+state object
+Headers
+versionID
+string
+The version of your Voiceflow project to contact.
+
+Use 'development' to contact the version on canvas or 'production' to contact the published version.
+
+Responses
+
+200
+A sequential array of response "traces" to display back to the user. They can take a variety of types - common types are defined here.
+
+Response body
+
+Verbose Response
+
+Trace
+
+400
+Bad Request.
+
+Could refer to a number of possible errors:
+
+'Voiceflow project was not published to production' - Caller is contacting the production version, but the project did not publish a production version.
+
+'Cannot resolve project version' - Caller's provided API key is potentially malformed and could not be used to resolve a version alias.
+
+'Cannot resolve version alias' - Caller's provided API key is potentially malformed and could not be used to resolve a version alias.
+
+'Request is missing a versionID' - Request is missing a versionID.
+
+401
+Auth Key Required
+
+HTTP request is missing a Dialog Manager API key in the Authorization header
+
+404
+Model not found. Ensure project is properly rendered.
+
+Attempted to interact with the 'development' version but the Prototype has not been rendered by hitting the Run button on the Voiceflow canvas.
+
+Update variables
+patch
+https://general-runtime.voiceflow.com/state/user/{userID}/variables
+Updates the variables in the user's state by merging with the provided properties in the request body
+
+Path Params
+userID
+string
+required
+A unique user ID specified by the caller.
+
+The Dialog Manager API creates an independent conversation session for each user ID, allowing your app to talk with different users simultaneously.
+
+Body Params
+Contains the variables to update
+
+Add Field
+Headers
+versionID
+string
+The version of your Voiceflow project to contact.
+
+Use 'development' to contact the version on canvas or 'production' to contact the published version.
+
+Response
+
+200
+OK
+
+Response body
+object
+stack
+array of objects
+required
+Contains all of the user's active flows
+
+object
+programID
+string
+required
+The flow that the user has on the stack
+
+diagramID
+string
+required
+The ID of the diagram the flow belongs to
+
+nodeID
+string | null
+The current block this flow is on
+
+variables
+object
+The flow-scoped variables
+
+Has additional fields
+storage
+object
+Internal flow parameters used by the runtime
+
+Has additional fields
+commands
+array of objects
+object
+type
+string
+push jump
+
+event
+object
+Has additional fields
+storage
+object
+required
+Has additional fields
+variables
+object
+required
+Has additional fields
+Updated about 1 year ago
