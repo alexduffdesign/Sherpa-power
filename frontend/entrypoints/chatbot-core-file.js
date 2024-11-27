@@ -147,12 +147,13 @@ export class ChatbotCore {
     if (this.typingIndicator) {
       this.typingIndicator.style.display = "flex";
       this.typingIndicator.classList.add("active");
-      if (customText) {
-        this.typingIndicator.querySelector(".chat-typing").textContent =
-          customText;
-      } else {
-        this.typingIndicator.querySelector(".chat-typing").textContent =
-          this.defaultTypingText;
+      const typingText = this.typingIndicator.querySelector("p");
+      if (typingText) {
+        if (customText) {
+          typingText.textContent = customText;
+        } else {
+          typingText.textContent = this.defaultTypingText;
+        }
       }
       this.scrollToBottom();
     }
@@ -163,8 +164,10 @@ export class ChatbotCore {
     if (this.typingIndicator) {
       this.typingIndicator.style.display = "none";
       this.typingIndicator.classList.remove("active");
-      this.typingIndicator.querySelector(".chat-typing").textContent =
-        this.defaultTypingText;
+      const typingText = this.typingIndicator.querySelector("p");
+      if (typingText) {
+        typingText.textContent = this.defaultTypingText;
+      }
     }
   }
 
