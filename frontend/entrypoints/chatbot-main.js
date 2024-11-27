@@ -294,6 +294,8 @@ class MainChatbot {
           type: "visual",
           data: trace.payload,
         });
+      } else if (trace.type === "waiting_text") {
+        this.core.showTypingIndicator(trace.payload);
       } else {
         console.log("Unknown trace type:", trace.type);
       }

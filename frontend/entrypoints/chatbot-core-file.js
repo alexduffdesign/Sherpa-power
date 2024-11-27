@@ -143,10 +143,10 @@ export class ChatbotCore {
     // Check for waiting_text in the response traces
     if (data.traces) {
       const waitingTrace = data.traces.find(
-        (trace) => trace.type === "custom" && trace.payload?.waiting_text
+        (trace) => trace.type === "waiting_text" && trace.payload
       );
       if (waitingTrace) {
-        this.showTypingIndicator(waitingTrace.payload.waiting_text);
+        this.showTypingIndicator(waitingTrace.payload);
       }
     }
 

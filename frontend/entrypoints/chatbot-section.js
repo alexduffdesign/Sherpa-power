@@ -125,6 +125,8 @@ class SectionChatbot extends HTMLElement {
         this.core.addButtons(trace.payload.buttons);
       } else if (trace.type === "device_answer") {
         this.handleDeviceAnswer(trace.payload);
+      } else if (trace.type === "waiting_text") {
+        this.core.showTypingIndicator(trace.payload);
       } else {
         console.log("Unknown trace type:", trace.type);
       }
