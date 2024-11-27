@@ -307,7 +307,7 @@ class SectionChatbot extends HTMLElement {
     );
 
     const productDetails = JSON.stringify({
-      powerStation: productTitle,
+      title: productTitle, // Change 'powerStation' to 'title'
       capacity: productCapacity,
       ac_output_continuous_power: acOutputContinuousPower,
       ac_output_peak_power: acOutputPeakPower,
