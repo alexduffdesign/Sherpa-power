@@ -305,9 +305,9 @@ class SectionChatbot extends HTMLElement {
     const productDetails = JSON.stringify({
       powerStation: productTitle,
       capacity: productCapacity,
-      acOutputContinuousPower: acOutputContinuousPower,
-      acOutputPeakPower: acOutputPeakPower,
-      dcOutputPower: dcOutputPower,
+      ac_output_continuous_power: acOutputContinuousPower,
+      ac_output_peak_power: acOutputPeakPower,
+      dc_output_power: dcOutputPower,
     });
 
     const interactPayload = {
