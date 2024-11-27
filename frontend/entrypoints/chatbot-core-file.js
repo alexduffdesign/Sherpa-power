@@ -81,7 +81,7 @@ export class ChatbotCore {
       const res = await this.gadgetInteract({
         userAction: {
           type: "launch",
-          payload: null,
+          payload: {},
         },
       });
       console.log("Launch response:", res);
