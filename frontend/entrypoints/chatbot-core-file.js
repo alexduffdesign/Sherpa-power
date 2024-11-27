@@ -10,6 +10,7 @@ export class ChatbotCore {
     this.messageContainer = null;
     this.typingIndicator = null;
     this.drawerBody = null;
+    this.defaultTypingText = "Sherpa Guide Is Typing...";
 
     // Bind methods
     this.sendMessage = this.sendMessage.bind(this);
@@ -106,6 +107,13 @@ export class ChatbotCore {
 
     console.log("Formatted payload:", fullPayload);
 
+    // Check for waiting_text in the payload
+    if (payload.userAction?.payload?.waiting_text) {
+      this.showTypingIndicator(payload.userAction.payload.waiting_text);
+    } else {
+      this.showTypingIndicator();
+    }
+
     const response = await fetch(this.apiEndpoint, {
       method: "POST",
       headers: {
@@ -134,11 +142,18 @@ export class ChatbotCore {
     return data;
   }
 
-  showTypingIndicator() {
+  showTypingIndicator(customText = null) {
     console.log("Showing typing indicator");
     if (this.typingIndicator) {
       this.typingIndicator.style.display = "flex";
       this.typingIndicator.classList.add("active");
+      if (customText) {
+        this.typingIndicator.querySelector(".chat-typing").textContent =
+          customText;
+      } else {
+        this.typingIndicator.querySelector(".chat-typing").textContent =
+          this.defaultTypingText;
+      }
       this.scrollToBottom();
     }
   }
@@ -148,6 +163,8 @@ export class ChatbotCore {
     if (this.typingIndicator) {
       this.typingIndicator.style.display = "none";
       this.typingIndicator.classList.remove("active");
+      this.typingIndicator.querySelector(".chat-typing").textContent =
+        this.defaultTypingText;
     }
   }
 
