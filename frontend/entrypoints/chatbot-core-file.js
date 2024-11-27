@@ -94,13 +94,18 @@ export class ChatbotCore {
     console.log("Sending payload to Gadget:", payload);
     const fullPayload = {
       userID: this.userID,
-      userAction: payload.userAction || payload,
+      userAction: {
+        type: payload.type || "text",
+        payload: payload.payload || payload,
+      },
     };
+
+    console.log("Formatted payload:", fullPayload);
+
     const response = await fetch(this.apiEndpoint, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: process.env.VF_API_KEY, // Make sure this is passed from your environment
         versionID: "development",
       },
       body: JSON.stringify(fullPayload),
@@ -109,8 +114,9 @@ export class ChatbotCore {
     console.log("Response status:", response.status);
 
     if (!response.ok) {
-      console.error("Error response:", await response.text());
-      throw new Error(`Gadget API error: ${response.status}`);
+      const errorText = await response.text();
+      console.error("Error response:", errorText);
+      throw new Error(`Gadget API error: ${response.status} - ${errorText}`);
     }
 
     // For 204 responses, return an empty response object
@@ -119,7 +125,9 @@ export class ChatbotCore {
       return { traces: [] };
     }
 
-    return await response.json();
+    const data = await response.json();
+    console.log("Response data:", data);
+    return data;
   }
 
   showTypingIndicator() {
