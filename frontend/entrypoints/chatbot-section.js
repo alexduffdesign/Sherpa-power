@@ -297,10 +297,10 @@ class SectionChatbot extends HTMLElement {
     const productTitle = this.getAttribute("product-title");
     const productCapacity = this.getAttribute("product-capacity");
     const acOutputContinuousPower = this.getAttribute(
-      "product-ac-output-continuous-power"
+      "product-ac_output_continuous_power"
     );
-    const acOutputPeakPower = this.getAttribute("product-ac-output-peak-power");
-    const dcOutputPower = this.getAttribute("product-dc-output-power");
+    const acOutputPeakPower = this.getAttribute("product-ac_output_peak_power");
+    const dcOutputPower = this.getAttribute("product-dc_output_power");
 
     const productDetails = JSON.stringify({
       powerStation: productTitle,
