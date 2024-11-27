@@ -56,13 +56,10 @@ export class ChatbotCore {
 
   async sendMessage(message) {
     console.log("sendMessage called with:", message);
-    console.log("this in sendMessage:", this);
     try {
       const res = await this.gadgetInteract({
-        userAction: {
-          type: "text",
-          payload: message,
-        },
+        type: "text",
+        payload: message,
       });
       console.log("gadgetInteract response:", res);
       this.hideTypingIndicator();
@@ -79,7 +76,9 @@ export class ChatbotCore {
     this.showTypingIndicator();
 
     try {
-      const res = await this.gadgetInteract(payload);
+      const res = await this.gadgetInteract({
+        type: "launch",
+      });
       console.log("Launch response:", res);
       return res;
     } catch (error) {
@@ -94,10 +93,7 @@ export class ChatbotCore {
     console.log("Sending payload to Gadget:", payload);
     const fullPayload = {
       userID: this.userID,
-      userAction: {
-        type: payload.type || "text",
-        payload: payload.payload || payload,
-      },
+      userAction: payload,
     };
 
     console.log("Formatted payload:", fullPayload);

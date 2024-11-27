@@ -1,3 +1,743 @@
+The most commonly used API with Voiceflow is the Dialog Manager API. It's what drives the conversations on the webchat widget and acts as the backbone of any conversion happening with a Voiceflow agent.
+
+You send a request to it with a user input, it runs your Voiceflow agent and returns the agent's responses, and your program then takes turns giving user input and getting Voiceflow output.
+
+You can read through it's full docs here if you're interested in learning more, after this guide.
+
+You'll also be using a user_id to identify which conversation is going on. There are more details in the DM API guide, but in short, a user_id uniquely identifies a user's conversation, and for multiple requests to go back and forth and be in the same thread, you've got to keep the same user_id. If, on the other hand, you want to have multiple users talking at the same time, they should have different (unique, and hard to guess) user_ids. For this project, we'll just use a user's name as the user_id.
+
+👉 Create a function called interact. It'll be used to communicate with Voiceflow.
+
+Python
+JavaScript
+
+const axios = require('axios');
+
+const api_key = 'YOUR_API_KEY_HERE'; // it should look like this: VF.DM.XXXXXXX.XXXXXX... keep this a secret!
+
+// user_id defines who is having the conversation, e.g. steve, john.doe@gmail.com, username_464
+const interact = async (user_id, request) => {
+// Function implementation will go here
+};
+
+How to send requests to Voiceflow APIs
+📘
+This article is part of a guide on getting started with Voiceflow APIs
+
+Start from the beginning here.
+
+More specifically, we'll be using the DM API's interact endpoint, that lets us send a request and receive a response from our Voiceflow agent. Requests being sent to the DM API consist of a user_id and a request payload.
+
+👉 Add a line to your interact function that sends a post request to the Voiceflow interact endpoint. We're just going to print the response from the API for now.
+
+Python
+JavaScript
+
+const axios = require('axios');
+
+const api_key = 'YOUR_API_KEY_HERE'; // it should look like this: VF.DM.XXXXXXX.XXXXXX... keep this a secret!
+
+// user_id defines who is having the conversation, e.g. steve, john.doe@gmail.com, username_464
+const interact = async (user_id, request) => {
+try {
+const response = await axios.post(
+`https://general-runtime.voiceflow.com/state/user/${user_id}/interact`,
+{ request: request },
+{
+headers: {
+'Authorization': api_key,
+'versionID': 'production',
+'accept': 'application/json',
+'content-type': 'application/json'
+}
+}
+);
+
+        console.log(response.data);
+    } catch (error) {
+        console.error('Error interacting with Voiceflow:', error);
+    }
+
+};
+In this request, you'll notice how you include your API key as an Authorization header. This is used to identify which agent we are interacting with, and that you're authorized to. We're also including a versionID alias, that just tell us to use the version that we published above.
+
+As we discussed above, the user_id is a unique string, but the request payload is a bit more complicated.
+
+There are two important types of payloads you need to know about:
+
+The launch payload is used to start or reset the conversation. It's what's sent when you click Start New Chat on the web chat widget. In most projects, it's appropriate to automatically send this request when your app starts. Its payload is simply { 'type': 'launch' }.
+The text payload is used to send a text reply from the user. It's the most common way of getting input from a user. Text messages sent this way are also matched for intents if you have any set up, so it can be used to select from menus or trigger intent-specific workflows. Its payload looks like { 'type': 'text', 'payload': 'my text' }.
+There are a few more ways that a user can interact with the Voiceflow agent, like clicking a button, but these two are enough to get us started. You can find more documentation about the types of requests that you can send in the interact endpoint docs here.
+
+📘
+
+How to start a conversation
+📘
+This article is part of a guide on getting started with Voiceflow APIs
+
+Start from the beginning here.
+
+👉 At the bottom of your file, add a variable called name that will take an input from the user to set the user_id. We'll also just add a single launch request to our interact function and see what it prints.
+
+Python
+JavaScript
+
+const axios = require('axios');
+const readline = require('readline');
+
+const api_key = 'YOUR_API_KEY_HERE'; // it should look like this: VF.DM.XXXXXXX.XXXXXX... keep this a secret!
+
+// user_id defines who is having the conversation, e.g. steve, john.doe@gmail.com, username_464
+const interact = async (user_id, request) => {
+try {
+const response = await axios.post(
+`https://general-runtime.voiceflow.com/state/user/${user_id}/interact`,
+{ request: request },
+{
+headers: {
+'Authorization': api_key,
+'versionID': 'production',
+'accept': 'application/json',
+'content-type': 'application/json'
+}
+}
+);
+
+        console.log(response.data);
+    } catch (error) {
+        console.error('Error interacting with Voiceflow:', error);
+    }
+
+};
+
+const rl = readline.createInterface({
+input: process.stdin,
+output: process.stdout
+});
+
+rl.question('> What is your name?\n', (name) => {
+interact(name, { type: 'launch' }).then(() => rl.close());
+});
+👉 Run your Pythons script with python3 VoiceflowAPIGuide.py and watch your console!
+
+python3 VoiceflowAPIGuide.py
+
+> What is your name?
+> Testing-Alex
+> [
+> {
+
+      "time":1721073897342,
+      "type":"text",
+      "payload":{
+         [...]
+         "message":"Hi there Python!",
+      }
+
+},
+{
+"time":1721073897342,
+"type":"text",
+"payload":{
+[...]
+"message":"Echoing",
+}
+}
+]
+We see an array of JSON objects! Congratulations on doing your first interaction with a Voiceflow API! 🎉 🥳.
+
+How to parse the output traces
+📘
+This article is part of a guide on getting started with Voiceflow APIs
+
+Start from the beginning here.
+
+Now, let's go into how to interpret this big array of JSON objects. Each of these objects is called a trace, which represent any output from Voiceflow. Their most important fields are the type which tells you how to interpret the second part, the payload that actually stores the content you need to use the output.
+
+So a response from the DM API is made of an array of traces, and to parse them we have to iterate through the array of traces. You can learn more about other traces here.
+
+To get a simple output from our agent, we'll just start off with looking for text traces, that store their content in the payload's message field: trace['payload']['message'].
+
+👉 Add a for loop iterating through all the response traces, looking for text traces and printing it's output.
+
+Python
+JavaScript
+
+import requests
+
+api_key = 'YOUR_API_KEY_HERE' # it should look like this: VF.DM.XXXXXXX.XXXXXX... keep this a secret!
+
+# user_id defines who is having the conversation, e.g. steve, john.doe@gmail.com, username_464
+
+def interact(user_id, request):
+response = requests.post(
+f'https://general-runtime.voiceflow.com/state/user/{user_id}/interact',
+json={ 'request': request },
+headers={
+'Authorization': api_key,
+'versionID': 'production'
+},
+)
+
+    for trace in response.json():
+        if trace['type'] == 'text':
+            print(trace['payload']['message'])
+
+name = input('> What is your name?\n')
+interact(name, { 'type': 'launch' })
+You should now get a much easier to understand output in your terminal.
+
+python3 VoiceflowAPIGuide.py
+
+> What is your name?
+> Testing-Alex
+> Hi there Python!
+> Echoing
+> Amazing! Now we've got text messages back from our Voiceflow agent. But the conversation's just one step… let's figure out how to send an answer back.
+
+📘
+
+How to send user replies
+📘
+This article is part of a guide on getting started with Voiceflow APIs
+
+Start from the beginning here.
+
+Let's make a basic input loop now so that we can talk back and forth with our Voiceflow agent. Inside the loop, we'll take input from the user to be sent to Voiceflow agent, and then format it into a response text payload { 'type': 'text', 'payload': nextInput }.
+
+👉 Add a while (True): loop to your script to send input to your Voiceflow agent. Inside it, get input from a user, and add a call to the interact function.
+
+Python
+JavaScript
+
+const axios = require('axios');
+const readline = require('readline');
+
+const api_key = 'YOUR_API_KEY_HERE'; // it should look like this: VF.DM.XXXXXXX.XXXXXX... keep this a secret!
+
+// user_id defines who is having the conversation, e.g. steve, john.doe@gmail.com, username_464
+const interact = async (user_id, request) => {
+try {
+const response = await axios.post(
+`https://general-runtime.voiceflow.com/state/user/${user_id}/interact`,
+{ request: request },
+{
+headers: {
+'Authorization': api_key,
+'versionID': 'production',
+'accept': 'application/json',
+'content-type': 'application/json'
+}
+}
+);
+
+        const traces = response.data;
+        for (let trace of traces) {
+            if (trace.type === 'text') {
+                console.log(trace.payload.message);
+            }
+        }
+    } catch (error) {
+        console.error('Error interacting with Voiceflow:', error);
+    }
+
+};
+
+const rl = readline.createInterface({
+input: process.stdin,
+output: process.stdout
+});
+
+const startConversation = async () => {
+rl.question('> What is your name?\n', async (name) => {
+await interact(name, { type: 'launch' });
+
+        while (true) {
+            rl.question('> Say something\n', async (nextInput) => {
+                await interact(name, { type: 'text', payload: nextInput });
+            });
+        }
+    });
+
+};
+
+startConversation();
+Now, if you run the script, you should be able to talk back and forth with your agent!
+
+python3 VoiceflowAPIGuide.py
+
+> What is your name?
+> Testing-Alex
+> Hi there Python!
+> Echoing
+> Say something
+> test
+> Echo #1: test
+> Say something
+> tests
+> Echo #2: tests
+> Say something
+> this is so cool!
+> Echo #3: this is so cool!
+> ...
+> Our simple testing flow only uses a text step and a capture step to get text input from a user, and is an infinite loop. Let's switch to a slightly more advanced agent.
+
+📘
+Next up: How to deal with other traces (button, end, and more)
+
+How to deal with other traces (button, end, and more)
+📘
+This article is part of a guide on getting started with Voiceflow APIs
+
+Start from the beginning here.
+
+👉 Import the second agent example project. Make sure to run it, publish it, and the update the API key in your Python code.
+
+Other than just the text step, you might want to be able to use buttons, but you might find that if you run the new project, the buttons don't appear in the terminal. That's because a button is a different type of trace than we have dealt with yet.
+
+To see the traces we haven't dealt with show up in the terminal so that we can debug, we'll add a catch-all trace behavior. We recommend to always add this kind of catch-all printing, as it's super helpful when you're developing and debugging.
+
+👉 Add an else: case to the trace handling loop.
+
+Python
+JavaScript
+
+const axios = require('axios');
+const readline = require('readline');
+
+const api_key = 'YOUR_API_KEY_HERE'; // it should look like this: VF.DM.XXXXXXX.XXXXXX... keep this a secret!
+
+// user_id defines who is having the conversation, e.g. steve, john.doe@gmail.com, username_464
+const interact = async (user_id, request) => {
+try {
+const response = await axios.post(
+`https://general-runtime.voiceflow.com/state/user/${user_id}/interact`,
+{ request: request },
+{
+headers: {
+'Authorization': api_key,
+'versionID': 'production',
+'accept': 'application/json',
+'content-type': 'application/json'
+}
+}
+);
+
+        const traces = response.data;
+        for (let trace of traces) {
+            if (trace.type === 'text') {
+                console.log(trace.payload.message);
+            } else {
+                console.log('Unhandled trace');
+                console.log(trace);
+            }
+        }
+    } catch (error) {
+        console.error('Error interacting with Voiceflow:', error);
+    }
+
+};
+
+const rl = readline.createInterface({
+input: process.stdin,
+output: process.stdout
+});
+
+const startConversation = async () => {
+rl.question('> What is your name?\n', async (name) => {
+await interact(name, { type: 'launch' });
+
+        while (true) {
+            rl.question('> Say something\n', async (nextInput) => {
+                await interact(name, { type: 'text', payload: nextInput });
+            });
+        }
+    });
+
+};
+
+startConversation();
+Now, when we run the agent, we'll see that the unhandled button trace is printed. (You can ignore the path trace, it's just an extra trace output by Voiceflow that indicates what path you've gone down, and shouldn't be necessary for any projects).
+
+python3 VoiceflowAPIGuide.py
+[...]
+Unhandled trace
+{
+"time":1721077675242,
+"type":"choice",
+"payload":{
+"buttons":[
+{
+"name":"Hat",
+"request":{
+"type":"path-mu25u3epc",
+[..]
+}
+},
+{
+"name":"Shirt",
+"request":{
+"type":"path-if27o3ev7",
+[...]
+}
+},
+{
+"name":"Neither",
+"request":{
+"type":"path-2v28a3eqk",
+[...]
+To learn how to handle each different kind of trace, it's really useful to look at this trace documentation, and we'll walk through handling the choice (buttons) trace.
+
+The important steps are
+
+Storing all the buttons in an array
+Displaying the button options in the terminal and get input from the user
+Tell voiceflow which button we've clicked.
+👉 To store the buttons in an array, we'll create a global array at the top of the file called buttons and store each button in it by adding a new trace case for choice, and then print all the options available.
+
+Python
+JavaScript
+
+const axios = require('axios');
+const readline = require('readline');
+
+const api_key = 'YOUR_API_KEY_HERE'; // it should look like this: VF.DM.XXXXXXX.XXXXXX... keep this a secret!
+
+let buttons = [];
+
+// user_id defines who is having the conversation, e.g. steve, john.doe@gmail.com, username_464
+const interact = async (user_id, request) => {
+try {
+const response = await axios.post(
+`https://general-runtime.voiceflow.com/state/user/${user_id}/interact`,
+{ request: request },
+{
+headers: {
+'Authorization': api_key,
+'versionID': 'production',
+'accept': 'application/json',
+'content-type': 'application/json'
+}
+}
+);
+
+        const traces = response.data;
+        for (let trace of traces) {
+            if (trace.type === 'text') {
+                console.log(trace.payload.message);
+            } else if (trace.type === 'choice') {
+                buttons = trace.payload.buttons;
+                console.log('Choose one of the following:');
+                for (let i = 0; i < buttons.length; i++) {
+                    console.log(`${i + 1}. ${buttons[i].name}`);
+                }
+            } else {
+                console.log('Unhandled trace');
+                console.log(trace);
+            }
+        }
+    } catch (error) {
+        console.error('Error interacting with Voiceflow:', error);
+    }
+
+};
+
+const rl = readline.createInterface({
+input: process.stdin,
+output: process.stdout
+});
+
+const startConversation = async () => {
+rl.question('> What is your name?\n', async (name) => {
+await interact(name, { type: 'launch' });
+
+        while (true) {
+            rl.question('> Say something\n', async (nextInput) => {
+                await interact(name, { type: 'text', payload: nextInput });
+            });
+        }
+    });
+
+};
+
+startConversation();
+This will then print something like:
+
+Would you prefer to get a test hat or a test t-shirt?
+Choose one of the following:
+
+1. Hat
+2. Shirt
+3. Neither
+   Now, we have to get the button selection from a user. We'll add some conditional logic to check if there are button choices available, and if so to interpret the input as an index into that list of choices. If the user selects one of the choices, we'll reply to Voiceflow with the request payload that each button had attached to it. If they give another answer, we'll pass it to Voiceflow as a normal text response, and it'll either be recognized as an intent, or go down the No Match path of the button.
+
+👉 Copy the new code below that gets a selected button from the user if there are any options, and sends the associated answer back.
+
+Python
+JavaScript
+
+const axios = require('axios');
+const readline = require('readline');
+
+const api_key = 'YOUR_API_KEY_HERE'; // it should look like this: VF.DM.XXXXXXX.XXXXXX... keep this a secret!
+
+let buttons = [];
+
+// user_id defines who is having the conversation, e.g. steve, john.doe@gmail.com, username_464
+const interact = async (user_id, request) => {
+try {
+const response = await axios.post(
+`https://general-runtime.voiceflow.com/state/user/${user_id}/interact`,
+{ request: request },
+{
+headers: {
+'Authorization': api_key,
+'versionID': 'production',
+'accept': 'application/json',
+'content-type': 'application/json'
+}
+}
+);
+
+        const traces = response.data;
+        for (let trace of traces) {
+            if (trace.type === 'text') {
+                console.log(trace.payload.message);
+            } else if (trace.type === 'choice') {
+                buttons = trace.payload.buttons;
+                console.log('Choose one of the following:');
+                for (let i = 0; i < buttons.length; i++) {
+                    console.log(`${i + 1}. ${buttons[i].name}`);
+                }
+            } else {
+                console.log('Unhandled trace');
+                console.log(trace);
+            }
+        }
+    } catch (error) {
+        console.error('Error interacting with Voiceflow:', error);
+    }
+
+};
+
+const rl = readline.createInterface({
+input: process.stdin,
+output: process.stdout
+});
+
+const startConversation = async () => {
+rl.question('> What is your name?\n', async (name) => {
+await interact(name, { type: 'launch' });
+
+        while (true) {
+            if (buttons.length > 0) {
+                rl.question('> Choose a button number, or a reply\n', async (buttonSelection) => {
+                    try {
+                        const selection = parseInt(buttonSelection);
+                        if (isNaN(selection) || selection < 1 || selection > buttons.length) {
+                            throw new Error('Invalid selection');
+                        }
+                        await interact(name, buttons[selection - 1].request);
+                    } catch {
+                        await interact(name, { type: 'text', payload: buttonSelection });
+                    }
+                    buttons = [];
+                });
+            } else {
+                rl.question('> Say something\n', async (nextInput) => {
+                    await interact(name, { type: 'text', payload: nextInput });
+                });
+            }
+        }
+    });
+
+};
+
+startConversation();
+Now, we can answer 2 to select a Shirt!
+
+Handling buttons is similar to how many other traces are handled, so as you expand your interface using the DM API, you'll implement more and more traces.
+
+✨
+Extra Challenge
+
+The provided flow includes two images that are shared when you choose either a shirt or a hat. Try handling those traces and displaying the images from inside your Python script! As a hint, you could use matplotlib, pillow, or IPython.display to show the images. Good luck!
+
+One last trace that's important to handle is the end trace. It's triggered by Voiceflow when there's no more steps attached to a path, or you hit the end step. You might have seen it after choosing one of the options in your handy catch-all trace print: {'type': 'end'}.
+
+👉 To handle the end trace, we'll store a boolean called isRunning that's updated each time we interact with Voiceflow, and represents if we've encountered the end trace, and we'll loop while isRunning is true, and set it false if we encounter the end trace.
+
+Python
+JavaScript
+
+const axios = require('axios');
+const readline = require('readline');
+
+const api_key = 'YOUR_API_KEY_HERE'; // it should look like this: VF.DM.XXXXXXX.XXXXXX... keep this a secret!
+
+let buttons = [];
+
+// Function to interact with Voiceflow API
+const interact = async (user_id, request) => {
+try {
+const response = await axios.post(
+`https://general-runtime.voiceflow.com/state/user/${user_id}/interact`,
+{ request: request },
+{
+headers: {
+'Authorization': api_key,
+'versionID': 'production',
+'accept': 'application/json',
+'content-type': 'application/json'
+}
+}
+);
+
+        const traces = response.data;
+        for (let trace of traces) {
+            if (trace.type === 'text') {
+                console.log(trace.payload.message);
+            } else if (trace.type === 'choice') {
+                buttons = trace.payload.buttons;
+                console.log('Choose one of the following:');
+                for (let i = 0; i < buttons.length; i++) {
+                    console.log(`${i + 1}. ${buttons[i].name}`);
+                }
+            } else if (trace.type === 'end') {
+                // End of conversation
+                return false;
+            } else {
+                console.log('Unhandled trace');
+                console.log(trace);
+            }
+        }
+        // Conversation is still running
+        return true;
+    } catch (error) {
+        console.error('Error interacting with Voiceflow:', error);
+        return false;
+    }
+
+};
+
+// Readline interface for user input
+const rl = readline.createInterface({
+input: process.stdin,
+output: process.stdout
+});
+
+// Function to start the conversation
+const startConversation = async () => {
+rl.question('> What is your name?\n', async (name) => {
+let isRunning = await interact(name, { type: 'launch' });
+
+        while (isRunning) {
+            if (buttons.length > 0) {
+                rl.question('> Choose a button number, or a reply\n', async (buttonSelection) => {
+                    try {
+                        isRunning = await interact(name, buttons[parseInt(buttonSelection) - 1].request);
+                    } catch {
+                        isRunning = await interact(name, { type: 'text', payload: buttonSelection });
+                    }
+                    buttons = [];
+                });
+            } else {
+                rl.question('> Say something\n', async (nextInput) => {
+                    isRunning = await interact(name, { type: 'text', payload: nextInput });
+                });
+            }
+        }
+
+        console.log('The conversation has ended.');
+        rl.close();
+    });
+
+};
+
+startConversation();
+Congratulations! We've made a nice little Voiceflow conversation interface here, and you can extrapolate lots of the lessons we've learned here to build apps and custom interfaces like the EduChat Article Reader or the Unity AI NPC.
+
+Agent API key
+An Agent API key (also sometimes referred to as a Dialog Manager API key) is a key with the prefix VF.DM.. These keys are how you can access all the APIs related to your project.
+
+Obtaining an Agent API key
+To access the Agent API key for a specific project:
+
+Open the agent you want to connect with
+Select on the Integrations tab (shortcut: 3)
+Copy the key.
+You can also generate secondary Agent API keys for API key rotations (so you can always have one valid key up). After rotating your API keys, you should immediately promote the secondary key to primary.
+
+📘
+Remember, you can always revoke and re-generate a new Agent API key from this same integrations tab in case it's exposed.
+
+Using a Version Alias
+For the versionID header, you should pass in the value:
+
+'development' for testing and development purposes
+'production' for live apps and production deployments
+
+Versions and Project IDs
+You can find your Project ID and Version ID in the general settings. This article will explain what they are and why you might care about using them.
+
+Versions
+Voiceflow agents use versions to be able to choose a specific version of their agent to run with our Dialog Manager API (DM API) or the Chat Widget, and is also required for some other APIs.
+
+The two main versions available are:
+
+development: A new development version is compiled each time you click on the Play button
+
+production: A new production version is published each time you click on the Publish button
+
+A development version is meant to be used for testing purpose, when you are making changes to your agent and want to test them before pushing those changes to your live agent (production). A production version should be a stable, tested version you want to use in production while you’re working on the development version of your agent in Voiceflow Creator.
+
+Each version has a unique version ID associated, but your current production and development version can often be referred to using their alias. The production version's alias is production and the development version's alias is development. This is useful because it means you don't have to update the version ID being used in your code if you publish a new version.
+
+Note: A couple of APIs might still next the exact version ID instead of an alias like in the versions API.
+
+When you make a request to the DM API without passing any version in the header, we default to the development version (same goes for the Chat Widget snippet code).
+
+Below, a DM API launch request using the development version of an agent
+
+cURL
+
+curl --request POST \
+ --url https://general-runtime.voiceflow.com/state/user/demo/interact \
+ --header 'Authorization: VF.DM.XYZ' \
+ --header 'Content-Type: application/json' \
+ --header 'versionID: development' \
+ --data '{
+"action": {
+"type": "launch"
+}
+}'
+Below, some Chat Widget snippet code loading the production version of an agent
+
+HTML
+
+<script type="text/javascript">
+  (function(d, t) {
+      var v = d.createElement(t), s = d.getElementsByTagName(t)[0];
+      v.onload = function() {
+        window.voiceflow.chat.load({
+          verify: { projectID: 'xyz' },
+          url: 'https://general-runtime.voiceflow.com',
+          versionID: 'production'
+        });
+      }
+      v.src = "https://cdn.voiceflow.com/widget/bundle.mjs"; v.type = "text/javascript"; s.parentNode.insertBefore(v, s);
+  })(document, 'script');
+</script>
+
+Again, always having two different versions allow you to keep working on/updating your agent (development) without impacting an existing live version (production).
+
+Project IDs
+Project IDs are only required for certain APIs, and is also used in the web chat's code snippet. It can be found from the Settings → General page, and uniquely identifies your project (and never changes).
+
+For the DM API for example, the link to the project is done through the API key directly, but some APIs the like the Transcripts API for example, needs both the authorization and the Project ID.
+
+In general, you'll only need to use the API key, and your applications can have a local variable storing the project ID for when it's needed, but in some cases you might need your Project ID.
+
 Overview
 The Dialog Manager API (DM API) allows any application to talk with a Voiceflow diagram using HTTP calls to the interact endpoint.
 
