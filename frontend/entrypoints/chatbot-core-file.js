@@ -78,12 +78,15 @@ export class ChatbotCore {
     this.showTypingIndicator();
 
     try {
-      const res = await this.gadgetInteract({
+      // Preserve the incoming payload while ensuring type is "launch"
+      const launchPayload = {
         userAction: {
           type: "launch",
-          payload: {},
+          payload: payload.userAction?.payload || {},
         },
-      });
+      };
+
+      const res = await this.gadgetInteract(launchPayload);
       console.log("Launch response:", res);
       return res;
     } catch (error) {
