@@ -13,22 +13,22 @@
       "type": "main-blog",
       "settings": {
         "allow_transparent_header": false,
-        "content": "<p>Get access to our latest news by signing up for our newsletter.</p>",
-        "show_newsletter_form": true,
-        "show_tags": true,
+        "content": "",
+        "show_newsletter_form": false,
+        "show_tags": false,
         "banner_background": "",
         "banner_text_color": "",
         "button_background": "",
         "button_text_color": "",
-        "articles_per_page": 8,
-        "feature_first_article": true,
+        "articles_per_page": 7,
+        "feature_first_article": false,
         "feature_article_background": "",
         "feature_article_text_color": "",
         "show_excerpt": true,
         "show_date": true,
         "show_author": false,
         "show_comments_count": false,
-        "show_category": true
+        "show_category": false
       }
     },
     "blog_posts_RaeJcz": {
@@ -54,7 +54,7 @@
         "show_comments_count": false,
         "show_category": true,
         "subheading": "",
-        "title": "Blog posts",
+        "title": "Tips",
         "content": "",
         "link_url": "",
         "link_text": "View all",
