@@ -107,7 +107,7 @@ export class ChatbotCore {
 
     console.log("Formatted payload:", fullPayload);
 
-    // Check for waiting_text in the payload
+    // Check for waiting_text in the initial payload
     if (payload.userAction?.payload?.waiting_text) {
       this.showTypingIndicator(payload.userAction.payload.waiting_text);
     } else {
@@ -139,6 +139,17 @@ export class ChatbotCore {
 
     const data = await response.json();
     console.log("Response data:", data);
+
+    // Check for waiting_text in the response traces
+    if (data.traces) {
+      const waitingTrace = data.traces.find(
+        (trace) => trace.type === "custom" && trace.payload?.waiting_text
+      );
+      if (waitingTrace) {
+        this.showTypingIndicator(waitingTrace.payload.waiting_text);
+      }
+    }
+
     return data;
   }
 
