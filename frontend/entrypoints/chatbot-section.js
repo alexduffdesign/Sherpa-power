@@ -296,11 +296,15 @@ class SectionChatbot extends HTMLElement {
     // Prepare the product details
     const productTitle = this.getAttribute("product-title");
     const productCapacity = this.getAttribute("product-capacity");
-    const acOutputContinuousPower = this.getAttribute(
-      "product-ac_output_continuous_power"
+    const acOutputContinuousPower = parseFloat(
+      this.getAttribute("product-ac_output_continuous_power")
     );
-    const acOutputPeakPower = this.getAttribute("product-ac_output_peak_power");
-    const dcOutputPower = this.getAttribute("product-dc_output_power");
+    const acOutputPeakPower = parseFloat(
+      this.getAttribute("product-ac_output_peak_power")
+    );
+    const dcOutputPower = parseFloat(
+      this.getAttribute("product-dc_output_power")
+    );
 
     const productDetails = JSON.stringify({
       powerStation: productTitle,
