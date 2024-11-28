@@ -139,21 +139,44 @@ export class ChatbotCore {
 
     const data = await response.json();
     console.log("Response data:", data);
+    console.log(
+      "All traces:",
+      data.traces
+        ? data.traces.map((t) => ({ type: t.type, payload: t.payload }))
+        : "No traces"
+    );
 
     // Check for waiting_text in the response traces
     if (data.traces) {
-      const waitingTrace = data.traces.find(
-        (trace) => trace.type === "waiting_text"
-      );
+      console.log("Looking for waiting_text trace...");
+      const waitingTrace = data.traces.find((trace) => {
+        console.log("Checking trace:", {
+          type: trace.type,
+          payload: trace.payload,
+        });
+        return trace.type === "waiting_text";
+      });
+
       if (waitingTrace) {
+        console.log("Found waiting_text trace:", waitingTrace);
+        console.log("Payload type:", typeof waitingTrace.payload);
+        console.log("Payload value:", waitingTrace.payload);
+
         // Handle both text and JSON payloads
         const text =
           typeof waitingTrace.payload === "string"
             ? waitingTrace.payload
             : waitingTrace.payload?.text || waitingTrace.payload?.waiting_text;
+
+        console.log("Extracted text:", text);
+
         if (text) {
           this.showTypingIndicator(text);
+        } else {
+          console.log("No valid text found in waiting_text payload");
         }
+      } else {
+        console.log("No waiting_text trace found");
       }
     }
 
