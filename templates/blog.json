@@ -40,7 +40,7 @@
           "settings": {
             "blog": "advice",
             "posts_count": 3,
-            "stack_items": false
+            "stack_items": true
           }
         }
       },
