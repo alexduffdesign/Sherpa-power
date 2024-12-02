@@ -216,13 +216,18 @@ class MainChatbot {
           type: "event",
           payload: {
             event: {
-              name: "main_menu", // The event name as defined in your Voiceflow Event CMS
+              name: "main_menu",
             },
           },
         },
+        config: {
+          tts: false,
+          stripSSML: true,
+          stopAll: false,
+          excludeTypes: ["block", "debug", "flow"],
+        },
       });
 
-      // Handle the response from Voiceflow
       await this.handleAgentResponse(response);
     } catch (error) {
       console.error("Error in jumpToMainMenu:", error);

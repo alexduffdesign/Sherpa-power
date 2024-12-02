@@ -102,12 +102,17 @@ export class ChatbotCore {
     console.log("Sending payload to Gadget:", payload);
     const fullPayload = {
       userID: this.userID,
-      ...payload,
+      action: payload.userAction,
+      config: payload.config || {
+        tts: false,
+        stripSSML: true,
+        stopAll: false,
+        excludeTypes: ["block", "debug", "flow"],
+      },
     };
 
     console.log("Formatted payload:", fullPayload);
 
-    // Check for waiting_text in the initial payload
     if (payload.userAction?.payload?.waiting_text) {
       this.showTypingIndicator(payload.userAction.payload.waiting_text);
     } else {
