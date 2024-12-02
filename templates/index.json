@@ -975,7 +975,7 @@
         "blog_FmBdG4": {
           "type": "blog",
           "settings": {
-            "blog": "news",
+            "blog": "advice",
             "posts_count": 3,
             "stack_items": false
           }
