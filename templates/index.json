@@ -118,9 +118,7 @@
         "item_NwNwBy",
         "item_AiDhHy"
       ],
-      "custom_css": [
-
-      ],
+      "custom_css": [],
       "settings": {
         "full_width": true,
         "stack_mobile": true,
@@ -996,7 +994,7 @@
         "subheading": "",
         "title": "Learn more about green portable power",
         "content": "<p>We are on a mission </p>",
-        "link_url": "shopify://blogs/news",
+        "link_url": "shopify://blogs/advice",
         "link_text": "View All Articles",
         "background": "",
         "background_gradient": "",
