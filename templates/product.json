@@ -258,10 +258,31 @@
             "background": "",
             "background_gradient": ""
           }
+        },
+        "video_PFFh8j": {
+          "type": "video",
+          "settings": {
+            "content_max_width": 780,
+            "mobile_text_position": "place-self-center text-center",
+            "desktop_text_position": "sm:place-self-center sm:text-center",
+            "subheading": "Tell your story",
+            "title": "Slide title",
+            "heading_tag": "h0",
+            "button_text": "",
+            "button_link": "",
+            "text_color": "#ffffff",
+            "button_background": "#ffffff",
+            "button_text_color": "#000000",
+            "overlay_color": "#000000",
+            "overlay_opacity": 30,
+            "background": "",
+            "background_gradient": ""
+          }
         }
       },
       "block_order": [
-        "image_AhCA9d"
+        "image_AhCA9d",
+        "video_PFFh8j"
       ],
       "disabled": true,
       "settings": {
@@ -323,7 +344,7 @@
         "video_yN4GTg": {
           "type": "video",
           "settings": {
-            "external_video_url": "https://youtu.be/7R_kv008wCg",
+            "external_video_url": "https://youtu.be/PFISxiA8Sb0",
             "autoplay": true,
             "media_width": 50,
             "media_position": "start",
@@ -331,8 +352,8 @@
             "icon": "none",
             "icon_width": 48,
             "subheading": "",
-            "title": "PRO Preview",
-            "content": "<p>We took the PRO 5.0 for a test run. Here we try the 16A outputs to power a welder and the floodlights.</p>",
+            "title": "What can it power?",
+            "content": "<p>We took the PEAK 0.6 to do one of those jobs you can only do outdoors.</p>",
             "link_text": "",
             "link_url": "",
             "background": "#000000",
