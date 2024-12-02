@@ -102,7 +102,7 @@ export class ChatbotCore {
     console.log("Sending payload to Gadget:", payload);
     const fullPayload = {
       userID: this.userID,
-      action: payload.userAction,
+      userAction: payload.userAction,
       config: payload.config || {
         tts: false,
         stripSSML: true,
