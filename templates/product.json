@@ -340,34 +340,10 @@
             "button_background": "",
             "button_text_color": ""
           }
-        },
-        "video_yN4GTg": {
-          "type": "video",
-          "settings": {
-            "external_video_url": "https://youtu.be/PFISxiA8Sb0",
-            "autoplay": true,
-            "media_width": 50,
-            "media_position": "start",
-            "text_position": "place-self-center text-center",
-            "icon": "none",
-            "icon_width": 48,
-            "subheading": "",
-            "title": "What can it power?",
-            "content": "<p>We took the PEAK 0.6 to do one of those jobs you can only do outdoors.</p>",
-            "link_text": "",
-            "link_url": "",
-            "background": "#000000",
-            "background_gradient": "",
-            "text_color": "#ffffff",
-            "text_gradient": "",
-            "button_background": "",
-            "button_text_color": ""
-          }
         }
       },
       "block_order": [
-        "image_iRBGcB",
-        "video_yN4GTg"
+        "image_iRBGcB"
       ],
       "custom_css": [
         ".media-with-text__media > * {object-fit: contain;}",
