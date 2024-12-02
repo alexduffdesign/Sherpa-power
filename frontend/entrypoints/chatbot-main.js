@@ -206,45 +206,35 @@ class MainChatbot {
 
   async jumpToMainMenu() {
     console.log("MainChatbot jumpToMainMenu called");
-    const mainMenuMessage = "Main menu"; // The message content to trigger the intent
 
     this.core.showTypingIndicator();
     try {
-      // **Add the "Main menu" message to the UI**
-      this.core.addMessage("user", mainMenuMessage);
-
-      // **Update the conversation history**
-      this.conversationHistory.push({
-        type: "user",
-        message: mainMenuMessage,
-      });
-      this.saveConversationToStorage();
-
-      // **Send the message to Voiceflow with payload as a string**
+      // Send the main_menu event to Voiceflow
       const response = await this.core.gadgetInteract({
         userID: this.core.userID,
         userAction: {
-          type: "text",
-          payload: mainMenuMessage, // Directly set payload to the string "Main menu"
+          type: "event",
+          payload: {
+            event: {
+              name: "main_menu", // The event name as defined in your Voiceflow Event CMS
+            },
+          },
         },
       });
 
-      // **Handle the response from Voiceflow**
+      // Handle the response from Voiceflow
       await this.handleAgentResponse(response);
     } catch (error) {
-      console.error("Error in jumpToMainMenu /:", error);
-      // **Optionally, notify the user about the error**
+      console.error("Error in jumpToMainMenu:", error);
       this.core.addMessage(
         "assistant",
         "Sorry, I couldn't navigate to the main menu. Please try again."
       );
     } finally {
-      // **Hide the typing indicator after handling response or error**
       this.core.hideTypingIndicator();
+      this.core.scrollToBottom();
     }
   }
-
-  /// < Redirect Custom Action > //
 
   handleProductRedirect(productHandle) {
     if (!productHandle) {
