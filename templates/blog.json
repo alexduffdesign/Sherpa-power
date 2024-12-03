@@ -63,6 +63,7 @@
       "block_order": [
         "blog_JqmzJz"
       ],
+      "disabled": true,
       "settings": {
         "full_width": true,
         "show_excerpt": true,
