@@ -55,7 +55,7 @@
           "type": "blog",
           "settings": {
             "blog": "advice",
-            "posts_count": 3,
+            "posts_count": 6,
             "stack_items": true
           }
         }
