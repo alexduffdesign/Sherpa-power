@@ -11,6 +11,23 @@
   "sections": {
     "main": {
       "type": "main-blog",
+      "blocks": {
+        "newsletter_4tpmgb": {
+          "type": "newsletter",
+          "settings": {
+            "title": "Newsletter",
+            "content": "<p>Get tips and advice on using your portable power station when you sign up</p>",
+            "button_text": "Subscribe",
+            "subtext": "",
+            "position": 5,
+            "background": "",
+            "text_color": ""
+          }
+        }
+      },
+      "block_order": [
+        "newsletter_4tpmgb"
+      ],
       "disabled": true,
       "settings": {
         "allow_transparent_header": false,
