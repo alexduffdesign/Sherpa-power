@@ -75,8 +75,8 @@
         "estimated_shipping_pbbJYc": {
           "type": "estimated_shipping",
           "settings": {
-            "shipping_min_days": 1,
-            "shipping_max_days": 7
+            "shipping_min_days": 2,
+            "shipping_max_days": 3
           }
         },
         "liquid_KQWMtz": {
