@@ -26,19 +26,11 @@
           "settings": {
             "text": "Register you new product to activate the 5 year warranty. The process is straightforward and gives you peace of mind."
           }
-        },
-        "richtext_Q48Bpb": {
-          "type": "richtext",
-          "disabled": true,
-          "settings": {
-            "content": "<p>Discounts apply to longer hire periods. </p><p>Further discounts available on a Hire Before Buy option.</p><p></p>"
-          }
         }
       },
       "block_order": [
         "heading_kgHwRj",
-        "subheading_y8XgbG",
-        "richtext_Q48Bpb"
+        "subheading_y8XgbG"
       ],
       "settings": {
         "full_width": true,
