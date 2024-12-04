@@ -24,19 +24,17 @@
         "subheading_y8XgbG": {
           "type": "subheading",
           "settings": {
-            "text": "Register you new product to activate the 5 year warranty. The process is straightforward and gives you peace of mind."
+            "text": "Ask us about hire options of our portable power range. We can provide a greener solution to your event operations so you don't have to have noisy and smelly generators running to power your kit. We offer competitive rates and excellent customer support."
           }
         },
         "richtext_Q48Bpb": {
           "type": "richtext",
-          "disabled": true,
           "settings": {
             "content": "<p>Discounts apply to longer hire periods. </p><p>Further discounts available on a Hire Before Buy option.</p><p></p>"
           }
         },
         "liquid_W3xzHg": {
           "type": "liquid",
-          "disabled": true,
           "settings": {
             "liquid": "<a href=\"https://www.sherpapower.co.uk/pages/contact\">Contact Us About Product Hire</a>"
           }
