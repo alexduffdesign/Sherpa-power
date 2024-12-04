@@ -26,18 +26,11 @@
           "settings": {
             "text": "Register you new product to activate the 5 year warranty. The process is straightforward and gives you peace of mind."
           }
-        },
-        "liquid_3qjHRc": {
-          "type": "liquid",
-          "settings": {
-            "liquid": "<p>Use this text to output some custom Liquid code to include widget or dynamic code.</p>"
-          }
         }
       },
       "block_order": [
         "heading_kgHwRj",
-        "subheading_y8XgbG",
-        "liquid_3qjHRc"
+        "subheading_y8XgbG"
       ],
       "settings": {
         "full_width": true,
