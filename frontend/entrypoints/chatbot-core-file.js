@@ -59,7 +59,7 @@ export class ChatbotCore {
     console.log("sendMessage called with:", message);
     try {
       const res = await this.gadgetInteract({
-        userAction: {
+        action: {
           type: "text",
           payload: message,
         },
@@ -81,9 +81,9 @@ export class ChatbotCore {
     try {
       // Preserve the incoming payload while ensuring type is "launch"
       const launchPayload = {
-        userAction: {
+        action: {
           type: "launch",
-          payload: payload.userAction?.payload || {},
+          payload: payload.action?.payload || {},
         },
       };
 
@@ -102,7 +102,7 @@ export class ChatbotCore {
     console.log("Sending payload to Gadget:", payload);
     const fullPayload = {
       userID: this.userID,
-      userAction: payload.userAction,
+      action: payload.action,
       config: payload.config || {
         tts: false,
         stripSSML: true,
@@ -113,8 +113,8 @@ export class ChatbotCore {
 
     console.log("Formatted payload:", fullPayload);
 
-    if (payload.userAction?.payload?.waiting_text) {
-      this.showTypingIndicator(payload.userAction.payload.waiting_text);
+    if (payload.action?.payload?.waiting_text) {
+      this.showTypingIndicator(payload.action.payload.waiting_text);
     } else {
       this.showTypingIndicator();
     }
@@ -391,7 +391,7 @@ export class ChatbotCore {
     try {
       const response = await this.gadgetInteract({
         userID: this.userID,
-        userAction: button.request,
+        action: button.request,
       });
       this.hideTypingIndicator();
       return response; // Return the response instead of handling it here
