@@ -125,7 +125,7 @@ class MainChatbot {
     console.log("Sending main chatbot launch request");
 
     const interactPayload = {
-      userAction: {
+      action: {
         type: "launch",
       },
     };
@@ -212,7 +212,7 @@ class MainChatbot {
       // Send the main_menu event to Voiceflow
       const response = await this.core.gadgetInteract({
         userID: this.core.userID,
-        userAction: {
+        action: {
           type: "event",
           payload: {
             event: {

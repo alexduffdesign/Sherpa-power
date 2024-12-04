@@ -338,7 +338,7 @@ class SectionChatbot extends HTMLElement {
     });
 
     const interactPayload = {
-      userAction: {
+      action: {
         type: "launch",
         payload: {
           startBlock: "shopifySection",
