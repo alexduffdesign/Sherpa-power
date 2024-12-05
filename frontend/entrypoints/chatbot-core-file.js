@@ -100,10 +100,6 @@ export class ChatbotCore {
 
   async streamInteract(action) {
     console.log("streamInteract called with:", action);
-    if (this.currentStream) {
-      this.currentStream.close();
-    }
-
     this.showTypingIndicator();
 
     const fullPayload = {
@@ -131,29 +127,18 @@ export class ChatbotCore {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
 
-      const reader = response.body.getReader();
-      const decoder = new TextDecoder();
-      let buffer = "";
+      const data = await response.json();
+      console.log("Stream response:", data);
 
-      while (true) {
-        const { value, done } = await reader.read();
-        if (done) break;
-
-        buffer += decoder.decode(value, { stream: true });
-        const lines = buffer.split("\n");
-
-        buffer = lines.pop() || "";
-
-        for (const line of lines) {
-          if (line.trim() === "") continue;
-          if (line.startsWith("data: ")) {
-            const eventData = JSON.parse(line.slice(6));
-            await this.handleStreamEvent(eventData);
-          }
+      // Process the response
+      if (Array.isArray(data.traces)) {
+        for (const trace of data.traces) {
+          await this.handleStreamEvent(trace);
         }
       }
 
       this.hideTypingIndicator();
+      return data;
     } catch (error) {
       console.error("Error in streamInteract:", error);
       this.hideTypingIndicator();
