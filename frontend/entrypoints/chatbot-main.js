@@ -1,3 +1,5 @@
+console.log("WOLLLOPPPP 2");
+
 import { ChatbotBase } from "./chatbot-base.js";
 
 export class MainChatbot extends ChatbotBase {
@@ -40,7 +42,6 @@ export class MainChatbot extends ChatbotBase {
           e.preventDefault();
           e.stopPropagation();
           await this.handleUserInput();
-          return false;
         });
       }
 

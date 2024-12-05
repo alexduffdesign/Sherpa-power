@@ -1,3 +1,5 @@
+console.log("WOLLLOPPPP");
+
 import { ApiClient } from "./chatbot-api.js";
 import { UIManager } from "./chatbot-ui.js";
 import { StreamHandler } from "./chatbot-stream.js";
