@@ -258,7 +258,9 @@ class MainChatbot {
 
   async handleAgentResponse(response) {
     console.log("Handling agent response:", response);
-    for (const trace of response) {
+    // response is now { traces: [...] }
+    const traces = response.traces || [];
+    for (const trace of traces) {
       if (trace.type === "RedirectToProduct") {
         const productHandle = trace.payload?.body?.productHandle;
         if (productHandle) {

@@ -121,7 +121,9 @@ class SectionChatbot extends HTMLElement {
 
   async handleAgentResponse(response) {
     console.log("Handling agent response:", response);
-    for (const trace of response) {
+    // response is now { traces: [...] }
+    const traces = response.traces || [];
+    for (const trace of traces) {
       if (trace.type === "text") {
         this.core.addMessage("assistant", trace.payload.message);
       } else if (trace.type === "choice") {
