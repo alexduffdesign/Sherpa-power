@@ -39,6 +39,14 @@ export class MainChatbot extends ChatbotBase {
 
   setupEventListeners() {
     if (this.chatInput && this.sendButton) {
+      const form = this.chatInput.closest("form");
+      if (form) {
+        form.addEventListener("submit", (e) => {
+          e.preventDefault();
+          this.handleUserInput();
+        });
+      }
+
       this.chatInput.addEventListener("keypress", (event) => {
         if (event.key === "Enter" && !event.shiftKey) {
           event.preventDefault();
@@ -46,7 +54,8 @@ export class MainChatbot extends ChatbotBase {
         }
       });
 
-      this.sendButton.addEventListener("click", () => {
+      this.sendButton.addEventListener("click", (e) => {
+        e.preventDefault();
         this.handleUserInput();
       });
     }
@@ -72,13 +81,21 @@ export class MainChatbot extends ChatbotBase {
     const message = this.chatInput.value.trim();
     if (message) {
       this.chatInput.value = "";
-      this.ui.addMessage("user", message);
-      this.history.updateHistory({ type: "user", message });
+      this.chatInput.disabled = true;
 
       try {
+        this.ui.addMessage("user", message);
+        this.history.updateHistory({ type: "user", message });
         await this.sendMessage(message);
       } catch (error) {
         console.error("Error sending message:", error);
+        this.ui.addMessage(
+          "assistant",
+          "Sorry, there was an error sending your message. Please try again."
+        );
+      } finally {
+        this.chatInput.disabled = false;
+        this.chatInput.focus();
       }
     }
   }
