@@ -17,15 +17,20 @@ export class ApiClient {
     return newID;
   }
 
-  async streamInteract(message) {
-    console.log("Streaming interaction with message:", message);
+  async streamInteract(message, actionType = "text") {
+    console.log(
+      "Streaming interaction with message:",
+      message,
+      "type:",
+      actionType
+    );
     const url = new URL(this.streamingEndpoint);
     url.searchParams.append("userID", this.userID);
 
     const payload = {
       action: {
-        type: "text",
-        payload: message,
+        type: actionType,
+        payload: actionType === "launch" ? undefined : message,
       },
       userID: this.userID,
       config: {
@@ -39,6 +44,7 @@ export class ApiClient {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Accept: "text/event-stream",
         },
         body: JSON.stringify(payload),
       });
@@ -52,6 +58,10 @@ export class ApiClient {
       console.error("Error in stream interact:", error);
       throw error;
     }
+  }
+
+  async launch() {
+    return this.streamInteract(null, "launch");
   }
 
   async gadgetInteract(message) {

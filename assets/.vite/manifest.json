@@ -1,12 +1,12 @@
 {
   "frontend/entrypoints/chatbot-api.js": {
-    "file": "chatbot-api.BmWGMfIO.js",
+    "file": "chatbot-api.5HZ4htyK.js",
     "name": "chatbot-api",
     "src": "frontend/entrypoints/chatbot-api.js",
     "isEntry": true
   },
   "frontend/entrypoints/chatbot-base.js": {
-    "file": "chatbot-base.Bk8b2nYJ.js",
+    "file": "chatbot-base.DCJ5-2Hq.js",
     "name": "chatbot-base",
     "src": "frontend/entrypoints/chatbot-base.js",
     "isEntry": true,
@@ -24,7 +24,7 @@
     "isEntry": true
   },
   "frontend/entrypoints/chatbot-drawer.js": {
-    "file": "chatbot-drawer.Dcc3ckis.js",
+    "file": "chatbot-drawer.Cs_FcoVM.js",
     "name": "chatbot-drawer",
     "src": "frontend/entrypoints/chatbot-drawer.js",
     "isEntry": true,
@@ -45,7 +45,7 @@
     "isEntry": true
   },
   "frontend/entrypoints/chatbot-main.js": {
-    "file": "chatbot-main.C0L9ZE4q.js",
+    "file": "chatbot-main.CfbSEfu0.js",
     "name": "chatbot-main",
     "src": "frontend/entrypoints/chatbot-main.js",
     "isEntry": true,
@@ -59,7 +59,7 @@
     ]
   },
   "frontend/entrypoints/chatbot-section.js": {
-    "file": "chatbot-section.Cashahww.js",
+    "file": "chatbot-section.DC2i1YLJ.js",
     "name": "chatbot-section",
     "src": "frontend/entrypoints/chatbot-section.js",
     "isEntry": true,

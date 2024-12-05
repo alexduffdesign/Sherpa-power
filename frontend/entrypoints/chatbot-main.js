@@ -11,13 +11,23 @@ export class MainChatbot extends ChatbotBase {
     this.element = element;
     this.history = new HistoryHandler();
 
-    if (this.history.hasHistory()) {
-      this.history.loadFromStorage();
-      this.displaySavedConversation();
-    }
-
     this.initializeElements();
     this.setupEventListeners();
+
+    // Launch the chatbot after initialization
+    this.launchChatbot();
+  }
+
+  async launchChatbot() {
+    try {
+      await this.api.launch();
+    } catch (error) {
+      console.error("Error launching chatbot:", error);
+      this.ui.addMessage(
+        "assistant",
+        "Sorry, there was an error initializing the chatbot. Please refresh the page."
+      );
+    }
   }
 
   initializeElements() {
@@ -39,24 +49,32 @@ export class MainChatbot extends ChatbotBase {
 
   setupEventListeners() {
     if (this.chatInput && this.sendButton) {
+      // Find the form element
       const form = this.chatInput.closest("form");
       if (form) {
-        form.addEventListener("submit", (e) => {
+        // Prevent form submission and handle input
+        form.addEventListener("submit", async (e) => {
           e.preventDefault();
-          this.handleUserInput();
+          e.stopPropagation();
+          await this.handleUserInput();
+          return false;
         });
       }
 
-      this.chatInput.addEventListener("keypress", (event) => {
+      // Handle Enter key press
+      this.chatInput.addEventListener("keypress", async (event) => {
         if (event.key === "Enter" && !event.shiftKey) {
           event.preventDefault();
-          this.handleUserInput();
+          event.stopPropagation();
+          await this.handleUserInput();
         }
       });
 
-      this.sendButton.addEventListener("click", (e) => {
+      // Handle send button click
+      this.sendButton.addEventListener("click", async (e) => {
         e.preventDefault();
-        this.handleUserInput();
+        e.stopPropagation();
+        await this.handleUserInput();
       });
     }
 
