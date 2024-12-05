@@ -1,12 +1,12 @@
 {
   "frontend/entrypoints/chatbot-core-file.js": {
-    "file": "chatbot-core-file.CMh2ryv3.js",
+    "file": "chatbot-core-file.CPnjCsv0.js",
     "name": "chatbot-core-file",
     "src": "frontend/entrypoints/chatbot-core-file.js",
     "isEntry": true
   },
   "frontend/entrypoints/chatbot-drawer.js": {
-    "file": "chatbot-drawer.WIndivQr.js",
+    "file": "chatbot-drawer.BHdkUGs5.js",
     "name": "chatbot-drawer",
     "src": "frontend/entrypoints/chatbot-drawer.js",
     "isEntry": true,
@@ -16,7 +16,7 @@
     ]
   },
   "frontend/entrypoints/chatbot-main.js": {
-    "file": "chatbot-main.C6slgJqf.js",
+    "file": "chatbot-main.DdZJCH1A.js",
     "name": "chatbot-main",
     "src": "frontend/entrypoints/chatbot-main.js",
     "isEntry": true,
@@ -25,7 +25,7 @@
     ]
   },
   "frontend/entrypoints/chatbot-section.js": {
-    "file": "chatbot-section.CLAKrWN_.js",
+    "file": "chatbot-section.DTy38Z5q.js",
     "name": "chatbot-section",
     "src": "frontend/entrypoints/chatbot-section.js",
     "isEntry": true,

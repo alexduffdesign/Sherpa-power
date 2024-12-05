@@ -93,14 +93,28 @@ class SectionChatbot extends HTMLElement {
       };
 
       this.core = new ChatbotCore(config);
+      // Set up trace handler
+      this.core.onTraceReceived = this.handleTrace.bind(this);
+
       this.core.setDOMElements(
         this.messageContainer,
         this.typingIndicator,
         this
       );
 
-      await this.initializeChat();
       this.chatInitialized = true;
+      console.log("Section chatbot initialized");
+    }
+  }
+
+  async handleTrace(trace) {
+    console.log("Section chatbot handling trace:", trace);
+
+    switch (trace.type) {
+      case "device_answer":
+        await this.handleDeviceAnswer(trace.payload);
+        break;
+      // Add any other section-specific trace handlers here
     }
   }
 
@@ -120,22 +134,8 @@ class SectionChatbot extends HTMLElement {
   }
 
   async handleAgentResponse(response) {
-    console.log("Handling agent response:", response);
-    // response is now { traces: [...] }
-    const traces = response.traces || [];
-    for (const trace of traces) {
-      if (trace.type === "text") {
-        this.core.addMessage("assistant", trace.payload.message);
-      } else if (trace.type === "choice") {
-        this.core.addButtons(trace.payload.buttons);
-      } else if (trace.type === "device_answer") {
-        this.handleDeviceAnswer(trace.payload);
-      } else if (trace.type === "waiting_text") {
-        this.core.showTypingIndicator(trace.payload);
-      } else {
-        console.log("Unknown trace type:", trace.type);
-      }
-    }
+    // No need to process traces here as they're handled by handleTrace
+    // Just handle any final cleanup if needed
     this.core.scrollToBottom();
   }
 

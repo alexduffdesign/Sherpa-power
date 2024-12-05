@@ -17,6 +17,9 @@ export class ChatbotCore {
     this.defaultTypingText = "Sherpa Guide Is Typing...";
     this.currentStream = null;
 
+    // Optional callback for specialized traces
+    this.onTraceReceived = null;
+
     // Bind methods
     this.sendMessage = this.sendMessage.bind(this);
     this.streamInteract = this.streamInteract.bind(this);
@@ -166,15 +169,31 @@ export class ChatbotCore {
   async handleStreamEvent(event) {
     console.log("Received stream event:", event);
 
-    if (event.type === "text") {
-      // For text messages, update or create a new message
-      await this.addMessage("assistant", event.payload.message);
-    } else if (event.type === "end") {
-      // Handle end of stream
-      console.log("Stream ended");
-      this.hideTypingIndicator();
+    // Always notify parent component of trace if callback exists
+    if (this.onTraceReceived) {
+      await this.onTraceReceived(event);
     }
-    // Scroll to bottom after each event
+
+    // Handle basic traces
+    switch (event.type) {
+      case "text":
+        await this.addMessage("assistant", event.payload.message);
+        break;
+      case "choice":
+        this.addButtons(event.payload.buttons);
+        break;
+      case "waiting_text":
+        this.showTypingIndicator(event.payload);
+        break;
+      case "end":
+        console.log("Stream ended");
+        this.hideTypingIndicator();
+        break;
+      default:
+        // Log unhandled trace types but don't throw - parent might handle them
+        console.log("Trace delegated to parent:", event.type);
+    }
+
     this.scrollToBottom();
   }
 

@@ -17,6 +17,10 @@ class MainChatbot {
       projectID: config.projectID,
       useStreaming: true,
     });
+
+    // Set up trace handler
+    this.core.onTraceReceived = this.handleTrace.bind(this);
+
     console.log("ChatbotCore instance created:", this.core);
 
     this.conversationHistory = [];
@@ -81,11 +85,10 @@ class MainChatbot {
         try {
           const response = await this.core.handleButtonClick(buttonData);
           // Save button click as a message
-          this.conversationHistory.push({
+          this.updateConversationHistory({
             type: "user",
             message: buttonData.name,
           });
-          this.saveConversationToStorage();
           await this.handleAgentResponse(response);
         } catch (error) {
           console.error("Error handling button click:", error);
@@ -142,9 +145,10 @@ class MainChatbot {
   }
 
   async handleUserMessage(message) {
+    // Add message to UI
     this.core.addMessage("user", message);
-    this.conversationHistory.push({ type: "user", message: message });
-    this.saveConversationToStorage();
+    // Add to conversation history
+    this.updateConversationHistory({ type: "user", message: message });
 
     this.core.showTypingIndicator();
     try {
@@ -205,8 +209,6 @@ class MainChatbot {
     }
   }
 
-  // User clicks back to start button
-
   async jumpToMainMenu() {
     console.log("MainChatbot jumpToMainMenu called");
 
@@ -257,51 +259,61 @@ class MainChatbot {
   }
 
   async handleAgentResponse(response) {
-    console.log("Handling agent response:", response);
-    // response is now { traces: [...] }
-    const traces = response.traces || [];
-    for (const trace of traces) {
-      if (trace.type === "RedirectToProduct") {
-        const productHandle = trace.payload?.body?.productHandle;
-        if (productHandle) {
-          this.handleProductRedirect(productHandle);
-          return;
-        }
-      } else if (trace.type === "text") {
-        this.core.addMessage("assistant", trace.payload.message);
-        this.conversationHistory.push({
+    // No need to process traces here as they're handled by handleTrace
+    // Just handle any final cleanup if needed
+    console.log("Agent response complete:", response);
+  }
+
+  async handleTrace(trace) {
+    console.log("Main chatbot handling trace:", trace);
+
+    // Add to conversation history based on trace type
+    switch (trace.type) {
+      case "text":
+        this.updateConversationHistory({
           type: "assistant",
           message: trace.payload.message,
         });
-      } else if (trace.type === "choice") {
-        this.core.addButtons(trace.payload.buttons);
-        this.conversationHistory.push({
+        break;
+
+      case "choice":
+        this.updateConversationHistory({
           type: "choice",
           buttons: trace.payload.buttons,
         });
-      } else if (trace.type === "carousel") {
+        break;
+
+      case "carousel":
         this.addCarousel(trace.payload);
-        this.conversationHistory.push({
+        this.updateConversationHistory({
           type: "carousel",
           data: trace.payload,
         });
-      } else if (
-        trace.type === "visual" &&
-        trace.payload.visualType === "image"
-      ) {
-        this.addVisualImage(trace.payload);
-        this.conversationHistory.push({
-          type: "visual",
-          data: trace.payload,
-        });
-      } else if (trace.type === "waiting_text") {
-        this.core.showTypingIndicator(trace.payload);
-      } else {
-        console.log("Unknown trace type:", trace.type);
-      }
+        break;
+
+      case "visual":
+        if (trace.payload.visualType === "image") {
+          this.addVisualImage(trace.payload);
+          this.updateConversationHistory({
+            type: "visual",
+            data: trace.payload,
+          });
+        }
+        break;
+
+      case "RedirectToProduct":
+        const productHandle = trace.payload?.body?.productHandle;
+        if (productHandle) {
+          this.handleProductRedirect(productHandle);
+        }
+        break;
     }
+  }
+
+  updateConversationHistory(entry) {
+    console.log("Updating conversation history with:", entry);
+    this.conversationHistory.push(entry);
     this.saveConversationToStorage();
-    this.core.scrollToBottom();
   }
 
   addVisualImage(payload) {
@@ -391,12 +403,10 @@ class MainChatbot {
           carouselElement.remove();
 
           // Save button click as a message
-          this.conversationHistory.push({
+          this.updateConversationHistory({
             type: "user",
             message: buttonData.name,
           });
-          this.saveConversationToStorage();
-
           const response = await this.core.handleButtonClick(buttonData);
           await this.handleAgentResponse(response);
         } catch (error) {
