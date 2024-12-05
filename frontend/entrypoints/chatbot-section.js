@@ -135,24 +135,30 @@ class SectionChatbot extends ChatbotBase {
   }
 
   async handleUserMessage(message) {
-    this.core.addMessage("user", message);
-    this.core.showTypingIndicator();
     try {
+      // Add user message to UI
+      this.core.ui.addMessage("user", message);
+
+      // Send message and handle response
       const response = await this.core.sendMessage(message);
-      console.log("Response from sendMessage:", response);
-      await this.handleAgentResponse(response);
+
+      // Handle the response if needed
+      if (response && response.success) {
+        console.log("Message sent successfully");
+      }
     } catch (error) {
-      console.error("Error in send message:", error);
-    } finally {
-      this.core.hideTypingIndicator();
-      this.core.scrollToBottom();
+      console.error("Error in handleUserMessage:", error);
     }
   }
 
   async handleAgentResponse(response) {
-    // No need to process traces here as they're handled by handleTrace
-    // Just handle any final cleanup if needed
-    this.core.scrollToBottom();
+    try {
+      if (response && response.success) {
+        this.core.ui.scrollToBottom();
+      }
+    } catch (error) {
+      console.error("Error in handleAgentResponse:", error);
+    }
   }
 
   handleDeviceAnswer(deviceAnswer) {
