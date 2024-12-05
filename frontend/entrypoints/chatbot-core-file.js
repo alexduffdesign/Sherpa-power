@@ -5,17 +5,27 @@ export class ChatbotCore {
   constructor(config) {
     console.log("ChatbotCore constructor called with config:", config);
     this.apiEndpoint = config.apiEndpoint;
+    this.streamingEndpoint =
+      "https://chatbottings--development.gadget.app/voiceflowAPI/voiceflow-streaming";
+    this.apiKey = config.apiKey;
+    this.projectID = config.projectID;
     this.userIDPrefix = config.userIDPrefix || "chatbot";
     this.userID = this.loadUserID();
     this.messageContainer = null;
     this.typingIndicator = null;
     this.drawerBody = null;
     this.defaultTypingText = "Sherpa Guide Is Typing...";
+    this.currentStream = null;
 
     // Bind methods
     this.sendMessage = this.sendMessage.bind(this);
-    this.gadgetInteract = this.gadgetInteract.bind(this);
+    this.streamInteract = this.streamInteract.bind(this);
+    this.handleStreamEvent = this.handleStreamEvent.bind(this);
     this.addMessage = this.addMessage.bind(this);
+    this.gadgetInteract = this.gadgetInteract.bind(this);
+    this.addButtons = this.addButtons.bind(this);
+    this.removeButtons = this.removeButtons.bind(this);
+    this.handleButtonClick = this.handleButtonClick.bind(this);
 
     console.log("ChatbotCore instance created:", this);
   }
@@ -58,15 +68,13 @@ export class ChatbotCore {
   async sendMessage(message) {
     console.log("sendMessage called with:", message);
     try {
-      const res = await this.gadgetInteract({
-        action: {
-          type: "text",
-          payload: message,
-        },
+      // Add the user's message to the chat
+      await this.addMessage("user", message);
+
+      return await this.streamInteract({
+        type: "text",
+        payload: message,
       });
-      console.log("gadgetInteract response:", res);
-      this.hideTypingIndicator();
-      return res;
     } catch (error) {
       console.error("Error sending message:", error);
       this.hideTypingIndicator();
@@ -75,27 +83,97 @@ export class ChatbotCore {
   }
 
   async sendLaunch(payload = {}) {
-    console.log("ChatbotCore sendLaunch called with payload:", payload);
+    console.log("sendLaunch called with payload:", payload);
     this.showTypingIndicator();
 
     try {
-      // Preserve the incoming payload while ensuring type is "launch"
-      const launchPayload = {
-        action: {
-          type: "launch",
-          payload: payload.action?.payload || {},
-        },
-      };
-
-      const res = await this.gadgetInteract(launchPayload);
-      console.log("Launch response:", res);
-      return res;
+      return await this.streamInteract({
+        type: "launch",
+        payload: payload?.action?.payload || {},
+      });
     } catch (error) {
-      console.error("Error launching conversation:", error);
+      console.error("Error in launch:", error);
+      this.hideTypingIndicator();
       throw error;
-    } finally {
+    }
+  }
+
+  async streamInteract(action) {
+    console.log("streamInteract called with:", action);
+    if (this.currentStream) {
+      this.currentStream.close();
+    }
+
+    this.showTypingIndicator();
+
+    const fullPayload = {
+      userID: this.userID,
+      action,
+      config: {
+        tts: false,
+        stripSSML: true,
+        stopAll: false,
+        excludeTypes: ["block", "debug", "flow"],
+      },
+    };
+
+    try {
+      const response = await fetch(this.streamingEndpoint, {
+        method: "POST",
+        headers: {
+          Accept: "text/event-stream",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(fullPayload),
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const reader = response.body.getReader();
+      const decoder = new TextDecoder();
+      let buffer = "";
+
+      while (true) {
+        const { value, done } = await reader.read();
+        if (done) break;
+
+        buffer += decoder.decode(value, { stream: true });
+        const lines = buffer.split("\n");
+
+        buffer = lines.pop() || "";
+
+        for (const line of lines) {
+          if (line.trim() === "") continue;
+          if (line.startsWith("data: ")) {
+            const eventData = JSON.parse(line.slice(6));
+            await this.handleStreamEvent(eventData);
+          }
+        }
+      }
+
+      this.hideTypingIndicator();
+    } catch (error) {
+      console.error("Error in streamInteract:", error);
+      this.hideTypingIndicator();
+      throw error;
+    }
+  }
+
+  async handleStreamEvent(event) {
+    console.log("Received stream event:", event);
+
+    if (event.type === "text") {
+      // For text messages, update or create a new message
+      await this.addMessage("assistant", event.payload.message);
+    } else if (event.type === "end") {
+      // Handle end of stream
+      console.log("Stream ended");
       this.hideTypingIndicator();
     }
+    // Scroll to bottom after each event
+    this.scrollToBottom();
   }
 
   async gadgetInteract(payload) {
@@ -249,8 +327,6 @@ export class ChatbotCore {
       this.scrollToBottom();
     }
   }
-
-  // chatbot-core.js (Refactored markdownToHtml)
 
   markdownToHtml(markdown) {
     // Escape HTML to prevent XSS

@@ -89,14 +89,17 @@ class SectionChatbot extends HTMLElement {
         apiEndpoint:
           "https://chatbottings--development.gadget.app/voiceflowAPI/voiceflow-new",
         userIDPrefix: "sectionChatbot",
+        useStreaming: true,
       };
+
       this.core = new ChatbotCore(config);
       this.core.setDOMElements(
         this.messageContainer,
         this.typingIndicator,
         this
       );
-      await this.sendLaunch();
+
+      await this.initializeChat();
       this.chatInitialized = true;
     }
   }

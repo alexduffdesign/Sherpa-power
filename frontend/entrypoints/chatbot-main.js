@@ -13,6 +13,9 @@ class MainChatbot {
     this.core = new ChatbotCore({
       apiEndpoint: this.voiceflowEndpoint,
       userIDPrefix: "mainChatbot",
+      apiKey: config.apiKey,
+      projectID: config.projectID,
+      useStreaming: true,
     });
     console.log("ChatbotCore instance created:", this.core);
 
