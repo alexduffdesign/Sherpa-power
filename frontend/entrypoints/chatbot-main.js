@@ -38,6 +38,7 @@ export class MainChatbot extends ChatbotBase {
       // Find the form element
       const form = this.chatInput.closest("form");
       if (form) {
+        console.log("Form found:", form);
         form.addEventListener("submit", async (e) => {
           e.preventDefault();
           e.stopPropagation();

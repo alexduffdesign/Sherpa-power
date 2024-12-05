@@ -41,8 +41,6 @@ function initChatbotDrawer(drawerId) {
       const mainChatbotElement = event.target.querySelector("main-chatbot");
       if (mainChatbotElement && mainChatbotElement.mainChatbot) {
         console.log("Initializing Chatbot on drawer open");
-        // Send initial message to start the conversation if needed
-        mainChatbotElement.mainChatbot.sendMessage("start");
       } else {
         console.error("mainChatbotElement or mainChatbot not found");
       }
