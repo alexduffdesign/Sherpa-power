@@ -114,37 +114,48 @@ export class ChatbotCore {
     };
 
     try {
-      const eventSource = new EventSource(
-        this.streamingEndpoint +
-          "?" +
-          new URLSearchParams({
-            payload: JSON.stringify(fullPayload),
-          })
-      );
-
-      return new Promise((resolve, reject) => {
-        const traces = [];
-
-        eventSource.onmessage = async (event) => {
-          const data = JSON.parse(event.data);
-          traces.push(data);
-          await this.handleStreamEvent(data);
-        };
-
-        eventSource.onerror = (error) => {
-          console.error("EventSource error:", error);
-          eventSource.close();
-          this.hideTypingIndicator();
-          reject(error);
-        };
-
-        // Handle end of stream
-        eventSource.addEventListener("end", () => {
-          eventSource.close();
-          this.hideTypingIndicator();
-          resolve({ traces });
-        });
+      const response = await fetch(this.streamingEndpoint, {
+        method: "POST",
+        headers: {
+          Accept: "text/event-stream",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(fullPayload),
       });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const reader = response.body.getReader();
+      const decoder = new TextDecoder();
+      const traces = [];
+      let buffer = "";
+
+      while (true) {
+        const { value, done } = await reader.read();
+        if (done) break;
+
+        buffer += decoder.decode(value, { stream: true });
+        const lines = buffer.split("\n");
+        buffer = lines.pop() || "";
+
+        for (const line of lines) {
+          if (line.trim() === "") continue;
+          if (line.startsWith("data: ")) {
+            try {
+              const eventData = JSON.parse(line.slice(6));
+              traces.push(eventData);
+              await this.handleStreamEvent(eventData);
+            } catch (e) {
+              console.error("Error parsing event data:", e, "Line:", line);
+            }
+          }
+        }
+      }
+
+      this.hideTypingIndicator();
+      return { traces };
     } catch (error) {
       console.error("Error in streamInteract:", error);
       this.hideTypingIndicator();
