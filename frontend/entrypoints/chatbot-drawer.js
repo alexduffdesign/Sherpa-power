@@ -1,6 +1,6 @@
 // chatbot-drawer.js
 
-import MainChatbot from "./chatbot-main.js";
+import { MainChatbot } from "./chatbot-main.js";
 
 console.log("Chatbot drawer script loaded");
 
@@ -20,8 +20,9 @@ function initChatbotDrawer(drawerId) {
       if (!this.mainChatbot) {
         console.log("MainChatbotElement connected");
         const config = {
-          voiceflowEndpoint:
+          apiEndpoint:
             "https://chatbottings--development.gadget.app/voiceflowAPI/voiceflow-new",
+          userIDPrefix: "mainChatbot",
         };
         this.mainChatbot = new MainChatbot(this, config);
       }
@@ -40,14 +41,15 @@ function initChatbotDrawer(drawerId) {
       const mainChatbotElement = event.target.querySelector("main-chatbot");
       if (mainChatbotElement && mainChatbotElement.mainChatbot) {
         console.log("Initializing Chatbot on drawer open");
-        mainChatbotElement.mainChatbot.initializeChat();
+        // Send initial message to start the conversation if needed
+        mainChatbotElement.mainChatbot.sendMessage("start");
       } else {
         console.error("mainChatbotElement or mainChatbot not found");
       }
     }
   });
 
-  // Optionally, listen to 'dialog:after-hide' event
+  // Listen to 'dialog:after-hide' event
   document.addEventListener("dialog:after-hide", function (event) {
     if (event.target.id === drawerId) {
       console.log("Chatbot drawer closed");

@@ -3,18 +3,44 @@
   Do not attempt to modify this file directly, as any changes will be overwritten by the next build.
 {% endcomment %}
 {% assign path = vite-tag | replace: '@/', '../' | replace: '~/', '../' %}
-{% if path == "/frontend/entrypoints/chatbot-core-file.js" or path == "chatbot-core-file.js" %}
-  <script src="{{ 'chatbot-core-file.CPnjCsv0.js' | asset_url }}" type="module" crossorigin="anonymous"></script>
+{% if path == "/frontend/entrypoints/chatbot-api.js" or path == "chatbot-api.js" %}
+  <script src="{{ 'chatbot-api.DgsgZK2v.js' | asset_url }}" type="module" crossorigin="anonymous"></script>
+{% elsif path == "/frontend/entrypoints/chatbot-base.js" or path == "chatbot-base.js" %}
+  <script src="{{ 'chatbot-base.B0MNFgaR.js' | asset_url }}" type="module" crossorigin="anonymous"></script>
+  <link rel="modulepreload" href="{{ 'chatbot-api.DgsgZK2v.js' | asset_url }}" crossorigin="anonymous">
+  <link rel="modulepreload" href="{{ 'chatbot-ui.D8QKNx86.js' | asset_url }}" crossorigin="anonymous">
+  <link rel="modulepreload" href="{{ 'chatbot-stream.2Ew4cAx-.js' | asset_url }}" crossorigin="anonymous">
+  <link rel="modulepreload" href="{{ 'chatbot-trace.BEMxCePC.js' | asset_url }}" crossorigin="anonymous">
+{% elsif path == "/frontend/entrypoints/chatbot-core-file.js" or path == "chatbot-core-file.js" %}
+  <script src="{{ 'chatbot-core-file.BJ2tqOA_.js' | asset_url }}" type="module" crossorigin="anonymous"></script>
 {% elsif path == "/frontend/entrypoints/chatbot-drawer.js" or path == "chatbot-drawer.js" %}
-  <script src="{{ 'chatbot-drawer.BHdkUGs5.js' | asset_url }}" type="module" crossorigin="anonymous"></script>
-  <link rel="modulepreload" href="{{ 'chatbot-main.DdZJCH1A.js' | asset_url }}" crossorigin="anonymous">
-  <link rel="modulepreload" href="{{ 'chatbot-core-file.CPnjCsv0.js' | asset_url }}" crossorigin="anonymous">
+  <script src="{{ 'chatbot-drawer.BKmtOGee.js' | asset_url }}" type="module" crossorigin="anonymous"></script>
+  <link rel="modulepreload" href="{{ 'chatbot-main.Kp3U9uew.js' | asset_url }}" crossorigin="anonymous">
+  <link rel="modulepreload" href="{{ 'chatbot-base.B0MNFgaR.js' | asset_url }}" crossorigin="anonymous">
+  <link rel="modulepreload" href="{{ 'chatbot-api.DgsgZK2v.js' | asset_url }}" crossorigin="anonymous">
+  <link rel="modulepreload" href="{{ 'chatbot-ui.D8QKNx86.js' | asset_url }}" crossorigin="anonymous">
+  <link rel="modulepreload" href="{{ 'chatbot-stream.2Ew4cAx-.js' | asset_url }}" crossorigin="anonymous">
+  <link rel="modulepreload" href="{{ 'chatbot-trace.BEMxCePC.js' | asset_url }}" crossorigin="anonymous">
+  <link rel="modulepreload" href="{{ 'chatbot-history.PsHLWNuA.js' | asset_url }}" crossorigin="anonymous">
+{% elsif path == "/frontend/entrypoints/chatbot-history.js" or path == "chatbot-history.js" %}
+  <script src="{{ 'chatbot-history.PsHLWNuA.js' | asset_url }}" type="module" crossorigin="anonymous"></script>
 {% elsif path == "/frontend/entrypoints/chatbot-main.js" or path == "chatbot-main.js" %}
-  <script src="{{ 'chatbot-main.DdZJCH1A.js' | asset_url }}" type="module" crossorigin="anonymous"></script>
-  <link rel="modulepreload" href="{{ 'chatbot-core-file.CPnjCsv0.js' | asset_url }}" crossorigin="anonymous">
+  <script src="{{ 'chatbot-main.Kp3U9uew.js' | asset_url }}" type="module" crossorigin="anonymous"></script>
+  <link rel="modulepreload" href="{{ 'chatbot-base.B0MNFgaR.js' | asset_url }}" crossorigin="anonymous">
+  <link rel="modulepreload" href="{{ 'chatbot-history.PsHLWNuA.js' | asset_url }}" crossorigin="anonymous">
+  <link rel="modulepreload" href="{{ 'chatbot-api.DgsgZK2v.js' | asset_url }}" crossorigin="anonymous">
+  <link rel="modulepreload" href="{{ 'chatbot-ui.D8QKNx86.js' | asset_url }}" crossorigin="anonymous">
+  <link rel="modulepreload" href="{{ 'chatbot-stream.2Ew4cAx-.js' | asset_url }}" crossorigin="anonymous">
+  <link rel="modulepreload" href="{{ 'chatbot-trace.BEMxCePC.js' | asset_url }}" crossorigin="anonymous">
 {% elsif path == "/frontend/entrypoints/chatbot-section.js" or path == "chatbot-section.js" %}
-  <script src="{{ 'chatbot-section.DTy38Z5q.js' | asset_url }}" type="module" crossorigin="anonymous"></script>
-  <link rel="modulepreload" href="{{ 'chatbot-core-file.CPnjCsv0.js' | asset_url }}" crossorigin="anonymous">
+  <script src="{{ 'chatbot-section.DDVFflKn.js' | asset_url }}" type="module" crossorigin="anonymous"></script>
+  <link rel="modulepreload" href="{{ 'chatbot-core-file.BJ2tqOA_.js' | asset_url }}" crossorigin="anonymous">
+{% elsif path == "/frontend/entrypoints/chatbot-stream.js" or path == "chatbot-stream.js" %}
+  <script src="{{ 'chatbot-stream.2Ew4cAx-.js' | asset_url }}" type="module" crossorigin="anonymous"></script>
+{% elsif path == "/frontend/entrypoints/chatbot-trace.js" or path == "chatbot-trace.js" %}
+  <script src="{{ 'chatbot-trace.BEMxCePC.js' | asset_url }}" type="module" crossorigin="anonymous"></script>
+{% elsif path == "/frontend/entrypoints/chatbot-ui.js" or path == "chatbot-ui.js" %}
+  <script src="{{ 'chatbot-ui.D8QKNx86.js' | asset_url }}" type="module" crossorigin="anonymous"></script>
 {% elsif path == "/frontend/entrypoints/theme.js" or path == "theme.js" %}
   <script src="{{ 'theme.nWpejdIS.js' | asset_url }}" type="module" crossorigin="anonymous"></script>
 {% endif %}

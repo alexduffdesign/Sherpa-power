@@ -177,10 +177,18 @@ export class ChatbotCore {
     // Handle basic traces
     switch (event.type) {
       case "text":
-        await this.addMessage("assistant", event.payload.message);
+        if (event.payload?.message) {
+          await this.addMessage("assistant", event.payload.message);
+        }
+        break;
+      case "path":
+        // Path traces are for flow control, we can log them but no UI action needed
+        console.log("Path trace received:", event.payload);
         break;
       case "choice":
-        this.addButtons(event.payload.buttons);
+        if (event.payload?.buttons) {
+          this.addButtons(event.payload.buttons);
+        }
         break;
       case "waiting_text":
         this.showTypingIndicator(event.payload);

@@ -1,0 +1,4 @@
+class m{constructor(){this.currentStream=null}async handleStream(s,c){if(!s.body)throw new Error("No response body available");const i=s.body.getReader(),l=new TextDecoder;let t="";try{for(;;){const{done:e,value:a}=await i.read();if(e)break;t+=l.decode(a,{stream:!0});const n=t.split(`
+`);t=n.pop()||"";for(const r of n)if(r.trim()!==""&&r.startsWith("data: ")){const d=r.slice(6);try{const o=JSON.parse(d);await c.handleTrace(o)}catch(o){console.error("Error parsing stream data:",o)}}}if(t){const e=t.split(`
+`);for(const a of e){if(a.trim()===""||!a.startsWith("data: "))continue;const n=a.slice(6);try{const r=JSON.parse(n);await c.handleTrace(r)}catch(r){console.error("Error parsing remaining stream data:",r)}}}}catch(e){throw console.error("Error reading stream:",e),e}}closeCurrentStream(){this.currentStream&&(this.currentStream.cancel(),this.currentStream=null)}}export{m as S};
+//# sourceMappingURL=chatbot-stream.2Ew4cAx-.js.map
