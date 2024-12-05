@@ -1,18 +1,27 @@
-import { ChatbotCore } from "./chatbot-core-file.js";
+import { ChatbotBase } from "./chatbot-base.js";
 
 console.log("SectionChatbot module loading");
 
-class SectionChatbot extends HTMLElement {
+class SectionChatbot extends ChatbotBase {
   constructor() {
-    super();
+    const config = {
+      apiEndpoint:
+        "https://chatbottings--development.gadget.app/voiceflowAPI/voiceflow-streaming",
+      userIDPrefix: "sectionChatbot",
+    };
+    super(config);
     this.chatInitialized = false;
     this.core = null;
     this.messageContainer = null;
     this.typingIndicator = null;
     this.applicationsGrid = null;
+    this.viewMoreButton = null;
+    this.chatForm = null;
+    this.userInput = null;
   }
 
   connectedCallback() {
+    console.log("SectionChatbot connected");
     this.initialize();
   }
 
@@ -28,37 +37,45 @@ class SectionChatbot extends HTMLElement {
     console.log("SectionChatbot initializeElements called");
     this.messageContainer = this.querySelector("#messageContainer");
     this.typingIndicator = this.querySelector(".chat-typing");
+    this.chatForm = this.querySelector("#chatForm");
+    this.userInput = this.querySelector("#userInput");
     this.applicationsGrid = document.querySelector(".applications-grid");
 
-    if (!this.messageContainer || !this.typingIndicator) {
+    if (
+      !this.messageContainer ||
+      !this.typingIndicator ||
+      !this.chatForm ||
+      !this.userInput
+    ) {
       console.error("Required DOM elements not found");
+      return;
     }
+
+    this.setDOMElements(this.messageContainer, this.typingIndicator, this);
   }
 
   setupEventListeners() {
     if (this.eventListenersAttached) return;
 
     console.log("SectionChatbot setupEventListeners called");
-    const form = this.querySelector("#chatForm");
-    const input = this.querySelector("#userInput");
 
-    if (!form || !input) {
+    if (!this.chatForm || !this.userInput) {
       console.error("Chat form or input not found");
       return;
     }
 
     // Initialize chat when user focuses on the input
-    input.addEventListener("focus", async () => {
+    this.userInput.addEventListener("focus", async () => {
       console.log("Input focused, initializing chat if needed");
       await this.initializeChatIfNeeded();
     });
 
-    form.addEventListener("submit", async (e) => {
+    this.chatForm.addEventListener("submit", async (e) => {
       e.preventDefault();
-      const message = input.value.trim();
+      const message = this.userInput.value.trim();
       if (message) {
         console.log("Form submitted with message:", message);
-        input.value = ""; // Clear the input field immediately
+        this.userInput.value = ""; // Clear the input field immediately
         await this.initializeChatIfNeeded(); // Ensure chat is initialized (in case focus event didn't trigger)
         await this.handleUserMessage(message);
       }
@@ -85,14 +102,13 @@ class SectionChatbot extends HTMLElement {
   async initializeChatIfNeeded() {
     if (!this.chatInitialized) {
       console.log("Initializing section chatbot");
-      const config = {
+      this.core = new ChatbotCore({
         apiEndpoint:
           "https://chatbottings--development.gadget.app/voiceflowAPI/voiceflow-new",
         userIDPrefix: "sectionChatbot",
         useStreaming: true,
-      };
+      });
 
-      this.core = new ChatbotCore(config);
       // Set up trace handler
       this.core.onTraceReceived = this.handleTrace.bind(this);
 
