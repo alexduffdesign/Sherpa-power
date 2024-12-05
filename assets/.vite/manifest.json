@@ -1,93 +1,90 @@
 {
   "frontend/entrypoints/chatbot-api.js": {
-    "file": "chatbot-api.5HZ4htyK.js",
+    "file": "chatbot-api.BRMGO-hS.js",
     "name": "chatbot-api",
     "src": "frontend/entrypoints/chatbot-api.js",
-    "isEntry": true
+    "isEntry": true,
+    "imports": [
+      "frontend/entrypoints/chatbot-core-file.js"
+    ]
   },
   "frontend/entrypoints/chatbot-base.js": {
-    "file": "chatbot-base.DCJ5-2Hq.js",
+    "file": "chatbot-base.O_qmuPdZ.js",
     "name": "chatbot-base",
     "src": "frontend/entrypoints/chatbot-base.js",
     "isEntry": true,
     "imports": [
-      "frontend/entrypoints/chatbot-api.js",
-      "frontend/entrypoints/chatbot-ui.js",
-      "frontend/entrypoints/chatbot-stream.js",
-      "frontend/entrypoints/chatbot-trace.js"
+      "frontend/entrypoints/chatbot-core-file.js"
     ]
   },
   "frontend/entrypoints/chatbot-core-file.js": {
-    "file": "chatbot-core-file.DHiLcbvS.js",
+    "file": "chatbot-core-file.B4RQzswn.js",
     "name": "chatbot-core-file",
     "src": "frontend/entrypoints/chatbot-core-file.js",
     "isEntry": true
   },
   "frontend/entrypoints/chatbot-drawer.js": {
-    "file": "chatbot-drawer.Cs_FcoVM.js",
+    "file": "chatbot-drawer.cujrr_Xz.js",
     "name": "chatbot-drawer",
     "src": "frontend/entrypoints/chatbot-drawer.js",
     "isEntry": true,
     "imports": [
-      "frontend/entrypoints/chatbot-main.js",
-      "frontend/entrypoints/chatbot-base.js",
-      "frontend/entrypoints/chatbot-api.js",
-      "frontend/entrypoints/chatbot-ui.js",
-      "frontend/entrypoints/chatbot-stream.js",
-      "frontend/entrypoints/chatbot-trace.js",
-      "frontend/entrypoints/chatbot-history.js"
+      "frontend/entrypoints/chatbot-core-file.js"
     ]
   },
   "frontend/entrypoints/chatbot-history.js": {
-    "file": "chatbot-history.PsHLWNuA.js",
+    "file": "chatbot-history.DSgdPbIG.js",
     "name": "chatbot-history",
     "src": "frontend/entrypoints/chatbot-history.js",
-    "isEntry": true
+    "isEntry": true,
+    "imports": [
+      "frontend/entrypoints/chatbot-core-file.js"
+    ]
   },
   "frontend/entrypoints/chatbot-main.js": {
-    "file": "chatbot-main.CfbSEfu0.js",
+    "file": "chatbot-main.CnmoKS9g.js",
     "name": "chatbot-main",
     "src": "frontend/entrypoints/chatbot-main.js",
     "isEntry": true,
     "imports": [
-      "frontend/entrypoints/chatbot-base.js",
-      "frontend/entrypoints/chatbot-history.js",
-      "frontend/entrypoints/chatbot-api.js",
-      "frontend/entrypoints/chatbot-ui.js",
-      "frontend/entrypoints/chatbot-stream.js",
-      "frontend/entrypoints/chatbot-trace.js"
+      "frontend/entrypoints/chatbot-core-file.js"
     ]
   },
   "frontend/entrypoints/chatbot-section.js": {
-    "file": "chatbot-section.DC2i1YLJ.js",
+    "file": "chatbot-section.CmJ9jpJe.js",
     "name": "chatbot-section",
     "src": "frontend/entrypoints/chatbot-section.js",
     "isEntry": true,
     "imports": [
-      "frontend/entrypoints/chatbot-base.js",
-      "frontend/entrypoints/chatbot-api.js",
-      "frontend/entrypoints/chatbot-ui.js",
-      "frontend/entrypoints/chatbot-stream.js",
-      "frontend/entrypoints/chatbot-trace.js"
+      "frontend/entrypoints/chatbot-core-file.js"
     ]
   },
   "frontend/entrypoints/chatbot-stream.js": {
-    "file": "chatbot-stream.2Ew4cAx-.js",
+    "file": "chatbot-stream.XPacqdQj.js",
     "name": "chatbot-stream",
     "src": "frontend/entrypoints/chatbot-stream.js",
-    "isEntry": true
+    "isEntry": true,
+    "imports": [
+      "frontend/entrypoints/chatbot-core-file.js"
+    ]
   },
   "frontend/entrypoints/chatbot-trace.js": {
-    "file": "chatbot-trace.BEMxCePC.js",
+    "file": "chatbot-trace.CzyK10Nl.js",
     "name": "chatbot-trace",
     "src": "frontend/entrypoints/chatbot-trace.js",
-    "isEntry": true
+    "isEntry": true,
+    "imports": [
+      "frontend/entrypoints/chatbot-core-file.js"
+    ]
   },
   "frontend/entrypoints/chatbot-ui.js": {
-    "file": "chatbot-ui.YIUijLAA.js",
+    "file": "chatbot-ui.K4LSJJtY.js",
     "name": "chatbot-ui",
     "src": "frontend/entrypoints/chatbot-ui.js",
-    "isEntry": true
+    "isEntry": true,
+    "imports": [
+      "frontend/entrypoints/chatbot-core-file.js"
+    ]
   },
   "frontend/entrypoints/theme.js": {
     "file": "theme.nWpejdIS.js",
