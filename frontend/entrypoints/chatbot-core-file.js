@@ -114,31 +114,37 @@ export class ChatbotCore {
     };
 
     try {
-      const response = await fetch(this.streamingEndpoint, {
-        method: "POST",
-        headers: {
-          Accept: "text/event-stream",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(fullPayload),
+      const eventSource = new EventSource(
+        this.streamingEndpoint +
+          "?" +
+          new URLSearchParams({
+            payload: JSON.stringify(fullPayload),
+          })
+      );
+
+      return new Promise((resolve, reject) => {
+        const traces = [];
+
+        eventSource.onmessage = async (event) => {
+          const data = JSON.parse(event.data);
+          traces.push(data);
+          await this.handleStreamEvent(data);
+        };
+
+        eventSource.onerror = (error) => {
+          console.error("EventSource error:", error);
+          eventSource.close();
+          this.hideTypingIndicator();
+          reject(error);
+        };
+
+        // Handle end of stream
+        eventSource.addEventListener("end", () => {
+          eventSource.close();
+          this.hideTypingIndicator();
+          resolve({ traces });
+        });
       });
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-
-      const data = await response.json();
-      console.log("Stream response:", data);
-
-      // Process the response
-      if (Array.isArray(data.traces)) {
-        for (const trace of data.traces) {
-          await this.handleStreamEvent(trace);
-        }
-      }
-
-      this.hideTypingIndicator();
-      return data;
     } catch (error) {
       console.error("Error in streamInteract:", error);
       this.hideTypingIndicator();
