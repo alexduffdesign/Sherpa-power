@@ -1,7 +1,4 @@
-// chatbot-main.js
-
-import { ChatbotBase } from "./chatbot-base";
-import { HistoryHandler } from "./chatbot-history";
+import { ChatbotBase } from "./chatbot-base.js";
 
 export class MainChatbot extends ChatbotBase {
   constructor(element, config) {
@@ -9,25 +6,12 @@ export class MainChatbot extends ChatbotBase {
     super(config);
 
     this.element = element;
-    this.history = new HistoryHandler();
 
     this.initializeElements();
     this.setupEventListeners();
 
-    // Launch the chatbot after initialization
-    this.launchChatbot();
-  }
-
-  async launchChatbot() {
-    try {
-      await this.api.launch();
-    } catch (error) {
-      console.error("Error launching chatbot:", error);
-      this.ui.addMessage(
-        "assistant",
-        "Sorry, there was an error initializing the chatbot. Please refresh the page."
-      );
-    }
+    // Initialize chat (launch if no history, or display history if exists)
+    this.initializeChatIfNeeded();
   }
 
   initializeElements() {
@@ -52,7 +36,6 @@ export class MainChatbot extends ChatbotBase {
       // Find the form element
       const form = this.chatInput.closest("form");
       if (form) {
-        // Prevent form submission and handle input
         form.addEventListener("submit", async (e) => {
           e.preventDefault();
           e.stopPropagation();
@@ -61,7 +44,6 @@ export class MainChatbot extends ChatbotBase {
         });
       }
 
-      // Handle Enter key press
       this.chatInput.addEventListener("keypress", async (event) => {
         if (event.key === "Enter" && !event.shiftKey) {
           event.preventDefault();
@@ -70,7 +52,6 @@ export class MainChatbot extends ChatbotBase {
         }
       });
 
-      // Handle send button click
       this.sendButton.addEventListener("click", async (e) => {
         e.preventDefault();
         e.stopPropagation();
@@ -102,8 +83,6 @@ export class MainChatbot extends ChatbotBase {
       this.chatInput.disabled = true;
 
       try {
-        this.ui.addMessage("user", message);
-        this.history.updateHistory({ type: "user", message });
         await this.sendMessage(message);
       } catch (error) {
         console.error("Error sending message:", error);
@@ -121,84 +100,23 @@ export class MainChatbot extends ChatbotBase {
   async handleSpecialTrace(trace) {
     console.log("Main chatbot handling special trace:", trace);
 
-    switch (trace.type) {
-      case "text":
-        if (trace.payload?.message) {
-          this.history.updateHistory({
-            type: "assistant",
-            message: trace.payload.message,
-          });
-        }
-        break;
+    // Call the parent implementation first
+    await super.handleSpecialTrace(trace);
 
-      case "choice":
-        if (trace.payload?.buttons) {
-          this.history.updateHistory({
-            type: "choice",
-            buttons: trace.payload.buttons,
-          });
-        }
-        break;
-
-      case "carousel":
-        if (trace.payload) {
-          this.history.updateHistory({
-            type: "carousel",
-            data: trace.payload,
-          });
-        }
-        break;
-
-      case "visual":
-        if (trace.payload?.visualType === "image") {
-          this.history.updateHistory({
-            type: "visual",
-            data: trace.payload,
-          });
-        }
-        break;
-
-      case "RedirectToProduct":
-        const productHandle = trace.payload?.body?.productHandle;
-        if (productHandle) {
-          this.handleProductRedirect(productHandle);
-        }
-        break;
-    }
+    // Add any additional special handling for the main chatbot here if needed.
+    // The TraceHandler and ChatbotBase already handle normal text, choice, carousel, and visual traces,
+    // as well as the RedirectToProduct trace.
   }
 
   async jumpToMainMenu() {
     console.log("MainChatbot jumpToMainMenu called");
+    // Clear history and UI if you want a fresh start
     this.history.clearHistory();
-    this.messageContainer.innerHTML = "";
-    await this.sendMessage("start");
-  }
-
-  handleProductRedirect(productHandle) {
-    if (productHandle) {
-      window.location.href = `/products/${productHandle}`;
+    if (this.messageContainer) {
+      this.messageContainer.innerHTML = "";
     }
-  }
-
-  displaySavedConversation() {
-    const history = this.history.getHistory();
-    history.forEach((entry) => {
-      switch (entry.type) {
-        case "user":
-        case "assistant":
-          this.ui.addMessage(entry.type, entry.message);
-          break;
-        case "choice":
-          this.ui.addButtons(entry.buttons);
-          break;
-        case "carousel":
-          this.ui.addCarousel(entry.data);
-          break;
-        case "visual":
-          this.ui.addVisualImage(entry.data);
-          break;
-      }
-    });
+    // Send the main_menu event to start over
+    await super.jumpToMainMenu();
   }
 }
 

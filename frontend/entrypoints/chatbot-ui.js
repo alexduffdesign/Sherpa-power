@@ -1,3 +1,5 @@
+// chatbot-ui.js
+
 export class UIManager {
   constructor() {
     this.messageContainer = null;

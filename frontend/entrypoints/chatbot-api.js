@@ -1,9 +1,8 @@
 export class ApiClient {
   constructor(config) {
-    this.apiEndpoint = config.apiEndpoint;
-    this.streamingEndpoint =
-      "https://chatbottings--development.gadget.app/voiceflowAPI/voiceflow-streaming";
+    this.apiEndpoint = config.apiEndpoint; // Gadget endpoint that proxies Voiceflow streaming
     this.userID = this.generateUserID(config.userIDPrefix || "chatbot");
+    this.completionEvents = config.completionEvents || false;
   }
 
   generateUserID(prefix) {
@@ -17,75 +16,70 @@ export class ApiClient {
     return newID;
   }
 
-  async streamInteract(message, actionType = "text") {
-    console.log(
-      "Streaming interaction with message:",
-      message,
-      "type:",
-      actionType
-    );
-    const url = new URL(this.streamingEndpoint);
-    url.searchParams.append("userID", this.userID);
+  async streamInteract(action, extraConfig = {}) {
+    const url = this.apiEndpoint;
 
     const payload = {
-      action: {
-        type: actionType,
-        payload: actionType === "launch" ? undefined : message,
-      },
       userID: this.userID,
+      action: action,
       config: {
-        tts: false,
-        stripSSML: true,
+        ...extraConfig,
+        // If you need completion events:
+        // Add them if your gadget endpoint supports it,
+        // for now let's assume it's handled at server level.
       },
     };
 
-    try {
-      const response = await fetch(url, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "text/event-stream",
-        },
-        body: JSON.stringify(payload),
-      });
+    console.log(
+      "Sending streaming interact request to gadget endpoint:",
+      payload
+    );
 
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "text/event-stream",
+      },
+      body: JSON.stringify(payload),
+    });
 
-      return response;
-    } catch (error) {
-      console.error("Error in stream interact:", error);
-      throw error;
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
     }
+
+    return response;
   }
 
-  async launch() {
-    return this.streamInteract(null, "launch");
+  async launch(startBlock, productDetails) {
+    const action = {
+      type: "launch",
+      payload: {
+        startBlock: startBlock,
+        powerStationDetails: productDetails,
+      },
+    };
+    return this.streamInteract(action);
   }
 
-  async gadgetInteract(message) {
-    console.log("Gadget interaction with message:", message);
-    try {
-      const response = await fetch(this.apiEndpoint, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
+  async sendUserMessage(message) {
+    const action = {
+      type: "text",
+      payload: message,
+    };
+    return this.streamInteract(action);
+  }
+
+  async sendEvent(eventName, data = {}) {
+    const action = {
+      type: "event",
+      payload: {
+        event: {
+          name: eventName,
+          ...data,
         },
-        body: JSON.stringify({
-          message,
-          userID: this.userID,
-        }),
-      });
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-
-      return await response.json();
-    } catch (error) {
-      console.error("Error in gadget interact:", error);
-      throw error;
-    }
+      },
+    };
+    return this.streamInteract(action);
   }
 }

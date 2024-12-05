@@ -1,3 +1,5 @@
+// chatbot-section.js
+
 import { ChatbotBase } from "./chatbot-base.js";
 
 console.log("SectionChatbot module loading");
@@ -11,7 +13,6 @@ class SectionChatbot extends ChatbotBase {
     };
     super(config);
     this.chatInitialized = false;
-    this.core = null;
     this.messageContainer = null;
     this.typingIndicator = null;
     this.applicationsGrid = null;
@@ -56,7 +57,6 @@ class SectionChatbot extends ChatbotBase {
 
   setupEventListeners() {
     if (this.eventListenersAttached) return;
-
     console.log("SectionChatbot setupEventListeners called");
 
     if (!this.chatForm || !this.userInput) {
@@ -75,24 +75,18 @@ class SectionChatbot extends ChatbotBase {
       const message = this.userInput.value.trim();
       if (message) {
         console.log("Form submitted with message:", message);
-        this.userInput.value = ""; // Clear the input field immediately
-        await this.initializeChatIfNeeded(); // Ensure chat is initialized (in case focus event didn't trigger)
+        this.userInput.value = ""; // Clear input
+        await this.initializeChatIfNeeded();
         await this.handleUserMessage(message);
       }
     });
 
-    // Add button click event listener
     this.messageContainer.addEventListener("click", async (e) => {
-      const buttonElement = e.target.closest(".button");
+      const buttonElement = e.target.closest(".chat-button");
       if (buttonElement) {
         const buttonData = JSON.parse(buttonElement.dataset.buttonData);
         console.log("Button clicked:", buttonData);
-        try {
-          const response = await this.core.handleButtonClick(buttonData);
-          await this.handleAgentResponse(response);
-        } catch (error) {
-          console.error("Error handling button click:", error);
-        }
+        await this.handleButtonClick(buttonData);
       }
     });
 
@@ -102,66 +96,57 @@ class SectionChatbot extends ChatbotBase {
   async initializeChatIfNeeded() {
     if (!this.chatInitialized) {
       console.log("Initializing section chatbot");
-      this.core = new ChatbotCore({
-        apiEndpoint:
-          "https://chatbottings--development.gadget.app/voiceflowAPI/voiceflow-new",
-        userIDPrefix: "sectionChatbot",
-        useStreaming: true,
-      });
-
-      // Set up trace handler
-      this.core.onTraceReceived = this.handleTrace.bind(this);
-
-      this.core.setDOMElements(
-        this.messageContainer,
-        this.typingIndicator,
-        this
+      // This will handle launching if no history, or display saved conversation if any
+      await this.initializeChatIfNeeded(
+        "shopifySection",
+        this.getProductDetails()
       );
-
       this.chatInitialized = true;
       console.log("Section chatbot initialized");
     }
   }
 
-  async handleTrace(trace) {
-    console.log("Section chatbot handling trace:", trace);
+  getProductDetails() {
+    const productTitle = this.getAttribute("product-title");
+    const productCapacity = this.getAttribute("product-capacity");
+    const acOutputContinuousPower = parseFloat(
+      this.getAttribute("product-ac_output_continuous_power")
+    );
+    const acOutputPeakPower = parseFloat(
+      this.getAttribute("product-ac_output_peak_power")
+    );
+    const dcOutputPower = parseFloat(
+      this.getAttribute("product-dc_output_power")
+    );
 
-    switch (trace.type) {
-      case "device_answer":
-        await this.handleDeviceAnswer(trace.payload);
-        break;
-      // Add any other section-specific trace handlers here
-    }
+    return JSON.stringify({
+      title: productTitle,
+      capacity: productCapacity,
+      ac_output_continuous_power: acOutputContinuousPower,
+      ac_output_peak_power: acOutputPeakPower,
+      dc_output_power: dcOutputPower,
+    });
   }
 
   async handleUserMessage(message) {
     try {
-      // Add user message to UI
-      this.core.ui.addMessage("user", message);
-
-      // Send message and handle response
-      const response = await this.core.sendMessage(message);
-
-      // Handle the response if needed
-      if (response && response.success) {
-        console.log("Message sent successfully");
-      }
+      await this.sendMessage(message);
     } catch (error) {
       console.error("Error in handleUserMessage:", error);
     }
   }
 
-  async handleAgentResponse(response) {
-    try {
-      if (response && response.success) {
-        this.core.ui.scrollToBottom();
-      }
-    } catch (error) {
-      console.error("Error in handleAgentResponse:", error);
+  async handleSpecialTrace(trace) {
+    console.log("SectionChatbot handling special trace:", trace);
+    await super.handleSpecialTrace(trace);
+
+    // Additional section-specific trace types
+    if (trace.type === "device_answer") {
+      await this.handleDeviceAnswer(trace.payload);
     }
   }
 
-  handleDeviceAnswer(deviceAnswer) {
+  async handleDeviceAnswer(deviceAnswer) {
     console.log("Handling device answer:", deviceAnswer);
     let devices = Array.isArray(deviceAnswer)
       ? deviceAnswer
@@ -187,27 +172,11 @@ class SectionChatbot extends ChatbotBase {
     }
   }
 
-  formatRuntime(runtime) {
-    const totalHours = parseFloat(runtime.value);
-    if (totalHours >= 1) {
-      const wholeHours = Math.floor(totalHours);
-      const remainingMinutes = Math.round((totalHours - wholeHours) * 60);
-
-      const hourText = `${wholeHours} ${wholeHours === 1 ? "hour" : "hours"}`;
-      if (remainingMinutes === 0) {
-        return hourText;
-      }
-      return `${hourText} ${remainingMinutes} minutes`;
-    } else {
-      const minutes = Math.round(totalHours * 60);
-      return `${minutes} minutes`;
-    }
-  }
-
   createDeviceCard(device) {
     const formattedRuntime = this.formatRuntime(device.estimatedRuntime);
     const card = document.createElement("div");
     card.className = "application-card chatbot-card";
+    // Keep the original SVG and HTML structure:
     card.innerHTML = `
       <div class="application-card__image">
         <svg width="80" height="81" viewBox="0 0 80 81" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -225,12 +194,26 @@ class SectionChatbot extends ChatbotBase {
       </div>
       <div class="application-card__content">
         <div class="application-card__title">${device.name}</div>
-        <div class="application-card__runtime">
-          ${formattedRuntime}
-        </div>
+        <div class="application-card__runtime">${formattedRuntime}</div>
       </div>
     `;
     return card;
+  }
+
+  formatRuntime(runtime) {
+    const totalHours = parseFloat(runtime.value);
+    if (totalHours >= 1) {
+      const wholeHours = Math.floor(totalHours);
+      const remainingMinutes = Math.round((totalHours - wholeHours) * 60);
+      const hourText = `${wholeHours} ${wholeHours === 1 ? "hour" : "hours"}`;
+      if (remainingMinutes === 0) {
+        return hourText;
+      }
+      return `${hourText} ${remainingMinutes} minutes`;
+    } else {
+      const minutes = Math.round(totalHours * 60);
+      return `${minutes} minutes`;
+    }
   }
 
   insertCard(card) {
@@ -283,11 +266,9 @@ class SectionChatbot extends ChatbotBase {
     );
 
     if (hiddenCards.length > 0) {
-      // Show all cards
       hiddenCards.forEach((card) => (card.style.display = "flex"));
       this.viewMoreButton.textContent = "Hide";
     } else {
-      // Hide cards beyond the first two
       Array.from(allCards)
         .slice(2)
         .forEach((card) => (card.style.display = "none"));
@@ -331,54 +312,6 @@ class SectionChatbot extends ChatbotBase {
       } else {
         console.warn("View more button not found");
       }
-    }
-  }
-
-  async initializeChat() {
-    console.log("Initializing chat");
-    await this.sendLaunch();
-    console.log("Chat initialized");
-  }
-
-  async sendLaunch() {
-    console.log("Sending section chatbot launch request");
-
-    // Prepare the product details
-    const productTitle = this.getAttribute("product-title");
-    const productCapacity = this.getAttribute("product-capacity");
-    const acOutputContinuousPower = parseFloat(
-      this.getAttribute("product-ac_output_continuous_power")
-    );
-    const acOutputPeakPower = parseFloat(
-      this.getAttribute("product-ac_output_peak_power")
-    );
-    const dcOutputPower = parseFloat(
-      this.getAttribute("product-dc_output_power")
-    );
-
-    const productDetails = JSON.stringify({
-      title: productTitle, // Change 'powerStation' to 'title'
-      capacity: productCapacity,
-      ac_output_continuous_power: acOutputContinuousPower,
-      ac_output_peak_power: acOutputPeakPower,
-      dc_output_power: dcOutputPower,
-    });
-
-    const interactPayload = {
-      action: {
-        type: "launch",
-        payload: {
-          startBlock: "shopifySection",
-          powerStationDetails: productDetails,
-        },
-      },
-    };
-
-    try {
-      const response = await this.core.sendLaunch(interactPayload);
-      await this.handleAgentResponse(response);
-    } catch (error) {
-      console.error("Error in section chatbot send launch:", error);
     }
   }
 
