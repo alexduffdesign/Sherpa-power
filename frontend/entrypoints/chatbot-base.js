@@ -84,28 +84,29 @@ export class ChatbotBase {
   displaySavedConversation() {
     const conversation = this.history.getHistory();
     if (!conversation || conversation.length === 0) return;
+
     this.ui.messageContainer.innerHTML = "";
+
+    // First pass: display all messages
     for (let turn of conversation) {
-      switch (turn.type) {
-        case "user":
-          this.ui.addMessage("user", turn.message);
-          break;
-        case "assistant":
-          this.ui.addMessage("assistant", turn.message);
-          break;
-        case "choice":
-          this.ui.addButtons(turn.buttons);
-          break;
-        case "carousel":
-          this.ui.addCarousel(turn.data);
-          break;
-        case "visual":
-          this.ui.addVisualImage(turn.data);
-          break;
-        default:
-          console.log("Unknown turn type in history:", turn.type);
+      if (turn.type === "user" || turn.type === "assistant") {
+        this.ui.addMessage(turn.type, turn.message);
       }
     }
+
+    // Second pass: only show buttons/carousel if they were the last interaction
+    const lastTurn = conversation[conversation.length - 1];
+    if (lastTurn) {
+      switch (lastTurn.type) {
+        case "choice":
+          this.ui.addButtons(lastTurn.buttons);
+          break;
+        case "carousel":
+          this.ui.addCarousel({ cards: lastTurn.cards }); // Wrap cards in proper structure
+          break;
+      }
+    }
+
     this.ui.scrollToBottom();
   }
 
