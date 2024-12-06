@@ -1186,3 +1186,327 @@ object
 required
 Has additional fields
 Updated about 1 year ago
+
+
+
+
+Introduction to Events
+Suggest Edits
+Events are custom triggers that allow your agent to respond to specific actions or occurrences within the client application or platform. Think of events as signals from the user’s interactions—the clicks, commands, or actions that indicate what the user is doing beyond just their conversational input. Whether it’s a user clicking a “Checkout” button, navigating to a new page, or performing an in-app action, events enable your agent to initiate specific workflows dynamically.
+
+In Voiceflow, events act as instructions sent by the client to the agent, telling it to trigger a particular flow. They make your agent more responsive and context-aware, allowing it to handle a wide range of user interactions and ensuring that the conversation remains relevant and engaging.
+
+
+
+How Events Work in Voiceflow
+Events in Voiceflow are custom triggers that you define and are initiated by the client application sending a request to the Voiceflow dialog manager. Here’s how the process works:
+
+Event Definition: You create events in the Event CMS, specifying request name and descriptions that represent particular triggers.
+
+Association with Workflows: You assign these events to specific flows in your agent, using the Event trigger in the Trigger step.
+
+Client-Side Triggering: The client application sends a request to the Voiceflow Dialog Manager API, including the event name and any necessary data.
+
+Workflow Initiation: The runtime processes the event request and initiates the corresponding flow within your agent.
+
+This event-driven approach enhances your agent’s ability to interact based on user actions within the client application, making it more intelligent and adaptable.
+
+Why Use Events?
+Expanding Interaction Footprint
+
+Events allow your agent to respond to specific actions taken by the user within your application or platform. For example, when a user clicks a “Help” button, the client can trigger an event to initiate a support conversation with the agent.
+
+Creating Contextual Experiences
+
+By responding to events, your agent can provide contextually relevant interactions based on what the user is doing in your application.
+
+Streamlining User Flows
+
+Events enable your agent to assist users at critical points in their journey, providing guidance, confirmations, or additional information exactly when needed.
+
+Examples of How Events Can Be Used
+Scenario 1: User Clicks a Checkout Button
+
+Event: InitiateCheckout
+Trigger: The user clicks the “Checkout” button in your e-commerce app or website.
+Action: The application sends an event request to the Voiceflow dialog manager with the event name InitiateCheckout.
+Agent Action: The agent initiates a workflow to assist the user with the checkout process, such as confirming the items, offering shipping options, or applying discounts.
+Workflow Message Example:
+Agent: “You’re ready to check out! Would you like to review your order or proceed to payment?”
+
+Scenario 2: In-App Feature Usage
+
+Event: FeatureTutorialStart
+Trigger: The user accesses a new feature for the first time.
+Action: The application detects this and sends an event request named FeatureTutorialStart.
+Agent Action: The agent begins a flow to guide the user through a tutorial of the new feature.
+Workflow Message Example:
+Agent: “I see you’re exploring our new dashboard. Would you like a quick tour to get familiar with its capabilities?”
+
+Scenario 3: User Sends a Command in a Messaging App
+
+Event: ShowRecentTransactions
+Trigger: In a messaging platform like Slack or Telegram, the user types a specific command, such as /recent_transactions.
+Action: The messaging platform sends an event request to the agent with the event name ShowRecentTransactions.
+Agent Action: The agent retrieves and presents the user’s recent transactions.
+Workflow Message Example:
+Agent: “Here are your most recent transactions: [list of transactions]. Do you need help with anything else?”
+
+Scenario 4: User Navigates to a Specific Page
+
+Event: PageVisitPricing
+Trigger: The user navigates to the pricing page on your website.
+Action: The website detects the page change and sends an event request named PageVisitPricing.
+Agent Action: The agent offers assistance related to pricing, such as explaining different plans or answering FAQs.
+Workflow Message Example:
+Agent: “Looking at our pricing options? I’m here to help if you have any questions about our plans.”
+Learn more
+Using Events: Learn how to use the events via API or Web chat.
+
+Using Events
+Suggest Edits
+How Events Work in Voiceflow
+
+Events in Voiceflow are custom triggers that you define and are invoked by the client application sending a request to the Voiceflow runtime. Here’s how the process works:
+
+Event Definition: You create events in the Event CMS, specifying names and descriptions that represent particular triggers.
+
+Association with Workflows: You assign these events to specific flows in your agent, using the Event Trigger in the Trigger step.
+
+Client-Side Triggering: The client application sends a request to the Voiceflow runtime API or uses the Voiceflow Web Chat widget to trigger the event.
+
+Workflow Initiation: The runtime processes the event request and initiates the corresponding flow within your agent.
+
+This event-driven approach enhances your agent’s ability to interact based on user actions within the client application, making it more intelligent and adaptable.
+
+Getting Started with Events
+
+To start using events in your agent, follow these steps:
+
+1. Define Events in the Event CMS
+
+Access the Event CMS within Voiceflow to create events that represent the triggers you need.
+
+Create New Event: Specify a clear and descriptive name that corresponds to the user action.
+Add Description: Provide details about what the event represents and when it should be triggered by the client.
+2. Assign Events to Flows
+
+In your agent’s design:
+
+Use the Trigger Step: Add a Trigger step to the flow you want to initiate with the event.
+Select Event Trigger: Choose ‘Event’ as the trigger type.
+Choose the Event: Select your defined event from the list.
+3. Implement Client-Side Triggering
+
+Update your client application to send event requests to the Voiceflow runtime when specific user actions occur. This can be done via:
+
+REST API Calls: Use Voiceflow’s runtime REST API to send requests containing the event name and any relevant data.
+Voiceflow Web Chat Widget: Utilize the window.voiceflow.chat.interact() method to trigger events directly from the web chat widget.
+4. Test and Refine
+
+Simulate User Actions: Perform the actions in your application that should trigger events to ensure your agent responds correctly.
+Monitor Responses: Verify that the conversation flows as expected when events are triggered.
+Iterate: Make adjustments based on testing to optimize the user experience.
+Implementing Client-Side Triggering
+
+A. Invoking Events via the API
+
+To trigger an event from your client application using the Voiceflow Runtime API, send a POST request to the appropriate endpoint with the event payload.
+
+API Request Payload Example
+
+JSON
+
+{
+  "action": {
+    "type": "event",
+    "payload": {
+      "event": {
+        "name": "checkout"
+      }
+    }
+  }
+}
+Explanation:
+
+action.type: Set to "event" to indicate that you’re triggering an event.
+action.payload.event.name: The name of the event you’ve defined in the Event CMS (e.g., "checkout").
+API Request Example Using cURL
+
+cURL
+
+curl -X POST 'https://general-runtime.voiceflow.com/state/userID' \
+  -H 'Content-Type: application/json' \
+  -d '{
+        "action": {
+          "type": "event",
+          "payload": {
+            "event": {
+              "name": "checkout"
+            }
+          }
+        }
+      }'
+Steps to Implement
+
+Detect User Action: In your application, detect the specific action (e.g., user clicks the “Checkout” button).
+
+Send API Request: When the action occurs, send a POST request to the Voiceflow Runtime API with the event payload.
+
+Handle Response: Process the response from the agent to update the UI or continue the conversation.
+
+B. Invoking Events via Voiceflow’s Native Web Chat Widget
+
+If you’re using Voiceflow’s Web Chat widget, you can trigger events directly from your web application using JavaScript. The script should be placed within the tags of your HTML page.
+
+Simplified Example: Triggering an Event on Button Click
+
+HTML Code
+
+Place this code within the tags of your HTML page:
+
+HTML
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Your Page Title</title>
+  <!-- Other head elements -->
+</head>
+<body>
+
+  <!-- Your page content -->
+
+  <!-- Example: A button to trigger an event -->
+  <button id="myButton">Click Me</button>
+
+  <!-- Voiceflow Web Chat Widget Script -->
+  <script type="text/javascript">
+    (function(d, t) {
+      var v = d.createElement(t), s = d.getElementsByTagName(t)[0];
+      v.onload = function() {
+        // Initialize the Voiceflow Web Chat widget
+        window.voiceflow.chat.load({
+          verify: { projectID: 'YOUR_PROJECT_ID' },
+          url: 'https://general-runtime.voiceflow.com',
+          versionID: 'production'
+        }).then(() => {
+
+          // Add event listener to the button
+          document.getElementById('myButton').addEventListener('click', () => {
+            // Open the chat widget
+            window.voiceflow.chat.open();
+
+            // Send the 'button_clicked' event to Voiceflow
+            window.voiceflow.chat.interact({
+              type: 'event',
+              payload: {
+                event: {
+                  name: 'button_clicked' // The event name defined in your Event CMS
+                }
+              }
+            });
+          });
+
+        });
+      };
+      v.src = "https://cdn.voiceflow.com/widget/bundle.mjs";
+      v.type = "text/javascript";
+      s.parentNode.insertBefore(v, s);
+    })(document, 'script');
+  </script>
+
+</body>
+</html>
+Explanation of the Code
+
+HTML Button:
+A button with the ID myButton is added to the HTML. This is the button the user will click to trigger the event.
+Include the Voiceflow Web Chat Widget Script:
+The widget script is included within the tags.
+The script loads the Voiceflow Web Chat widget on your page.
+Widget Initialization:
+The window.voiceflow.chat.load() function is called within the v.onload callback to ensure it runs after the widget script is loaded.
+The .then() method is used to run code after the widget is fully initialized.
+Setting Up the Event Listener:
+Within the .then() block, an event listener is added to the button with id="myButton".
+When the button is clicked:
+The chat widget is opened using window.voiceflow.chat.open().
+An event named 'button_clicked' is sent to the agent using window.voiceflow.chat.interact().
+Steps to Implement
+
+Define the Event in Voiceflow:
+Go to the Event CMS in your Voiceflow project.
+Create a new event named button_clicked.
+Add a description if desired.
+Associate the Event with a Flow:
+In your agent’s canvas, add a Trigger step where you want the flow to start.
+Set the trigger type to Event and select button_clicked from the list.
+Add the Button to Your Web Page:
+Place the HTML code for the button in your web page where appropriate.
+Include the Web Chat Widget Script:
+Ensure the widget script is included within the tags of your HTML.
+Test the Implementation:
+Open your web page in a browser.
+Click the button labeled “Click Me”.
+The chat widget should open, and the agent should respond according to the flow you’ve designed for the button_clicked event.
+Additional Notes
+
+Consistency in Event Names: Ensure that the event name used in window.voiceflow.chat.interact() matches exactly with the event name defined in your Event CMS and associated with a Trigger step.
+Example: Triggering an Event on “Subscribe” Button Click
+
+If you have a “Subscribe” button in your HTML:
+
+HTML
+
+<button id="subscribeButton">Subscribe</button>
+You can set up an event listener for it:
+
+HTML
+
+<!-- Voiceflow Web Chat Widget Script -->
+<script type="text/javascript">
+  (function(d, t) {
+    var v = d.createElement(t), s = d.getElementsByTagName(t)[0];
+    v.onload = function() {
+      // Initialize the Voiceflow Web Chat widget
+      window.voiceflow.chat.load({
+        verify: { projectID: 'YOUR_PROJECT_ID' },
+        url: 'https://general-runtime.voiceflow.com',
+        versionID: 'production'
+      }).then(() => {
+
+        // Add event listener to the "Subscribe" button
+        document.getElementById('subscribeButton').addEventListener('click', () => {
+          // Open the chat widget
+          window.voiceflow.chat.open();
+
+          // Send the 'newsletter_signup' event to Voiceflow
+          window.voiceflow.chat.interact({
+            type: 'event',
+            payload: {
+              event: {
+                name: 'newsletter_signup' // The event name defined in your Event CMS
+              }
+            }
+          });
+        });
+
+      });
+    };
+    v.src = "https://cdn.voiceflow.com/widget/bundle.mjs";
+    v.type = "text/javascript";
+    s.parentNode.insertBefore(v, s);
+  })(document, 'script');
+</script>
+Best Practices for Using Events
+Be Specific with Request Names
+Use clear, descriptive request names for your events to ensure they are easily identifiable and manageable.
+Good Example: userClickedCheckout
+Poor Example: Event1
+Consider the User Experience
+Ensure that the agent’s responses to events are contextually appropriate and enhance the user’s interaction.
+Relevance: Only trigger events that provide value to the user in that context.
+Timing: Trigger events at appropriate moments in the user journey to avoid overwhelming the user.
+Personalization: Tailor messages to the user’s actions and preferences.

@@ -193,23 +193,19 @@ export class ChatbotBase {
     console.log("MainChatbot jumpToMainMenu called");
     this.ui.showTypingIndicator("Returning to main menu...");
     try {
-      // Add a user action to history
-      this.history.updateHistory({
-        type: "user",
-        message: "Return to main menu",
-      });
-
+      // Don't add this to chat history since it's a UI action
       const response = await this.api.streamInteract({
-        type: "event",
-        payload: {
-          event: {
-            name: "main_menu",
+        action: {
+          type: "event",
+          payload: {
+            event: {
+              name: "main_menu",
+            },
           },
         },
       });
-      console.log("Main menu response received:", response);
 
-      // Don't clear the message container, let the stream handler manage the UI
+      console.log("Main menu response received:", response);
       await this.stream.handleStream(response, this.traceHandler);
       console.log("Finished processing main menu stream");
     } catch (error) {

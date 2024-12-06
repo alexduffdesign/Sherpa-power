@@ -19,16 +19,16 @@ export class ApiClient {
   async streamInteract(action, extraConfig = {}) {
     const url = this.apiEndpoint;
 
-    const payload = {
-      userID: this.userID,
-      action: action,
-      config: {
-        ...extraConfig,
-        // If you need completion events:
-        // Add them if your gadget endpoint supports it,
-        // for now let's assume it's handled at server level.
-      },
-    };
+    // If action is already in the correct format (has an action property), use it directly
+    const payload = action.action
+      ? action
+      : {
+          userID: this.userID,
+          action: action,
+          config: {
+            ...extraConfig,
+          },
+        };
 
     console.log(
       "Sending streaming interact request to gadget endpoint:",
