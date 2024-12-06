@@ -48,7 +48,6 @@ export class TraceHandler {
         this.history.updateHistory({
           type: "choice",
           buttons: event.payload.buttons,
-          responded: false,
         });
         break;
 
@@ -58,7 +57,6 @@ export class TraceHandler {
         this.history.updateHistory({
           type: "carousel",
           cards: event.payload.cards,
-          responded: false,
         });
         break;
 
