@@ -23,31 +23,54 @@ export class UIManager {
   addMessage(role, message) {
     if (!this.messageContainer || !this.rootElement) {
       console.error("Message container or root element not available");
-      return;
+      return null;
     }
 
-    // Create elements within the web component's context
-    const doc = this.rootElement.ownerDocument;
-    const messageWrapper = doc.createElement("div");
-    messageWrapper.classList.add("message-wrapper", `message-wrapper--${role}`);
+    // Hide typing indicator when adding a message
+    this.hideTypingIndicator();
 
-    const messageDiv = doc.createElement("div");
-    messageDiv.classList.add("message", `message--${role}`);
+    try {
+      const doc = this.rootElement.ownerDocument;
+      const messageWrapper = doc.createElement("div");
+      messageWrapper.classList.add(
+        "message-wrapper",
+        `message-wrapper--${role}`
+      );
 
-    const contentDiv = doc.createElement("div");
-    contentDiv.classList.add("message__content");
+      const messageDiv = doc.createElement("div");
+      messageDiv.classList.add("message", `message--${role}`);
 
-    // Handle markdown content
-    if (typeof message === "string") {
-      contentDiv.innerHTML = this.formatMessage(message);
-    } else {
-      contentDiv.appendChild(message);
+      const contentDiv = doc.createElement("div");
+      contentDiv.classList.add("message__content");
+
+      // Handle different message formats
+      if (typeof message === "string") {
+        contentDiv.innerHTML = this.formatMessage(message);
+      } else if (message.slate) {
+        // Handle slate format
+        const text = message.slate.content
+          .map((block) => block.children.map((child) => child.text).join(""))
+          .join("\n");
+        contentDiv.innerHTML = this.formatMessage(text);
+      } else if (message instanceof Element) {
+        contentDiv.appendChild(message);
+      } else if (message.message) {
+        // Handle message object with direct message property
+        contentDiv.innerHTML = this.formatMessage(message.message);
+      } else {
+        console.error("Unsupported message format:", message);
+        return null;
+      }
+
+      messageDiv.appendChild(contentDiv);
+      messageWrapper.appendChild(messageDiv);
+      this.messageContainer.appendChild(messageWrapper);
+      this.scrollToBottom();
+      return messageWrapper;
+    } catch (error) {
+      console.error("Error adding message:", error);
+      return null;
     }
-
-    messageDiv.appendChild(contentDiv);
-    messageWrapper.appendChild(messageDiv);
-    this.messageContainer.appendChild(messageWrapper);
-    this.scrollToBottom();
   }
 
   formatMessage(message) {
@@ -168,19 +191,27 @@ export class UIManager {
     this.addMessage("assistant", buttonsWrapper);
   }
 
-  showTypingIndicator() {
-    if (this.typingIndicator) {
-      this.typingIndicator.style.display = "flex";
-      this.scrollToBottom();
-    } else {
-      console.error("Message container not found when adding buttons");
+  showTypingIndicator(message = "Sherpa Guide Is Typing...") {
+    if (!this.typingIndicator) {
+      console.error("Typing indicator not found");
+      return;
     }
+
+    const typingText = this.typingIndicator.querySelector("p");
+    if (typingText) {
+      typingText.textContent = message;
+    }
+
+    this.typingIndicator.style.display = "flex";
+    this.scrollToBottom();
   }
 
-  removeButtons() {
-    const buttonContainers =
-      this.messageContainer.querySelectorAll(".button-container");
-    buttonContainers.forEach((container) => container.remove());
+  hideTypingIndicator() {
+    if (!this.typingIndicator) {
+      console.error("Typing indicator not found");
+      return;
+    }
+    this.typingIndicator.style.display = "none";
   }
 
   addVisualImage(payload) {
@@ -212,24 +243,6 @@ export class UIManager {
     messageDiv.appendChild(contentDiv);
     this.messageContainer.appendChild(messageDiv);
     this.scrollToBottom();
-  }
-
-  showTypingIndicator(message = "Sherpa Guide Is Typing...") {
-    if (!this.typingIndicator) return;
-
-    const typingText = this.typingIndicator.querySelector("p");
-    if (typingText) {
-      typingText.textContent = message;
-    }
-
-    this.typingIndicator.style.display = "flex";
-    this.scrollToBottom();
-  }
-
-  hideTypingIndicator() {
-    if (this.typingIndicator) {
-      this.typingIndicator.style.display = "none";
-    }
   }
 
   scrollToBottom() {

@@ -48,16 +48,34 @@ export class TraceHandler {
 
       switch (event.type) {
         case "text":
-          if (!event.payload?.message) {
+          if (!event.payload) {
             console.error("Invalid text payload:", event.payload);
             return;
           }
-          console.log("Adding text message:", event.payload.message);
-          this.lastMessageContainer = this.ui.addMessage(
-            "assistant",
-            event.payload.message
-          );
-          if (this.history) {
+          console.log("Adding text message:", event.payload);
+
+          // Hide typing indicator before adding message
+          this.ui.hideTypingIndicator();
+
+          // Handle different message formats
+          if (typeof event.payload === "string") {
+            this.lastMessageContainer = this.ui.addMessage(
+              "assistant",
+              event.payload
+            );
+          } else if (event.payload.slate) {
+            this.lastMessageContainer = this.ui.addMessage("assistant", {
+              message: event.payload.message,
+              slate: event.payload.slate,
+            });
+          } else if (event.payload.message) {
+            this.lastMessageContainer = this.ui.addMessage(
+              "assistant",
+              event.payload.message
+            );
+          }
+
+          if (this.history && event.payload.message) {
             this.history.updateHistory({
               type: "assistant",
               message: event.payload.message,
@@ -65,11 +83,19 @@ export class TraceHandler {
           }
           break;
 
+        case "waiting_text":
+          console.log("Showing typing indicator:", event.payload);
+          this.ui.showTypingIndicator(event.payload);
+          break;
+
         case "choice":
           if (!Array.isArray(event.payload?.buttons)) {
             console.error("Invalid choice payload:", event.payload);
             return;
           }
+          // Hide typing indicator before adding buttons
+          this.ui.hideTypingIndicator();
+
           console.log("Adding choice buttons:", event.payload.buttons);
           this.ui.addButtons(event.payload.buttons);
           if (this.history) {
@@ -81,6 +107,9 @@ export class TraceHandler {
           break;
 
         case "carousel":
+          // Hide typing indicator before adding carousel
+          this.ui.hideTypingIndicator();
+
           console.log("Adding carousel:", event.payload);
           this.ui.addCarousel(event.payload);
           if (this.history) {
@@ -93,6 +122,9 @@ export class TraceHandler {
 
         case "visual":
           if (event.payload?.visualType === "image") {
+            // Hide typing indicator before adding image
+            this.ui.hideTypingIndicator();
+
             console.log("Adding visual image:", event.payload);
             this.ui.addVisualImage(event.payload);
             if (this.history) {
@@ -102,11 +134,6 @@ export class TraceHandler {
               });
             }
           }
-          break;
-
-        case "waiting_text":
-          console.log("Showing typing indicator:", event.payload);
-          this.ui.showTypingIndicator(event.payload);
           break;
 
         case "RedirectToProduct":
@@ -121,7 +148,6 @@ export class TraceHandler {
           break;
 
         case "completion":
-          console.log("Handling completion state:", event.payload?.state);
           if (!event.payload?.state) {
             console.error("Invalid completion payload:", event.payload);
             return;
@@ -129,10 +155,23 @@ export class TraceHandler {
 
           if (event.payload.state === "start") {
             this.completionBuffer = "";
+            this.ui.showTypingIndicator();
           } else if (event.payload.state === "content") {
             this.completionBuffer += event.payload.content || "";
-            this.ui.updateLatestAssistantMessage(this.completionBuffer);
+            // Update the message in real-time as we receive content
+            if (this.lastMessageContainer) {
+              this.ui.updateMessage(
+                this.lastMessageContainer,
+                this.completionBuffer
+              );
+            } else {
+              this.lastMessageContainer = this.ui.addMessage(
+                "assistant",
+                this.completionBuffer
+              );
+            }
           } else if (event.payload.state === "end") {
+            this.ui.hideTypingIndicator();
             if (this.history) {
               this.history.updateHistory({
                 type: "assistant",
@@ -144,10 +183,12 @@ export class TraceHandler {
 
         case "end":
           console.log("Stream ended");
+          this.ui.hideTypingIndicator();
           break;
       }
     } catch (error) {
       console.error("Error handling trace:", error);
+      this.ui.hideTypingIndicator();
     } finally {
       this.processingTrace = false;
       // Process any pending messages
