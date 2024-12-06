@@ -122,10 +122,24 @@ export class ChatbotBase {
   async handleButtonClick(buttonData) {
     console.log("Handling button click:", buttonData);
     this.ui.removeButtons();
-    this.ui.addMessage("user", buttonData.name);
-    this.history.updateHistory({ type: "user", message: buttonData.name });
 
-    await this.sendMessage(buttonData.name);
+    this.ui.showTypingIndicator();
+    try {
+      this.stream.closeCurrentStream();
+      const response = await this.api.sendUserMessage(buttonData.name);
+      this.ui.addMessage("user", buttonData.name);
+      this.history.updateHistory({ type: "user", message: buttonData.name });
+      await this.stream.handleStream(response, this.traceHandler);
+    } catch (error) {
+      console.error("Error in button click:", error);
+      this.ui.addMessage(
+        "assistant",
+        "I apologize, but I encountered an error. Please try again."
+      );
+    } finally {
+      this.ui.hideTypingIndicator();
+      this.ui.scrollToBottom();
+    }
   }
 
   async handleSpecialTrace(trace) {
