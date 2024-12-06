@@ -9,22 +9,49 @@ export class MainChatbot extends ChatbotBase {
 
     this.element = element;
 
+    // Wait for DOM content to be loaded
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", () => this.initialize());
+    } else {
+      // DOM already loaded, initialize immediately
+      this.initialize();
+    }
+  }
+
+  initialize() {
+    console.log("Initializing MainChatbot");
     this.initializeElements();
     this.setupEventListeners();
-
-    // Initialize chat (launch if no history, or display history if exists)
     this.initializeChatIfNeeded();
   }
 
   initializeElements() {
+    console.log("Initializing elements for MainChatbot");
+    // Use this.element as the root for queries to scope to this instance
     this.messageContainer = this.element.querySelector(".message-container");
     this.typingIndicator = this.element.querySelector(".typing-indicator");
     this.drawerBody = this.element.querySelector(".drawer-body");
-    this.chatInput = this.element.querySelector(".chat-input");
-    this.sendButton = this.element.querySelector(".send-button");
+    this.chatInput = this.element.querySelector("#userInput");
+    this.chatForm = this.element.querySelector("#chatForm");
+    this.sendButton = this.element.querySelector("button[type='submit']");
     this.backToStartButton = this.element.querySelector(
       ".back-to-start-button"
     );
+
+    if (!this.chatForm || !this.chatInput || !this.sendButton) {
+      console.error("Required chat elements not found:", {
+        form: this.chatForm,
+        input: this.chatInput,
+        button: this.sendButton,
+      });
+      return;
+    }
+
+    console.log("Chat elements found:", {
+      form: this.chatForm,
+      input: this.chatInput,
+      button: this.sendButton,
+    });
 
     this.setDOMElements(
       this.messageContainer,
