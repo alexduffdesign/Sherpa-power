@@ -29,7 +29,7 @@ export class MainChatbot extends ChatbotBase {
     console.log("Initializing elements for MainChatbot");
     // Use this.element as the root for queries to scope to this instance
     this.messageContainer = this.element.querySelector(".message-container");
-    this.typingIndicator = this.element.querySelector(".typing-indicator");
+    this.typingIndicator = this.element.querySelector(".chat-typing");
     this.drawerBody = this.element.querySelector(".drawer-body");
     this.chatInput = this.element.querySelector("#userInput");
     this.chatForm = this.element.querySelector("#chatForm");

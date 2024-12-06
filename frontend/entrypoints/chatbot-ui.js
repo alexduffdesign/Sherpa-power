@@ -277,30 +277,21 @@ export class UIManager {
     });
   }
 
-  showTypingIndicator(text = "Sherpa Guide Is Typing...") {
-    if (this.typingIndicator) {
-      const logoContainer =
-        this.typingIndicator.querySelector(".logo-container");
-      if (!logoContainer) {
-        const newLogoContainer = document.createElement("div");
-        newLogoContainer.className = "logo-container";
-        const logoBg = document.createElement("div");
-        logoBg.className = "logo-background";
-        newLogoContainer.appendChild(logoBg);
-        this.typingIndicator.insertBefore(
-          newLogoContainer,
-          this.typingIndicator.firstChild
-        );
-      }
-      this.typingIndicator.style.display = "flex";
-      this.scrollToBottom();
+  showTypingIndicator(message = "Sherpa Guide Is Typing...") {
+    if (!this.typingIndicator) return;
+
+    const typingText = this.typingIndicator.querySelector("p");
+    if (typingText) {
+      typingText.textContent = message;
     }
+
+    this.typingIndicator.style.display = "flex";
+    this.scrollToBottom();
   }
 
   hideTypingIndicator() {
-    if (this.typingIndicator) {
-      this.typingIndicator.style.display = "none";
-    }
+    if (!this.typingIndicator) return;
+    this.typingIndicator.style.display = "none";
   }
 
   scrollToBottom() {
