@@ -154,11 +154,9 @@ export class ChatbotBase {
     try {
       this.stream.closeCurrentStream();
 
-      // Send the button's request data to Voiceflow using streamInteract
-      const response = await this.api.streamInteract({
-        type: "button",
-        payload: buttonData.request,
-      });
+      // Send the button's request data directly to Voiceflow
+      // The request object from the button already contains the correct format
+      const response = await this.api.streamInteract(buttonData.request);
 
       // Add the button text as a user message
       this.ui.addMessage("user", buttonData.name);
