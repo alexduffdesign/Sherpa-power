@@ -30,7 +30,7 @@ export class ChatbotBase {
     this.sendMessage = this.sendMessage.bind(this);
     this.handleButtonClick = this.handleButtonClick.bind(this);
 
-    if (this.history.hasHistory()) {
+    if (this.history.hasHistory() && !this.isSectionChatbot()) {
       this.history.loadFromStorage();
     }
   }
@@ -39,10 +39,18 @@ export class ChatbotBase {
     this.ui.setDOMElements(messageContainer, typingIndicator, drawerBody);
   }
 
-  async initializeChatIfNeeded(
-    startBlock = "shopifySection",
-    productDetails = "{}"
-  ) {
+  async initializeChatIfNeeded() {
+    let startBlock = "";
+    let productDetails = "{}";
+
+    if (this.isSectionChatbot()) {
+      startBlock = "shopifySection";
+      productDetails = this.getProductDetails();
+      console.log("Section chatbot detected, skipping history loading.");
+      await this.sendLaunch(startBlock, productDetails);
+      return;
+    }
+
     if (!this.history.hasHistory()) {
       console.log("No chat history found, sending launch request...");
       await this.sendLaunch(startBlock, productDetails);
@@ -52,6 +60,19 @@ export class ChatbotBase {
       console.log("Chat history found, displaying saved conversation...");
       this.displaySavedConversation();
     }
+  }
+
+  isSectionChatbot() {
+    // Logic to determine if this is the section chatbot
+    return (
+      this.config.isSection ||
+      this.element.classList.contains("section-chatbot")
+    );
+  }
+
+  getProductDetails() {
+    // Logic to retrieve product details specific to section chatbot
+    return "{}"; // Placeholder for actual implementation
   }
 
   displaySavedConversation() {
@@ -100,7 +121,9 @@ export class ChatbotBase {
 
   async sendMessage(message) {
     this.ui.addMessage("user", message);
-    this.history.updateHistory({ type: "user", message: message });
+    if (!this.isSectionChatbot()) {
+      this.history.updateHistory({ type: "user", message: message });
+    }
 
     this.ui.showTypingIndicator();
     try {
@@ -128,7 +151,9 @@ export class ChatbotBase {
       this.stream.closeCurrentStream();
       const response = await this.api.sendUserMessage(buttonData.name);
       this.ui.addMessage("user", buttonData.name);
-      this.history.updateHistory({ type: "user", message: buttonData.name });
+      if (!this.isSectionChatbot()) {
+        this.history.updateHistory({ type: "user", message: buttonData.name });
+      }
       await this.stream.handleStream(response, this.traceHandler);
     } catch (error) {
       console.error("Error in button click:", error);
