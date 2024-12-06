@@ -52,34 +52,51 @@ export class TraceHandler {
             console.error("Invalid text payload:", event.payload);
             return;
           }
-          console.log("Adding text message:", event.payload);
+          console.log("Processing text event:", event);
 
           // Hide typing indicator before adding message
           this.ui.hideTypingIndicator();
 
-          // Handle different message formats
-          if (typeof event.payload === "string") {
-            this.lastMessageContainer = this.ui.addMessage(
-              "assistant",
-              event.payload
-            );
-          } else if (event.payload.slate) {
-            this.lastMessageContainer = this.ui.addMessage("assistant", {
-              message: event.payload.message,
-              slate: event.payload.slate,
-            });
-          } else if (event.payload.message) {
-            this.lastMessageContainer = this.ui.addMessage(
-              "assistant",
-              event.payload.message
-            );
-          }
+          try {
+            // Handle different message formats
+            if (typeof event.payload === "string") {
+              this.lastMessageContainer = this.ui.addMessage(
+                "assistant",
+                event.payload
+              );
+            } else if (event.payload.slate) {
+              // Extract text from slate format
+              const text = event.payload.slate.content
+                .map((block) =>
+                  block.children.map((child) => child.text).join("")
+                )
+                .join("\n");
 
-          if (this.history && event.payload.message) {
-            this.history.updateHistory({
-              type: "assistant",
-              message: event.payload.message,
-            });
+              this.lastMessageContainer = this.ui.addMessage("assistant", text);
+
+              if (this.history) {
+                this.history.updateHistory({
+                  type: "assistant",
+                  message: text,
+                });
+              }
+            } else if (event.payload.message) {
+              this.lastMessageContainer = this.ui.addMessage(
+                "assistant",
+                event.payload.message
+              );
+
+              if (this.history) {
+                this.history.updateHistory({
+                  type: "assistant",
+                  message: event.payload.message,
+                });
+              }
+            } else {
+              console.error("Unsupported text payload format:", event.payload);
+            }
+          } catch (error) {
+            console.error("Error processing text event:", error);
           }
           break;
 
