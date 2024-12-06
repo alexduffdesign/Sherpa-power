@@ -207,20 +207,32 @@
       </main-chatbot>
   </x-drawer>
 
-
+  {%- comment -%}Only load chatbot-main.js as it contains the custom element definition{%- endcomment -%}
   {% render 'vite-tag' with 'chatbot-main.js' %}
-{% render 'vite-tag' with 'chatbot-drawer.js' %}
 
   <script>
     document.addEventListener('DOMContentLoaded', function() {
-      if (typeof initChatbotDrawer === 'function') {
-        initChatbotDrawer('{{ drawer_id }}');
-      } else {
-        console.error('initChatbotDrawer function not found');
+      // Initialize the drawer functionality
+      const drawer = document.getElementById('{{ drawer_id }}');
+      const trigger = document.querySelector(`button[aria-controls="{{ drawer_id }}"]`);
+      
+      if (drawer && trigger) {
+        trigger.addEventListener('click', () => {
+          if (typeof drawer.show === 'function') {
+            drawer.show();
+          }
+        });
+
+        // Initialize the chatbot when drawer is shown
+        drawer.addEventListener('dialog:after-show', () => {
+          const chatbot = drawer.querySelector('main-chatbot');
+          if (chatbot && typeof chatbot.initialize === 'function') {
+            chatbot.initialize();
+          }
+        });
       }
     });
   </script>
-
 
 {% schema %}
 {
