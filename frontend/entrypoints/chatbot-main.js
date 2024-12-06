@@ -42,12 +42,20 @@ if (!customElements.get("main-chatbot")) {
     initializeElements() {
       console.log("Initializing elements for MainChatbot");
 
-      this.backToStartButton = this.querySelector(".back-to-start");
+      // Find the drawer container
+      const drawer = this.closest(".drawer.sherpa-guide");
+      if (!drawer) {
+        console.error("Could not find drawer container");
+        return;
+      }
+
+      // Find elements within the drawer context
+      this.backToStartButton = drawer.querySelector(".back-to-start");
       console.log("Back to start button found:", this.backToStartButton);
 
       this.messageContainer = this.querySelector(".message-container");
       this.typingIndicator = this.querySelector(".chat-typing");
-      this.drawerBody = this.querySelector(".drawer-body");
+      this.drawerBody = drawer.querySelector(".drawer-body") || drawer;
       this.chatInput = this.querySelector("#userInput");
       this.chatForm = this.querySelector("#chatForm");
       this.sendButton = this.querySelector("button[type='submit']");

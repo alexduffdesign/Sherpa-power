@@ -16,8 +16,10 @@ export class ChatbotBase {
       ...config,
     };
 
+    this.storagePrefix = this.config.isSection ? "section_" : "main_";
+
     this.ui = new UIManager();
-    this.history = new HistoryHandler();
+    this.history = new HistoryHandler(this.storagePrefix);
 
     this.api = new ApiClient({
       apiEndpoint: this.config.apiEndpoint,
