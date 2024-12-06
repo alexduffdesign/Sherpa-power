@@ -14,6 +14,21 @@ export class TraceHandler {
       return;
     }
 
+    const knownTypes = [
+      "text",
+      "choice",
+      "carousel",
+      "visual",
+      "waiting_text",
+      "RedirectToProduct",
+      "completion",
+      "end",
+    ];
+    if (!knownTypes.includes(event.type)) {
+      console.warn("Ignoring unknown trace type:", event.type);
+      return;
+    }
+
     switch (event.type) {
       case "text":
         console.log("Adding text message:", event.payload.message);
