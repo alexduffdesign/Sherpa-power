@@ -151,6 +151,11 @@ export class ChatbotBase {
     console.log("Handling button click:", buttonData);
     this.ui.removeButtons();
 
+    // Add the button text as a user message first
+    this.ui.addMessage("user", buttonData.name);
+    this.history.updateHistory({ type: "user", message: buttonData.name });
+
+    // Then show typing indicator and make API call
     this.ui.showTypingIndicator();
     try {
       this.stream.closeCurrentStream();
@@ -158,10 +163,6 @@ export class ChatbotBase {
       // Send the button's request data directly to Voiceflow
       // The request object from the button already contains the correct format
       const response = await this.api.streamInteract(buttonData.request);
-
-      // Add the button text as a user message
-      this.ui.addMessage("user", buttonData.name);
-      this.history.updateHistory({ type: "user", message: buttonData.name });
 
       // Handle the response
       await this.stream.handleStream(response, this.traceHandler);
