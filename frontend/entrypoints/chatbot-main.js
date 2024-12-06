@@ -145,11 +145,17 @@ export class MainChatbot extends ChatbotBase {
   // Modified jumpToMainMenu: No clearing of history or UI
   async jumpToMainMenu() {
     console.log("MainChatbot jumpToMainMenu called");
+
+    // Add a user message to the UI
+    const userMessage = "Main Menu";
+    this.ui.addMessage("user", userMessage);
+
+    // Update the conversation history
+    this.history.updateHistory({ type: "user", message: userMessage });
+
     try {
       this.ui.showTypingIndicator("Returning to main menu...");
 
-      // Call streamInteract without an 'action' property at the root of the object.
-      // Just pass it as a normal action object. This ensures userID is included.
       const response = await this.api.streamInteract({
         type: "event",
         payload: {
