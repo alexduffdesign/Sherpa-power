@@ -32,8 +32,7 @@
         },
         "payment_terms": {
           "type": "payment_terms",
-          "settings": {
-          }
+          "settings": {}
         },
         "variant_picker": {
           "type": "variant_picker",
@@ -48,8 +47,7 @@
         },
         "quantity_selector": {
           "type": "quantity_selector",
-          "settings": {
-          }
+          "settings": {}
         },
         "liquid_rHbpPH": {
           "type": "liquid",
@@ -220,9 +218,7 @@
           }
         }
       },
-      "block_order": [
-        "item_T87eYy"
-      ],
+      "block_order": ["item_T87eYy"],
       "settings": {
         "full_width": true,
         "stack_on_mobile": true,
@@ -262,9 +258,7 @@
           }
         }
       },
-      "block_order": [
-        "image_AhCA9d"
-      ],
+      "block_order": ["image_AhCA9d"],
       "disabled": true,
       "settings": {
         "full_width": true,
@@ -323,9 +317,7 @@
           }
         }
       },
-      "block_order": [
-        "image_iRBGcB"
-      ],
+      "block_order": ["image_iRBGcB"],
       "custom_css": [
         ".media-with-text__media > * {object-fit: contain;}",
         "@media screen and (max 767px) {.prose {text-align: center; }}",
@@ -424,11 +416,7 @@
           }
         }
       },
-      "block_order": [
-        "headings_6faDY8",
-        "values_gzBQxp",
-        "values_eqrHba"
-      ],
+      "block_order": ["headings_6faDY8", "values_gzBQxp", "values_eqrHba"],
       "custom_css": [
         ".section-full {background-image: url(\"https://cdn.shopify.com/s/files/1/0641/4290/1439/files/Green_Pattern.jpg?v=1712336884\"); background-size: cover;}",
         ".feature-chart {border-color: #4848482e; border-width: 1px;}"
@@ -474,9 +462,7 @@
           }
         }
       },
-      "block_order": [
-        "item_Dj9pt9"
-      ],
+      "block_order": ["item_Dj9pt9"],
       "disabled": true,
       "custom_css": [
         ".images-scrolling-desktop__media-wrapper > * {object-fit: contain;}",
@@ -628,11 +614,7 @@
           }
         }
       },
-      "block_order": [
-        "item_MDL97b",
-        "item_4LwYtR",
-        "item_qrYHTi"
-      ],
+      "block_order": ["item_MDL97b", "item_4LwYtR", "item_qrYHTi"],
       "disabled": true,
       "custom_css": [
         ".section-full {background-image: url(\"https://cdn.shopify.com/s/files/1/0641/4290/1439/files/Peak_a00281de-5293-4b66-8424-9366c979ed4a.jpg?v=1712336128\"); background-position: 50% 100%; background-size: 100% 60%; background-repeat: no-repeat;}"
