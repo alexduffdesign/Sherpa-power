@@ -3,15 +3,16 @@
 console.log("Chatbot drawer script loaded");
 
 function initChatbotDrawer(drawerId) {
-  // Remove any code that defines the MainChatbotElement here.
-  // main-chatbot is already defined by chatbot-main.js
-
+  // Listen for dialog events
   document.addEventListener("dialog:after-show", function (event) {
     if (event.target.id === drawerId) {
       console.log("Chatbot drawer opened");
       const mainChatbotElement = event.target.querySelector("main-chatbot");
       if (mainChatbotElement) {
         console.log("main-chatbot element is present");
+        if (typeof mainChatbotElement.initialize === "function") {
+          mainChatbotElement.initialize();
+        }
       } else {
         console.error("mainChatbotElement not found");
       }
@@ -29,9 +30,12 @@ function initChatbotDrawer(drawerId) {
     const chatbotTrigger = document.querySelector(
       `button[aria-controls="${drawerId}"]`
     );
+
     if (chatbotDrawer && chatbotTrigger) {
       chatbotTrigger.addEventListener("click", () => {
-        chatbotDrawer.show();
+        if (typeof chatbotDrawer.show === "function") {
+          chatbotDrawer.show();
+        }
       });
     } else {
       console.error("Chatbot drawer or trigger not found");
@@ -42,7 +46,7 @@ function initChatbotDrawer(drawerId) {
 // Expose the function to the global scope
 window.initChatbotDrawer = initChatbotDrawer;
 
-// If you have a global window.chatbotDrawerId, you can conditionally call initChatbotDrawer here if needed.
+// Initialize if window.chatbotDrawerId exists
 if (window.chatbotDrawerId) {
   initChatbotDrawer(window.chatbotDrawerId);
 }
