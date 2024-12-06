@@ -153,9 +153,15 @@ export class ChatbotBase {
     this.ui.showTypingIndicator();
     try {
       this.stream.closeCurrentStream();
-      const response = await this.api.sendUserMessage(buttonData.name);
+
+      // Send the button's request data to Voiceflow
+      const response = await this.api.interact({ request: buttonData.request });
+
+      // Add the button text as a user message
       this.ui.addMessage("user", buttonData.name);
       this.history.updateHistory({ type: "user", message: buttonData.name });
+
+      // Handle the response
       await this.stream.handleStream(response, this.traceHandler);
     } catch (error) {
       console.error("Error in button click:", error);
