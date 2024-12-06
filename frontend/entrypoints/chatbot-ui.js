@@ -21,10 +21,13 @@ export class UIManager {
   }
 
   addMessage(role, message) {
-    if (!this.messageContainer) return;
+    if (!this.messageContainer || !this.rootElement) {
+      console.error("Message container or root element not available");
+      return;
+    }
 
     // Create elements within the web component's context
-    const doc = this.rootElement?.ownerDocument || document;
+    const doc = this.rootElement.ownerDocument;
     const messageWrapper = doc.createElement("div");
     messageWrapper.classList.add("message-wrapper", `message-wrapper--${role}`);
 

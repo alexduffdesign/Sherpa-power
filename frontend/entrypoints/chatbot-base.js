@@ -18,7 +18,8 @@ export class ChatbotBase {
 
     this.storagePrefix = this.config.isSection ? "section_" : "main_";
 
-    this.ui = new UIManager();
+    // Create UI manager without element reference initially
+    this.ui = new UIManager(null);
     this.history = new HistoryHandler(this.storagePrefix);
 
     this.api = new ApiClient({
@@ -46,14 +47,27 @@ export class ChatbotBase {
     }
   }
 
-  setDOMElements(messageContainer, typingIndicator, drawerBody, element) {
+  set element(el) {
+    this._element = el;
+    // Update UI manager with element reference when it's available
+    this.ui.rootElement = el;
+  }
+
+  get element() {
+    return this._element;
+  }
+
+  setDOMElements(messageContainer, typingIndicator, drawerBody) {
     console.log("Setting DOM elements in ChatbotBase");
-    this.ui.setDOMElements(
-      messageContainer,
-      typingIndicator,
-      drawerBody,
-      element
-    );
+    if (!this._element) {
+      console.error("Element reference not set in ChatbotBase");
+      return;
+    }
+    // Create a new UIManager with the correct element reference
+    this.ui = new UIManager(this._element);
+    this.ui.setDOMElements(messageContainer, typingIndicator, drawerBody);
+    // Re-attach the button click handler
+    this.ui.setButtonClickHandler(this.handleButtonClick.bind(this));
   }
 
   async initializeChatIfNeeded() {
