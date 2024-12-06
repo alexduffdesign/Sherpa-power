@@ -1,3 +1,7 @@
+console.log("WOLLLOPPPP 2");
+
+import { ChatbotBase } from "./chatbot-base.js";
+
 // In MainChatbot class:
 export class MainChatbot extends ChatbotBase {
   constructor(element, config) {
