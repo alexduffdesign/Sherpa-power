@@ -32,6 +32,9 @@ export class ChatbotBase {
       this.handleSpecialTrace.bind(this)
     );
 
+    // Set up button click handler
+    this.ui.setButtonClickHandler(this.handleButtonClick.bind(this));
+
     // Bind methods
     this.sendMessage = this.sendMessage.bind(this);
     this.handleButtonClick = this.handleButtonClick.bind(this);
