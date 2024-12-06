@@ -66,6 +66,12 @@ export class ChatbotBase {
     // Create a new UIManager with the correct element reference
     this.ui = new UIManager(this._element);
     this.ui.setDOMElements(messageContainer, typingIndicator, drawerBody);
+    // Create a new TraceHandler with the new UIManager
+    this.traceHandler = new TraceHandler(
+      this.ui,
+      this.history,
+      this.handleSpecialTrace.bind(this)
+    );
     // Re-attach the button click handler
     this.ui.setButtonClickHandler(this.handleButtonClick.bind(this));
   }
