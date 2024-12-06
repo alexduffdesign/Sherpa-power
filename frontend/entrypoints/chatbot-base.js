@@ -51,25 +51,15 @@ export class ChatbotBase {
   }
 
   async initializeChatIfNeeded() {
-    let startBlock = "";
-    let productDetails = "{}";
-
     if (this.isSectionChatbot()) {
-      // For section chatbot, always start fresh with product details
-      startBlock = "shopifySection";
-      productDetails = this.getProductDetails();
-      console.log(
-        "Initializing section chatbot with product details:",
-        productDetails
-      );
-      await this.sendLaunch(startBlock, productDetails);
+      // For section chatbots, do nothing - initialization handled by section component
       return;
     }
 
     // Only main chatbot uses history
     if (!this.history.hasHistory()) {
       console.log("No chat history found, sending launch request...");
-      await this.sendLaunch(startBlock, productDetails);
+      await this.sendLaunch("", "{}");
       this.history.hasLaunched = true;
       localStorage.setItem(`${this.storagePrefix}chatHasLaunched`, "true");
     } else {
@@ -84,11 +74,6 @@ export class ChatbotBase {
       this.config.isSection ||
       this.element.classList.contains("section-chatbot")
     );
-  }
-
-  getProductDetails() {
-    // Logic to retrieve product details specific to section chatbot
-    return "{}"; // Placeholder for actual implementation
   }
 
   displaySavedConversation() {
@@ -120,20 +105,16 @@ export class ChatbotBase {
     this.ui.scrollToBottom();
   }
 
-  async sendLaunch(startBlock, productDetails) {
-    this.ui.showTypingIndicator("Launching chat...");
-    try {
-      const response = await this.api.launch(startBlock, productDetails);
-      await this.stream.handleStream(response, this.traceHandler);
-      this.ui.hideTypingIndicator();
-    } catch (error) {
-      console.error("Error during chat launch:", error);
-      this.ui.hideTypingIndicator();
-      this.ui.addMessage(
-        "assistant",
-        "I encountered an error launching the conversation. Please try again."
-      );
-    }
+  async sendLaunch(startBlock = "", productDetails = "{}") {
+    console.log("Sending launch request with:", { startBlock, productDetails });
+    const response = await this.api.streamInteract({
+      type: "launch",
+      payload: {
+        startBlock,
+        powerStationDetails: productDetails,
+      },
+    });
+    return response;
   }
 
   async sendMessage(message) {
