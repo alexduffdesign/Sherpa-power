@@ -55,15 +55,23 @@ export class ChatbotBase {
     let productDetails = "{}";
 
     if (this.isSectionChatbot()) {
+      // For section chatbot, always start fresh with product details
       startBlock = "shopifySection";
       productDetails = this.getProductDetails();
+      console.log(
+        "Initializing section chatbot with product details:",
+        productDetails
+      );
+      await this.sendLaunch(startBlock, productDetails);
+      return;
     }
 
+    // Only main chatbot uses history
     if (!this.history.hasHistory()) {
       console.log("No chat history found, sending launch request...");
       await this.sendLaunch(startBlock, productDetails);
       this.history.hasLaunched = true;
-      localStorage.setItem("chatHasLaunched", "true");
+      localStorage.setItem(`${this.storagePrefix}chatHasLaunched`, "true");
     } else {
       console.log("Chat history found, displaying saved conversation...");
       this.displaySavedConversation();
@@ -129,55 +137,29 @@ export class ChatbotBase {
   }
 
   async sendMessage(message) {
-    this.ui.addMessage("user", message);
-    this.history.updateHistory({ type: "user", message: message });
-
-    this.ui.showTypingIndicator();
-    try {
-      this.stream.closeCurrentStream();
-      const response = await this.api.sendUserMessage(message);
-      await this.stream.handleStream(response, this.traceHandler);
-    } catch (error) {
-      console.error("Error in send message:", error);
-      this.ui.addMessage(
-        "assistant",
-        "I apologize, but I encountered an error. Please try again."
-      );
-    } finally {
-      this.ui.hideTypingIndicator();
-      this.ui.scrollToBottom();
+    // Only update history for main chatbot
+    if (!this.isSectionChatbot()) {
+      this.history.updateHistory({
+        type: "user",
+        message: message,
+      });
     }
+
+    this.ui.addMessage("user", message);
+    return this.api.sendUserMessage(message);
   }
 
   async handleButtonClick(buttonData) {
-    console.log("Handling button click:", buttonData);
-    this.ui.removeButtons();
-
-    // Add the button text as a user message first
-    this.ui.addMessage("user", buttonData.name);
-    this.history.updateHistory({ type: "user", message: buttonData.name });
-
-    // Then show typing indicator and make API call
-    this.ui.showTypingIndicator();
-    try {
-      this.stream.closeCurrentStream();
-
-      // Send the button's request data directly to Voiceflow
-      // The request object from the button already contains the correct format
-      const response = await this.api.streamInteract(buttonData.request);
-
-      // Handle the response
-      await this.stream.handleStream(response, this.traceHandler);
-    } catch (error) {
-      console.error("Error in button click:", error);
-      this.ui.addMessage(
-        "assistant",
-        "I apologize, but I encountered an error. Please try again."
-      );
-    } finally {
-      this.ui.hideTypingIndicator();
-      this.ui.scrollToBottom();
+    // Only update history for main chatbot
+    if (!this.isSectionChatbot()) {
+      this.history.updateHistory({
+        type: "user",
+        message: buttonData.name,
+      });
     }
+
+    this.ui.addMessage("user", buttonData.name);
+    return this.api.streamInteract(buttonData.request);
   }
 
   async handleSpecialTrace(trace) {
@@ -220,6 +202,13 @@ export class ChatbotBase {
     } finally {
       this.ui.hideTypingIndicator();
       this.ui.scrollToBottom();
+    }
+  }
+
+  updateHistory(item) {
+    // Only store history for main chatbot
+    if (!this.isSectionChatbot()) {
+      this.history.updateHistory(item);
     }
   }
 }
