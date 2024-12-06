@@ -116,27 +116,25 @@ export class TraceHandler {
 
   restoreHistory() {
     const history = this.history.getHistory();
+    if (history.length === 0) return;
+
+    // Restore all messages first
     history.forEach((entry) => {
-      switch (entry.type) {
-        case "assistant":
-          this.ui.addMessage("assistant", entry.message);
-          break;
-        case "user":
-          this.ui.addMessage("user", entry.message);
-          break;
-        case "choice":
-          // Only restore unresponded choices
-          if (!entry.responded) {
-            this.ui.addButtons(entry.buttons);
-          }
-          break;
-        case "carousel":
-          // Only restore unresponded carousels
-          if (!entry.responded) {
-            this.ui.addCarousel(entry);
-          }
-          break;
+      if (entry.type === "assistant" || entry.type === "user") {
+        this.ui.addMessage(entry.type, entry.message);
       }
     });
+
+    // Get the last entry
+    const lastEntry = history[history.length - 1];
+
+    // If the last entry was a choice or carousel from assistant, show it
+    if (lastEntry.type === "choice") {
+      this.ui.addButtons(lastEntry.buttons);
+    } else if (lastEntry.type === "carousel") {
+      this.ui.addCarousel(lastEntry);
+    }
+
+    this.ui.scrollToBottom();
   }
 }
