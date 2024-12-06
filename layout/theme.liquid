@@ -75,7 +75,7 @@
     {%- render 'js-variables' -%}
 
     <script type="module" src="{{ 'vendor.min.js' | asset_url }}"></script>
-    {% comment %} <script type="module" src="{{ 'theme.js' | asset_url }}"></script> {% endcomment %}
+    <script type="module" src="{{ 'theme.js' | asset_url }}"></script>
     <script type="module" src="{{ 'sections.js' | asset_url }}"></script>
     {{ content_for_header }}
 
@@ -87,7 +87,6 @@
       render 'vite-tag' with 'chatbot-main.js'
       render 'vite-tag' with 'chatbot-drawer.js'
       render 'vite-tag' with 'chatbot-section.js'
-      render 'vite-tag' with 'theme.js'
       render 'vite-tag' with 'chatbot-base.js'
       render 'vite-tag' with 'chatbot-history.js'
       render 'vite-tag' with 'chatbot-stream.js'
