@@ -1,3 +1,5 @@
+//chatbot-base.js
+
 console.log("WOLLLOPPPP");
 
 import { ApiClient } from "./chatbot-api.js";
@@ -133,40 +135,66 @@ export class ChatbotBase {
 
   async sendLaunch(startBlock = "", productDetails = "{}") {
     console.log("Sending launch request with:", { startBlock, productDetails });
-    const response = await this.api.streamInteract({
-      type: "launch",
-      payload: {
-        startBlock,
-        powerStationDetails: productDetails,
-      },
-    });
-    return response;
+    try {
+      const response = await this.api.streamInteract({
+        type: "launch",
+        payload: {
+          startBlock,
+          powerStationDetails: productDetails,
+        },
+      });
+      await this.stream.handleStream(response, this.traceHandler);
+    } catch (error) {
+      console.error("Error in sendLaunch:", error);
+      this.ui.addMessage(
+        "assistant",
+        "I apologize, but I encountered an error. Please try again."
+      );
+    }
   }
 
   async sendMessage(message) {
-    // Only update history for main chatbot
-    if (!this.isSectionChatbot()) {
-      this.history.updateHistory({
-        type: "user",
-        message: message,
-      });
-    }
+    try {
+      // Only update history for main chatbot
+      if (!this.isSectionChatbot()) {
+        this.history.updateHistory({
+          type: "user",
+          message: message,
+        });
+      }
 
-    this.ui.addMessage("user", message);
-    return this.api.sendUserMessage(message);
+      this.ui.addMessage("user", message);
+      const response = await this.api.sendUserMessage(message);
+      await this.stream.handleStream(response, this.traceHandler);
+    } catch (error) {
+      console.error("Error in sendMessage:", error);
+      this.ui.addMessage(
+        "assistant",
+        "I apologize, but I encountered an error processing your message. Please try again."
+      );
+    }
   }
 
   async handleButtonClick(buttonData) {
-    // Only update history for main chatbot
-    if (!this.isSectionChatbot()) {
-      this.history.updateHistory({
-        type: "user",
-        message: buttonData.name,
-      });
-    }
+    try {
+      // Only update history for main chatbot
+      if (!this.isSectionChatbot()) {
+        this.history.updateHistory({
+          type: "user",
+          message: buttonData.name,
+        });
+      }
 
-    this.ui.addMessage("user", buttonData.name);
-    return this.api.streamInteract(buttonData.request);
+      this.ui.addMessage("user", buttonData.name);
+      const response = await this.api.streamInteract(buttonData.request);
+      await this.stream.handleStream(response, this.traceHandler);
+    } catch (error) {
+      console.error("Error in handleButtonClick:", error);
+      this.ui.addMessage(
+        "assistant",
+        "I apologize, but I encountered an error processing your selection. Please try again."
+      );
+    }
   }
 
   async handleSpecialTrace(trace) {

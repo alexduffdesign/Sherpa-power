@@ -1,4 +1,4 @@
-console.log("WOLLLOPPPP 2");
+// chatbot-main.js
 
 import { ChatbotBase } from "./chatbot-base.js";
 

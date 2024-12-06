@@ -1,3 +1,5 @@
+// chatbot-section.js
+
 import { ChatbotBase } from "./chatbot-base.js";
 
 class SectionChatbot extends HTMLElement {

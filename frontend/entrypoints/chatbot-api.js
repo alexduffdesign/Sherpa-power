@@ -1,3 +1,5 @@
+//chatbot-api.js
+
 export class ApiClient {
   constructor(config) {
     this.apiEndpoint = config.apiEndpoint; // Gadget endpoint that proxies Voiceflow streaming
@@ -40,12 +42,24 @@ export class ApiClient {
       headers: {
         "Content-Type": "application/json",
         Accept: "text/event-stream",
+        "Cache-Control": "no-cache",
+        Connection: "keep-alive",
       },
+      credentials: "include",
+      cache: "no-store",
       body: JSON.stringify(payload),
     });
 
     if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
+      const errorText = await response.text();
+      console.error("Stream request failed:", response.status, errorText);
+      throw new Error(
+        `HTTP error! status: ${response.status}, details: ${errorText}`
+      );
+    }
+
+    if (!response.body) {
+      throw new Error("Response has no body");
     }
 
     return response;
