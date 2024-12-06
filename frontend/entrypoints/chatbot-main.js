@@ -145,16 +145,16 @@ export class MainChatbot extends ChatbotBase {
   // Modified jumpToMainMenu: No clearing of history or UI
   async jumpToMainMenu() {
     console.log("MainChatbot jumpToMainMenu called");
-    // Do not clear history or UI here. Simply send the "main_menu" event to Voiceflow.
     try {
       this.ui.showTypingIndicator("Returning to main menu...");
+
+      // Call streamInteract without an 'action' property at the root of the object.
+      // Just pass it as a normal action object. This ensures userID is included.
       const response = await this.api.streamInteract({
-        action: {
-          type: "event",
-          payload: {
-            event: {
-              name: "main_menu",
-            },
+        type: "event",
+        payload: {
+          event: {
+            name: "main_menu",
           },
         },
       });
