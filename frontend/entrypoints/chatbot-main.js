@@ -27,14 +27,36 @@ export class MainChatbot extends ChatbotBase {
 
   initializeElements() {
     console.log("Initializing elements for MainChatbot");
-    // Use this.element as the root for queries to scope to this instance
+
+    // First find the drawer
+    const drawer = document.querySelector("#header-ai-trigger");
+    console.log("Found drawer:", drawer);
+
+    if (drawer && drawer.shadowRoot) {
+      console.log("Drawer has shadow root, searching within shadow DOM");
+      // Search within shadow DOM
+      this.backToStartButton =
+        drawer.shadowRoot.querySelector(".back-to-start");
+      console.log(
+        "Back to start button found in shadow DOM:",
+        this.backToStartButton
+      );
+    } else {
+      // Fallback to regular DOM if no shadow root
+      this.backToStartButton = this.element.querySelector(".back-to-start");
+      console.log(
+        "Back to start button found in regular DOM:",
+        this.backToStartButton
+      );
+    }
+
+    // Use this.element as the root for other queries to scope to this instance
     this.messageContainer = this.element.querySelector(".message-container");
     this.typingIndicator = this.element.querySelector(".chat-typing");
     this.drawerBody = this.element.querySelector(".drawer-body");
     this.chatInput = this.element.querySelector("#userInput");
     this.chatForm = this.element.querySelector("#chatForm");
     this.sendButton = this.element.querySelector("button[type='submit']");
-    this.backToStartButton = this.element.querySelector(".back-to-start");
 
     if (!this.chatForm || !this.chatInput || !this.sendButton) {
       console.error("Required chat elements not found:", {
@@ -49,6 +71,7 @@ export class MainChatbot extends ChatbotBase {
       form: this.chatForm,
       input: this.chatInput,
       button: this.sendButton,
+      backToStart: this.backToStartButton,
     });
 
     this.setDOMElements(
