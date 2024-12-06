@@ -1,7 +1,4 @@
-console.log("WOLLLOPPPP 2");
-
-import { ChatbotBase } from "./chatbot-base.js";
-
+// In MainChatbot class:
 export class MainChatbot extends ChatbotBase {
   constructor(element, config) {
     console.log("MainChatbot constructor called with config:", config);
@@ -9,11 +6,9 @@ export class MainChatbot extends ChatbotBase {
 
     this.element = element;
 
-    // Wait for DOM content to be loaded
     if (document.readyState === "loading") {
       document.addEventListener("DOMContentLoaded", () => this.initialize());
     } else {
-      // DOM already loaded, initialize immediately
       this.initialize();
     }
   }
@@ -28,11 +23,9 @@ export class MainChatbot extends ChatbotBase {
   initializeElements() {
     console.log("Initializing elements for MainChatbot");
 
-    // Initialize the back-to-start button
     this.backToStartButton = document.querySelector(".back-to-start");
     console.log("Back to start button found:", this.backToStartButton);
 
-    // Initialize other elements
     this.messageContainer = this.element.querySelector(".message-container");
     this.typingIndicator = this.element.querySelector(".chat-typing");
     this.drawerBody = this.element.querySelector(".drawer-body");
@@ -65,7 +58,6 @@ export class MainChatbot extends ChatbotBase {
 
   setupEventListeners() {
     if (this.chatInput && this.sendButton) {
-      // Find the form element
       const form = this.chatInput.closest("form");
       if (form) {
         console.log("Form found:", form);
@@ -91,24 +83,21 @@ export class MainChatbot extends ChatbotBase {
       });
     }
 
-    // Set up back-to-start button listener
     if (this.backToStartButton) {
       console.log("Setting up back-to-start button click listener");
       this.backToStartButton.addEventListener("click", () => {
-        console.log("Back to start button clicked!");
+        console.log("Main menu button clicked!");
+        // Trigger the main_menu event in Voiceflow without clearing history
         this.jumpToMainMenu();
       });
     } else {
-      console.warn(
-        "Back to start button not found - will try to find it again"
-      );
-      // Try to find the button again in case it was added dynamically
+      console.warn("Back to start button not found - will try again later");
       setTimeout(() => {
         const button = document.querySelector(".back-to-start");
         if (button) {
           console.log("Found back-to-start button after delay");
           button.addEventListener("click", () => {
-            console.log("Back to start button clicked!");
+            console.log("Main menu button clicked!");
             this.jumpToMainMenu();
           });
         } else {
@@ -149,27 +138,41 @@ export class MainChatbot extends ChatbotBase {
     }
   }
 
-  async handleSpecialTrace(trace) {
-    console.log("Main chatbot handling special trace:", trace);
-
-    // Call the parent implementation first
-    await super.handleSpecialTrace(trace);
-
-    // Add any additional special handling for the main chatbot here if needed.
-    // The TraceHandler and ChatbotBase already handle normal text, choice, carousel, and visual traces,
-    // as well as the RedirectToProduct trace.
-  }
-
+  // Modified jumpToMainMenu: No clearing of history or UI
   async jumpToMainMenu() {
     console.log("MainChatbot jumpToMainMenu called");
-    // Clear history and UI if you want a fresh start
-    this.history.clearHistory();
-    if (this.messageContainer) {
-      this.messageContainer.innerHTML = "";
+    // Do not clear history or UI here. Simply send the "main_menu" event to Voiceflow.
+    try {
+      this.ui.showTypingIndicator("Returning to main menu...");
+      const response = await this.api.streamInteract({
+        action: {
+          type: "event",
+          payload: {
+            event: {
+              name: "main_menu",
+            },
+          },
+        },
+      });
+
+      console.log("Main menu response received:", response);
+      await this.stream.handleStream(response, this.traceHandler);
+      console.log("Finished processing main menu stream");
+    } catch (error) {
+      console.error("Error in jumpToMainMenu:", error);
+      this.ui.addMessage(
+        "assistant",
+        "Sorry, I couldn't navigate to the main menu. Please try again."
+      );
+    } finally {
+      this.ui.hideTypingIndicator();
+      this.ui.scrollToBottom();
     }
-    // Send the main_menu event to start over
-    await super.jumpToMainMenu();
+  }
+
+  async handleSpecialTrace(trace) {
+    console.log("Main chatbot handling special trace:", trace);
+    await super.handleSpecialTrace(trace);
+    // Additional special handling can go here if needed.
   }
 }
-
-console.log("MainChatbot module loaded");
