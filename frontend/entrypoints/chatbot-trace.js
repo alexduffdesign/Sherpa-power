@@ -48,13 +48,18 @@ export class TraceHandler {
         this.history.updateHistory({
           type: "choice",
           buttons: event.payload.buttons,
+          responded: false,
         });
         break;
 
       case "carousel":
         console.log("Adding carousel:", event.payload);
         this.ui.addCarousel(event.payload);
-        this.history.updateHistory({ type: "carousel", data: event.payload });
+        this.history.updateHistory({
+          type: "carousel",
+          cards: event.payload.cards,
+          responded: false,
+        });
         break;
 
       case "visual":
@@ -107,5 +112,31 @@ export class TraceHandler {
     }
 
     this.ui.scrollToBottom();
+  }
+
+  restoreHistory() {
+    const history = this.history.getHistory();
+    history.forEach((entry) => {
+      switch (entry.type) {
+        case "assistant":
+          this.ui.addMessage("assistant", entry.message);
+          break;
+        case "user":
+          this.ui.addMessage("user", entry.message);
+          break;
+        case "choice":
+          // Only restore unresponded choices
+          if (!entry.responded) {
+            this.ui.addButtons(entry.buttons);
+          }
+          break;
+        case "carousel":
+          // Only restore unresponded carousels
+          if (!entry.responded) {
+            this.ui.addCarousel(entry);
+          }
+          break;
+      }
+    });
   }
 }
