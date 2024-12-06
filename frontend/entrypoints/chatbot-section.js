@@ -10,8 +10,10 @@ class SectionChatbot extends ChatbotBase {
       apiEndpoint:
         "https://chatbottings--development.gadget.app/voiceflowAPI/voiceflow-streaming",
       userIDPrefix: "sectionChatbot",
+      isSection: true, // Explicitly set this as a section chatbot
     };
     super(config);
+    this.element = this; // Since this is a web component, 'this' is the element
     this.chatInitialized = false;
     this.messageContainer = null;
     this.typingIndicator = null;

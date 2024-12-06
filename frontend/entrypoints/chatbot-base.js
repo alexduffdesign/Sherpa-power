@@ -10,13 +10,19 @@ export class ChatbotBase {
   constructor(config) {
     console.log("ChatbotBase constructor called with config:", config);
 
+    // Save the config with defaults
+    this.config = {
+      isSection: false, // Default to false for main chatbot
+      ...config,
+    };
+
     this.ui = new UIManager();
     this.history = new HistoryHandler();
 
     this.api = new ApiClient({
-      apiEndpoint: config.apiEndpoint,
-      userIDPrefix: config.userIDPrefix,
-      completionEvents: config.completionEvents || false,
+      apiEndpoint: this.config.apiEndpoint,
+      userIDPrefix: this.config.userIDPrefix,
+      completionEvents: this.config.completionEvents || false,
     });
 
     this.stream = new StreamHandler();
