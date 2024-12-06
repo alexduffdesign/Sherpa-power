@@ -7,10 +7,9 @@ import { TraceHandler } from "./chatbot-trace.js";
 import { HistoryHandler } from "./chatbot-history.js";
 
 export class ChatbotBase {
-  constructor(config = {}) {
+  constructor(config) {
     console.log("ChatbotBase constructor called with config:", config);
 
-    this.config = config; // Ensure config is initialized
     this.ui = new UIManager();
     this.history = new HistoryHandler();
 
@@ -31,7 +30,7 @@ export class ChatbotBase {
     this.sendMessage = this.sendMessage.bind(this);
     this.handleButtonClick = this.handleButtonClick.bind(this);
 
-    if (this.history.hasHistory() && !this.isSectionChatbot()) {
+    if (this.history.hasHistory()) {
       this.history.loadFromStorage();
     }
   }
@@ -47,9 +46,6 @@ export class ChatbotBase {
     if (this.isSectionChatbot()) {
       startBlock = "shopifySection";
       productDetails = this.getProductDetails();
-      console.log("Section chatbot detected, skipping history loading.");
-      await this.sendLaunch(startBlock, productDetails);
-      return;
     }
 
     if (!this.history.hasHistory()) {
@@ -122,9 +118,7 @@ export class ChatbotBase {
 
   async sendMessage(message) {
     this.ui.addMessage("user", message);
-    if (!this.isSectionChatbot()) {
-      this.history.updateHistory({ type: "user", message: message });
-    }
+    this.history.updateHistory({ type: "user", message: message });
 
     this.ui.showTypingIndicator();
     try {
@@ -152,9 +146,7 @@ export class ChatbotBase {
       this.stream.closeCurrentStream();
       const response = await this.api.sendUserMessage(buttonData.name);
       this.ui.addMessage("user", buttonData.name);
-      if (!this.isSectionChatbot()) {
-        this.history.updateHistory({ type: "user", message: buttonData.name });
-      }
+      this.history.updateHistory({ type: "user", message: buttonData.name });
       await this.stream.handleStream(response, this.traceHandler);
     } catch (error) {
       console.error("Error in button click:", error);
