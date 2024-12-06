@@ -44,7 +44,7 @@ export class TraceHandler {
 
       case "choice":
         console.log("Adding choice buttons:", event.payload.buttons);
-        this.ui.addButtons(event.payload.buttons, this.lastMessageContainer);
+        this.ui.addButtons(event.payload.buttons);
         this.history.updateHistory({
           type: "choice",
           buttons: event.payload.buttons,

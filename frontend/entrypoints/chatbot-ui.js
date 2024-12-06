@@ -206,47 +206,31 @@ export class UIManager {
     }
   }
 
-  addButtons(buttons, messageWrapper = null) {
+  addButtons(buttons) {
     console.log("Adding buttons:", buttons);
     const buttonContainer = document.createElement("div");
     buttonContainer.classList.add("button-container");
 
     buttons.forEach((button) => {
       const buttonElement = document.createElement("button");
-      buttonElement.classList.add("button", "chat-button");
+      buttonElement.classList.add("button");
       buttonElement.textContent = button.name;
       buttonElement.dataset.buttonData = JSON.stringify(button);
       buttonContainer.appendChild(buttonElement);
     });
 
-    // If a specific message wrapper is provided, append to it
-    // Otherwise, append to the last message wrapper if it exists
-    if (messageWrapper) {
-      messageWrapper.appendChild(buttonContainer);
+    if (this.messageContainer) {
+      this.messageContainer.appendChild(buttonContainer);
+      this.scrollToBottom();
     } else {
-      const lastMessageWrapper = this.messageContainer.querySelector(
-        ".message-wrapper:last-child"
-      );
-      if (lastMessageWrapper) {
-        lastMessageWrapper.appendChild(buttonContainer);
-      } else {
-        // Fallback to appending to message container if no message wrapper found
-        this.messageContainer.appendChild(buttonContainer);
-      }
+      console.error("Message container not found when adding buttons");
     }
-    this.scrollToBottom();
   }
 
   removeButtons() {
-    if (!this.messageContainer) return;
     const buttonContainers =
       this.messageContainer.querySelectorAll(".button-container");
-    buttonContainers.forEach((container) => {
-      // Fade out animation
-      container.style.opacity = "0";
-      container.style.transform = "translateY(10px)";
-      setTimeout(() => container.remove(), 300);
-    });
+    buttonContainers.forEach((container) => container.remove());
   }
 
   addVisualImage(payload) {
