@@ -34,9 +34,7 @@ export class MainChatbot extends ChatbotBase {
     this.chatInput = this.element.querySelector("#userInput");
     this.chatForm = this.element.querySelector("#chatForm");
     this.sendButton = this.element.querySelector("button[type='submit']");
-    this.backToStartButton = this.element.querySelector(
-      ".back-to-start-button"
-    );
+    this.backToStartButton = this.element.querySelector(".back-to-start");
 
     if (!this.chatForm || !this.chatInput || !this.sendButton) {
       console.error("Required chat elements not found:", {
