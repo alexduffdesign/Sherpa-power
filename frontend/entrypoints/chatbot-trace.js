@@ -3,8 +3,8 @@ export class TraceHandler {
     this.ui = ui;
     this.history = history;
     this.onSpecialTrace = onSpecialTrace || (async () => {});
-
     this.completionBuffer = "";
+    this.lastMessageContainer = null;
   }
 
   async handleTrace(event) {
@@ -15,7 +15,10 @@ export class TraceHandler {
 
     switch (event.type) {
       case "text":
-        this.ui.addMessage("assistant", event.payload.message);
+        this.lastMessageContainer = this.ui.addMessage(
+          "assistant",
+          event.payload.message
+        );
         this.history.updateHistory({
           type: "assistant",
           message: event.payload.message,
@@ -23,7 +26,8 @@ export class TraceHandler {
         break;
 
       case "choice":
-        this.ui.addButtons(event.payload.buttons);
+        // Add buttons within the last message container if it exists
+        this.ui.addButtons(event.payload.buttons, this.lastMessageContainer);
         this.history.updateHistory({
           type: "choice",
           buttons: event.payload.buttons,
@@ -57,7 +61,6 @@ export class TraceHandler {
         break;
 
       case "completion":
-        // Streaming LLM responses
         if (event.payload.state === "start") {
           this.completionBuffer = "";
         } else if (event.payload.state === "content") {
@@ -72,7 +75,7 @@ export class TraceHandler {
         break;
 
       case "end":
-        // End of turn
+        this.lastMessageContainer = null; // Reset container reference at end of turn
         break;
 
       default:
