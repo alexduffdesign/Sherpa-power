@@ -46,8 +46,14 @@ export class ChatbotBase {
     }
   }
 
-  setDOMElements(messageContainer, typingIndicator, drawerBody) {
-    this.ui.setDOMElements(messageContainer, typingIndicator, drawerBody);
+  setDOMElements(messageContainer, typingIndicator, drawerBody, element) {
+    console.log("Setting DOM elements in ChatbotBase");
+    this.ui.setDOMElements(
+      messageContainer,
+      typingIndicator,
+      drawerBody,
+      element
+    );
   }
 
   async initializeChatIfNeeded() {
