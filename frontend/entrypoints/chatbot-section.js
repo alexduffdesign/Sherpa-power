@@ -1,26 +1,22 @@
-// chatbot-section.js
-
 import { ChatbotBase } from "./chatbot-base.js";
 
-console.log("SectionChatbot module loading");
-
-class SectionChatbot extends ChatbotBase {
+class SectionChatbot extends HTMLElement {
   constructor() {
+    super(); // Must call super() first
+
+    // Create a config for ChatbotBase
     const config = {
       apiEndpoint:
         "https://chatbottings--development.gadget.app/voiceflowAPI/voiceflow-streaming",
       userIDPrefix: "sectionChatbot",
-      isSection: true, // Explicitly set this as a section chatbot
+      isSection: true,
     };
-    super(config);
-    this.element = this; // Since this is a web component, 'this' is the element
+
+    // Instantiate the chatbot logic separately
+    this.chatbotBase = new ChatbotBase(config);
+
+    // Keep track if we’ve initialized chat yet
     this.chatInitialized = false;
-    this.messageContainer = null;
-    this.typingIndicator = null;
-    this.applicationsGrid = null;
-    this.viewMoreButton = null;
-    this.chatForm = null;
-    this.userInput = null;
   }
 
   connectedCallback() {
@@ -54,7 +50,12 @@ class SectionChatbot extends ChatbotBase {
       return;
     }
 
-    this.setDOMElements(this.messageContainer, this.typingIndicator, this);
+    // Set DOM elements on chatbotBase's UI
+    this.chatbotBase.setDOMElements(
+      this.messageContainer,
+      this.typingIndicator,
+      this
+    );
   }
 
   setupEventListeners() {
@@ -98,11 +99,8 @@ class SectionChatbot extends ChatbotBase {
   async initializeChatIfNeeded() {
     if (!this.chatInitialized) {
       console.log("Initializing section chatbot");
-      // This will handle launching if no history, or display saved conversation if any
-      await this.initializeChatIfNeeded(
-        "shopifySection",
-        this.getProductDetails()
-      );
+      // Use chatbotBase's method
+      await this.chatbotBase.initializeChatIfNeeded();
       this.chatInitialized = true;
       console.log("Section chatbot initialized");
     }
@@ -132,15 +130,19 @@ class SectionChatbot extends ChatbotBase {
 
   async handleUserMessage(message) {
     try {
-      await this.sendMessage(message);
+      await this.chatbotBase.sendMessage(message);
     } catch (error) {
       console.error("Error in handleUserMessage:", error);
     }
   }
 
+  async handleButtonClick(buttonData) {
+    await this.chatbotBase.handleButtonClick(buttonData);
+  }
+
   async handleSpecialTrace(trace) {
     console.log("SectionChatbot handling special trace:", trace);
-    await super.handleSpecialTrace(trace);
+    await this.chatbotBase.handleSpecialTrace(trace);
 
     // Additional section-specific trace types
     if (trace.type === "device_answer") {
