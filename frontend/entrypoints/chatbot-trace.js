@@ -18,15 +18,19 @@ export class TraceHandler {
 
     this.processingTrace = true;
     try {
-      console.log("Handling trace event:", event.type, event);
+      console.log(
+        "[Trace] Handling trace event:",
+        event.type,
+        JSON.stringify(event, null, 2)
+      );
 
       if (!event.type) {
-        console.error("Received event with no type:", event);
+        console.error("[Trace] Received event with no type:", event);
         return;
       }
 
       if (!this.ui) {
-        console.error("UI manager not available");
+        console.error("[Trace] UI manager not available");
         return;
       }
 
@@ -42,36 +46,48 @@ export class TraceHandler {
       ];
 
       if (!knownTypes.includes(event.type)) {
-        console.warn("Ignoring unknown trace type:", event.type);
+        console.warn("[Trace] Ignoring unknown trace type:", event.type);
         return;
       }
 
       switch (event.type) {
         case "text":
           if (!event.payload) {
-            console.error("Invalid text payload:", event.payload);
+            console.error("[Trace] Invalid text payload:", event.payload);
             return;
           }
-          console.log("Processing text event:", event);
+          console.log(
+            "[Trace] Processing text event:",
+            JSON.stringify(event, null, 2)
+          );
 
-          // Hide typing indicator before adding message
           this.ui.hideTypingIndicator();
 
           try {
-            // Handle different message formats
             if (typeof event.payload === "string") {
+              console.log("[Trace] Processing string payload:", event.payload);
               this.lastMessageContainer = this.ui.addMessage(
                 "assistant",
                 event.payload
               );
             } else if (event.payload.slate) {
-              // Extract text from slate format
+              console.log(
+                "[Trace] Processing slate payload:",
+                event.payload.slate
+              );
               const text = event.payload.slate.content
-                .map((block) =>
-                  block.children.map((child) => child.text).join("")
-                )
+                .map((block) => {
+                  console.log("[Trace] Processing slate block:", block);
+                  return block.children
+                    .map((child) => {
+                      console.log("[Trace] Processing slate child:", child);
+                      return child.text;
+                    })
+                    .join("");
+                })
                 .join("\n");
 
+              console.log("[Trace] Extracted text from slate:", text);
               this.lastMessageContainer = this.ui.addMessage("assistant", text);
 
               if (this.history) {
@@ -81,6 +97,10 @@ export class TraceHandler {
                 });
               }
             } else if (event.payload.message) {
+              console.log(
+                "[Trace] Processing message payload:",
+                event.payload.message
+              );
               this.lastMessageContainer = this.ui.addMessage(
                 "assistant",
                 event.payload.message
@@ -93,27 +113,31 @@ export class TraceHandler {
                 });
               }
             } else {
-              console.error("Unsupported text payload format:", event.payload);
+              console.error(
+                "[Trace] Unsupported text payload format:",
+                event.payload
+              );
             }
           } catch (error) {
-            console.error("Error processing text event:", error);
+            console.error("[Trace] Error processing text event:", error);
+            console.error("[Trace] Event that caused error:", event);
           }
           break;
 
         case "waiting_text":
-          console.log("Showing typing indicator:", event.payload);
+          console.log("[Trace] Showing typing indicator:", event.payload);
           this.ui.showTypingIndicator(event.payload);
           break;
 
         case "choice":
           if (!Array.isArray(event.payload?.buttons)) {
-            console.error("Invalid choice payload:", event.payload);
+            console.error("[Trace] Invalid choice payload:", event.payload);
             return;
           }
           // Hide typing indicator before adding buttons
           this.ui.hideTypingIndicator();
 
-          console.log("Adding choice buttons:", event.payload.buttons);
+          console.log("[Trace] Adding choice buttons:", event.payload.buttons);
           this.ui.addButtons(event.payload.buttons);
           if (this.history) {
             this.history.updateHistory({
@@ -127,7 +151,7 @@ export class TraceHandler {
           // Hide typing indicator before adding carousel
           this.ui.hideTypingIndicator();
 
-          console.log("Adding carousel:", event.payload);
+          console.log("[Trace] Adding carousel:", event.payload);
           this.ui.addCarousel(event.payload);
           if (this.history) {
             this.history.updateHistory({
@@ -142,7 +166,7 @@ export class TraceHandler {
             // Hide typing indicator before adding image
             this.ui.hideTypingIndicator();
 
-            console.log("Adding visual image:", event.payload);
+            console.log("[Trace] Adding visual image:", event.payload);
             this.ui.addVisualImage(event.payload);
             if (this.history) {
               this.history.updateHistory({
@@ -156,7 +180,7 @@ export class TraceHandler {
         case "RedirectToProduct":
           const productHandle = event.payload?.body?.productHandle;
           if (productHandle) {
-            console.log("Redirecting to product:", productHandle);
+            console.log("[Trace] Redirecting to product:", productHandle);
             await this.onSpecialTrace({
               type: "RedirectToProduct",
               productHandle,
@@ -166,7 +190,7 @@ export class TraceHandler {
 
         case "completion":
           if (!event.payload?.state) {
-            console.error("Invalid completion payload:", event.payload);
+            console.error("[Trace] Invalid completion payload:", event.payload);
             return;
           }
 
@@ -199,12 +223,13 @@ export class TraceHandler {
           break;
 
         case "end":
-          console.log("Stream ended");
+          console.log("[Trace] Stream ended");
           this.ui.hideTypingIndicator();
           break;
       }
     } catch (error) {
-      console.error("Error handling trace:", error);
+      console.error("[Trace] Error handling trace:", error);
+      console.error("[Trace] Event that caused error:", event);
       this.ui.hideTypingIndicator();
     } finally {
       this.processingTrace = false;

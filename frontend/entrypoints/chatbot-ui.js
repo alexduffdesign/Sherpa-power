@@ -21,8 +21,10 @@ export class UIManager {
   }
 
   addMessage(role, message) {
+    console.log("[UI] Adding message:", { role, message });
+
     if (!this.messageContainer || !this.rootElement) {
-      console.error("Message container or root element not available");
+      console.error("[UI] Message container or root element not available");
       return null;
     }
 
@@ -43,32 +45,39 @@ export class UIManager {
       const contentDiv = doc.createElement("div");
       contentDiv.classList.add("message__content");
 
-      // Handle different message formats
+      console.log("[UI] Processing message format:", typeof message, message);
+
       if (typeof message === "string") {
+        console.log("[UI] Adding string message");
         contentDiv.innerHTML = this.formatMessage(message);
       } else if (message.slate) {
-        // Handle slate format
+        console.log("[UI] Adding slate message:", message.slate);
         const text = message.slate.content
           .map((block) => block.children.map((child) => child.text).join(""))
           .join("\n");
+        console.log("[UI] Extracted slate text:", text);
         contentDiv.innerHTML = this.formatMessage(text);
       } else if (message instanceof Element) {
+        console.log("[UI] Adding Element message");
         contentDiv.appendChild(message);
       } else if (message.message) {
-        // Handle message object with direct message property
+        console.log("[UI] Adding message object:", message.message);
         contentDiv.innerHTML = this.formatMessage(message.message);
       } else {
-        console.error("Unsupported message format:", message);
+        console.error("[UI] Unsupported message format:", message);
         return null;
       }
 
       messageDiv.appendChild(contentDiv);
       messageWrapper.appendChild(messageDiv);
       this.messageContainer.appendChild(messageWrapper);
+
+      console.log("[UI] Message added successfully");
       this.scrollToBottom();
       return messageWrapper;
     } catch (error) {
-      console.error("Error adding message:", error);
+      console.error("[UI] Error adding message:", error);
+      console.error("[UI] Message that caused error:", message);
       return null;
     }
   }

@@ -11,8 +11,10 @@ export class StreamHandler {
       throw new Error("No response body available for streaming");
     }
 
-    // Cancel any existing stream
+    console.log("[Stream] Starting new stream processing");
     this.closeCurrentStream();
+
+    // Cancel any existing stream
 
     // Create new abort controller for this stream
     this.abortController = new AbortController();
@@ -30,23 +32,27 @@ export class StreamHandler {
         if (done) {
           // Process any remaining buffer
           if (jsonBuffer) {
-            console.log("Processing remaining buffer:", jsonBuffer);
+            console.log("[Stream] Processing final buffer:", jsonBuffer);
             try {
               const events = JSON.parse(
                 `[${jsonBuffer.replace(/}\s*{/g, "},{")}]`
               );
+              console.log("[Stream] Parsed final events:", events);
               for (const event of events) {
                 await traceHandler.handleTrace(event);
               }
             } catch (e) {
-              console.error("Error processing final buffer:", e);
+              console.error("[Stream] Error processing final buffer:", e);
             }
           }
-          console.log("Stream complete");
+          console.log("[Stream] Stream complete");
           break;
         }
 
-        buffer += decoder.decode(value, { stream: true });
+        const chunk = decoder.decode(value, { stream: true });
+        console.log("[Stream] Received chunk:", chunk);
+        buffer += chunk;
+
         const lines = buffer.split("\n");
         buffer = lines.pop() || "";
 
@@ -55,33 +61,37 @@ export class StreamHandler {
 
           if (line.startsWith("data: ")) {
             const jsonStr = line.slice(6);
+            console.log("[Stream] Processing line:", jsonStr);
 
-            // Check if this is a complete JSON object
             try {
               const event = JSON.parse(jsonStr);
-              console.log("Parsed stream event:", event);
+              console.log("[Stream] Successfully parsed single event:", event);
               await traceHandler.handleTrace(event);
             } catch (e) {
-              // If parsing fails, add to buffer
+              console.log(
+                "[Stream] Failed to parse as single event, buffering"
+              );
               jsonBuffer += (jsonBuffer ? "," : "") + jsonStr;
 
-              // Try to parse accumulated buffer
               try {
                 const events = JSON.parse(`[${jsonBuffer}]`);
+                console.log(
+                  "[Stream] Successfully parsed buffered events:",
+                  events
+                );
                 for (const event of events) {
                   await traceHandler.handleTrace(event);
                 }
                 jsonBuffer = ""; // Reset buffer after successful parse
               } catch (bufferError) {
-                // Continue accumulating if we can't parse yet
-                console.log("Accumulating buffer:", jsonBuffer);
+                console.log("[Stream] Still accumulating buffer:", jsonBuffer);
               }
             }
           }
         }
       }
     } catch (error) {
-      console.error("Stream processing error:", error);
+      console.error("[Stream] Fatal stream processing error:", error);
       throw error;
     } finally {
       this.closeCurrentStream();
