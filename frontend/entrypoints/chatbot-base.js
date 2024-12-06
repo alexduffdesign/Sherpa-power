@@ -7,9 +7,10 @@ import { TraceHandler } from "./chatbot-trace.js";
 import { HistoryHandler } from "./chatbot-history.js";
 
 export class ChatbotBase {
-  constructor(config) {
+  constructor(config = {}) {
     console.log("ChatbotBase constructor called with config:", config);
 
+    this.config = config; // Ensure config is initialized
     this.ui = new UIManager();
     this.history = new HistoryHandler();
 
