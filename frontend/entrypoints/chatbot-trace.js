@@ -8,6 +8,7 @@ export class TraceHandler {
   }
 
   async handleTrace(event) {
+    console.log("Handling trace event:", event.type, event);
     if (!event.type) {
       console.error("Received event with no type:", event);
       return;
@@ -15,6 +16,7 @@ export class TraceHandler {
 
     switch (event.type) {
       case "text":
+        console.log("Adding text message:", event.payload.message);
         this.lastMessageContainer = this.ui.addMessage(
           "assistant",
           event.payload.message
@@ -26,7 +28,7 @@ export class TraceHandler {
         break;
 
       case "choice":
-        // Add buttons within the last message container if it exists
+        console.log("Adding choice buttons:", event.payload.buttons);
         this.ui.addButtons(event.payload.buttons, this.lastMessageContainer);
         this.history.updateHistory({
           type: "choice",
@@ -35,24 +37,28 @@ export class TraceHandler {
         break;
 
       case "carousel":
+        console.log("Adding carousel:", event.payload);
         this.ui.addCarousel(event.payload);
         this.history.updateHistory({ type: "carousel", data: event.payload });
         break;
 
       case "visual":
         if (event.payload.visualType === "image") {
+          console.log("Adding visual image:", event.payload);
           this.ui.addVisualImage(event.payload);
           this.history.updateHistory({ type: "visual", data: event.payload });
         }
         break;
 
       case "waiting_text":
+        console.log("Showing typing indicator:", event.payload);
         this.ui.showTypingIndicator(event.payload);
         break;
 
       case "RedirectToProduct":
         const productHandle = event.payload?.body?.productHandle;
         if (productHandle) {
+          console.log("Redirecting to product:", productHandle);
           await this.onSpecialTrace({
             type: "RedirectToProduct",
             productHandle,
@@ -61,6 +67,7 @@ export class TraceHandler {
         break;
 
       case "completion":
+        console.log("Handling completion state:", event.payload.state);
         if (event.payload.state === "start") {
           this.completionBuffer = "";
         } else if (event.payload.state === "content") {
@@ -75,6 +82,7 @@ export class TraceHandler {
         break;
 
       case "end":
+        console.log("End of trace event");
         this.lastMessageContainer = null; // Reset container reference at end of turn
         break;
 
