@@ -14,9 +14,6 @@ export class StreamHandler {
     console.log("[Stream] Starting new stream processing");
     this.closeCurrentStream();
 
-    // Cancel any existing stream
-
-    // Create new abort controller for this stream
     this.abortController = new AbortController();
     const signal = this.abortController.signal;
 
@@ -24,27 +21,11 @@ export class StreamHandler {
       this.currentReader = response.body.getReader();
       const decoder = new TextDecoder();
       let buffer = "";
-      let jsonBuffer = "";
 
       while (!signal.aborted) {
         const { done, value } = await this.currentReader.read();
 
         if (done) {
-          // Process any remaining buffer
-          if (jsonBuffer) {
-            console.log("[Stream] Processing final buffer:", jsonBuffer);
-            try {
-              const events = JSON.parse(
-                `[${jsonBuffer.replace(/}\s*{/g, "},{")}]`
-              );
-              console.log("[Stream] Parsed final events:", events);
-              for (const event of events) {
-                await traceHandler.handleTrace(event);
-              }
-            } catch (e) {
-              console.error("[Stream] Error processing final buffer:", e);
-            }
-          }
           console.log("[Stream] Stream complete");
           break;
         }
@@ -53,40 +34,46 @@ export class StreamHandler {
         console.log("[Stream] Received chunk:", chunk);
         buffer += chunk;
 
-        const lines = buffer.split("\n");
-        buffer = lines.pop() || "";
+        try {
+          // Try to parse the entire buffer as a JSON array
+          const events = JSON.parse(buffer);
+          console.log("[Stream] Successfully parsed events:", events);
 
-        for (const line of lines) {
-          if (line.trim() === "") continue;
-
-          if (line.startsWith("data: ")) {
-            const jsonStr = line.slice(6);
-            console.log("[Stream] Processing line:", jsonStr);
-
-            try {
-              const event = JSON.parse(jsonStr);
-              console.log("[Stream] Successfully parsed single event:", event);
+          // If it's an array, process each event
+          if (Array.isArray(events)) {
+            for (const event of events) {
               await traceHandler.handleTrace(event);
-            } catch (e) {
-              console.log(
-                "[Stream] Failed to parse as single event, buffering"
-              );
-              jsonBuffer += (jsonBuffer ? "," : "") + jsonStr;
+            }
+            buffer = ""; // Clear buffer after successful processing
+          } else {
+            // If it's a single event, process it
+            await traceHandler.handleTrace(events);
+            buffer = "";
+          }
+        } catch (e) {
+          // If we can't parse it yet, it might be incomplete
+          console.log("[Stream] Incomplete JSON, continuing to buffer");
 
+          // Try to find complete JSON objects in the buffer
+          if (buffer.includes("][")) {
+            const parts = buffer.split("][");
+            for (const part of parts) {
               try {
-                const events = JSON.parse(`[${jsonBuffer}]`);
-                console.log(
-                  "[Stream] Successfully parsed buffered events:",
-                  events
-                );
-                for (const event of events) {
-                  await traceHandler.handleTrace(event);
+                const cleanPart = part
+                  .replace(/^\[?/, "[")
+                  .replace(/\]?$/, "]");
+                const events = JSON.parse(cleanPart);
+                console.log("[Stream] Parsed partial buffer:", events);
+                if (Array.isArray(events)) {
+                  for (const event of events) {
+                    await traceHandler.handleTrace(event);
+                  }
                 }
-                jsonBuffer = ""; // Reset buffer after successful parse
-              } catch (bufferError) {
-                console.log("[Stream] Still accumulating buffer:", jsonBuffer);
+              } catch (partError) {
+                console.log("[Stream] Could not parse part, skipping");
               }
             }
+            buffer = parts[parts.length - 1];
           }
         }
       }
