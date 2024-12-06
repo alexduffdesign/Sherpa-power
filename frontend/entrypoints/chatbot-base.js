@@ -190,19 +190,25 @@ export class ChatbotBase {
   }
 
   async jumpToMainMenu() {
-    console.log("Jumping to main menu event");
+    console.log("MainChatbot jumpToMainMenu called");
     this.ui.showTypingIndicator("Returning to main menu...");
     try {
-      console.log("Sending main_menu event to API...");
-      const response = await this.api.sendEvent("main_menu");
-      console.log("Received response from main_menu event:", response);
+      const response = await this.api.streamInteract({
+        type: "event",
+        payload: {
+          event: {
+            name: "main_menu",
+          },
+        },
+      });
+      console.log("Main menu response received:", response);
       await this.stream.handleStream(response, this.traceHandler);
-      console.log("Finished processing main_menu event stream");
+      console.log("Finished processing main menu stream");
     } catch (error) {
       console.error("Error in jumpToMainMenu:", error);
       this.ui.addMessage(
         "assistant",
-        "I apologize, but I encountered an error returning to the main menu. Please try again."
+        "Sorry, I couldn't navigate to the main menu. Please try again."
       );
     } finally {
       this.ui.hideTypingIndicator();

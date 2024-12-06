@@ -28,29 +28,11 @@ export class MainChatbot extends ChatbotBase {
   initializeElements() {
     console.log("Initializing elements for MainChatbot");
 
-    // First find the drawer
-    const drawer = document.querySelector("#header-ai-trigger");
-    console.log("Found drawer:", drawer);
+    // Initialize the back-to-start button
+    this.backToStartButton = document.querySelector(".back-to-start");
+    console.log("Back to start button found:", this.backToStartButton);
 
-    if (drawer && drawer.shadowRoot) {
-      console.log("Drawer has shadow root, searching within shadow DOM");
-      // Search within shadow DOM
-      this.backToStartButton =
-        drawer.shadowRoot.querySelector(".back-to-start");
-      console.log(
-        "Back to start button found in shadow DOM:",
-        this.backToStartButton
-      );
-    } else {
-      // Fallback to regular DOM if no shadow root
-      this.backToStartButton = this.element.querySelector(".back-to-start");
-      console.log(
-        "Back to start button found in regular DOM:",
-        this.backToStartButton
-      );
-    }
-
-    // Use this.element as the root for other queries to scope to this instance
+    // Initialize other elements
     this.messageContainer = this.element.querySelector(".message-container");
     this.typingIndicator = this.element.querySelector(".chat-typing");
     this.drawerBody = this.element.querySelector(".drawer-body");
@@ -109,10 +91,30 @@ export class MainChatbot extends ChatbotBase {
       });
     }
 
+    // Set up back-to-start button listener
     if (this.backToStartButton) {
+      console.log("Setting up back-to-start button click listener");
       this.backToStartButton.addEventListener("click", () => {
+        console.log("Back to start button clicked!");
         this.jumpToMainMenu();
       });
+    } else {
+      console.warn(
+        "Back to start button not found - will try to find it again"
+      );
+      // Try to find the button again in case it was added dynamically
+      setTimeout(() => {
+        const button = document.querySelector(".back-to-start");
+        if (button) {
+          console.log("Found back-to-start button after delay");
+          button.addEventListener("click", () => {
+            console.log("Back to start button clicked!");
+            this.jumpToMainMenu();
+          });
+        } else {
+          console.error("Back to start button still not found after delay");
+        }
+      }, 1000);
     }
 
     if (this.messageContainer) {
