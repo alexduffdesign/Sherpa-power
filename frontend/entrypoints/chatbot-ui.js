@@ -142,18 +142,19 @@ export class UIManager {
     const carousel = new Carousel(carouselElement);
 
     carouselData.cards.forEach((card, index) => {
-      const itemContent = `
-        <div class="carousel__item-wrapper">
-          <div class="carousel__item-content">
-            <img src="${card.imageUrl}" alt="${card.title}" class="carousel__item-image">
-            <h6 class="carousel__item-title">${card.title}</h6>
-            <p class="carousel__item-description">${card.description.text}</p>
-            <button class="button carousel__item-button" data-button-index="${index}">${card.buttons[0].name}</button>
-          </div>
+      // Create DOM element for the item
+      const itemElement = doc.createElement("div");
+      itemElement.classList.add("carousel__item-wrapper");
+      itemElement.innerHTML = `
+        <div class="carousel__item-content">
+          <img src="${card.imageUrl}" alt="${card.title}" class="carousel__item-image">
+          <h6 class="carousel__item-title">${card.title}</h6>
+          <p class="carousel__item-description">${card.description.text}</p>
+          <button class="button carousel__item-button" data-button-index="${index}">${card.buttons[0].name}</button>
         </div>
       `;
 
-      carousel.addItem(itemContent);
+      carousel.addItem(itemElement);
     });
 
     carouselContainer.appendChild(carouselElement);
@@ -200,77 +201,56 @@ export class UIManager {
     this.addMessage("assistant", buttonsWrapper);
   }
 
-  showTypingIndicator(message = "Sherpa Guide Is Typing...") {
-    if (!this.typingIndicator) {
-      console.error("Typing indicator not found");
-      return;
+  showTypingIndicator(customText = null) {
+    if (this.typingIndicator) {
+      this.typingIndicator.style.display = "flex";
+      if (customText) {
+        const textElement = this.typingIndicator.querySelector("p");
+        if (textElement) {
+          textElement.textContent = customText;
+        }
+      }
+      this.scrollToBottom();
     }
-
-    const typingText = this.typingIndicator.querySelector("p");
-    if (typingText) {
-      typingText.textContent = message;
-    }
-
-    this.typingIndicator.style.display = "flex";
-    this.scrollToBottom();
   }
 
   hideTypingIndicator() {
-    if (!this.typingIndicator) {
-      console.error("Typing indicator not found");
-      return;
+    if (this.typingIndicator) {
+      this.typingIndicator.style.display = "none";
     }
-    this.typingIndicator.style.display = "none";
-  }
-
-  addVisualImage(payload) {
-    if (!this.messageContainer || !payload?.image) return;
-
-    const messageDiv = this.rootElement.ownerDocument.createElement("div");
-    messageDiv.className = "message";
-
-    const contentDiv = this.rootElement.ownerDocument.createElement("div");
-    contentDiv.className = "message-content assistant-message";
-
-    const logoContainer = this.rootElement.ownerDocument.createElement("div");
-    logoContainer.className = "logo-container";
-    const logoBg = this.rootElement.ownerDocument.createElement("div");
-    logoBg.className = "logo-background";
-    logoContainer.appendChild(logoBg);
-    contentDiv.appendChild(logoContainer);
-
-    const imageContainer = this.rootElement.ownerDocument.createElement("div");
-    imageContainer.className = "visual-image-container";
-
-    const img = this.rootElement.ownerDocument.createElement("img");
-    img.src = payload.image;
-    img.alt = payload.alt || "Visual response";
-    img.className = "visual-image";
-
-    imageContainer.appendChild(img);
-    contentDiv.appendChild(imageContainer);
-    messageDiv.appendChild(contentDiv);
-    this.messageContainer.appendChild(messageDiv);
-    this.scrollToBottom();
   }
 
   scrollToBottom() {
     if (this.drawerBody) {
       setTimeout(() => {
         this.drawerBody.scrollTop = this.drawerBody.scrollHeight;
-      }, 0);
+      }, 100);
     }
   }
 
-  clearMessages() {
-    if (this.messageContainer) {
-      this.messageContainer.innerHTML = "";
+  addVisualImage(payload) {
+    if (!this.messageContainer) return;
+
+    const doc = this.rootElement.ownerDocument;
+    const imageWrapper = doc.createElement("div");
+    imageWrapper.classList.add("image-wrapper");
+
+    const img = doc.createElement("img");
+    img.src = payload.image;
+    img.alt = payload.alt || "Visual content";
+    img.classList.add("chat-image");
+
+    if (payload.dimensions) {
+      img.width = payload.dimensions.width;
+      img.height = payload.dimensions.height;
     }
+
+    imageWrapper.appendChild(img);
+    this.addMessage("assistant", imageWrapper);
   }
 }
 
-// Carousel class for handling product carousels
-export class Carousel {
+class Carousel {
   constructor(element) {
     this.element = element;
     this.container = element.querySelector(".carousel__container");
@@ -282,52 +262,70 @@ export class Carousel {
     this.mediaQuery = window.matchMedia("(min-width: 1000px)");
     this.isDesktop = this.mediaQuery.matches;
 
+    this.setupEventListeners();
+    this.updateVisibility();
+  }
+
+  setupEventListeners() {
     this.leftButton.addEventListener("click", () => this.move("left"));
     this.rightButton.addEventListener("click", () => this.move("right"));
-
-    this.mediaQuery.addListener(this.handleMediaQueryChange.bind(this));
+    this.mediaQuery.addEventListener("change", (e) =>
+      this.handleMediaQueryChange(e)
+    );
   }
 
   handleMediaQueryChange(e) {
     this.isDesktop = e.matches;
-    this.updatePosition();
     this.updateVisibility();
+    this.updatePosition();
   }
 
-  addItem(content) {
-    if (!(content instanceof Element)) {
+  addItem(element) {
+    if (!(element instanceof Element)) {
       console.error("[Carousel] Content must be a DOM element");
-      return;
+      return null;
     }
-    const item = this.element.ownerDocument.createElement("div");
-    item.classList.add("carousel__item");
-    item.appendChild(content);
-    this.container.appendChild(item);
-    this.items.push(item);
+
+    this.items.push(element);
+    this.container.appendChild(element);
     this.updateVisibility();
+    return element;
   }
 
   move(direction) {
     const increment = direction === "left" ? -1 : 1;
+    const itemsPerPage = this.isDesktop ? 2 : 1;
+    const maxIndex = Math.max(0, this.items.length - itemsPerPage);
+
     this.currentIndex = Math.max(
       0,
-      Math.min(this.currentIndex + increment, this.items.length - 1)
+      Math.min(this.currentIndex + increment, maxIndex)
     );
     this.updatePosition();
     this.updateVisibility();
   }
 
   updatePosition() {
-    const offset = this.isDesktop ? -400 : -300; // Adjust based on item width
-    this.container.style.transform = `translateX(${
-      this.currentIndex * offset
-    }px)`;
+    const itemWidth = this.items[0]?.offsetWidth || 0;
+    const translateX = -this.currentIndex * itemWidth;
+    this.container.style.transform = `translateX(${translateX}px)`;
   }
 
   updateVisibility() {
-    this.leftButton.style.visibility =
-      this.currentIndex === 0 ? "hidden" : "visible";
-    this.rightButton.style.visibility =
-      this.currentIndex >= this.items.length - 1 ? "hidden" : "visible";
+    const itemsPerPage = this.isDesktop ? 2 : 1;
+
+    // Update navigation buttons visibility
+    this.leftButton.style.display = this.currentIndex > 0 ? "flex" : "none";
+    this.rightButton.style.display =
+      this.currentIndex < this.items.length - itemsPerPage ? "flex" : "none";
+
+    // Update items visibility and animation
+    this.items.forEach((item, index) => {
+      const isVisible =
+        index >= this.currentIndex && index < this.currentIndex + itemsPerPage;
+
+      item.style.opacity = isVisible ? "1" : "0";
+      item.style.pointerEvents = isVisible ? "auto" : "none";
+    });
   }
 }
