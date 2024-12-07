@@ -21,7 +21,6 @@ export class ChatbotCore extends EventEmitter {
     // Bind methods
     this.sendMessage = this.sendMessage.bind(this);
     this.handleStreaming = this.handleStreaming.bind(this);
-    this.gadgetInteract = this.gadgetInteract.bind(this);
     this.addMessage = this.addMessage.bind(this);
     this.updateLatestMessage = this.updateLatestMessage.bind(this);
     this.parseSSE = this.parseSSE.bind(this);
