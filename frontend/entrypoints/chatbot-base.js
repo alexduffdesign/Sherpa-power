@@ -78,9 +78,12 @@ export class ChatbotBase {
       return;
     }
 
-    // Update the existing UIManager instead of creating a new one
+    // Update the existing UIManager
     this.ui.rootElement = this._element;
     this.ui.setDOMElements(messageContainer, typingIndicator, drawerBody);
+
+    // Update the TraceHandler's UI reference
+    this.traceHandler.ui = this.ui;
 
     console.log("DOM elements set successfully. Current state:", {
       ui: this.ui,
