@@ -90,7 +90,7 @@ export class TraceHandler {
               console.log("[Trace] Extracted text from slate:", text);
               this.lastMessageContainer = this.ui.addMessage("assistant", text);
 
-              if (this.history) {
+              if (this.history !== null) {
                 this.history.updateHistory({
                   type: "assistant",
                   message: text,
@@ -106,7 +106,7 @@ export class TraceHandler {
                 event.payload.message
               );
 
-              if (this.history) {
+              if (this.history !== null) {
                 this.history.updateHistory({
                   type: "assistant",
                   message: event.payload.message,
@@ -139,7 +139,7 @@ export class TraceHandler {
 
           console.log("[Trace] Adding choice buttons:", event.payload.buttons);
           this.ui.addButtons(event.payload.buttons);
-          if (this.history) {
+          if (this.history !== null) {
             this.history.updateHistory({
               type: "choice",
               buttons: event.payload.buttons,
@@ -153,7 +153,7 @@ export class TraceHandler {
 
           console.log("[Trace] Adding carousel:", event.payload);
           this.ui.addCarousel(event.payload);
-          if (this.history) {
+          if (this.history !== null) {
             this.history.updateHistory({
               type: "carousel",
               cards: event.payload.cards,
@@ -168,7 +168,7 @@ export class TraceHandler {
 
             console.log("[Trace] Adding visual image:", event.payload);
             this.ui.addVisualImage(event.payload);
-            if (this.history) {
+            if (this.history !== null) {
               this.history.updateHistory({
                 type: "visual",
                 data: event.payload,
@@ -213,7 +213,7 @@ export class TraceHandler {
             }
           } else if (event.payload.state === "end") {
             this.ui.hideTypingIndicator();
-            if (this.history) {
+            if (this.history !== null) {
               this.history.updateHistory({
                 type: "assistant",
                 message: this.completionBuffer,
@@ -242,6 +242,8 @@ export class TraceHandler {
   }
 
   restoreHistory() {
+    if (this.history === null) return;
+
     const history = this.history.getHistory();
     if (history.length === 0) return;
 

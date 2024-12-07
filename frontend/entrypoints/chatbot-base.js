@@ -24,7 +24,10 @@ export class ChatbotBase {
     this.ui = new UIManager(null);
     console.log("UIManager created:", this.ui);
 
-    this.history = new HistoryHandler(this.storagePrefix);
+    // Only initialize history for main chatbot
+    if (!this.config.isSection) {
+      this.history = new HistoryHandler(this.storagePrefix);
+    }
 
     this.api = new ApiClient({
       apiEndpoint: this.config.apiEndpoint,
@@ -47,7 +50,7 @@ export class ChatbotBase {
     this.sendMessage = this.sendMessage.bind(this);
     this.handleButtonClick = this.handleButtonClick.bind(this);
 
-    if (this.history.hasHistory()) {
+    if (this.history && this.history.hasHistory()) {
       this.history.loadFromStorage();
     }
   }

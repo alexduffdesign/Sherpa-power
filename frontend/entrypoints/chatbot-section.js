@@ -86,7 +86,7 @@ class SectionChatbot extends HTMLElement {
     this.chatForm = this.querySelector("#chatForm");
     this.userInput = this.querySelector("#userInput");
     this.chatMessages = this.querySelector(".chat-messages"); // Correctly select within section
-    this.applicationsGrid = this.querySelector(".applications-grid"); // Ensure correct scope
+    this.applicationsGrid = document.querySelector(".applications-grid");
 
     // Log DOM structure for debugging
     console.log("Section chatbot DOM structure:", {

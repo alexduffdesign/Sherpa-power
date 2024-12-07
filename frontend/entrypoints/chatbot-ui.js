@@ -34,15 +34,9 @@ export class UIManager {
     this.onButtonClick = callback;
   }
 
+  // Inside UIManager.addMessage
   addMessage(role, message) {
     console.log("[UI] Adding message:", { role, message });
-    console.log("[UI] Current state:", {
-      messageContainer: this.messageContainer,
-      rootElement: this.rootElement,
-      containerChildren: this.messageContainer?.children.length,
-      messageContainerParent: this.messageContainer?.parentElement,
-      rootElementParent: this.rootElement?.parentElement,
-    });
 
     if (!this.messageContainer || !this.rootElement) {
       console.error("[UI] Message container or root element not available", {
@@ -52,7 +46,6 @@ export class UIManager {
       return null;
     }
 
-    // Hide typing indicator when adding a message
     this.hideTypingIndicator();
 
     try {
@@ -69,18 +62,12 @@ export class UIManager {
       const contentDiv = doc.createElement("div");
       contentDiv.classList.add("message__content");
 
-      console.log("[UI] Processing message format:", typeof message, message);
-
       if (typeof message === "string") {
         console.log("[UI] Adding string message");
         contentDiv.innerHTML = this.formatMessage(message);
       } else if (message.slate) {
         console.log("[UI] Adding slate message:", message.slate);
-        const text = message.slate.content
-          .map((block) => block.children.map((child) => child.text).join(""))
-          .join("\n");
-        console.log("[UI] Extracted slate text:", text);
-        contentDiv.innerHTML = this.formatMessage(text);
+        // Handle slate message...
       } else if (message instanceof Element) {
         console.log("[UI] Adding Element message");
         contentDiv.appendChild(message);
