@@ -120,19 +120,29 @@ export class UIManager {
     }
 
     const doc = this.rootElement.ownerDocument;
+    const carouselContainer = doc.createElement("div");
+    carouselContainer.classList.add("carousel-container");
+
     const carouselElement = doc.createElement("div");
     carouselElement.classList.add("carousel");
     carouselElement.innerHTML = `
       <div class="carousel__container"></div>
-      <button class="carousel__button carousel__button--left">←</button>
-      <button class="carousel__button carousel__button--right">→</button>
+      <button class="carousel__button carousel__button--left" aria-label="Previous slide">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M15 18L9 12L15 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+      <button class="carousel__button carousel__button--right" aria-label="Next slide">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M9 18L15 12L9 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
     `;
 
     const carousel = new Carousel(carouselElement);
 
     carouselData.cards.forEach((card, index) => {
-      const itemDiv = doc.createElement("div");
-      itemDiv.innerHTML = `
+      const itemContent = `
         <div class="carousel__item-wrapper">
           <div class="carousel__item-content">
             <img src="${card.imageUrl}" alt="${card.title}" class="carousel__item-image">
@@ -143,21 +153,11 @@ export class UIManager {
         </div>
       `;
 
-      carousel.addItem(itemDiv.firstElementChild);
+      carousel.addItem(itemContent);
     });
 
-    const messageWrapper = doc.createElement("div");
-    messageWrapper.classList.add(
-      "message-wrapper",
-      "message-wrapper--assistant"
-    );
-
-    const messageDiv = doc.createElement("div");
-    messageDiv.classList.add("message", "message--assistant");
-
-    messageDiv.appendChild(carouselElement);
-    messageWrapper.appendChild(messageDiv);
-    this.messageContainer.appendChild(messageWrapper);
+    carouselContainer.appendChild(carouselElement);
+    this.messageContainer.appendChild(carouselContainer);
 
     const buttons = carouselElement.querySelectorAll(".carousel__item-button");
     buttons.forEach((button, index) => {
@@ -168,6 +168,8 @@ export class UIManager {
             10
           );
           const card = carouselData.cards[cardIndex];
+          // Remove the carousel container when a button is clicked
+          carouselContainer.remove();
           this.onButtonClick(card.buttons[0]);
         }
       });
