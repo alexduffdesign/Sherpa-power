@@ -20,8 +20,7 @@ function initChatbotDrawer(drawerId) {
       if (!this.mainChatbot) {
         console.log("MainChatbotElement connected");
         const config = {
-          voiceflowEndpoint:
-            "https://chatbottings--development.gadget.app/voiceflowAPI/voiceflow-new",
+          voiceflowEndpoint: "/POST-voiceflow-stream", // Gadget's streaming endpoint
         };
         this.mainChatbot = new MainChatbot(this, config);
       }
@@ -51,6 +50,7 @@ function initChatbotDrawer(drawerId) {
   document.addEventListener("dialog:after-hide", function (event) {
     if (event.target.id === drawerId) {
       console.log("Chatbot drawer closed");
+      // Optionally, perform cleanup or pause operations
     }
   });
 
