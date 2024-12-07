@@ -4,7 +4,7 @@ import EventEmitter from "eventemitter3";
 
 export class ChatbotCore extends EventEmitter {
   constructor(config) {
-    super();
+    super(); // Initialize EventEmitter
     console.log("ChatbotCore constructor called with config:", config);
     this.apiEndpoint = config.proxyEndpoint; // URL to Gadget's streaming endpoint
     this.environment = config.environment || "development";
@@ -558,6 +558,19 @@ export class ChatbotCore extends EventEmitter {
     } else {
       console.error("Message container not found when adding carousel");
     }
+  }
+
+  saveDeviceEstimate(device) {
+    const key = `${this.getAttribute("product-title")}_devices`;
+    let devices = JSON.parse(localStorage.getItem(key) || "[]");
+
+    const existingIndex = devices.findIndex((d) => d.name === device.name);
+    if (existingIndex !== -1) {
+      devices.splice(existingIndex, 1);
+    }
+    devices.unshift(device);
+
+    localStorage.setItem(key, JSON.stringify(devices));
   }
 
   // Additional helper methods can be added here
