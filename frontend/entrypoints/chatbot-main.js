@@ -150,22 +150,26 @@ if (!customElements.get("main-chatbot")) {
 
     async handleUserInput() {
       const message = this.chatInput.value.trim();
-      if (message) {
+      if (!message) return;
+
+      try {
+        // Clear input and disable
         this.chatInput.value = "";
         this.chatInput.disabled = true;
+        this.sendButton.disabled = true;
 
-        try {
-          await this.chatbotBase.sendMessage(message);
-        } catch (error) {
-          console.error("Error sending message:", error);
-          this.chatbotBase.ui.addMessage(
-            "assistant",
-            "Sorry, there was an error sending your message. Please try again."
-          );
-        } finally {
-          this.chatInput.disabled = false;
-          this.chatInput.focus();
-        }
+        // Show typing indicator before sending message
+        this.chatbotBase.ui.showTypingIndicator();
+
+        // Send the message
+        await this.chatbotBase.sendMessage(message);
+      } catch (error) {
+        console.error("Error sending message:", error);
+      } finally {
+        // Re-enable input
+        this.chatInput.disabled = false;
+        this.sendButton.disabled = false;
+        this.chatInput.focus();
       }
     }
 
