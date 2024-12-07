@@ -22,6 +22,8 @@ export class ChatbotBase {
 
     // Create UI manager without element reference initially
     this.ui = new UIManager(null);
+    console.log("UIManager created:", this.ui);
+
     this.history = new HistoryHandler(this.storagePrefix);
 
     this.api = new ApiClient({
@@ -36,6 +38,7 @@ export class ChatbotBase {
       this.history,
       this.handleSpecialTrace.bind(this)
     );
+    console.log("TraceHandler created with UI:", this.traceHandler);
 
     // Set up button click handler
     this.ui.setButtonClickHandler(this.handleButtonClick.bind(this));
@@ -50,9 +53,11 @@ export class ChatbotBase {
   }
 
   set element(el) {
+    console.log("Setting element on ChatbotBase:", el);
     this._element = el;
     // Update UI manager with element reference when it's available
     this.ui.rootElement = el;
+    console.log("Updated UIManager root element:", this.ui);
   }
 
   get element() {
@@ -60,7 +65,14 @@ export class ChatbotBase {
   }
 
   setDOMElements(messageContainer, typingIndicator, drawerBody) {
-    console.log("Setting DOM elements in ChatbotBase");
+    console.log("Setting DOM elements in ChatbotBase", {
+      messageContainer,
+      typingIndicator,
+      drawerBody,
+      element: this._element,
+      ui: this.ui,
+    });
+
     if (!this._element) {
       console.error("Element reference not set in ChatbotBase");
       return;
@@ -70,8 +82,12 @@ export class ChatbotBase {
     this.ui.rootElement = this._element;
     this.ui.setDOMElements(messageContainer, typingIndicator, drawerBody);
 
-    // No need to create a new TraceHandler since it's using the same UI instance
-    console.log("DOM elements set successfully");
+    console.log("DOM elements set successfully. Current state:", {
+      ui: this.ui,
+      messageContainer: this.ui.messageContainer,
+      rootElement: this.ui.rootElement,
+      traceHandler: this.traceHandler,
+    });
   }
 
   async initializeChatIfNeeded() {

@@ -17,7 +17,11 @@ class SectionChatbot extends HTMLElement {
 
     // Instantiate the chatbot logic
     this.chatbotBase = new ChatbotBase(config);
+    console.log("ChatbotBase created with config:", config);
+
+    // Set element reference
     this.chatbotBase.element = this;
+    console.log("Element reference set on ChatbotBase");
 
     // Initialize state
     this.chatInitialized = false;
@@ -27,7 +31,7 @@ class SectionChatbot extends HTMLElement {
   }
 
   connectedCallback() {
-    console.log("SectionChatbot connected");
+    console.log("SectionChatbot connected, this:", this);
     this.initialize();
   }
 
@@ -56,6 +60,12 @@ class SectionChatbot extends HTMLElement {
     this.chatMessages = this.querySelector(".chat-messages");
     this.applicationsGrid = document.querySelector(".applications-grid");
 
+    // Log DOM structure for debugging
+    console.log("Section chatbot DOM structure:", {
+      innerHTML: this.innerHTML,
+      outerHTML: this.outerHTML,
+    });
+
     // Log all found elements for debugging
     console.log("Section chatbot elements found:", {
       messageContainer: this.messageContainer,
@@ -78,18 +88,21 @@ class SectionChatbot extends HTMLElement {
     }
 
     // Set DOM elements on chatbotBase's UI
+    console.log("Setting DOM elements on ChatbotBase", {
+      messageContainerChildren: this.messageContainer.children.length,
+      chatMessagesChildren: this.chatMessages.children.length,
+    });
+
     this.chatbotBase.setDOMElements(
       this.messageContainer,
       this.typingIndicator,
       this.chatMessages // Use chatMessages as scroll container
     );
 
-    console.log("Section chatbot elements initialized:", {
-      messageContainer: this.messageContainer,
-      typingIndicator: this.typingIndicator,
-      chatForm: this.chatForm,
-      userInput: this.userInput,
-      applicationsGrid: this.applicationsGrid,
+    console.log("ChatbotBase UI after setting elements:", {
+      ui: this.chatbotBase.ui,
+      messageContainer: this.chatbotBase.ui.messageContainer,
+      rootElement: this.chatbotBase.ui.rootElement,
     });
   }
 

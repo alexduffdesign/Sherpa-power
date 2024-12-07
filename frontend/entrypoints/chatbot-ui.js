@@ -2,6 +2,7 @@
 
 export class UIManager {
   constructor(rootElement) {
+    console.log("UIManager constructor called with rootElement:", rootElement);
     this.messageContainer = null;
     this.typingIndicator = null;
     this.drawerBody = null;
@@ -10,10 +11,23 @@ export class UIManager {
   }
 
   setDOMElements(messageContainer, typingIndicator, drawerBody) {
-    console.log("Setting DOM elements in UIManager");
+    console.log("Setting DOM elements in UIManager", {
+      messageContainer,
+      typingIndicator,
+      drawerBody,
+      rootElement: this.rootElement,
+    });
     this.messageContainer = messageContainer;
     this.typingIndicator = typingIndicator;
     this.drawerBody = drawerBody;
+
+    // Verify elements are properly set
+    console.log("DOM elements after setting:", {
+      messageContainerValid: this.messageContainer instanceof Element,
+      typingIndicatorValid: this.typingIndicator instanceof Element,
+      drawerBodyValid: this.drawerBody instanceof Element,
+      rootElementValid: this.rootElement instanceof Element,
+    });
   }
 
   setButtonClickHandler(callback) {
@@ -26,6 +40,8 @@ export class UIManager {
       messageContainer: this.messageContainer,
       rootElement: this.rootElement,
       containerChildren: this.messageContainer?.children.length,
+      messageContainerParent: this.messageContainer?.parentElement,
+      rootElementParent: this.rootElement?.parentElement,
     });
 
     if (!this.messageContainer || !this.rootElement) {
