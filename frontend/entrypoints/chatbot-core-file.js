@@ -7,7 +7,6 @@ export class ChatbotCore extends EventEmitter {
     super();
     console.log("ChatbotCore constructor called with config:", config);
     this.apiEndpoint = config.proxyEndpoint; // URL to Gadget's streaming endpoint
-    this.projectID = config.projectID;
     this.environment = config.environment || "development";
     this.userIDPrefix = config.userIDPrefix || "chatbot";
     this.userID = this.loadUserID();

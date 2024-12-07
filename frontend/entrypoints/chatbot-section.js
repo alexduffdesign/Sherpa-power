@@ -71,10 +71,8 @@ class SectionChatbot extends HTMLElement {
     if (!this.chatInitialized) {
       console.log("Initializing section chatbot");
       const config = {
-        proxyEndpoint: "/POST-voiceflow-stream", // Update to Gadget's streaming endpoint
-        projectID: "YOUR_VOICEFLOW_PROJECT_ID",
-        apiKey: "YOUR_VOICEFLOW_API_KEY", // Handled by Gadget, no need to pass
-        environment: "development",
+        proxyEndpoint:
+          "https://chatbottings--development.gadget.app/voiceflowAPI/voiceflow-streaming", // Update to Gadget's streaming endpoint
         userIDPrefix: "sectionChatbot",
       };
       this.core = new ChatbotCore(config);

@@ -11,9 +11,8 @@ class MainChatbot {
     this.voiceflowEndpoint = config.voiceflowEndpoint;
 
     this.core = new ChatbotCore({
-      proxyEndpoint: "/POST-voiceflow-stream", // Gadget's streaming endpoint
-      projectID: "YOUR_VOICEFLOW_PROJECT_ID",
-      environment: "development",
+      proxyEndpoint:
+        "https://chatbottings--development.gadget.app/voiceflowAPI/voiceflow-streaming", // Gadget's streaming endpoint
       userIDPrefix: "mainChatbot",
     });
     console.log("ChatbotCore instance created:", this.core);
