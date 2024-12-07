@@ -22,9 +22,17 @@ export class UIManager {
 
   addMessage(role, message) {
     console.log("[UI] Adding message:", { role, message });
+    console.log("[UI] Current state:", {
+      messageContainer: this.messageContainer,
+      rootElement: this.rootElement,
+      containerChildren: this.messageContainer?.children.length,
+    });
 
     if (!this.messageContainer || !this.rootElement) {
-      console.error("[UI] Message container or root element not available");
+      console.error("[UI] Message container or root element not available", {
+        messageContainer: this.messageContainer,
+        rootElement: this.rootElement,
+      });
       return null;
     }
 

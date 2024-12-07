@@ -65,17 +65,13 @@ export class ChatbotBase {
       console.error("Element reference not set in ChatbotBase");
       return;
     }
-    // Create a new UIManager with the correct element reference
-    this.ui = new UIManager(this._element);
+
+    // Update the existing UIManager instead of creating a new one
+    this.ui.rootElement = this._element;
     this.ui.setDOMElements(messageContainer, typingIndicator, drawerBody);
-    // Create a new TraceHandler with the new UIManager
-    this.traceHandler = new TraceHandler(
-      this.ui,
-      this.history,
-      this.handleSpecialTrace.bind(this)
-    );
-    // Re-attach the button click handler
-    this.ui.setButtonClickHandler(this.handleButtonClick.bind(this));
+
+    // No need to create a new TraceHandler since it's using the same UI instance
+    console.log("DOM elements set successfully");
   }
 
   async initializeChatIfNeeded() {
