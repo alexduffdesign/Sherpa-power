@@ -68,6 +68,11 @@ class SectionChatbot extends HTMLElement {
     this.setupEventListeners();
     this.loadSavedDevices();
     this.setupViewMoreButton();
+    this.chatbotBase.setDOMElements(
+      this.messageContainer,
+      this.typingIndicator,
+      this.chatMessages // Correctly reference chatMessages
+    );
     this.chatbotBase.initializeChatIfNeeded();
     this.initialized = true;
   }
@@ -80,8 +85,8 @@ class SectionChatbot extends HTMLElement {
     this.typingIndicator = this.querySelector(".chat-typing");
     this.chatForm = this.querySelector("#chatForm");
     this.userInput = this.querySelector("#userInput");
-    this.chatMessages = this.querySelector(".chat-messages");
-    this.applicationsGrid = document.querySelector(".applications-grid");
+    this.chatMessages = this.querySelector(".chat-messages"); // Correctly select within section
+    this.applicationsGrid = this.querySelector(".applications-grid"); // Ensure correct scope
 
     // Log DOM structure for debugging
     console.log("Section chatbot DOM structure:", {
@@ -132,6 +137,7 @@ class SectionChatbot extends HTMLElement {
       this.initializeChat();
     });
 
+    // Handle form submission
     this.chatForm.addEventListener("submit", async (e) => {
       e.preventDefault();
       const message = this.userInput.value.trim();
@@ -143,6 +149,7 @@ class SectionChatbot extends HTMLElement {
       }
     });
 
+    // Handle button clicks within messages
     this.messageContainer.addEventListener("click", async (e) => {
       const buttonElement = e.target.closest(".chat-button");
       if (buttonElement && buttonElement.dataset.buttonData) {
@@ -342,7 +349,7 @@ class SectionChatbot extends HTMLElement {
   }
 
   setupViewMoreButton() {
-    const viewMoreButton = document.querySelector(".view-more-button");
+    const viewMoreButton = this.querySelector(".view-more-button"); // Correctly scoped
     if (viewMoreButton) {
       viewMoreButton.addEventListener("click", () => {
         this.applicationsGrid.classList.toggle("show-all");
@@ -357,5 +364,4 @@ class SectionChatbot extends HTMLElement {
 }
 
 customElements.define("section-chatbot", SectionChatbot);
-
 console.log("SectionChatbot module loaded");
