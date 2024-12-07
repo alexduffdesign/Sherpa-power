@@ -20,7 +20,8 @@ function initChatbotDrawer(drawerId) {
       if (!this.mainChatbot) {
         console.log("MainChatbotElement connected");
         const config = {
-          voiceflowEndpoint: "/POST-voiceflow-stream", // Gadget's streaming endpoint
+          voiceflowEndpoint:
+            "https://chatbottings--development.gadget.app/voiceflowAPI/voiceflow-streaming", // Gadget's streaming endpoint
         };
         this.mainChatbot = new MainChatbot(this, config);
       }
