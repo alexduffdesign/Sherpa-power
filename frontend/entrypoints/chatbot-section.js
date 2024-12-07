@@ -23,6 +23,7 @@ class SectionChatbot extends HTMLElement {
     this.chatInitialized = false;
     this.eventListenersAttached = false;
     this.savedDevices = new Map();
+    this.initialized = false;
   }
 
   connectedCallback() {
@@ -31,11 +32,17 @@ class SectionChatbot extends HTMLElement {
   }
 
   initialize() {
+    if (this.initialized) {
+      console.log("SectionChatbot already initialized");
+      return;
+    }
     console.log("SectionChatbot initializing");
     this.initializeElements();
     this.setupEventListeners();
     this.loadSavedDevices();
     this.setupViewMoreButton();
+    this.chatbotBase.initializeChatIfNeeded();
+    this.initialized = true;
   }
 
   initializeElements() {
@@ -46,13 +53,25 @@ class SectionChatbot extends HTMLElement {
     this.typingIndicator = this.querySelector(".chat-typing");
     this.chatForm = this.querySelector("#chatForm");
     this.userInput = this.querySelector("#userInput");
+    this.chatMessages = this.querySelector(".chat-messages");
     this.applicationsGrid = document.querySelector(".applications-grid");
+
+    // Log all found elements for debugging
+    console.log("Section chatbot elements found:", {
+      messageContainer: this.messageContainer,
+      typingIndicator: this.typingIndicator,
+      chatForm: this.chatForm,
+      userInput: this.userInput,
+      chatMessages: this.chatMessages,
+      applicationsGrid: this.applicationsGrid,
+    });
 
     if (
       !this.messageContainer ||
       !this.typingIndicator ||
       !this.chatForm ||
-      !this.userInput
+      !this.userInput ||
+      !this.chatMessages
     ) {
       console.error("Required DOM elements not found in section chatbot");
       return;
@@ -62,7 +81,7 @@ class SectionChatbot extends HTMLElement {
     this.chatbotBase.setDOMElements(
       this.messageContainer,
       this.typingIndicator,
-      this.querySelector(".chat-messages") // Use chat-messages as scroll container
+      this.chatMessages // Use chatMessages as scroll container
     );
 
     console.log("Section chatbot elements initialized:", {
