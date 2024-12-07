@@ -12,7 +12,7 @@ if (!customElements.get("main-chatbot")) {
       // Extract config from attributes
       const apiEndpoint =
         this.getAttribute("api-endpoint") ||
-        "https://chatbottings--development.gadget.app/voiceflowAPI/voiceflow-new";
+        "https://chatbottings--development.gadget.app/voiceflowAPI/voiceflow-streaming";
       const config = {
         apiEndpoint: apiEndpoint,
         userIDPrefix: "mainChatbot",
