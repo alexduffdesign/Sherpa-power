@@ -28,11 +28,28 @@ class SectionChatbot extends HTMLElement {
     this.eventListenersAttached = false;
     this.savedDevices = new Map();
     this.initialized = false;
+
+    // Create observer for template content
+    this.observer = new MutationObserver((mutations) => {
+      if (this.querySelector(".chatbot-container") && !this.initialized) {
+        console.log("Template content detected, initializing");
+        this.observer.disconnect();
+        this.initialize();
+      }
+    });
   }
 
   connectedCallback() {
-    console.log("SectionChatbot connected, this:", this);
-    this.initialize();
+    console.log("SectionChatbot connected, starting observer");
+    // Start observing for template content
+    this.observer.observe(this, { childList: true, subtree: true });
+
+    // Check if template is already present
+    if (this.querySelector(".chatbot-container")) {
+      console.log("Template already present, initializing immediately");
+      this.observer.disconnect();
+      this.initialize();
+    }
   }
 
   initialize() {
@@ -41,7 +58,13 @@ class SectionChatbot extends HTMLElement {
       return;
     }
     console.log("SectionChatbot initializing");
+
     this.initializeElements();
+    if (!this.validateElements()) {
+      console.error("Required elements not found after template rendering");
+      return;
+    }
+
     this.setupEventListeners();
     this.loadSavedDevices();
     this.setupViewMoreButton();
@@ -75,35 +98,28 @@ class SectionChatbot extends HTMLElement {
       chatMessages: this.chatMessages,
       applicationsGrid: this.applicationsGrid,
     });
+  }
 
-    if (
-      !this.messageContainer ||
-      !this.typingIndicator ||
-      !this.chatForm ||
-      !this.userInput ||
-      !this.chatMessages
-    ) {
-      console.error("Required DOM elements not found in section chatbot");
-      return;
+  validateElements() {
+    const requiredElements = {
+      messageContainer: this.messageContainer,
+      typingIndicator: this.typingIndicator,
+      chatForm: this.chatForm,
+      userInput: this.userInput,
+      chatMessages: this.chatMessages,
+    };
+
+    const missingElements = Object.entries(requiredElements)
+      .filter(([, el]) => !el)
+      .map(([name]) => name);
+
+    if (missingElements.length > 0) {
+      console.error("Missing required elements:", missingElements);
+      return false;
     }
 
-    // Set DOM elements on chatbotBase's UI
-    console.log("Setting DOM elements on ChatbotBase", {
-      messageContainerChildren: this.messageContainer.children.length,
-      chatMessagesChildren: this.chatMessages.children.length,
-    });
-
-    this.chatbotBase.setDOMElements(
-      this.messageContainer,
-      this.typingIndicator,
-      this.chatMessages // Use chatMessages as scroll container
-    );
-
-    console.log("ChatbotBase UI after setting elements:", {
-      ui: this.chatbotBase.ui,
-      messageContainer: this.chatbotBase.ui.messageContainer,
-      rootElement: this.chatbotBase.ui.rootElement,
-    });
+    console.log("All required elements found");
+    return true;
   }
 
   setupEventListeners() {
