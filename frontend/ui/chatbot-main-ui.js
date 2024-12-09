@@ -29,7 +29,6 @@ class MainChatbotUI {
     }
 
     this.setupEventListeners();
-    this.setupUIEventListeners(); // New method for UI-specific event listeners
   }
 
   /**
@@ -40,28 +39,11 @@ class MainChatbotUI {
       e.preventDefault();
       const message = this.input.value.trim();
       if (message) {
-        eventBus.emit("userMessage", message);
+        this.emit("userMessage", message);
         this.input.value = "";
         this.saveToHistory("user", message);
       }
     });
-  }
-
-  /**
-   * Sets up event listeners for UI components like buttons.
-   */
-  setupUIEventListeners() {
-    // Set up event delegation for button clicks once
-    this.container
-      .querySelector(".chatbot-container")
-      .addEventListener("click", (e) => {
-        if (e.target.closest("button-component")) {
-          const button = e.target.closest("button-component");
-          const payload = JSON.parse(button.getAttribute("payload"));
-          eventBus.emit("buttonClicked", payload);
-          this.removeInteractiveElements();
-        }
-      });
   }
 
   /**
@@ -78,6 +60,16 @@ class MainChatbotUI {
    */
   onButtonClick(callback) {
     eventBus.on("buttonClicked", callback);
+  }
+
+  /**
+   * Emits custom events from the UI components.
+   * @param {string} eventName - Name of the event.
+   * @param {any} data - Data to pass with the event.
+   */
+  emit(eventName, data) {
+    const event = new CustomEvent(eventName, { detail: data });
+    this.container.dispatchEvent(event);
   }
 
   /**
@@ -113,6 +105,18 @@ class MainChatbotUI {
       this.container.querySelector(".chatbot-container").appendChild(button);
     });
     this.scrollToBottom();
+
+    // Set up event delegation for button clicks
+    this.container
+      .querySelector(".chatbot-container")
+      .addEventListener("click", (e) => {
+        if (e.target.closest("button-component")) {
+          const button = e.target.closest("button-component");
+          const payload = JSON.parse(button.getAttribute("payload"));
+          this.emit("buttonClicked", payload);
+          this.removeInteractiveElements();
+        }
+      });
   }
 
   /**
@@ -125,7 +129,8 @@ class MainChatbotUI {
     this.container.querySelector(".chatbot-container").appendChild(carousel);
     this.scrollToBottom();
 
-    // Handle carousel interactions if necessary
+    // Set up event delegation for carousel interactions if necessary
+    // Implement similar to buttons if carousel items have interactive elements
   }
 
   /**

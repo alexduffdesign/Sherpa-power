@@ -1,8 +1,7 @@
 import { defineConfig } from "vite";
 import shopify from "vite-plugin-shopify";
 import { resolve } from "path";
-
-import cleanup from "@by-association-only/vite-plugin-shopify-clean"; // Import the cleanup plugin
+import cleanup from "@by-association-only/vite-plugin-shopify-clean";
 
 export default defineConfig({
   plugins: [
@@ -10,11 +9,7 @@ export default defineConfig({
     shopify({
       snippetFile: "vite-tag.liquid",
       additionalEntrypoints: [
-        "frontend/entrypoints/chatbot-core-file.js",
-        "frontend/entrypoints/chatbot-core.js",
         "frontend/entrypoints/chatbot-main.js",
-        "frontend/entrypoints/chatbot-drawer.js",
-        "frontend/entrypoints/chatbot-section.js",
         "frontend/entrypoints/theme.js",
       ],
       versionNumbers: true,
@@ -28,6 +23,14 @@ export default defineConfig({
         entryFileNames: `[name].[hash].js`,
         chunkFileNames: `[name].[hash].js`,
         assetFileNames: `[name].[hash].[ext]`,
+        manualChunks: {
+          vendor: ["eventemitter3"],
+          chatbot: [
+            "./frontend/core/chatbot-core.js",
+            "./frontend/ui/chatbot-main-ui.js",
+            "./frontend/ui/chatbot-section-ui.js",
+          ],
+        },
       },
     },
   },
@@ -35,5 +38,8 @@ export default defineConfig({
     alias: {
       "@": resolve(__dirname, "frontend"),
     },
+  },
+  optimizeDeps: {
+    include: ["eventemitter3"],
   },
 });
