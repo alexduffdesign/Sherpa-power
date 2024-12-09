@@ -34,7 +34,7 @@ class MainChatbot {
     });
 
     eventBus.on(EVENTS.MAIN_CHATBOT.CHOICE_PRESENTED, (data) => {
-      this.ui.addButtons(data.choices);
+      this.ui.addButtons(data.buttons);
     });
 
     eventBus.on(EVENTS.MAIN_CHATBOT.CAROUSEL_PRESENTED, (data) => {

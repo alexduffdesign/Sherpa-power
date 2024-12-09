@@ -174,7 +174,7 @@ class ChatbotCore {
       case "choice":
         console.log("Choice received choice trace:", trace);
         eventBus.emit(`${this.eventPrefix}:choicePresented`, {
-          buttons: trace.payload.buttons, // Corrected from 'choices' to 'buttons'
+          buttons: trace.payload.buttons,
         });
         break;
       case "carousel":
@@ -187,6 +187,10 @@ class ChatbotCore {
           devices: trace.payload.devices,
         });
         break;
+      case "block":
+        // Handle block trace - typically used for flow control
+        console.log("Block trace received:", trace);
+        break;
       case "typing":
         if (trace.payload.isTyping) {
           eventBus.emit(`${this.eventPrefix}:typing`, { isTyping: true });
@@ -194,9 +198,8 @@ class ChatbotCore {
           eventBus.emit(`${this.eventPrefix}:typing`, { isTyping: false });
         }
         break;
-      // Add more trace types as needed
       default:
-        console.warn(`Unhandled trace type: ${trace.type}`);
+        console.warn(`Unhandled trace type: ${trace.type}`, trace);
     }
   }
 
