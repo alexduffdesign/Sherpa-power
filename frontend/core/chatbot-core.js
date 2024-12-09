@@ -166,11 +166,13 @@ class ChatbotCore {
 
     switch (trace.type) {
       case "text":
+        console.log("Text received choice trace:", trace);
         eventBus.emit(`${this.eventPrefix}:messageReceived`, {
           content: trace.payload.message,
         });
         break;
       case "choice":
+        console.log("Choice received choice trace:", trace);
         eventBus.emit(`${this.eventPrefix}:choicePresented`, {
           choices: trace.payload.choices,
         });
