@@ -1,6 +1,6 @@
 {
-  "_chatbot.Dn00YpJm.js": {
-    "file": "chatbot.Dn00YpJm.js",
+  "_chatbot.B83In-69.js": {
+    "file": "chatbot.B83In-69.js",
     "name": "chatbot",
     "imports": [
       "_vendor.DqvJXvYX.js"
@@ -24,35 +24,35 @@
     ]
   },
   "frontend/entrypoints/chatbot-drawer.js": {
-    "file": "chatbot-drawer.fc95b7Du.js",
+    "file": "chatbot-drawer.C3oYAvHi.js",
     "name": "chatbot-drawer",
     "src": "frontend/entrypoints/chatbot-drawer.js",
     "isEntry": true,
     "imports": [
       "frontend/entrypoints/chatbot-main.js",
-      "_chatbot.Dn00YpJm.js",
+      "_chatbot.B83In-69.js",
       "_vendor.DqvJXvYX.js",
       "_user-id-generator.DhYYxFTy.js"
     ]
   },
   "frontend/entrypoints/chatbot-main.js": {
-    "file": "chatbot-main.CYk7H6hj.js",
+    "file": "chatbot-main.RzlCmFwT.js",
     "name": "chatbot-main",
     "src": "frontend/entrypoints/chatbot-main.js",
     "isEntry": true,
     "imports": [
-      "_chatbot.Dn00YpJm.js",
+      "_chatbot.B83In-69.js",
       "_user-id-generator.DhYYxFTy.js",
       "_vendor.DqvJXvYX.js"
     ]
   },
   "frontend/entrypoints/chatbot-section.js": {
-    "file": "chatbot-section.D94DDA-c.js",
+    "file": "chatbot-section.BjXa40WX.js",
     "name": "chatbot-section",
     "src": "frontend/entrypoints/chatbot-section.js",
     "isEntry": true,
     "imports": [
-      "_chatbot.Dn00YpJm.js",
+      "_chatbot.B83In-69.js",
       "_user-id-generator.DhYYxFTy.js",
       "_vendor.DqvJXvYX.js"
     ]

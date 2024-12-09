@@ -91,13 +91,6 @@ class MainChatbotUI {
    * @param {Array} buttons - Array of button data.
    */
   addButtons(buttons) {
-    console.log("addButtons called with:", buttons); // Debug log
-
-    if (!Array.isArray(buttons)) {
-      console.error("addButtons expected an array but received:", buttons);
-      return;
-    }
-
     buttons.forEach((buttonData) => {
       const button = document.createElement("button-component");
       button.setAttribute("label", buttonData.name);
