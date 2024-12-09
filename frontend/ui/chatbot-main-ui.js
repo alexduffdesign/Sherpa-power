@@ -18,6 +18,11 @@ class MainChatbotUI {
     this.input = this.container.querySelector("input[type='text']");
     this.messageContainer = this.container.querySelector(".message-container");
 
+    console.log("Chatbot UI Container:", this.container);
+    console.log("Chat Form:", this.form);
+    console.log("Chat Input:", this.input);
+    console.log("Message Container:", this.messageContainer);
+
     if (!this.container) {
       console.error("Main Chatbot UI container not found");
       return;
@@ -29,7 +34,7 @@ class MainChatbotUI {
     }
 
     this.setupEventListeners();
-    this.setupUIEventListeners(); // New method for UI-specific event listeners
+    this.setupUIEventListeners();
   }
 
   /**
@@ -55,9 +60,9 @@ class MainChatbotUI {
     this.container
       .querySelector(".chatbot-container")
       .addEventListener("click", (e) => {
-        if (e.target.closest("button-component")) {
-          const button = e.target.closest("button-component");
-          const payload = JSON.parse(button.getAttribute("payload"));
+        const button = e.target.closest("button.button");
+        if (button) {
+          const payload = JSON.parse(button.getAttribute("data-button-data"));
           eventBus.emit("buttonClicked", payload);
           this.removeInteractiveElements();
         }
@@ -86,15 +91,16 @@ class MainChatbotUI {
    * @param {string} content - The message content.
    */
   addMessage(sender, content) {
+    if (!this.messageContainer) {
+      console.error("Message container not set");
+      return;
+    }
+
     const message = document.createElement("message-component");
     message.setAttribute("sender", sender);
     message.setAttribute("content", content);
-    if (this.messageContainer) {
-      this.messageContainer.appendChild(message);
-      console.log("Message appended to messageContainer"); // Debug log
-    } else {
-      console.error("Message container not found");
-    }
+    this.messageContainer.appendChild(message);
+    console.log("Message appended to messageContainer"); // Debug log
     this.scrollToBottom();
     this.saveToHistory(sender, content);
   }
@@ -115,47 +121,42 @@ class MainChatbotUI {
       const button = document.createElement("button-component");
       button.setAttribute("label", buttonData.name);
       button.setAttribute("payload", JSON.stringify(buttonData.request));
-      if (this.messageContainer) {
-        this.messageContainer.appendChild(button);
-        console.log("Button appended to messageContainer"); // Debug log
-      } else {
-        console.error("Message container not found");
-      }
+      this.messageContainer.appendChild(button);
+      console.log("Button appended to messageContainer"); // Debug log
     });
     this.scrollToBottom();
   }
 
   /**
    * Adds a carousel to the chatbot UI.
-   * @param {Array} items - Array of carousel items.
+   * @param {Object} carouselData - Data for the carousel.
    */
-  addCarousel(items) {
+  addCarousel(carouselData) {
+    console.log("Adding carousel:", carouselData);
     const carousel = document.createElement("carousel-component");
-    carousel.setAttribute("items", JSON.stringify(items));
-    this.container.querySelector(".chatbot-container").appendChild(carousel);
+    carousel.setAttribute("data-carousel", JSON.stringify(carouselData));
+    this.messageContainer.appendChild(carousel);
     this.scrollToBottom();
-
-    // Handle carousel interactions if necessary
   }
 
   /**
    * Displays a typing indicator in the chatbot UI.
    */
   showTypingIndicator() {
-    const typing = document.createElement("div");
-    typing.classList.add("typing-indicator");
-    typing.innerText = "Assistant is typing...";
-    this.container.querySelector(".chatbot-container").appendChild(typing);
-    this.scrollToBottom();
+    const typing = this.container.querySelector(".chat-typing");
+    if (typing) {
+      typing.style.display = "flex";
+      this.scrollToBottom();
+    }
   }
 
   /**
    * Hides the typing indicator from the chatbot UI.
    */
   hideTypingIndicator() {
-    const typing = this.container.querySelector(".typing-indicator");
+    const typing = this.container.querySelector(".chat-typing");
     if (typing) {
-      typing.remove();
+      typing.style.display = "none";
     }
   }
 
@@ -167,7 +168,7 @@ class MainChatbotUI {
     const errorDiv = document.createElement("div");
     errorDiv.classList.add("error-message");
     errorDiv.innerText = message;
-    this.container.querySelector(".chatbot-container").appendChild(errorDiv);
+    this.messageContainer.appendChild(errorDiv);
     this.scrollToBottom();
   }
 
@@ -175,7 +176,7 @@ class MainChatbotUI {
    * Scrolls the chatbot container to the bottom.
    */
   scrollToBottom() {
-    this.container.scrollTop = this.container.scrollHeight;
+    this.messageContainer.scrollTop = this.messageContainer.scrollHeight;
   }
 
   /**
@@ -194,7 +195,7 @@ class MainChatbotUI {
    * Removes interactive elements (buttons, carousels) from the UI.
    */
   removeInteractiveElements() {
-    const interactiveElements = this.container.querySelectorAll(
+    const interactiveElements = this.messageContainer.querySelectorAll(
       "button-component, carousel-component"
     );
     interactiveElements.forEach((element) => element.remove());

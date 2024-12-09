@@ -1,52 +1,57 @@
-// /assets/scripts/chatbot/ui/button-component.js
+// /assets/scripts/chatbot/components/button-component.js
 
-/**
- * ButtonComponent
- * Renders an interactive button with a label and associated payload.
- */
 class ButtonComponent extends HTMLElement {
   constructor() {
     super();
+    // Attach Shadow DOM to encapsulate styles
     this.attachShadow({ mode: "open" });
   }
 
-  static get observedAttributes() {
-    return ["label", "payload"];
-  }
-
-  attributeChangedCallback(name, oldValue, newValue) {
-    if (oldValue !== newValue) {
-      this.render();
-    }
-  }
-
-  render() {
+  connectedCallback() {
     const label = this.getAttribute("label");
+    const payload = this.getAttribute("payload");
 
-    const style = `
+    this.render(label, payload);
+  }
+
+  /**
+   * Renders the button with embedded styles.
+   * @param {string} label - The button label
+   * @param {string} payload - The button payload in JSON string format
+   */
+  render(label, payload) {
+    this.shadowRoot.innerHTML = `
         <style>
-          button {
-            padding: 10px 20px;
-            margin: 5px;
+          .button-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: var(--spacing-4);
+          }
+  
+          .button {
+            padding: var(--spacing-3);
+            background-color: #FFFFFF;
             border: none;
-            border-radius: 5px;
-            background-color: #007bff;
-            color: #ffffff;
+            border-radius: var(--rounded);
             cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             font-size: 14px;
+            transition: background-color 0.3s ease;
           }
-          button:hover {
-            background-color: #0056b3;
+  
+          .button:hover {
+            background-color: #f0f0f0;
           }
+  
+          /* Additional styles as needed */
         </style>
+        <div class="button-container">
+          <button class="button" data-button-data='${payload}'>${label}</button>
+        </div>
       `;
-
-    const template = `
-        ${style}
-        <button type="button">${label}</button>
-      `;
-
-    this.shadowRoot.innerHTML = template;
   }
 }
 
