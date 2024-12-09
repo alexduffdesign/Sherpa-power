@@ -1,293 +1,145 @@
-// section-chatbot.js
+// /assets/scripts/chatbot/section/chatbot-section.js
 
-import { ChatbotCore } from "./chatbot-core-file.js";
+import ChatbotCore from "../core/chatbot-core.js";
+import SectionChatbotUI from "../ui/chatbot-section-ui.js";
+import eventBus from "../utils/event-bus.js";
+import { EVENTS } from "../utils/event-constants.js";
+import { generateUserId } from "../utils/user-id-generator.js";
 
-class SectionChatbot extends HTMLElement {
-  constructor() {
-    super();
-    this.chatInitialized = false;
-    this.core = null;
-    this.messageContainer = null;
-    this.typingIndicator = null;
-    this.applicationsGrid = null;
-  }
+/**
+ * SectionChatbot Class
+ * Manages the Section Chatbot's interactions, handles product details, and updates the UI.
+ */
+class SectionChatbot {
+  /**
+   * Constructor initializes ChatbotCore and SectionChatbotUI, sets up event listeners.
+   * @param {ChatbotCore} core - Instance of ChatbotCore handling API communications.
+   * @param {SectionChatbotUI} ui - Instance of SectionChatbotUI handling UI updates.
+   */
+  constructor(core, ui) {
+    this.core = core;
+    this.ui = ui;
+    this.isLaunched = false;
 
-  connectedCallback() {
-    this.initialize();
-  }
-
-  initialize() {
-    console.log("SectionChatbot initializing");
-    this.initializeElements();
     this.setupEventListeners();
-    this.loadSavedDevices();
-    this.setupViewMoreButton();
   }
 
-  initializeElements() {
-    console.log("SectionChatbot initializeElements called");
-    this.messageContainer = this.querySelector("#messageContainer");
-    this.typingIndicator = this.querySelector(".chat-typing");
-    this.applicationsGrid = this.querySelector(".applications-grid");
-
-    if (!this.messageContainer || !this.typingIndicator) {
-      console.error("Required DOM elements not found");
-    }
-  }
-
+  /**
+   * Sets up event listeners for ChatbotCore events.
+   */
   setupEventListeners() {
-    if (this.eventListenersAttached) return;
-
-    console.log("SectionChatbot setupEventListeners called");
-    const form = this.querySelector("#chatForm");
-    const input = this.querySelector("#userInput");
-
-    if (!form || !input) {
-      console.error("Chat form or input not found");
-      return;
-    }
-
-    // Initialize chat when user focuses on the input
-    input.addEventListener("focus", async () => {
-      console.log("Input focused, initializing chat if needed");
-      await this.initializeChatIfNeeded();
+    // Listen to events emitted by ChatbotCore via EventBus
+    eventBus.on(EVENTS.SECTION_CHATBOT.MESSAGE_RECEIVED, (data) => {
+      this.ui.addMessage("assistant", data.content);
     });
 
-    form.addEventListener("submit", async (e) => {
-      e.preventDefault();
-      const message = input.value.trim();
-      if (message) {
-        console.log("Form submitted with message:", message);
-        input.value = ""; // Clear the input field immediately
-        await this.initializeChatIfNeeded(); // Ensure chat is initialized
-        await this.handleUserMessage(message);
-      }
+    eventBus.on(EVENTS.SECTION_CHATBOT.CHOICE_PRESENTED, (data) => {
+      this.ui.addButtons(data.choices);
     });
 
-    this.eventListenersAttached = true;
-  }
-
-  async initializeChatIfNeeded() {
-    if (!this.chatInitialized) {
-      console.log("Initializing section chatbot");
-      const config = {
-        proxyEndpoint:
-          "https://chatbottings--development.gadget.app/voiceflowAPI/voiceflow-streaming", // Update to Gadget's streaming endpoint
-        userIDPrefix: "sectionChatbot",
-      };
-      this.core = new ChatbotCore(config);
-      this.core.setDOMElements(
-        this.messageContainer,
-        this.typingIndicator,
-        this
-      );
-      this.core.on("message", this.handleMessage.bind(this));
-      this.core.on("typing", this.handleTyping.bind(this));
-      this.core.on("updateMessage", this.handleUpdateMessage.bind(this));
-      await this.sendLaunch();
-      this.chatInitialized = true;
-    }
-  }
-
-  async handleUserMessage(message) {
-    this.core.addMessage("user", message);
-    this.core.conversationHistory.push({ type: "user", message: message });
-    this.core.saveConversationToStorage();
-    this.core.showTypingIndicator();
-    try {
-      await this.core.sendMessage(message);
-    } catch (error) {
-      console.error("Error in send message:", error);
-    } finally {
-      this.core.hideTypingIndicator();
-      this.core.scrollToBottom();
-    }
-  }
-
-  async handleAgentResponse(response) {
-    // Not needed as ChatbotCore emits events handled via callbacks
-  }
-
-  handleMessage({ sender, content }) {
-    this.core.addMessage(sender, content);
-  }
-
-  handleTyping(isTyping) {
-    if (isTyping) {
-      this.core.showTypingIndicator();
-    } else {
-      this.core.hideTypingIndicator();
-    }
-  }
-
-  handleUpdateMessage(content) {
-    this.core.updateLatestMessage(content);
-  }
-
-  handleDeviceAnswer(deviceAnswer) {
-    console.log("Handling device answer:", deviceAnswer);
-    let devices = Array.isArray(deviceAnswer)
-      ? deviceAnswer
-      : deviceAnswer.devices;
-
-    if (!Array.isArray(devices)) {
-      console.error("Invalid devices data:", devices);
-      return;
-    }
-
-    devices.forEach((device) => {
-      console.log("Processing device:", device);
-      const { name, estimatedRuntime } = device;
-      this.saveDeviceEstimate({ name, estimatedRuntime });
-      const card = this.createDeviceCard(device);
-      this.insertCard(card);
+    eventBus.on(EVENTS.SECTION_CHATBOT.CAROUSEL_PRESENTED, (data) => {
+      this.ui.addCarousel(data.carouselItems);
     });
 
-    try {
-      this.updateDevicesView();
-    } catch (error) {
-      console.error("Error in updateDevicesView:", error);
-    }
+    eventBus.on(EVENTS.SECTION_CHATBOT.DEVICE_ANSWER, (data) => {
+      this.ui.populateApplicationsGrid(data.devices);
+    });
+
+    eventBus.on(EVENTS.SECTION_CHATBOT.ERROR, (error) => {
+      this.ui.displayError(error.message);
+    });
   }
 
-  formatRuntime(runtime) {
-    const totalHours = parseFloat(runtime.value);
-    if (totalHours >= 1) {
-      const wholeHours = Math.floor(totalHours);
-      const remainingMinutes = Math.round((totalHours - wholeHours) * 60);
+  /**
+   * Launches the chatbot by sending a launch request with required variables.
+   */
+  launch() {
+    if (this.isLaunched) return;
 
-      const hourText = `${wholeHours} ${wholeHours === 1 ? "hour" : "hours"}`;
-      if (remainingMinutes === 0) {
-        return hourText;
-      }
-      return `${hourText} ${remainingMinutes} minutes`;
-    } else {
-      const minutes = Math.round(totalHours * 60);
-      return `${minutes} minutes`;
-    }
+    const interactPayload = {
+      action: {
+        type: "launch",
+        payload: {
+          startBlock: "shopifySection",
+          productDetails: this.ui.productDetails,
+        },
+      },
+    };
+
+    this.core.sendLaunch(interactPayload);
+    this.isLaunched = true;
   }
 
-  createDeviceCard(device) {
-    const formattedRuntime = this.formatRuntime(device.estimatedRuntime);
-    const card = document.createElement("div");
-    card.className = "application-card chatbot-card";
-    card.innerHTML = `
-      <div class="application-card__image">
-        🚀 <!-- SVG Placeholder -->
-      </div>
-      <div class="application-card__content">
-        <div class="application-card__title">${device.name}</div>
-        <div class="application-card__runtime">
-          ${formattedRuntime}
-        </div>
-      </div>
-    `;
-    return card;
+  /**
+   * Sends a user message to the chatbot.
+   * @param {string} message - The user's message.
+   */
+  sendMessage(message) {
+    this.core.sendMessage(message);
+    this.ui.addMessage("user", message);
+    // Note: Section Chatbot does not maintain history
   }
-
-  insertCard(card) {
-    this.applicationsGrid = this.querySelector(".applications-grid");
-    if (!this.applicationsGrid) {
-      console.error("Applications grid not found when inserting card");
-      return;
-    }
-
-    const firstChatbotCard = this.applicationsGrid.querySelector(
-      ".application-card.chatbot-card"
-    );
-    if (firstChatbotCard) {
-      this.applicationsGrid.insertBefore(card, firstChatbotCard);
-    } else {
-      this.applicationsGrid.appendChild(card);
-    }
-  }
-
-  saveDeviceEstimate(device) {
-    const key = `${this.getAttribute("product-title")}_devices`;
-    let devices = JSON.parse(localStorage.getItem(key) || "[]");
-
-    const existingIndex = devices.findIndex((d) => d.name === device.name);
-    if (existingIndex !== -1) {
-      devices.splice(existingIndex, 1);
-    }
-    devices.unshift(device);
-
-    localStorage.setItem(key, JSON.stringify(devices));
-  }
-
-  setupViewMoreButton() {
-    this.viewMoreButton = this.querySelector(".view-more-button");
-    if (this.viewMoreButton) {
-      this.viewMoreButton.addEventListener("click", () =>
-        this.toggleDevicesView()
-      );
-    } else {
-      console.warn("View more button not found");
-    }
-  }
-
-  toggleDevicesView() {
-    const allCards = this.applicationsGrid.querySelectorAll(
-      ".application-card.chatbot-card"
-    );
-    const hiddenCards = Array.from(allCards).filter(
-      (card) => card.style.display === "none"
-    );
-
-    if (hiddenCards.length > 0) {
-      // Show all cards
-      hiddenCards.forEach((card) => (card.style.display = "flex"));
-      this.viewMoreButton.textContent = "Hide";
-    } else {
-      // Hide cards beyond the first two
-      Array.from(allCards)
-        .slice(2)
-        .forEach((card) => (card.style.display = "none"));
-      this.viewMoreButton.textContent = "View More";
-    }
-  }
-
-  updateDevicesView() {
-    console.log("Updating devices view");
-    this.applicationsGrid = this.querySelector(".applications-grid");
-    if (!this.applicationsGrid) {
-      console.error("Applications grid not found");
-      return;
-    }
-
-    console.log("Applications grid found:", this.applicationsGrid);
-
-    const allCards = this.applicationsGrid.querySelectorAll(
-      ".application-card.chatbot-card"
-    );
-    console.log("Number of cards found:", allCards.length);
-
-    this.viewMoreButton = this.querySelector(".view-more-button");
-    const devicesPerPage = 2;
-
-    if (allCards.length > devicesPerPage) {
-      if (this.viewMoreButton) {
-        this.viewMoreButton.style.display = "block";
-        this.viewMoreButton.textContent = "View More";
-        console.log("View more button displayed");
-      } else {
-        console.warn("View more button not found");
-      }
-      allCards.forEach((card, index) => {
-        card.style.display = index < devicesPerPage ? "flex" : "none";
-      });
-    } else {
-      if (this.viewMoreButton) {
-        this.viewMoreButton.style.display = "none";
-        console.log("View more button hidden");
-      } else {
-        console.warn("View more button not found");
-      }
-    }
-  }
-
-  // Additional methods can be implemented as needed
 }
 
-customElements.define("section-chatbot", SectionChatbot);
-console.log("SectionChatbot module loaded");
+// Initialize Section Chatbot on DOMContentLoaded
+document.addEventListener("DOMContentLoaded", () => {
+  const sectionChatbotContainer = document.getElementById("section-chatbot-ui");
+
+  if (!sectionChatbotContainer) {
+    console.error("Section Chatbot UI container not found");
+    return;
+  }
+
+  // Generate or retrieve existing userID for Section Chatbot
+  let sectionUserId = localStorage.getItem("sectionChatbotUserId");
+  if (!sectionUserId) {
+    sectionUserId = generateUserId("sectionChatbot");
+    localStorage.setItem("sectionChatbotUserId", sectionUserId);
+  }
+
+  // Initialize ChatbotCore with the generated userID
+  const sectionChatbotCore = new ChatbotCore({
+    userID: sectionUserId,
+    endpoint:
+      "https://chatbottings--development.gadget.app/voiceflowAPI/voiceflow-streaming",
+    chatbotType: "section",
+  });
+
+  // Initialize SectionChatbotUI
+  const sectionChatbotUI = new SectionChatbotUI(sectionChatbotContainer);
+
+  // Initialize SectionChatbot
+  const sectionChatbot = new SectionChatbot(
+    sectionChatbotCore,
+    sectionChatbotUI
+  );
+
+  // Listen for user message submissions
+  sectionChatbotUI.onUserMessage((message) => {
+    sectionChatbot.sendMessage(message);
+  });
+
+  // Listen for button clicks from UI components
+  sectionChatbotUI.onButtonClick((payload) => {
+    sectionChatbot.sendMessage(JSON.stringify(payload));
+  });
+
+  // Handle launch event on first focus of the input field
+  let hasLaunched = false;
+  const sectionInput = sectionChatbotContainer.querySelector(
+    "#section-chatbot-input"
+  );
+
+  if (sectionInput) {
+    sectionInput.addEventListener("focus", () => {
+      if (!hasLaunched) {
+        sectionChatbot.launch();
+        hasLaunched = true;
+      }
+    });
+  } else {
+    console.error("Section Chatbot input field not found");
+  }
+});
+
+export default SectionChatbot;

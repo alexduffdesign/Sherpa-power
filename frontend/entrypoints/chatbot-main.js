@@ -1,279 +1,161 @@
-// chatbot-main.js
+// /assets/scripts/chatbot/chatbot-main.js
 
-import { ChatbotCore } from "./chatbot-core-file.js";
+import ChatbotCore from "../core/chatbot-core.js";
+import MainChatbotUI from "../ui/chatbot-main-ui.js";
+import eventBus from "../utils/event-bus.js";
+import { EVENTS } from "../utils/event-constants.js";
+import { generateUserId } from "../utils/user-id-generator.js";
 
-console.log("MainChatbot module loading");
-
+/**
+ * MainChatbot Class
+ * Manages the Main Chatbot's interactions, conversation history, and UI updates.
+ */
 class MainChatbot {
-  constructor(element, config) {
-    console.log("MainChatbot constructor called with config:", config);
-    this.element = element;
-    this.voiceflowEndpoint = config.voiceflowEndpoint;
-
-    this.core = new ChatbotCore({
-      proxyEndpoint:
-        "https://chatbottings--development.gadget.app/voiceflowAPI/voiceflow-streaming", // Gadget's streaming endpoint
-      userIDPrefix: "mainChatbot",
-    });
-    console.log("ChatbotCore instance created:", this.core);
-
-    this.conversationHistory = [];
-    this.hasLaunched = localStorage.getItem("chatHasLaunched") === "true";
-
-    this.eventListenersAttached = false;
-
-    this.initializeElements();
+  /**
+   * Constructor initializes ChatbotCore and MainChatbotUI, sets up event listeners.
+   * @param {ChatbotCore} core - Instance of ChatbotCore handling API communications.
+   * @param {MainChatbotUI} ui - Instance of MainChatbotUI handling UI updates.
+   */
+  constructor(core, ui) {
+    this.core = core;
+    this.ui = ui;
+    this.historyKey = "mainChatbotHistory";
+    this.isLaunched = false;
     this.setupEventListeners();
-
-    if (this.hasLaunched) {
-      this.loadConversationFromStorage();
-      this.displaySavedConversation();
-    }
   }
 
-  initializeElements() {
-    console.log("MainChatbot initializeElements called");
-    const messageContainer = this.element.querySelector("#messageContainer");
-    const typingIndicator = this.element.querySelector(".chat-typing");
-    const drawer = this.element.closest("x-drawer");
-    let drawerBody = null;
-
-    if (drawer && drawer.shadowRoot) {
-      drawerBody = drawer.shadowRoot.querySelector('[part="body"]');
-    }
-
-    if (!messageContainer || !typingIndicator || !drawerBody) {
-      console.error("Required DOM elements not found");
-      return;
-    }
-
-    this.core.setDOMElements(messageContainer, typingIndicator, drawerBody);
-    console.log("DOM elements set in ChatbotCore:", this.core);
-  }
-
+  /**
+   * Sets up event listeners for ChatbotCore events.
+   */
   setupEventListeners() {
-    if (this.eventListenersAttached) return;
-
-    console.log("MainChatbot setupEventListeners called");
-    const form = this.element.querySelector("#chatForm");
-    const input = this.element.querySelector("#userInput");
-
-    if (!form || !input) {
-      console.error("Chat form or input not found");
-      return;
-    }
-
-    form.addEventListener("submit", async (e) => {
-      e.preventDefault();
-      const message = input.value.trim();
-      if (message) {
-        console.log("Form submitted with message:", message);
-        input.value = ""; // Clear the input field immediately
-        await this.handleUserMessage(message);
-      }
+    // Listen to events emitted by ChatbotCore via EventBus
+    eventBus.on(EVENTS.MAIN_CHATBOT.MESSAGE_RECEIVED, (data) => {
+      this.ui.addMessage("assistant", data.content);
     });
 
-    this.element.addEventListener("click", async (e) => {
-      if (e.target.matches(".button-container button")) {
-        const buttonData = JSON.parse(e.target.dataset.buttonData);
-        try {
-          const response = await this.core.handleButtonClick(buttonData);
-          // Save button click as a message
-          this.conversationHistory.push({
-            type: "user",
-            message: buttonData.name,
-          });
-          this.saveConversationToStorage();
-          // The response will be handled via event listeners
-        } catch (error) {
-          console.error("Error handling button click:", error);
-        }
-      }
+    eventBus.on(EVENTS.MAIN_CHATBOT.CHOICE_PRESENTED, (data) => {
+      this.ui.addButtons(data.choices);
     });
 
-    const jumpToMainButton = this.element.querySelector(".back-to-start");
-    if (jumpToMainButton) {
-      jumpToMainButton.addEventListener("click", () => this.jumpToMainMenu());
-    } else {
-      console.error("Jump to start button not found");
-    }
+    eventBus.on(EVENTS.MAIN_CHATBOT.CAROUSEL_PRESENTED, (data) => {
+      this.ui.addCarousel(data.carouselItems);
+    });
 
-    this.core.on("message", this.handleMessage.bind(this));
-    this.core.on("typing", this.handleTyping.bind(this));
-    this.core.on("updateMessage", this.handleUpdateMessage.bind(this));
-    this.core.on("error", this.handleError.bind(this));
-
-    this.eventListenersAttached = true;
+    eventBus.on(EVENTS.MAIN_CHATBOT.ERROR, (error) => {
+      this.ui.displayError(error.message);
+    });
   }
 
-  async initializeChat() {
-    console.log("Initializing chat");
-    if (!this.hasLaunched) {
-      try {
-        console.log("Initializing chat for the first time");
-        await this.sendLaunch();
-        this.hasLaunched = true;
-        localStorage.setItem("chatHasLaunched", "true");
-      } catch (error) {
-        console.error("Error during chat initialization:", error);
+  /**
+   * Launches the chatbot by sending a launch request.
+   */
+  launch() {
+    if (this.isLaunched) return;
+
+    this.core.sendLaunch();
+    this.isLaunched = true;
+  }
+
+  /**
+   * Sends a user message to the chatbot.
+   * @param {string} message - The user's message.
+   */
+  sendMessage(message) {
+    this.core.sendMessage(message);
+    this.ui.addMessage("user", message);
+    this.saveToHistory("user", message);
+  }
+
+  /**
+   * Loads conversation history from localStorage and renders it in the UI.
+   */
+  loadHistory() {
+    const history = JSON.parse(localStorage.getItem(this.historyKey)) || [];
+    history.forEach((entry) => {
+      this.ui.addMessage(entry.sender, entry.message);
+    });
+
+    // Check if the last message was a choice or carousel to retain interactive elements
+    if (history.length > 0) {
+      const lastEntry = history[history.length - 1];
+      if (lastEntry.sender === "assistant") {
+        // Placeholder: Implement logic to determine if lastEntry includes choices or carousel
+        // This could be based on additional flags or message content structure
+        // For example:
+        // if (lastEntry.hasChoices) { this.ui.addButtons(lastEntry.choices); }
+        // if (lastEntry.hasCarousel) { this.ui.addCarousel(lastEntry.carouselItems); }
       }
-    } else {
-      // Add this else block to handle existing conversations
-      this.loadConversationFromStorage();
-      this.displaySavedConversation();
-    }
-    // Add this line to scroll to the bottom after initialization
-    this.core.scrollToBottom();
-    console.log("Chat initialized");
-  }
-
-  async sendLaunch(payload = {}) {
-    console.log("Sending main chatbot launch request");
-
-    try {
-      await this.core.handleStreaming({
-        action: {
-          type: "launch",
-        },
-        config: {
-          completion_events: true,
-        },
-      });
-    } catch (error) {
-      console.error("Error in main chatbot send launch:", error);
-      this.core.addMessage(
-        "assistant",
-        "Failed to initialize the chatbot. Please try again later."
-      );
     }
   }
 
-  async handleUserMessage(message) {
-    this.core.addMessage("user", message);
-    this.conversationHistory.push({ type: "user", message: message });
-    this.saveConversationToStorage();
-
-    this.core.showTypingIndicator();
-    try {
-      await this.core.sendMessage(message);
-    } catch (error) {
-      console.error("Error in send message:", error);
-    } finally {
-      this.core.hideTypingIndicator();
-      this.core.scrollToBottom();
-    }
+  /**
+   * Saves a message to conversation history in localStorage.
+   * @param {string} sender - 'user' or 'assistant'.
+   * @param {string} message - The message content.
+   */
+  saveToHistory(sender, message) {
+    const history = JSON.parse(localStorage.getItem(this.historyKey)) || [];
+    history.push({ sender, message });
+    localStorage.setItem(this.historyKey, JSON.stringify(history));
   }
-
-  loadConversationFromStorage() {
-    const savedConversation = localStorage.getItem("chatConversation");
-    this.conversationHistory = savedConversation
-      ? JSON.parse(savedConversation)
-      : [];
-    console.log("Loaded conversation from storage:", this.conversationHistory);
-  }
-
-  saveConversationToStorage() {
-    localStorage.setItem(
-      "chatConversation",
-      JSON.stringify(this.conversationHistory)
-    );
-    console.log("Saved conversation to storage");
-  }
-
-  displaySavedConversation() {
-    console.log("Displaying saved conversation");
-    const messageContainer = this.element.querySelector("#messageContainer");
-    if (messageContainer) {
-      messageContainer.innerHTML = ""; // Clear existing messages
-      this.conversationHistory.forEach((turn, index) => {
-        if (turn.type === "user" || turn.type === "assistant") {
-          this.core.addMessage(turn.type, turn.message);
-        } else if (turn.type === "choice") {
-          // Check if next turn is 'user' type
-          const nextTurn = this.conversationHistory[index + 1];
-          if (!nextTurn || nextTurn.type !== "user") {
-            this.core.addButtons(turn.buttons);
-          }
-        } else if (turn.type === "carousel") {
-          // Check if next turn is 'user' type
-          const nextTurn = this.conversationHistory[index + 1];
-          if (!nextTurn || nextTurn.type !== "user") {
-            this.core.addCarousel(turn.data);
-          }
-        } else if (turn.type === "visual" && turn.data.visualType === "image") {
-          this.core.addVisualImage(turn.data);
-        }
-      });
-      this.core.scrollToBottom();
-    } else {
-      console.error("Message container not found");
-    }
-  }
-
-  async jumpToMainMenu() {
-    console.log("MainChatbot jumpToMainMenu called");
-
-    this.core.showTypingIndicator();
-    try {
-      // Send the main_menu event to Voiceflow via Gadget
-      await this.core.handleStreaming({
-        action: {
-          type: "event",
-          payload: {
-            event: {
-              name: "main_menu",
-            },
-          },
-        },
-        config: {
-          completion_events: true,
-        },
-      });
-    } catch (error) {
-      console.error("Error in jumpToMainMenu:", error);
-      this.core.addMessage(
-        "assistant",
-        "Sorry, I couldn't navigate to the main menu. Please try again."
-      );
-    } finally {
-      this.core.hideTypingIndicator();
-      this.core.scrollToBottom();
-    }
-  }
-
-  handleMessage({ sender, content }) {
-    this.core.addMessage(sender, content);
-  }
-
-  handleTyping(isTyping) {
-    if (isTyping) {
-      this.core.showTypingIndicator();
-    } else {
-      this.core.hideTypingIndicator();
-    }
-  }
-
-  handleUpdateMessage(content) {
-    this.core.updateLatestMessage(content);
-  }
-
-  handleError(message) {
-    this.core.addMessage("assistant", message);
-  }
-
-  handleProductRedirect(productHandle) {
-    if (!productHandle) {
-      console.error("Cannot redirect: Product handle is undefined or empty");
-      return;
-    }
-
-    const baseUrl = "https://www.sherpapower.co.uk/products/";
-    const productUrl = `${baseUrl}${encodeURIComponent(productHandle)}`;
-    console.log(`Redirecting to product page: ${productUrl}`);
-    window.location.href = productUrl;
-  }
-
-  // Additional methods like addCarousel, addVisualImage can be inherited from ChatbotCore or implemented here
 }
+
+// Initialize Main Chatbot on DOMContentLoaded
+document.addEventListener("DOMContentLoaded", () => {
+  const mainChatbotContainer = document.getElementById("main-chatbot-ui");
+
+  if (!mainChatbotContainer) {
+    console.error("Main Chatbot UI container not found");
+    return;
+  }
+
+  // Generate or retrieve existing userID for Main Chatbot
+  let mainUserId = localStorage.getItem("mainChatbotUserId");
+  if (!mainUserId) {
+    mainUserId = generateUserId("mainChatbot");
+    localStorage.setItem("mainChatbotUserId", mainUserId);
+  }
+
+  // Initialize ChatbotCore with the generated userID
+  const mainChatbotCore = new ChatbotCore({
+    userID: mainUserId,
+    endpoint:
+      "https://chatbottings--development.gadget.app/voiceflowAPI/voiceflow-streaming",
+    chatbotType: "main",
+  });
+
+  // Initialize MainChatbotUI
+  const mainChatbotUI = new MainChatbotUI(mainChatbotContainer);
+
+  // Initialize MainChatbot
+  const mainChatbot = new MainChatbot(mainChatbotCore, mainChatbotUI);
+
+  // Load conversation history
+  mainChatbot.loadHistory();
+
+  // Listen for user message submissions
+  mainChatbotUI.onUserMessage((message) => {
+    mainChatbot.sendMessage(message);
+  });
+
+  // Listen for button clicks from UI components
+  mainChatbotUI.onButtonClick((payload) => {
+    mainChatbot.sendMessage(JSON.stringify(payload));
+  });
+
+  // Handle launch event on first opening of the chat drawer
+  let hasLaunched = false;
+  const drawer = document.getElementById("header-ai-trigger");
+  if (drawer) {
+    drawer.addEventListener("click", () => {
+      if (!hasLaunched) {
+        mainChatbot.launch();
+        hasLaunched = true;
+      }
+    });
+  } else {
+    console.error("Chatbot drawer element not found");
+  }
+});
 
 export default MainChatbot;
