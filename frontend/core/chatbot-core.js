@@ -125,7 +125,9 @@ class ChatbotCore {
               ? eventTypeLine.split(":")[1].trim()
               : "trace";
             const data = dataLine
-              ? JSON.parse(eventLine.substring(5).trim())
+              ? JSON.parse(
+                  eventStr.substring(eventStr.indexOf("data:") + 5).trim()
+                )
               : null;
 
             if (eventType === "trace") {
