@@ -153,7 +153,7 @@
 
 {% endcapture %}
             
-  <x-drawer id="{{ drawer_id }}" class="drawer sherpa-guide">
+<custom-drawer id="{{ drawer_id }}" class="drawer sherpa-guide">
     <div slot="header" class="header-content">
       <div class="header-left">
         <h2 class="h6">SHERPA GUIDE</h2>
@@ -206,32 +206,33 @@
       {{ form }}
     </footer>
   </div>
-</x-drawer>
+</custom-drawer>
 
 <!-- Include the updated chatbot-main.js script -->
 {% render 'vite-tag' with 'chatbot-main.js' %}
 
 <!-- Initialize the chatbot when the drawer is opened -->
-<script>
-  document.addEventListener('DOMContentLoaded', function() {
-    const drawer = document.getElementById('{{ drawer_id }}');
-    if (drawer) {
-      let hasLaunched = false;
-      console.log(drawer);
-      drawer.addEventListener('dialog:after-show', function() {
-        if (!hasLaunched) {
-          // The chatbot-main.js script handles the launch when the drawer is opened
+<script type="module">
+  import { Drawer } from "{{ 'theme.js' | asset_url }}"; // Import the theme web component
+
+  class CustomDrawer extends Drawer {
+    connectedCallback() {
+      super.connectedCallback();
+      this.addEventListener('dialog:after-show', () => {
+        console.log('CustomDrawer: dialog:after-show event triggered'); // Debug log
+        if (!this.hasLaunched) {
           const launchEvent = new Event('chatbotLaunch');
           document.dispatchEvent(launchEvent);
-          hasLaunched = true;
-          console.log('Chatbot drawer opened');
+          console.log('CustomDrawer: chatbotLaunch event dispatched'); // Debug log
+          this.hasLaunched = true;
         }
       });
-    } else {
-      console.error('Chatbot drawer element not found');
     }
-  });
+  }
+
+  window.customElements.define('custom-drawer', CustomDrawer);
 </script>
+
 
 
 {% schema %}
