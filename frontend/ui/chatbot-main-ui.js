@@ -14,8 +14,14 @@ class MainChatbotUI {
    */
   constructor(container) {
     this.container = container;
-    this.form = this.container.querySelector("#main-chatbot-form");
-    this.input = this.container.querySelector("#main-chatbot-input");
+    this.form = this.container.querySelector(".chat-form");
+    this.input = this.container.querySelector("input[type='text']");
+    this.messageContainer = this.container.querySelector(".message-container");
+
+    if (!this.container) {
+      console.error("Main Chatbot UI container not found");
+      return;
+    }
 
     if (!this.form || !this.input) {
       console.error("Main Chatbot form or input not found");
@@ -75,7 +81,7 @@ class MainChatbotUI {
     const message = document.createElement("message-component");
     message.setAttribute("sender", sender);
     message.setAttribute("content", content);
-    this.container.querySelector(".chatbot-container").appendChild(message);
+    this.messageContainer.appendChild(message);
     this.scrollToBottom();
     this.saveToHistory(sender, content);
   }
@@ -89,21 +95,19 @@ class MainChatbotUI {
       const button = document.createElement("button-component");
       button.setAttribute("label", buttonData.name);
       button.setAttribute("payload", JSON.stringify(buttonData.request));
-      this.container.querySelector(".chatbot-container").appendChild(button);
+      this.messageContainer.appendChild(button);
     });
     this.scrollToBottom();
 
     // Set up event delegation for button clicks
-    this.container
-      .querySelector(".chatbot-container")
-      .addEventListener("click", (e) => {
-        if (e.target.closest("button-component")) {
-          const button = e.target.closest("button-component");
-          const payload = JSON.parse(button.getAttribute("payload"));
-          this.emit("buttonClicked", payload);
-          this.removeInteractiveElements();
-        }
-      });
+    this.messageContainer.addEventListener("click", (e) => {
+      if (e.target.closest("button-component")) {
+        const button = e.target.closest("button-component");
+        const payload = JSON.parse(button.getAttribute("payload"));
+        this.emit("buttonClicked", payload);
+        this.removeInteractiveElements();
+      }
+    });
   }
 
   /**
@@ -113,7 +117,7 @@ class MainChatbotUI {
   addCarousel(items) {
     const carousel = document.createElement("carousel-component");
     carousel.setAttribute("items", JSON.stringify(items));
-    this.container.querySelector(".chatbot-container").appendChild(carousel);
+    this.messageContainer.appendChild(carousel);
     this.scrollToBottom();
 
     // Set up event delegation for carousel interactions if necessary
@@ -127,7 +131,7 @@ class MainChatbotUI {
     const typing = document.createElement("div");
     typing.classList.add("typing-indicator");
     typing.innerText = "Assistant is typing...";
-    this.container.querySelector(".chatbot-container").appendChild(typing);
+    this.messageContainer.appendChild(typing);
     this.scrollToBottom();
   }
 
@@ -135,7 +139,7 @@ class MainChatbotUI {
    * Hides the typing indicator from the chatbot UI.
    */
   hideTypingIndicator() {
-    const typing = this.container.querySelector(".typing-indicator");
+    const typing = this.messageContainer.querySelector(".typing-indicator");
     if (typing) {
       typing.remove();
     }
@@ -149,7 +153,7 @@ class MainChatbotUI {
     const errorDiv = document.createElement("div");
     errorDiv.classList.add("error-message");
     errorDiv.innerText = message;
-    this.container.querySelector(".chatbot-container").appendChild(errorDiv);
+    this.messageContainer.appendChild(errorDiv);
     this.scrollToBottom();
   }
 
@@ -176,7 +180,7 @@ class MainChatbotUI {
    * Removes interactive elements (buttons, carousels) from the UI.
    */
   removeInteractiveElements() {
-    const interactiveElements = this.container.querySelectorAll(
+    const interactiveElements = this.messageContainer.querySelectorAll(
       "button-component, carousel-component"
     );
     interactiveElements.forEach((element) => element.remove());

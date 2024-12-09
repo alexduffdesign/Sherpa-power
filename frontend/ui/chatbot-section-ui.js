@@ -14,22 +14,27 @@ class SectionChatbotUI {
    */
   constructor(container) {
     this.container = container;
-    this.form = this.container.querySelector("form#section-chatbot-form");
-    this.input = this.container.querySelector("#section-chatbot-input");
+    this.form = this.container.querySelector(".chat-form");
+    this.input = this.container.querySelector("input[type='text']");
+    this.messageContainer = this.container.querySelector(".message-container");
+
+    if (!this.container) {
+      console.error("Section Chatbot UI container not found");
+      return;
+    }
 
     if (!this.form || !this.input) {
       console.error("Section Chatbot form or input not found");
       return;
     }
 
-    // Extract product details from HTML attributes
-    this.productTitle = this.getAttribute("product-title");
-    this.productCapacity = this.getAttribute("product-capacity");
-    this.acOutputContinuousPower = this.getAttribute(
-      "product-ac_output_continuous_power"
-    );
-    this.acOutputPeakPower = this.getAttribute("product-ac_output_peak_power");
-    this.dcOutputPower = this.getAttribute("product-dc_output_power");
+    // Extract product details from container's data attributes
+    this.productTitle = this.container.dataset.productTitle;
+    this.productCapacity = this.container.dataset.productCapacity;
+    this.acOutputContinuousPower =
+      this.container.dataset.productAcOutputContinuousPower;
+    this.acOutputPeakPower = this.container.dataset.productAcOutputPeakPower;
+    this.dcOutputPower = this.container.dataset.productDcOutputPower;
 
     this.startBlock = "shopifySection";
     this.productDetails = {
@@ -92,7 +97,7 @@ class SectionChatbotUI {
     const message = document.createElement("message-component");
     message.setAttribute("sender", sender);
     message.setAttribute("content", content);
-    this.container.querySelector(".chatbot-container").appendChild(message);
+    this.messageContainer.appendChild(message);
     this.scrollToBottom();
   }
 
@@ -105,21 +110,19 @@ class SectionChatbotUI {
       const button = document.createElement("button-component");
       button.setAttribute("label", buttonData.name);
       button.setAttribute("payload", JSON.stringify(buttonData.request));
-      this.container.querySelector(".chatbot-container").appendChild(button);
+      this.messageContainer.appendChild(button);
     });
     this.scrollToBottom();
 
     // Set up event delegation for button clicks
-    this.container
-      .querySelector(".chatbot-container")
-      .addEventListener("click", (e) => {
-        if (e.target.closest("button-component")) {
-          const button = e.target.closest("button-component");
-          const payload = JSON.parse(button.getAttribute("payload"));
-          this.emit("buttonClicked", payload);
-          this.removeInteractiveElements();
-        }
-      });
+    this.messageContainer.addEventListener("click", (e) => {
+      if (e.target.closest("button-component")) {
+        const button = e.target.closest("button-component");
+        const payload = JSON.parse(button.getAttribute("payload"));
+        this.emit("buttonClicked", payload);
+        this.removeInteractiveElements();
+      }
+    });
   }
 
   /**
@@ -129,7 +132,7 @@ class SectionChatbotUI {
   addCarousel(items) {
     const carousel = document.createElement("carousel-component");
     carousel.setAttribute("items", JSON.stringify(items));
-    this.container.querySelector(".chatbot-container").appendChild(carousel);
+    this.messageContainer.appendChild(carousel);
     this.scrollToBottom();
 
     // Set up event delegation for carousel interactions if necessary
@@ -171,7 +174,7 @@ class SectionChatbotUI {
     const errorDiv = document.createElement("div");
     errorDiv.classList.add("error-message");
     errorDiv.innerText = message;
-    this.container.querySelector(".chatbot-container").appendChild(errorDiv);
+    this.messageContainer.appendChild(errorDiv);
     this.scrollToBottom();
   }
 
@@ -195,7 +198,7 @@ class SectionChatbotUI {
    * Removes interactive elements (buttons, carousels) from the UI.
    */
   removeInteractiveElements() {
-    const interactiveElements = this.container.querySelectorAll(
+    const interactiveElements = this.messageContainer.querySelectorAll(
       "button-component, carousel-component"
     );
     interactiveElements.forEach((element) => element.remove());

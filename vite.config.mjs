@@ -11,6 +11,7 @@ export default defineConfig({
       snippetFile: "vite-tag.liquid",
       additionalEntrypoints: [
         "frontend/entrypoints/chatbot-core-file.js",
+        "frontend/entrypoints/chatbot-core.js",
         "frontend/entrypoints/chatbot-main.js",
         "frontend/entrypoints/chatbot-drawer.js",
         "frontend/entrypoints/chatbot-section.js",
