@@ -8,10 +8,6 @@ import { EVENTS } from "../utils/event-constants.js";
  * Handles UI-specific functionalities for the Main Chatbot.
  */
 class MainChatbotUI {
-  /**
-   * Constructor initializes UI elements and sets up event listeners.
-   * @param {HTMLElement} container - The main chatbot UI container.
-   */
   constructor(container) {
     this.container = container;
     this.form = this.container.querySelector(".chat-form");
@@ -37,9 +33,6 @@ class MainChatbotUI {
     this.setupUIEventListeners();
   }
 
-  /**
-   * Sets up event listeners for user interactions within the UI.
-   */
   setupEventListeners() {
     this.form.addEventListener("submit", (e) => {
       e.preventDefault();
@@ -52,11 +45,8 @@ class MainChatbotUI {
     });
   }
 
-  /**
-   * Sets up event listeners for UI components like buttons.
-   */
   setupUIEventListeners() {
-    // Set up event delegation for button clicks once
+    // Set up event delegation for button clicks
     this.container
       .querySelector(".chatbot-container")
       .addEventListener("click", (e) => {
@@ -69,18 +59,10 @@ class MainChatbotUI {
       });
   }
 
-  /**
-   * Registers a callback for user message submissions.
-   * @param {Function} callback - Function to handle user messages.
-   */
   onUserMessage(callback) {
     eventBus.on("userMessage", callback);
   }
 
-  /**
-   * Registers a callback for button click interactions.
-   * @param {Function} callback - Function to handle button clicks.
-   */
   onButtonClick(callback) {
     eventBus.on("buttonClicked", callback);
   }
@@ -89,8 +71,9 @@ class MainChatbotUI {
    * Adds a message to the chatbot UI.
    * @param {string} sender - 'user' or 'assistant'.
    * @param {string} content - The message content.
+   * @param {Object} [metadata] - Additional metadata about the message.
    */
-  addMessage(sender, content) {
+  addMessage(sender, content, metadata = null) {
     if (!this.messageContainer) {
       console.error("Message container not set");
       return;
@@ -102,7 +85,22 @@ class MainChatbotUI {
     this.messageContainer.appendChild(message);
     console.log("Message appended to messageContainer"); // Debug log
     this.scrollToBottom();
-    this.saveToHistory(sender, content);
+    this.saveToHistory(sender, content, metadata);
+
+    // If metadata includes interactive elements, add them
+    if (sender === "assistant" && metadata) {
+      switch (metadata.type) {
+        case "choice":
+          this.addButtons(metadata.buttons);
+          break;
+        case "carousel":
+          this.addCarousel(metadata.carouselItems);
+          break;
+        // Add more cases as needed
+        default:
+          break;
+      }
+    }
   }
 
   /**
@@ -139,9 +137,6 @@ class MainChatbotUI {
     this.scrollToBottom();
   }
 
-  /**
-   * Displays a typing indicator in the chatbot UI.
-   */
   showTypingIndicator() {
     const typing = this.container.querySelector(".chat-typing");
     if (typing) {
@@ -150,9 +145,6 @@ class MainChatbotUI {
     }
   }
 
-  /**
-   * Hides the typing indicator from the chatbot UI.
-   */
   hideTypingIndicator() {
     const typing = this.container.querySelector(".chat-typing");
     if (typing) {
@@ -160,10 +152,6 @@ class MainChatbotUI {
     }
   }
 
-  /**
-   * Displays an error message in the chatbot UI.
-   * @param {string} message - The error message.
-   */
   displayError(message) {
     const errorDiv = document.createElement("div");
     errorDiv.classList.add("error-message");
@@ -172,9 +160,6 @@ class MainChatbotUI {
     this.scrollToBottom();
   }
 
-  /**
-   * Scrolls the chatbot container to the bottom.
-   */
   scrollToBottom() {
     this.messageContainer.scrollTop = this.messageContainer.scrollHeight;
   }
@@ -183,11 +168,12 @@ class MainChatbotUI {
    * Saves a message to conversation history in localStorage.
    * @param {string} sender - 'user' or 'assistant'.
    * @param {string} message - The message content.
+   * @param {Object} [metadata] - Additional metadata about the entry.
    */
-  saveToHistory(sender, message) {
+  saveToHistory(sender, message, metadata = null) {
     const history =
       JSON.parse(localStorage.getItem("mainChatbotHistory")) || [];
-    history.push({ sender, message });
+    history.push({ sender, message, metadata });
     localStorage.setItem("mainChatbotHistory", JSON.stringify(history));
   }
 

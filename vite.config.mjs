@@ -11,6 +11,7 @@ export default defineConfig({
       additionalEntrypoints: [
         "frontend/entrypoints/chatbot-main.js",
         "frontend/entrypoints/theme.js",
+        "frontend/components/ui/chatbot-components.js",
       ],
       versionNumbers: true,
     }),
@@ -29,6 +30,7 @@ export default defineConfig({
             "./frontend/core/chatbot-core.js",
             "./frontend/ui/chatbot-main-ui.js",
             "./frontend/ui/chatbot-section-ui.js",
+            "./frontend/components/ui/chatbot-components.js",
           ],
         },
       },

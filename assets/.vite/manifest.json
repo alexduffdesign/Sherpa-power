@@ -1,11 +1,4 @@
 {
-  "_chatbot.DfUcQSBi.js": {
-    "file": "chatbot.DfUcQSBi.js",
-    "name": "chatbot",
-    "imports": [
-      "_vendor.DqvJXvYX.js"
-    ]
-  },
   "_user-id-generator.DhYYxFTy.js": {
     "file": "user-id-generator.DhYYxFTy.js",
     "name": "user-id-generator"
@@ -13,6 +6,15 @@
   "_vendor.DqvJXvYX.js": {
     "file": "vendor.DqvJXvYX.js",
     "name": "vendor"
+  },
+  "frontend/components/ui/chatbot-components.js": {
+    "file": "chatbot-components.DrEcPKS5.js",
+    "name": "chatbot-components",
+    "src": "frontend/components/ui/chatbot-components.js",
+    "isEntry": true,
+    "imports": [
+      "_vendor.DqvJXvYX.js"
+    ]
   },
   "frontend/entrypoints/chatbot-core-file.js": {
     "file": "chatbot-core-file.BjM46aZ2.js",
@@ -24,35 +26,35 @@
     ]
   },
   "frontend/entrypoints/chatbot-drawer.js": {
-    "file": "chatbot-drawer.B-0hUHU4.js",
+    "file": "chatbot-drawer.zcA65QSo.js",
     "name": "chatbot-drawer",
     "src": "frontend/entrypoints/chatbot-drawer.js",
     "isEntry": true,
     "imports": [
       "frontend/entrypoints/chatbot-main.js",
-      "_chatbot.DfUcQSBi.js",
+      "frontend/components/ui/chatbot-components.js",
       "_vendor.DqvJXvYX.js",
       "_user-id-generator.DhYYxFTy.js"
     ]
   },
   "frontend/entrypoints/chatbot-main.js": {
-    "file": "chatbot-main.D5Aq2H6d.js",
+    "file": "chatbot-main.DkcXIRr4.js",
     "name": "chatbot-main",
     "src": "frontend/entrypoints/chatbot-main.js",
     "isEntry": true,
     "imports": [
-      "_chatbot.DfUcQSBi.js",
+      "frontend/components/ui/chatbot-components.js",
       "_user-id-generator.DhYYxFTy.js",
       "_vendor.DqvJXvYX.js"
     ]
   },
   "frontend/entrypoints/chatbot-section.js": {
-    "file": "chatbot-section.DHFfqzGl.js",
+    "file": "chatbot-section.WKykJN5G.js",
     "name": "chatbot-section",
     "src": "frontend/entrypoints/chatbot-section.js",
     "isEntry": true,
     "imports": [
-      "_chatbot.DfUcQSBi.js",
+      "frontend/components/ui/chatbot-components.js",
       "_user-id-generator.DhYYxFTy.js",
       "_vendor.DqvJXvYX.js"
     ]

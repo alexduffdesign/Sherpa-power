@@ -1,6 +1,6 @@
 // /assets/scripts/chatbot/components/message-component.js
 
-class MessageComponent extends HTMLElement {
+export class MessageComponent extends HTMLElement {
   constructor() {
     super();
     // Attach Shadow DOM to encapsulate styles
@@ -96,8 +96,7 @@ class MessageComponent extends HTMLElement {
    * @returns {string} - HTML content
    */
   markdownToHtml(markdown) {
+    if (!markdown) return "";
     return markdown.replace(/\n/g, "<br>");
   }
 }
-
-customElements.define("message-component", MessageComponent);

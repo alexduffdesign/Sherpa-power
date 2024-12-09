@@ -1,8 +1,8 @@
 // /assets/scripts/chatbot/components/carousel-component.js
 
-import eventBus from "../utils/event-bus.js";
+import eventBus from "../../utils/event-bus.js";
 
-class CarouselComponent extends HTMLElement {
+export class CarouselComponent extends HTMLElement {
   constructor() {
     super();
     // Attach Shadow DOM to encapsulate styles
@@ -247,5 +247,3 @@ class CarouselComponent extends HTMLElement {
     this.remove();
   }
 }
-
-customElements.define("carousel-component", CarouselComponent);

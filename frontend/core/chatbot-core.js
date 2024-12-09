@@ -166,37 +166,43 @@ class ChatbotCore {
 
     switch (trace.type) {
       case "text":
-        console.log("Text received choice trace:", trace);
+        console.log("Text received trace:", trace);
         eventBus.emit(`${this.eventPrefix}:messageReceived`, {
           content: trace.payload.message,
+          metadata: trace.payload.metadata || null, // Include metadata if available
         });
         break;
       case "choice":
-        console.log("Choice received choice trace:", trace);
+        console.log("Choice received trace:", trace);
         eventBus.emit(`${this.eventPrefix}:choicePresented`, {
           buttons: trace.payload.buttons,
         });
         break;
       case "carousel":
+        console.log("Carousel received trace:", trace);
         eventBus.emit(`${this.eventPrefix}:carouselPresented`, {
-          carouselItems: trace.payload.items,
+          carouselItems: trace.payload.cards,
         });
         break;
-      case "device_answer":
-        eventBus.emit(`${this.eventPrefix}:deviceAnswer`, {
-          devices: trace.payload.devices,
-        });
+      case "speak":
+        console.log("Speak received trace:", trace);
+        // Handle speak traces if necessary
         break;
-      case "block":
-        // Handle block trace - typically used for flow control
-        console.log("Block trace received:", trace);
+      case "visual":
+        console.log("Visual received trace:", trace);
+        // Handle visual traces if necessary
         break;
-      case "typing":
-        if (trace.payload.isTyping) {
-          eventBus.emit(`${this.eventPrefix}:typing`, { isTyping: true });
-        } else {
-          eventBus.emit(`${this.eventPrefix}:typing`, { isTyping: false });
-        }
+      case "no-reply":
+        console.log("No-reply received trace:", trace);
+        // Handle no-reply traces if necessary
+        break;
+      case "end":
+        console.log("End trace received:", trace);
+        eventBus.emit(`${this.eventPrefix}:end`, {});
+        break;
+      case "completion-events":
+        console.log("Completion event trace received:", trace);
+        // Handle completion events if necessary
         break;
       default:
         console.warn(`Unhandled trace type: ${trace.type}`, trace);
