@@ -9,13 +9,6 @@ import { EVENTS } from "../utils/event-constants.js";
  * manages Voiceflow variables, and emits events based on trace types.
  */
 class ChatbotCore {
-  /**
-   * Constructor initializes ChatbotCore with userID, endpoint, and chatbot type.
-   * @param {Object} options - Configuration options.
-   * @param {string} options.userID - Unique identifier for the user/session.
-   * @param {string} options.endpoint - Gadget API endpoint URL.
-   * @param {string} options.chatbotType - Type of chatbot ('main' or 'section') for event namespacing.
-   */
   constructor({ userID, endpoint, chatbotType }) {
     if (!userID) {
       throw new Error("ChatbotCore requires a userID.");
@@ -32,106 +25,136 @@ class ChatbotCore {
     this.userID = userID;
     this.endpoint = endpoint;
     this.chatbotType = chatbotType; // 'main' or 'section'
-    this.eventNamespace =
-      chatbotType === "main" ? "MAIN_CHATBOT" : "SECTION_CHATBOT";
     this.eventPrefix =
       chatbotType === "main" ? "mainChatbot" : "sectionChatbot";
 
-    this.eventHandlers = {};
+    this.abortController = null; // For aborting the fetch request if needed
 
     this.initialize();
   }
 
-  /**
-   * Initializes the ChatbotCore by setting up SSE connection.
-   */
   initialize() {
-    this.setupSSE();
+    // Initial setup if needed
   }
 
   /**
-   * Sets up the Server-Sent Events (SSE) connection to the Gadget API.
+   * Sends a launch request to initiate the conversation.
    */
-  setupSSE() {
+  sendLaunch(variables = {}) {
     const payload = {
-      userID: this.userID,
-      action: {}, // Initial action is empty; launch or message will populate this
+      action: {
+        type: "launch",
+        payload: variables,
+      },
       config: {}, // Additional configuration if needed
     };
 
-    // Send initial connection request to Gadget API to establish SSE
-    fetch(this.endpoint, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(payload),
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error(
-            `Gadget API responded with status ${response.status}`
-          );
-        }
-        // Check if browser supports EventSource
-        if (typeof EventSource === "undefined") {
-          throw new Error("EventSource is not supported in this browser.");
-        }
-
-        // Create a unique URL with userID to handle multiple chatbots
-        const eventSourceUrl = `${this.endpoint}?userID=${encodeURIComponent(
-          this.userID
-        )}`;
-
-        this.eventSource = new EventSource(eventSourceUrl, {
-          withCredentials: true,
-        });
-
-        this.eventSource.onmessage = this.handleIncomingMessage.bind(this);
-        this.eventSource.onerror = this.handleError.bind(this);
-      })
-      .catch((error) => {
-        console.error("Failed to establish SSE connection:", error);
-        eventBus.emit(`${this.eventPrefix}:error`, { message: error.message });
-      });
+    this.sendAction(payload);
   }
 
   /**
-   * Handles incoming SSE messages from the Gadget API.
-   * @param {MessageEvent} event - The SSE message event.
+   * Sends a user message to the chatbot.
+   * @param {string} message - The user's message.
    */
-  handleIncomingMessage(event) {
+  sendMessage(message) {
+    const payload = {
+      action: {
+        type: "text",
+        payload: {
+          message: message,
+        },
+      },
+      config: {}, // Additional configuration if needed
+    };
+
+    this.sendAction(payload);
+  }
+
+  /**
+   * Sends an action (launch, message, etc.) to the Gadget API via POST and handles SSE response.
+   * @param {Object} actionPayload - The action payload to send.
+   */
+  async sendAction(actionPayload) {
+    this.abortController = new AbortController();
+    const { signal } = this.abortController;
+
     try {
-      const data = JSON.parse(event.data);
-      if (!data.type || !data.payload) {
-        throw new Error("Invalid data format received from Gadget API.");
+      const response = await fetch(this.endpoint, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          userID: this.userID,
+          action: actionPayload.action,
+          config: actionPayload.config,
+        }),
+        credentials: "include", // Include cookies if needed
+        signal: signal,
+      });
+
+      if (!response.ok) {
+        throw new Error(`Gadget API responded with status ${response.status}`);
       }
 
-      switch (data.type) {
-        case "trace":
-          this.processTrace(data.payload);
+      const reader = response.body.getReader();
+      const decoder = new TextDecoder("utf-8");
+      let buffer = "";
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) {
+          eventBus.emit(`${this.eventPrefix}:end`, {});
           break;
-        case "end":
-          this.closeConnection();
-          break;
-        case "error":
-          eventBus.emit(`${this.eventPrefix}:error`, {
-            message: data.payload.message,
-          });
-          this.closeConnection();
-          break;
-        default:
-          console.warn(`Unknown data type received: ${data.type}`);
+        }
+
+        buffer += decoder.decode(value, { stream: true });
+        const events = buffer.split("\n\n");
+        buffer = events.pop(); // Remaining partial event
+
+        events.forEach((eventStr) => {
+          if (eventStr.trim() === "") return;
+          try {
+            const lines = eventStr.split("\n");
+            const eventTypeLine = lines.find((line) =>
+              line.startsWith("event:")
+            );
+            const dataLine = lines.find((line) => line.startsWith("data:"));
+
+            const eventType = eventTypeLine
+              ? eventTypeLine.split(":")[1].trim()
+              : "trace";
+            const data = dataLine
+              ? JSON.parse(eventLine.substring(5).trim())
+              : null;
+
+            if (eventType === "trace") {
+              this.processTrace(data);
+            } else if (eventType === "end") {
+              eventBus.emit(`${this.eventPrefix}:end`, {});
+            }
+            // Handle other event types if necessary
+          } catch (error) {
+            console.error("Error parsing SSE event:", error);
+          }
+        });
       }
     } catch (error) {
-      console.error("Error processing incoming message:", error);
-      eventBus.emit(`${this.eventPrefix}:error`, { message: error.message });
+      if (error.name === "AbortError") {
+        console.warn("SSE connection aborted");
+      } else {
+        console.error("SSE connection error:", error);
+        eventBus.emit(`${this.eventPrefix}:error`, { message: error.message });
+      }
+    } finally {
+      this.abortController = null;
+      eventBus.emit(`${this.eventPrefix}:end`, {});
     }
   }
 
   /**
-   * Processes different types of traces received from Voiceflow.
-   * @param {Object} trace - The trace object containing type and payload.
+   * Processes individual trace events and emits corresponding events via EventBus.
+   * @param {Object} trace - The trace object received from Voiceflow.
    */
   processTrace(trace) {
     if (!trace.type) {
@@ -140,7 +163,7 @@ class ChatbotCore {
     }
 
     switch (trace.type) {
-      case "message":
+      case "text":
         eventBus.emit(`${this.eventPrefix}:messageReceived`, {
           content: trace.payload.message,
         });
@@ -174,90 +197,11 @@ class ChatbotCore {
   }
 
   /**
-   * Handles errors from the SSE connection.
-   * @param {Event} event - The error event.
-   */
-  handleError(event) {
-    console.error("SSE connection error:", event);
-    eventBus.emit(`${this.eventPrefix}:error`, {
-      message: "Connection error with Voiceflow API.",
-    });
-    this.closeConnection();
-  }
-
-  /**
-   * Sends a launch request to Voiceflow with optional payload.
-   * @param {Object} [variables={}] - Voiceflow variables to include in the launch payload.
-   */
-  sendLaunch(variables = {}) {
-    const payload = {
-      action: {
-        type: "launch",
-        payload: variables,
-      },
-      config: {}, // Additional configuration if needed
-    };
-
-    this.sendAction(payload);
-  }
-
-  /**
-   * Sends a user message to Voiceflow.
-   * @param {string} message - The user's message.
-   */
-  sendMessage(message) {
-    const payload = {
-      action: {
-        type: "text",
-        payload: {
-          message: message,
-        },
-      },
-      config: {}, // Additional configuration if needed
-    };
-
-    this.sendAction(payload);
-  }
-
-  /**
-   * Sends an action (launch, message, etc.) to the Gadget API.
-   * @param {Object} actionPayload - The action payload to send.
-   */
-  sendAction(actionPayload) {
-    const payload = {
-      userID: this.userID,
-      action: actionPayload.action,
-      config: actionPayload.config,
-    };
-
-    fetch(this.endpoint, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(payload),
-      credentials: "include", // Include cookies if needed
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error(
-            `Gadget API responded with status ${response.status}`
-          );
-        }
-        // No need to handle response as SSE is used for incoming messages
-      })
-      .catch((error) => {
-        console.error("Failed to send action to Gadget API:", error);
-        eventBus.emit(`${this.eventPrefix}:error`, { message: error.message });
-      });
-  }
-
-  /**
    * Closes the SSE connection gracefully.
    */
   closeConnection() {
-    if (this.eventSource) {
-      this.eventSource.close();
+    if (this.abortController) {
+      this.abortController.abort();
       console.log("SSE connection closed.");
     }
   }
@@ -273,6 +217,7 @@ class ChatbotCore {
     eventBus.removeAllListeners(`${this.eventPrefix}:deviceAnswer`);
     eventBus.removeAllListeners(`${this.eventPrefix}:error`);
     eventBus.removeAllListeners(`${this.eventPrefix}:typing`);
+    eventBus.removeAllListeners(`${this.eventPrefix}:end`);
   }
 }
 
