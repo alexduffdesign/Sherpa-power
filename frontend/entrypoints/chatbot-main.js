@@ -25,20 +25,26 @@ class MainChatbot {
   }
 
   /**
-   * Sets up event listeners for ChatbotCore events.
+   * Sets up event listeners for ChatbotCore events and UI interactions.
    */
   setupEventListeners() {
     // Listen to events emitted by ChatbotCore via EventBus
     eventBus.on(EVENTS.MAIN_CHATBOT.MESSAGE_RECEIVED, (data) => {
-      this.ui.addMessage("assistant", data.content);
+      this.ui.addMessage("assistant", data.content, data.metadata);
     });
 
     eventBus.on(EVENTS.MAIN_CHATBOT.CHOICE_PRESENTED, (data) => {
-      this.ui.addButtons(data.buttons);
+      this.ui.addMessage("assistant", data.content, {
+        type: "choice",
+        buttons: data.buttons,
+      });
     });
 
     eventBus.on(EVENTS.MAIN_CHATBOT.CAROUSEL_PRESENTED, (data) => {
-      this.ui.addCarousel(data.carouselItems);
+      this.ui.addMessage("assistant", data.content, {
+        type: "carousel",
+        carouselItems: data.carouselItems,
+      });
     });
 
     eventBus.on(EVENTS.MAIN_CHATBOT.ERROR, (error) => {
@@ -57,6 +63,16 @@ class MainChatbot {
     document.addEventListener("chatbotLaunch", () => {
       this.launch();
     });
+
+    // Listen for user message submissions via UI
+    this.ui.onUserMessage((message) => {
+      this.sendMessage(message);
+    });
+
+    // Listen for button clicks from UI components
+    this.ui.onButtonClick((payload) => {
+      this.sendAction(payload);
+    });
   }
 
   /**
@@ -65,7 +81,18 @@ class MainChatbot {
   launch() {
     if (this.isLaunched) return;
 
-    this.core.sendLaunch();
+    this.core
+      .sendLaunch()
+      .then(() => {
+        console.log("Chatbot launched successfully.");
+      })
+      .catch((error) => {
+        console.error("Error launching chatbot:", error);
+        this.ui.displayError(
+          "Failed to launch the chatbot. Please try again later."
+        );
+      });
+
     this.isLaunched = true;
   }
 
@@ -76,9 +103,51 @@ class MainChatbot {
   sendMessage(message) {
     // Sanitize user input to prevent XSS attacks
     const sanitizedMessage = this.sanitizeInput(message);
-    this.core.sendMessage(sanitizedMessage);
-    this.ui.addMessage("user", sanitizedMessage);
-    this.saveToHistory("user", sanitizedMessage);
+    this.core
+      .sendMessage(sanitizedMessage)
+      .then(() => {
+        this.ui.addMessage("user", sanitizedMessage, { type: "message" });
+        this.saveToHistory("user", sanitizedMessage, { type: "message" });
+      })
+      .catch((error) => {
+        console.error("Error sending message:", error);
+        this.ui.displayError("Failed to send your message. Please try again.");
+      });
+  }
+
+  /**
+   * Sends an action payload to the chatbot.
+   * @param {Object} actionPayload - The action payload to send.
+   */
+  sendAction(actionPayload) {
+    // Validate the action payload
+    if (!actionPayload || typeof actionPayload !== "object") {
+      console.error("Invalid action payload:", actionPayload);
+      this.ui.displayError("Invalid action triggered.");
+      return;
+    }
+
+    // Send the action to the chatbot core
+    this.core
+      .sendAction({
+        action: actionPayload,
+        config: {},
+      })
+      .then(() => {
+        console.log("Action sent successfully:", actionPayload);
+        this.ui.addMessage("user", actionPayload.label || "Action executed.", {
+          type: "action",
+        });
+        this.saveToHistory("user", JSON.stringify(actionPayload), {
+          type: "action",
+        });
+      })
+      .catch((error) => {
+        console.error("Error sending action:", error);
+        this.ui.displayError(
+          "An error occurred while processing your request."
+        );
+      });
   }
 
   /**
@@ -87,28 +156,41 @@ class MainChatbot {
   loadHistory() {
     const history = JSON.parse(localStorage.getItem(this.historyKey)) || [];
     history.forEach((entry) => {
-      this.ui.addMessage(entry.sender, entry.message);
+      if (entry.sender === "user") {
+        this.ui.addMessage("user", entry.message, entry.metadata);
+      } else if (entry.sender === "assistant") {
+        this.ui.addMessage("assistant", entry.message, entry.metadata);
+      }
     });
 
-    // Check if the last message was from the assistant to retain interactive elements
+    // Optionally, re-render interactive elements based on the last entry's metadata
     if (history.length > 0) {
       const lastEntry = history[history.length - 1];
-      if (lastEntry.sender === "assistant") {
-        // Optional: Implement logic to re-render interactive elements based on the last entry
-        // For example, if the last message included choices or a carousel, re-add them
-        // This requires storing additional metadata in the history
+      if (lastEntry.sender === "assistant" && lastEntry.metadata) {
+        switch (lastEntry.metadata.type) {
+          case "choice":
+            this.ui.addButtons(lastEntry.metadata.buttons);
+            break;
+          case "carousel":
+            this.ui.addCarousel(lastEntry.metadata.carouselItems);
+            break;
+          // Add more cases as needed
+          default:
+            break;
+        }
       }
     }
   }
 
   /**
-   * Saves a message to conversation history in localStorage.
+   * Saves a message or action to conversation history in localStorage.
    * @param {string} sender - 'user' or 'assistant'.
-   * @param {string} message - The message content.
+   * @param {string} message - The message content or action payload.
+   * @param {Object} [metadata] - Additional metadata about the entry.
    */
-  saveToHistory(sender, message) {
+  saveToHistory(sender, message, metadata = null) {
     const history = JSON.parse(localStorage.getItem(this.historyKey)) || [];
-    history.push({ sender, message });
+    history.push({ sender, message, metadata });
     localStorage.setItem(this.historyKey, JSON.stringify(history));
   }
 
@@ -156,16 +238,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Load conversation history
   mainChatbot.loadHistory();
-
-  // Listen for user message submissions
-  mainChatbotUI.onUserMessage((message) => {
-    mainChatbot.sendMessage(message);
-  });
-
-  // Listen for button clicks from UI components
-  mainChatbotUI.onButtonClick((payload) => {
-    mainChatbot.sendMessage(JSON.stringify(payload));
-  });
 });
 
 export default MainChatbot;
