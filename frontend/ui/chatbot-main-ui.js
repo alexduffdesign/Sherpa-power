@@ -89,7 +89,12 @@ class MainChatbotUI {
     const message = document.createElement("message-component");
     message.setAttribute("sender", sender);
     message.setAttribute("content", content);
-    this.container.querySelector(".chatbot-container").appendChild(message);
+    if (this.messageContainer) {
+      this.messageContainer.appendChild(message);
+      console.log("Message appended to messageContainer"); // Debug log
+    } else {
+      console.error("Message container not found");
+    }
     this.scrollToBottom();
     this.saveToHistory(sender, content);
   }
@@ -110,7 +115,12 @@ class MainChatbotUI {
       const button = document.createElement("button-component");
       button.setAttribute("label", buttonData.name);
       button.setAttribute("payload", JSON.stringify(buttonData.request));
-      this.container.querySelector(".chatbot-container").appendChild(button);
+      if (this.messageContainer) {
+        this.messageContainer.appendChild(button);
+        console.log("Button appended to messageContainer"); // Debug log
+      } else {
+        console.error("Message container not found");
+      }
     });
     this.scrollToBottom();
   }
