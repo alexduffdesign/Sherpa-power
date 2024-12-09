@@ -143,7 +143,8 @@ document.addEventListener("DOMContentLoaded", () => {
   // Initialize ChatbotCore with the generated userID
   const mainChatbotCore = new ChatbotCore({
     userID: mainUserId,
-    endpoint: "/api/POST-voiceflow-stream", // Update to your actual endpoint
+    endpoint:
+      "https://chatbottings--development.gadget.app/voiceflowAPI/voiceflow-streaming", // Update to your actual endpoint
     chatbotType: "main",
   });
 
