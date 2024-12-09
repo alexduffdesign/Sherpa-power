@@ -174,7 +174,7 @@ class ChatbotCore {
       case "choice":
         console.log("Choice received choice trace:", trace);
         eventBus.emit(`${this.eventPrefix}:choicePresented`, {
-          buttons: trace.payload.buttons, // Corrected from 'choices' to 'buttons'
+          choices: trace.payload.choices,
         });
         break;
       case "carousel":
