@@ -217,6 +217,7 @@
     const drawer = document.getElementById('{{ drawer_id }}');
     if (drawer) {
       let hasLaunched = false;
+      console.log(drawer);
       drawer.addEventListener('dialog:after-show', function() {
         if (!hasLaunched) {
           // The chatbot-main.js script handles the launch when the drawer is opened
