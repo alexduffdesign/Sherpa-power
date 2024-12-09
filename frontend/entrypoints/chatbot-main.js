@@ -44,6 +44,19 @@ class MainChatbot {
     eventBus.on(EVENTS.MAIN_CHATBOT.ERROR, (error) => {
       this.ui.displayError(error.message);
     });
+
+    eventBus.on(EVENTS.MAIN_CHATBOT.TYPING, (data) => {
+      if (data.isTyping) {
+        this.ui.showTypingIndicator();
+      } else {
+        this.ui.hideTypingIndicator();
+      }
+    });
+
+    // Listen for chatbot launch event
+    document.addEventListener("chatbotLaunch", () => {
+      this.launch();
+    });
   }
 
   /**
@@ -61,9 +74,11 @@ class MainChatbot {
    * @param {string} message - The user's message.
    */
   sendMessage(message) {
-    this.core.sendMessage(message);
-    this.ui.addMessage("user", message);
-    this.saveToHistory("user", message);
+    // Sanitize user input to prevent XSS attacks
+    const sanitizedMessage = this.sanitizeInput(message);
+    this.core.sendMessage(sanitizedMessage);
+    this.ui.addMessage("user", sanitizedMessage);
+    this.saveToHistory("user", sanitizedMessage);
   }
 
   /**
@@ -75,15 +90,13 @@ class MainChatbot {
       this.ui.addMessage(entry.sender, entry.message);
     });
 
-    // Check if the last message was a choice or carousel to retain interactive elements
+    // Check if the last message was from the assistant to retain interactive elements
     if (history.length > 0) {
       const lastEntry = history[history.length - 1];
       if (lastEntry.sender === "assistant") {
-        // Placeholder: Implement logic to determine if lastEntry includes choices or carousel
-        // This could be based on additional flags or message content structure
-        // For example:
-        // if (lastEntry.hasChoices) { this.ui.addButtons(lastEntry.choices); }
-        // if (lastEntry.hasCarousel) { this.ui.addCarousel(lastEntry.carouselItems); }
+        // Optional: Implement logic to re-render interactive elements based on the last entry
+        // For example, if the last message included choices or a carousel, re-add them
+        // This requires storing additional metadata in the history
       }
     }
   }
@@ -97,6 +110,17 @@ class MainChatbot {
     const history = JSON.parse(localStorage.getItem(this.historyKey)) || [];
     history.push({ sender, message });
     localStorage.setItem(this.historyKey, JSON.stringify(history));
+  }
+
+  /**
+   * Sanitizes user input to prevent XSS attacks.
+   * @param {string} input - The user-provided input.
+   * @returns {string} - The sanitized input.
+   */
+  sanitizeInput(input) {
+    const div = document.createElement("div");
+    div.textContent = input;
+    return div.innerHTML;
   }
 }
 
@@ -119,8 +143,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // Initialize ChatbotCore with the generated userID
   const mainChatbotCore = new ChatbotCore({
     userID: mainUserId,
-    endpoint:
-      "https://chatbottings--development.gadget.app/voiceflowAPI/voiceflow-streaming",
+    endpoint: "/api/POST-voiceflow-stream", // Update to your actual endpoint
     chatbotType: "main",
   });
 
@@ -142,20 +165,6 @@ document.addEventListener("DOMContentLoaded", () => {
   mainChatbotUI.onButtonClick((payload) => {
     mainChatbot.sendMessage(JSON.stringify(payload));
   });
-
-  // Handle launch event on first opening of the chat drawer
-  let hasLaunched = false;
-  const drawer = document.getElementById("header-ai-trigger");
-  if (drawer) {
-    drawer.addEventListener("click", () => {
-      if (!hasLaunched) {
-        mainChatbot.launch();
-        hasLaunched = true;
-      }
-    });
-  } else {
-    console.error("Chatbot drawer element not found");
-  }
 });
 
 export default MainChatbot;

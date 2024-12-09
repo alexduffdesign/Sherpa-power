@@ -199,25 +199,37 @@
     </div>
   
 
-       <main-chatbot api-endpoint="https://chatbottings--development.gadget.app/voiceflowAPI/voiceflow-streaming" class="main-chatbot" >
-        {% render 'chatbot-template' %}
-         <footer class="footer-form">
-           {{ form }}
-         </footer>
-      </main-chatbot>
-  </x-drawer>
+      <!-- Main Chatbot UI Container -->
+  <div id="main-chatbot-ui" class="main-chatbot-ui">
+    {% render 'chatbot-template' %}
+    <footer class="footer-form">
+      {{ form }}
+    </footer>
+  </div>
+</x-drawer>
 
+<!-- Include the updated chatbot-main.js script -->
+{% render 'vite-tag' with 'chatbot-main.js' %}
 
-  {% render 'vite-tag' with 'chatbot-drawer.js' %}
-  <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      if (typeof initChatbotDrawer === 'function') {
-        initChatbotDrawer('{{ drawer_id }}');
-      } else {
-        console.error('initChatbotDrawer function not found');
-      }
-    });
-  </script>
+<!-- Initialize the chatbot when the drawer is opened -->
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const drawer = document.getElementById('{{ drawer_id }}');
+    if (drawer) {
+      let hasLaunched = false;
+      drawer.addEventListener('dialog:after-show', function() {
+        if (!hasLaunched) {
+          // The chatbot-main.js script handles the launch when the drawer is opened
+          const launchEvent = new Event('chatbotLaunch');
+          document.dispatchEvent(launchEvent);
+          hasLaunched = true;
+        }
+      });
+    } else {
+      console.error('Chatbot drawer element not found');
+    }
+  });
+</script>
 
 
 {% schema %}
