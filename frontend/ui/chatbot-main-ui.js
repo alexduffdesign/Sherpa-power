@@ -42,7 +42,6 @@ class MainChatbotUI {
       if (message) {
         eventBus.emit("userMessage", message);
         this.input.value = "";
-        this.saveToHistory("user", message);
       }
     });
 
@@ -96,7 +95,6 @@ class MainChatbotUI {
     this.messageContainer.appendChild(message);
     console.log("Message appended to messageContainer"); // Debug log
     this.scrollToBottom();
-    this.saveToHistory(sender, content, metadata);
 
     // If metadata includes interactive elements, add them
     if (sender === "assistant" && metadata) {
@@ -171,19 +169,6 @@ class MainChatbotUI {
 
   scrollToBottom() {
     this.messageContainer.scrollTop = this.messageContainer.scrollHeight;
-  }
-
-  /**
-   * Saves a message to conversation history in localStorage.
-   * @param {string} sender - 'user' or 'assistant'.
-   * @param {string} message - The message content.
-   * @param {Object} [metadata] - Additional metadata about the entry.
-   */
-  saveToHistory(sender, message, metadata = null) {
-    const history =
-      JSON.parse(localStorage.getItem("mainChatbotHistory")) || [];
-    history.push({ sender, message, metadata });
-    localStorage.setItem("mainChatbotHistory", JSON.stringify(history));
   }
 
   /**

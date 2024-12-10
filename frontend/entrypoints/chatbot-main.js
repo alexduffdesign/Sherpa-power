@@ -33,6 +33,14 @@ class MainChatbot {
     // Listen to messageReceived events
     eventBus.on(EVENTS.MAIN_CHATBOT.MESSAGE_RECEIVED, (data) => {
       this.ui.addMessage("assistant", data.content, data.metadata);
+      this.saveToHistory("assistant", data.content, data.metadata);
+    });
+
+    // Listen to user messages
+    eventBus.on("userMessage", (message) => {
+      this.ui.addMessage("user", message);
+      this.saveToHistory("user", message);
+      this.core.sendMessage(message);
     });
 
     // Listen to choicePresented events
