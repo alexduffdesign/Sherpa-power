@@ -55,11 +55,18 @@ class MainChatbot {
       this.saveToHistory("user", data.label);
 
       // Send the button payload to Voiceflow
-      const payload = { type: data.type };
+      const actionPayload = {
+        action: {
+          type: data.type,
+        },
+      };
+
+      // Only add payload if it exists and has content
       if (data.payload && Object.keys(data.payload).length > 0) {
-        payload.payload = data.payload;
+        actionPayload.action.payload = data.payload;
       }
-      this.core.sendAction(payload);
+
+      this.core.sendAction(actionPayload);
     });
 
     // Listen to choicePresented events
