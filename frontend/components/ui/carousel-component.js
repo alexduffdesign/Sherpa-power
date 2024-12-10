@@ -2,16 +2,21 @@
 
 import eventBus from "../../utils/event-bus.js";
 
+/**
+ * CarouselComponent Class
+ * Renders a carousel of cards with images, titles, descriptions, and action buttons.
+ */
 export class CarouselComponent extends HTMLElement {
   constructor() {
     super();
     // Attach Shadow DOM to encapsulate styles
     this.attachShadow({ mode: "open" });
     this.items = []; // Initialize this.items as an empty array
+    this.currentIndex = 0;
     this.isDesktop = window.matchMedia("(min-width: 1000px)").matches;
     this.itemsPerSlide = this.isDesktop ? 2 : 1;
 
-    // Bind methods
+    // Bind methods to maintain context
     this.moveLeft = this.moveLeft.bind(this);
     this.moveRight = this.moveRight.bind(this);
     this.handleResize = this.handleResize.bind(this);
@@ -46,7 +51,7 @@ export class CarouselComponent extends HTMLElement {
 
   /**
    * Renders the carousel with embedded styles and initializes functionality.
-   * @param {Object} carouselData - Data for the carousel
+   * @param {Object} carouselData - Data for the carousel containing a 'cards' array.
    */
   renderCarousel(carouselData) {
     this.carouselData = carouselData;
@@ -135,7 +140,9 @@ export class CarouselComponent extends HTMLElement {
         }
       </style>
       <div class="carousel">
-        <div class="carousel__container"></div>
+        <div class="carousel__container">
+          <!-- Carousel items will be dynamically added here -->
+        </div>
         <button class="carousel__button carousel__button--left" aria-label="Previous slide">&#9664;</button>
         <button class="carousel__button carousel__button--right" aria-label="Next slide">&#9654;</button>
       </div>
@@ -150,15 +157,17 @@ export class CarouselComponent extends HTMLElement {
     );
 
     // Add carousel items
-    carouselData.cards.forEach((card, index) => {
+    this.carouselData.cards.forEach((card, index) => {
       const item = document.createElement("div");
       item.classList.add("carousel__item");
 
+      // Safely handle image URL
       const imageUrl = card.imageUrl
         ? `<img src="${card.imageUrl}" alt="${
             card.title || ""
           }" class="carousel__item-image">`
         : "";
+
       const title = card.title
         ? `<h6 class="carousel__item-title">${card.title}</h6>`
         : "";
@@ -188,7 +197,7 @@ export class CarouselComponent extends HTMLElement {
     // Initialize Carousel Functionality
     this.initCarousel();
 
-    // Add event listeners to carousel buttons
+    // Add event listeners to carousel navigation buttons
     this.leftButton.addEventListener("click", this.moveLeft);
     this.rightButton.addEventListener("click", this.moveRight);
     window.addEventListener("resize", this.handleResize);
@@ -289,4 +298,9 @@ export class CarouselComponent extends HTMLElement {
     // Remove the carousel from the UI after interaction if desired
     this.remove();
   }
+}
+
+// Define the custom element if not already defined
+if (!customElements.get("carousel-component")) {
+  customElements.define("carousel-component", CarouselComponent);
 }

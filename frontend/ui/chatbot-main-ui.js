@@ -35,6 +35,7 @@ class MainChatbotUI {
   }
 
   setupEventListeners() {
+    // Handle form submission
     this.form.addEventListener("submit", (e) => {
       e.preventDefault();
       const message = this.input.value.trim();
@@ -44,8 +45,8 @@ class MainChatbotUI {
       }
     });
 
-    // Listen for typing events
-    eventBus.on(`${EVENTS.PREFIX}:typing`, (data) => {
+    // Listen for typing events from ChatbotCore
+    eventBus.on(`${EVENTS.MAIN_CHATBOT.PREFIX}:typing`, (data) => {
       if (data.isTyping) {
         this.showTypingIndicator();
       } else {
@@ -53,7 +54,7 @@ class MainChatbotUI {
       }
     });
 
-    // Set up event delegation for button clicks
+    // Set up event delegation for button clicks within messages
     this.messageContainer.addEventListener("click", (e) => {
       const button = e.target.closest("button-component");
       if (button) {
@@ -68,6 +69,18 @@ class MainChatbotUI {
           this.removeInteractiveElements();
         }
       }
+    });
+
+    // Listen for carousel button clicks specifically
+    eventBus.on("carouselButtonClicked", (payload) => {
+      if (!payload || !payload.type) {
+        console.error("Invalid carousel button payload:", payload);
+        return;
+      }
+
+      // Send the payload to ChatbotCore
+      eventBus.emit("userMessage", JSON.stringify(payload));
+      this.removeInteractiveElements();
     });
   }
 
@@ -130,16 +143,33 @@ class MainChatbotUI {
 
   /**
    * Adds a carousel to the chatbot UI.
-   * @param {Object} carouselData - Data for the carousel.
+   * Wraps the carouselItems array within a 'cards' key as expected by the carousel component.
+   * @param {Array} carouselItems - Array of carousel card data.
    */
-  addCarousel(carouselData) {
-    console.log("Adding carousel:", carouselData);
+  addCarousel(carouselItems) {
+    console.log("Adding carousel:", carouselItems);
+
+    if (!Array.isArray(carouselItems)) {
+      console.error(
+        "addCarousel expected an array but received:",
+        carouselItems
+      );
+      return;
+    }
+
     const carousel = document.createElement("carousel-component");
-    carousel.setAttribute("data-carousel", JSON.stringify(carouselData));
+    // Wrap carouselItems within an object containing 'cards' key
+    carousel.setAttribute(
+      "data-carousel",
+      JSON.stringify({ cards: carouselItems })
+    );
     this.messageContainer.appendChild(carousel);
     this.scrollToBottom();
   }
 
+  /**
+   * Shows the typing indicator in the chatbot UI.
+   */
   showTypingIndicator() {
     if (this.typingIndicator) {
       this.typingIndicator.style.display = "flex";
@@ -147,12 +177,19 @@ class MainChatbotUI {
     }
   }
 
+  /**
+   * Hides the typing indicator in the chatbot UI.
+   */
   hideTypingIndicator() {
     if (this.typingIndicator) {
       this.typingIndicator.style.display = "none";
     }
   }
 
+  /**
+   * Displays an error message in the chatbot UI.
+   * @param {string} message - The error message to display.
+   */
   displayError(message) {
     const errorDiv = document.createElement("div");
     errorDiv.classList.add("error-message");
@@ -161,6 +198,9 @@ class MainChatbotUI {
     this.scrollToBottom();
   }
 
+  /**
+   * Scrolls the chatbot UI to the bottom to show the latest message.
+   */
   scrollToBottom() {
     this.messageContainer.scrollTop = this.messageContainer.scrollHeight;
   }
