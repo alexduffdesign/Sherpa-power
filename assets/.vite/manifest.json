@@ -26,7 +26,7 @@
     ]
   },
   "frontend/entrypoints/chatbot-drawer.js": {
-    "file": "chatbot-drawer.B5WS2aNt.js",
+    "file": "chatbot-drawer.CXLwpduE.js",
     "name": "chatbot-drawer",
     "src": "frontend/entrypoints/chatbot-drawer.js",
     "isEntry": true,
@@ -38,7 +38,7 @@
     ]
   },
   "frontend/entrypoints/chatbot-main.js": {
-    "file": "chatbot-main.DhbNaOht.js",
+    "file": "chatbot-main.BtmSPQXu.js",
     "name": "chatbot-main",
     "src": "frontend/entrypoints/chatbot-main.js",
     "isEntry": true,

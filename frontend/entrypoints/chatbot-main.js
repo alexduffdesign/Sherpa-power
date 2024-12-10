@@ -15,8 +15,18 @@ class MainChatbot {
     this.core = core;
     this.ui = ui;
     this.historyKey = "mainChatbotHistory";
-    this.isLaunched = false;
+    this.launchKey = "chatHasLaunched";
+    this.isLaunched = this.hasLaunched();
     this.setupEventListeners();
+  }
+
+  hasLaunched() {
+    return localStorage.getItem(this.launchKey) === "true";
+  }
+
+  setLaunched() {
+    localStorage.setItem(this.launchKey, "true");
+    this.isLaunched = true;
   }
 
   setupEventListeners() {
@@ -66,12 +76,16 @@ class MainChatbot {
   }
 
   launch() {
-    if (this.isLaunched) return;
+    if (this.isLaunched) {
+      console.log("Chat already launched, skipping launch request");
+      return;
+    }
 
     this.core
       .sendLaunch()
       .then(() => {
         console.log("Chatbot launched successfully.");
+        this.setLaunched();
       })
       .catch((error) => {
         console.error("Error launching chatbot:", error);
@@ -79,22 +93,18 @@ class MainChatbot {
           "Failed to launch the chatbot. Please try again later."
         );
       });
-
-    this.isLaunched = true;
   }
 
   sendMessage(message) {
     const sanitizedMessage = this.sanitizeInput(message);
-    this.core
-      .sendMessage(sanitizedMessage)
-      .then(() => {
-        this.ui.addMessage("user", sanitizedMessage, { type: "message" });
-        this.saveToHistory("user", sanitizedMessage, { type: "message" });
-      })
-      .catch((error) => {
-        console.error("Error sending message:", error);
-        this.ui.displayError("Failed to send your message. Please try again.");
-      });
+
+    this.ui.addMessage("user", sanitizedMessage, { type: "message" });
+    this.saveToHistory("user", sanitizedMessage, { type: "message" });
+
+    this.core.sendMessage(sanitizedMessage).catch((error) => {
+      console.error("Error sending message:", error);
+      this.ui.displayError("Failed to send your message. Please try again.");
+    });
   }
 
   sendAction(actionPayload) {
