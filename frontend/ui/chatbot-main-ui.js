@@ -60,12 +60,11 @@ class MainChatbotUI {
     this.container
       .querySelector(".chatbot-container")
       .addEventListener("click", (e) => {
-        const button = e.target.closest("button.button");
+        const button = e.target.closest("button-component");
         if (button) {
-          const payload = JSON.parse(button.getAttribute("data-button-data"));
-          const label = button.textContent.trim(); // Get the button's visible text
-          payload.label = label; // Add the label to the payload
-          eventBus.emit("buttonClicked", payload);
+          const payload = JSON.parse(button.getAttribute("payload"));
+          const label = button.getAttribute("label");
+          eventBus.emit("buttonClicked", { ...payload, label });
           this.removeInteractiveElements();
         }
       });

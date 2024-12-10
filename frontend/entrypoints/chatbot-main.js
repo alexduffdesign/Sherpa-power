@@ -45,16 +45,15 @@ class MainChatbot {
 
     // Listen to button clicks
     eventBus.on("buttonClicked", (data) => {
-      // Use the button's label/name as the user's message
-      const buttonLabel = data.label || data.name || "Button clicked";
+      // Display the button's label as the user's message
+      const buttonLabel = data.label;
       this.ui.addMessage("user", buttonLabel);
       this.saveToHistory("user", buttonLabel);
-      // Send the original button payload to maintain the correct interaction
+
+      // Send the button payload to Voiceflow
+      delete data.label; // Remove our custom label
       this.core.sendAction({
-        action: {
-          type: "text",
-          payload: data, // Send the original button data without stringifying
-        },
+        action: data,
       });
     });
 
