@@ -7,7 +7,7 @@ export class CarouselComponent extends HTMLElement {
     super();
     // Attach Shadow DOM to encapsulate styles
     this.attachShadow({ mode: "open" });
-    this.currentIndex = 0;
+    this.items = []; // Initialize this.items as an empty array
     this.isDesktop = window.matchMedia("(min-width: 1000px)").matches;
     this.itemsPerSlide = this.isDesktop ? 2 : 1;
 
@@ -19,7 +19,28 @@ export class CarouselComponent extends HTMLElement {
   }
 
   connectedCallback() {
-    const carouselData = JSON.parse(this.getAttribute("data-carousel"));
+    const dataAttr = this.getAttribute("data-carousel");
+    if (!dataAttr) {
+      console.error(
+        "No data-carousel attribute found. Cannot render carousel."
+      );
+      return;
+    }
+
+    let carouselData;
+    try {
+      carouselData = JSON.parse(dataAttr);
+    } catch (err) {
+      console.error("Failed to parse carousel data:", err);
+      return;
+    }
+
+    // Ensure carouselData.cards is an array
+    if (!carouselData || !Array.isArray(carouselData.cards)) {
+      console.error("carouselData.cards is not defined or not an array");
+      return;
+    }
+
     this.renderCarousel(carouselData);
   }
 
@@ -114,9 +135,7 @@ export class CarouselComponent extends HTMLElement {
         }
       </style>
       <div class="carousel">
-        <div class="carousel__container">
-          <!-- Carousel items will be dynamically added here -->
-        </div>
+        <div class="carousel__container"></div>
         <button class="carousel__button carousel__button--left" aria-label="Previous slide">&#9664;</button>
         <button class="carousel__button carousel__button--right" aria-label="Next slide">&#9654;</button>
       </div>
@@ -131,15 +150,37 @@ export class CarouselComponent extends HTMLElement {
     );
 
     // Add carousel items
-    this.carouselData.cards.forEach((card, index) => {
+    carouselData.cards.forEach((card, index) => {
       const item = document.createElement("div");
       item.classList.add("carousel__item");
+
+      const imageUrl = card.imageUrl
+        ? `<img src="${card.imageUrl}" alt="${
+            card.title || ""
+          }" class="carousel__item-image">`
+        : "";
+      const title = card.title
+        ? `<h6 class="carousel__item-title">${card.title}</h6>`
+        : "";
+      const descriptionText =
+        card.description && card.description.text ? card.description.text : "";
+      const description = `<p class="carousel__item-description">${descriptionText}</p>`;
+
+      // Safely handle buttons if present
+      let buttonHTML = "";
+      if (card.buttons && card.buttons.length > 0) {
+        const buttonData = card.buttons[0];
+        const buttonLabel = buttonData.name || "Select";
+        buttonHTML = `<button class="carousel__item-button" data-button-index="${index}">${buttonLabel}</button>`;
+      }
+
       item.innerHTML = `
-        <img src="${card.imageUrl}" alt="${card.title}" class="carousel__item-image">
-        <h6 class="carousel__item-title">${card.title}</h6>
-        <p class="carousel__item-description">${card.description.text}</p>
-        <button class="carousel__item-button" data-button-index="${index}">${card.buttons[0].name}</button>
+        ${imageUrl}
+        ${title}
+        ${description}
+        ${buttonHTML}
       `;
+
       this.carouselContainer.appendChild(item);
       this.items.push(item);
     });
@@ -177,15 +218,12 @@ export class CarouselComponent extends HTMLElement {
   /**
    * Handles window resize events to adjust carousel settings.
    */
-  handleResize(e) {
-    const newIsDesktop = e.matches;
-    if (newIsDesktop !== this.isDesktop) {
-      this.isDesktop = newIsDesktop;
-      this.itemsPerSlide = this.isDesktop ? 2 : 1;
-      this.currentIndex = 0;
-      this.updatePosition();
-      this.updateVisibility();
-    }
+  handleResize() {
+    this.isDesktop = window.matchMedia("(min-width: 1000px)").matches;
+    this.itemsPerSlide = this.isDesktop ? 2 : 1;
+    this.currentIndex = 0;
+    this.updatePosition();
+    this.updateVisibility();
   }
 
   /**
@@ -238,12 +276,17 @@ export class CarouselComponent extends HTMLElement {
     const button = e.target;
     const buttonIndex = parseInt(button.getAttribute("data-button-index"), 10);
     const card = this.carouselData.cards[buttonIndex];
+    if (!card || !card.buttons || card.buttons.length === 0) {
+      console.warn("No button data found for this card.");
+      return;
+    }
 
-    // Emit event with button payload
     const payload = card.buttons[0].request;
-    eventBus.emit("carouselButtonClicked", payload);
+    if (payload) {
+      eventBus.emit("carouselButtonClicked", payload);
+    }
 
-    // Remove the carousel from the UI
+    // Remove the carousel from the UI after interaction if desired
     this.remove();
   }
 }
