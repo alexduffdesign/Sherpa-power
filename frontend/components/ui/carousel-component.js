@@ -71,17 +71,18 @@ export class CarouselComponent extends HTMLElement {
             letter-spacing: var(--heading-letter-spacing);
             text-transform: var(--heading-text-transform);
             overflow-wrap: anywhere;
-            text-size: var(--text-size-small);
+            text-size: var(--text-h6);
         }
 
-        button {
+        .button {
           --button-background: var(--button-background-primary) /
             var(--button-background-opacity, 1);
           --button-text-color: var(--button-text-primary);
-          --button-outline-color: var(--button-background-primary);
+          --button-outline-color: white;
           -webkit-appearance: none;
           appearance: none;
-          border-radius: var(--rounded-button);
+          border-radius: 8px;
+          border-width: 1px;
           background-color: rgb(var(--button-background));
           color: rgb(var(--button-text-color));
           text-align: center;
@@ -263,7 +264,7 @@ export class CarouselComponent extends HTMLElement {
       // Button
       if (card.buttons && card.buttons.length > 0) {
         const button = document.createElement("button");
-        button.classList.add("carousel__item-button");
+        button.classList.add("button", "carousel__item-button");
         button.setAttribute("data-button-index", index);
         button.textContent = card.buttons[0].name || "Select";
         itemContent.appendChild(button);
