@@ -383,12 +383,15 @@ export class CarouselComponent extends HTMLElement {
       return;
     }
 
-    const payload = card.buttons[0].request;
+    const buttonData = card.buttons[0];
+    const payload = buttonData.request;
+    const label = buttonData.name;
+    
     if (payload) {
-      eventBus.emit("carouselButtonClicked", payload);
+      eventBus.emit("carouselButtonClicked", { payload, label });
     }
 
-    // Remove the carousel from the UI after interaction if desired
+    // Remove the carousel from the UI after interaction
     this.remove();
   }
 }
