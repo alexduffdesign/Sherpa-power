@@ -45,15 +45,20 @@ class MainChatbot {
 
     // Listen to button clicks
     eventBus.on("buttonClicked", (data) => {
+      if (!data || !data.label) {
+        console.error("Invalid button data:", data);
+        return;
+      }
+
       // Display the button's label as the user's message
-      const buttonLabel = data.label;
-      this.ui.addMessage("user", buttonLabel);
-      this.saveToHistory("user", buttonLabel);
+      this.ui.addMessage("user", data.label);
+      this.saveToHistory("user", data.label);
 
       // Send the button payload to Voiceflow
-      delete data.label; // Remove our custom label
+      const payload = { ...data };
+      delete payload.label; // Remove our custom label
       this.core.sendAction({
-        action: data,
+        action: payload,
       });
     });
 
@@ -89,11 +94,6 @@ class MainChatbot {
     // Listen for user message submissions via UI
     this.ui.onUserMessage((message) => {
       this.sendMessage(message);
-    });
-
-    // Listen for button clicks from UI components
-    this.ui.onButtonClick((payload) => {
-      this.sendAction(payload);
     });
   }
 
