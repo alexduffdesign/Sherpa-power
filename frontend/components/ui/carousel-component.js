@@ -71,9 +71,10 @@ export class CarouselComponent extends HTMLElement {
             letter-spacing: var(--heading-letter-spacing);
             text-transform: var(--heading-text-transform);
             overflow-wrap: anywhere;
+            text-size: var(--text-size-small);
         }
 
-        .button {
+        button {
           --button-background: var(--button-background-primary) /
             var(--button-background-opacity, 1);
           --button-text-color: var(--button-text-primary);
@@ -84,7 +85,7 @@ export class CarouselComponent extends HTMLElement {
           background-color: rgb(var(--button-background));
           color: rgb(var(--button-text-color));
           text-align: center;
-          font-size: var(--text-sm);
+          font-size: var(--text-h6);
           letter-spacing: var(--text-letter-spacing);
           padding-block-start: var(--spacing-2-5);
           padding-block-end: var(--spacing-2-5);
