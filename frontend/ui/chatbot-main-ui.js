@@ -64,7 +64,10 @@ class MainChatbotUI {
         if (button) {
           const payload = JSON.parse(button.getAttribute("data-button-data"));
           const label = button.textContent.trim();
-          eventBus.emit("buttonClicked", { payload, label });
+          eventBus.emit("buttonClicked", {
+            payload,
+            label,
+          });
           this.removeInteractiveElements();
         }
       });
@@ -128,7 +131,11 @@ class MainChatbotUI {
     buttons.forEach((buttonData) => {
       const button = document.createElement("button-component");
       button.setAttribute("label", buttonData.name);
-      button.setAttribute("payload", JSON.stringify(buttonData.request));
+      // Store the complete request object as the payload
+      button.setAttribute(
+        "data-button-data",
+        JSON.stringify(buttonData.request)
+      );
       this.messageContainer.appendChild(button);
       console.log("Button appended to messageContainer"); // Debug log
     });
