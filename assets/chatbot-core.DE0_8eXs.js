@@ -31,7 +31,7 @@ import{E}from"./vendor.DqvJXvYX.js";class w extends E{}const o=new w,l={MAIN_CHA
           background-color: rgb(var(--button-background));
           color: rgb(var(--button-text-color));
           text-align: center;
-          font-size: var(--text-sm);
+          font-size: var(--text-h6);
           letter-spacing: var(--text-letter-spacing);
           padding-block-start: var(--spacing-2-5);
           padding-block-end: var(--spacing-2-5);
@@ -40,7 +40,7 @@ import{E}from"./vendor.DqvJXvYX.js";class w extends E{}const o=new w,l={MAIN_CHA
           font-weight: bold;
           line-height: 1.6;
           transition: background-color 0.15s ease-in-out, color 0.15s ease-in-out,
-          box-shadow 0.15s ease-in-out;
+            box-shadow 0.15s ease-in-out;
           display: inline-block;
           position: relative;
         }
@@ -281,4 +281,4 @@ import{E}from"./vendor.DqvJXvYX.js";class w extends E{}const o=new w,l={MAIN_CHA
         </button>
       </div>
     `,this.carouselContainer=this.shadowRoot.querySelector(".carousel__container"),this.leftButton=this.shadowRoot.querySelector(".carousel__button--left"),this.rightButton=this.shadowRoot.querySelector(".carousel__button--right"),this.carouselData.cards.forEach((e,s)=>{const i=document.createElement("div");i.classList.add("carousel__item");const c=document.createElement("div");c.classList.add("carousel__item-wrapper");const r=document.createElement("div");if(r.classList.add("carousel__item-content"),e.imageUrl){const n=document.createElement("img");n.src=e.imageUrl,n.alt=e.title||"",n.classList.add("carousel__item-image"),r.appendChild(n)}if(e.title){const n=document.createElement("h6");n.classList.add("carousel__item-title"),n.textContent=e.title,r.appendChild(n)}if(e.description&&e.description.text){const n=document.createElement("p");n.classList.add("carousel__item-description"),n.textContent=e.description.text,r.appendChild(n)}if(e.buttons&&e.buttons.length>0){const n=document.createElement("button");n.classList.add("button","carousel__item-button"),n.setAttribute("data-button-index",s),n.textContent=e.buttons[0].name||"Select",r.appendChild(n),n.addEventListener("click",this.handleButtonClick)}c.appendChild(r),i.appendChild(c),this.carouselContainer.appendChild(i),this.items.push(i)}),this.initCarousel(),this.leftButton.addEventListener("click",this.moveLeft),this.rightButton.addEventListener("click",this.moveRight),window.addEventListener("resize",this.handleResize),this.updateVisibility(),this.updatePosition()}initCarousel(){this.isDesktop=window.matchMedia("(min-width: 1000px)").matches,this.itemsPerSlide=this.isDesktop?2:1,this.currentIndex=0,this.updateVisibility(),this.updatePosition()}handleResize(){this.isDesktop=window.matchMedia("(min-width: 1000px)").matches,this.itemsPerSlide=this.isDesktop?2:1,this.currentIndex=0,this.updatePosition(),this.updateVisibility()}moveLeft(){const t=this.itemsPerSlide;this.currentIndex=Math.max(0,this.currentIndex-t),this.updatePosition(),this.updateVisibility()}moveRight(){const t=this.itemsPerSlide;this.currentIndex=Math.min(this.items.length-t,this.currentIndex+t),this.updatePosition(),this.updateVisibility()}updatePosition(){const t=this.itemsPerSlide,e=-(this.currentIndex/t)*100;this.carouselContainer.style.transform=`translateX(${e}%)`}updateVisibility(){const t=this.itemsPerSlide;this.leftButton.disabled=this.currentIndex===0,this.rightButton.disabled=this.currentIndex>=this.items.length-t}handleButtonClick(t){const e=t.target,s=parseInt(e.getAttribute("data-button-index"),10),i=this.carouselData.cards[s];if(!i||!i.buttons||i.buttons.length===0){console.warn("No button data found for this card.");return}const c=i.buttons[0],r=c.name||"Select",n=c.request||{},h=n.type||"action";o.emit("buttonClicked",{type:h,payload:n,label:r}),this.remove()}}customElements.define("button-component",I);customElements.define("message-component",A);customElements.define("carousel-component",k);export{S as M,T as S,x as a,_ as b};
-//# sourceMappingURL=chatbot-core.jhZUWREE.js.map
+//# sourceMappingURL=chatbot-core.DE0_8eXs.js.map
