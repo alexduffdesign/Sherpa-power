@@ -42,7 +42,6 @@ class MainChatbotUI {
       if (message) {
         eventBus.emit("userMessage", message);
         this.input.value = "";
-        this.saveToHistory("user", message);
       }
     });
 

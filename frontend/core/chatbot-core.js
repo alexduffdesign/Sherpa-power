@@ -76,6 +76,7 @@ class ChatbotCore {
   async sendAction(actionPayload) {
     this.abortController = new AbortController();
     const { signal } = this.abortController;
+    let pendingTraces = [];
 
     try {
       // Show typing indicator before sending request
@@ -90,12 +91,20 @@ class ChatbotCore {
           userID: this.userID,
           action: actionPayload.action,
         }),
-        credentials: "include", // Include cookies if needed
+        credentials: "include",
         signal: signal,
       });
 
       if (!response.ok) {
-        throw new Error(`Gadget API responded with status ${response.status}`);
+        const errorText = await response.text();
+        console.error("API Error Response:", {
+          status: response.status,
+          statusText: response.statusText,
+          body: errorText,
+        });
+        throw new Error(
+          `Gadget API responded with status ${response.status}: ${errorText}`
+        );
       }
 
       const reader = response.body.getReader();
@@ -105,7 +114,6 @@ class ChatbotCore {
       while (true) {
         const { done, value } = await reader.read();
         if (done) {
-          eventBus.emit(`${this.eventPrefix}:end`, {});
           break;
         }
 
@@ -113,8 +121,8 @@ class ChatbotCore {
         const events = buffer.split("\n\n");
         buffer = events.pop(); // Remaining partial event
 
-        events.forEach((eventStr) => {
-          if (eventStr.trim() === "") return;
+        for (const eventStr of events) {
+          if (eventStr.trim() === "") continue;
           try {
             const lines = eventStr.split("\n");
             const eventTypeLine = lines.find((line) =>
@@ -131,16 +139,22 @@ class ChatbotCore {
                 )
               : null;
 
-            if (eventType === "trace") {
-              this.processTrace(data);
+            if (eventType === "trace" && data) {
+              pendingTraces.push(data);
             } else if (eventType === "end") {
+              // Process all pending traces
+              for (const trace of pendingTraces) {
+                await this.processTrace(trace);
+              }
+              pendingTraces = [];
               eventBus.emit(`${this.eventPrefix}:end`, {});
+              // Hide typing indicator after processing all traces
+              eventBus.emit(`${this.eventPrefix}:typing`, { isTyping: false });
             }
-            // Handle other event types if necessary
           } catch (error) {
             console.error("Error parsing SSE event:", error);
           }
-        });
+        }
       }
     } catch (error) {
       // Hide typing indicator on error
@@ -155,8 +169,6 @@ class ChatbotCore {
     } finally {
       this.abortController = null;
       eventBus.emit(`${this.eventPrefix}:end`, {});
-      // Hide typing indicator when everything is done
-      eventBus.emit(`${this.eventPrefix}:typing`, { isTyping: false });
     }
   }
 
@@ -171,14 +183,14 @@ class ChatbotCore {
     }
 
     // Hide typing indicator when we receive any trace
-    eventBus.emit(`${this.eventPrefix}:typing`, { isTyping: false });
+    // eventBus.emit(`${this.eventPrefix}:typing`, { isTyping: false });
 
     switch (trace.type) {
       case "text":
         console.log("Text received trace:", trace);
         eventBus.emit(`${this.eventPrefix}:messageReceived`, {
           content: trace.payload.message,
-          metadata: trace.payload.metadata || null, // Include metadata if available
+          metadata: trace.payload.metadata || null,
         });
         break;
       case "choice":
