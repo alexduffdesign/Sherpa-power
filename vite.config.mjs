@@ -10,7 +10,10 @@ export default defineConfig({
       snippetFile: "vite-tag.liquid",
       additionalEntrypoints: [
         "frontend/entrypoints/chatbot-main.js",
-        "frontend/entrypoints/theme.js",
+        "./frontend/ui/chatbot-main-ui.js",
+        "frontend/entrypoints/chatbot-section.js",
+        "./frontend/ui/chatbot-section-ui.js",
+        "frontend/core/chatbot-core.js",
         "frontend/components/ui/chatbot-components.js",
       ],
       versionNumbers: true,
@@ -27,10 +30,12 @@ export default defineConfig({
         manualChunks: {
           vendor: ["eventemitter3"],
           chatbot: [
-            "./frontend/core/chatbot-core.js",
+            "frontend/entrypoints/chatbot-main.js",
             "./frontend/ui/chatbot-main-ui.js",
+            "frontend/entrypoints/chatbot-section.js",
             "./frontend/ui/chatbot-section-ui.js",
-            "./frontend/components/ui/chatbot-components.js",
+            "frontend/core/chatbot-core.js",
+            "frontend/components/ui/chatbot-components.js",
           ],
         },
       },
