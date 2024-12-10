@@ -71,7 +71,7 @@ export class CarouselComponent extends HTMLElement {
             letter-spacing: var(--heading-letter-spacing);
             text-transform: var(--heading-text-transform);
             overflow-wrap: anywhere;
-            text-size: var(--text-sm);
+            font-size: var(--text-sm);
         }
 
         .button {
@@ -181,11 +181,13 @@ export class CarouselComponent extends HTMLElement {
           font-weight: bold;
           margin-bottom: var(--spacing-0);
           margin-top: var(--spacing-0);
-          text-size: var(--text-base);
+          font-size: var(--text-base);
         }
 
         .carousel__item-description {
           margin-bottom: var(--spacing-4);
+          margin-top: var(--spacing-0);
+          font-size: var(--text-sm);
           color: #403545 !important;
           flex-grow: 1;
         }
