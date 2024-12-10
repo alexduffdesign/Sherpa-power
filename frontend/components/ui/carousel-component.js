@@ -100,6 +100,9 @@ export class CarouselComponent extends HTMLElement {
           display: inline-block;
           position: relative;
         }
+          .button:hover {
+            background-color: #35AE87;
+          }
 
         .carousel {
           position: relative;
