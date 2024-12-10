@@ -48,7 +48,7 @@ export class ButtonComponent extends HTMLElement {
           background-color: rgb(var(--button-background));
           color: rgb(var(--button-text-color));
           text-align: center;
-          font-size: var(--text-h6);
+          font-size: var(--text-sm);
           letter-spacing: var(--text-letter-spacing);
           padding-block-start: var(--spacing-2-5);
           padding-block-end: var(--spacing-2-5);
@@ -57,7 +57,7 @@ export class ButtonComponent extends HTMLElement {
           font-weight: bold;
           line-height: 1.6;
           transition: background-color 0.15s ease-in-out, color 0.15s ease-in-out,
-            box-shadow 0.15s ease-in-out;
+          box-shadow 0.15s ease-in-out;
           display: inline-block;
           position: relative;
         }
