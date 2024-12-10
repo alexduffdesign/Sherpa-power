@@ -52,6 +52,23 @@ class MainChatbotUI {
         this.hideTypingIndicator();
       }
     });
+
+    // Set up event delegation for button clicks
+    this.messageContainer.addEventListener("click", (e) => {
+      const button = e.target.closest("button-component");
+      if (button) {
+        const payload = JSON.parse(button.getAttribute("payload") || "{}");
+        const label = button.getAttribute("label");
+        if (label) {
+          eventBus.emit("buttonClicked", {
+            type: payload.type,
+            payload,
+            label,
+          });
+          this.removeInteractiveElements();
+        }
+      }
+    });
   }
 
   /**

@@ -55,11 +55,11 @@ class MainChatbot {
       this.saveToHistory("user", data.label);
 
       // Send the button payload to Voiceflow
-      const payload = { ...data };
-      delete payload.label; // Remove our custom label
-      this.core.sendAction({
-        action: payload,
-      });
+      const payload = { type: data.type };
+      if (data.payload && Object.keys(data.payload).length > 0) {
+        payload.payload = data.payload;
+      }
+      this.core.sendAction(payload);
     });
 
     // Listen to choicePresented events
