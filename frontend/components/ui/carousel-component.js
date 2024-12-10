@@ -9,10 +9,12 @@ import eventBus from "../../utils/event-bus.js";
 export class CarouselComponent extends HTMLElement {
   constructor() {
     super();
-    // Attach Shadow DOM to encapsulate styles
+    // Attach Shadow DOM to encapsulate styles and markup
     this.attachShadow({ mode: "open" });
-    this.items = []; // Initialize this.items as an empty array
-    this.currentIndex = 0;
+
+    // Initialize properties
+    this.items = []; // To store carousel items
+    this.currentIndex = 0; // Current slide index
     this.isDesktop = window.matchMedia("(min-width: 1000px)").matches;
     this.itemsPerSlide = this.isDesktop ? 2 : 1;
 
@@ -23,6 +25,9 @@ export class CarouselComponent extends HTMLElement {
     this.handleButtonClick = this.handleButtonClick.bind(this);
   }
 
+  /**
+   * Lifecycle method called when the component is added to the DOM.
+   */
   connectedCallback() {
     const dataAttr = this.getAttribute("data-carousel");
     if (!dataAttr) {
@@ -57,7 +62,7 @@ export class CarouselComponent extends HTMLElement {
     this.carouselData = carouselData;
     this.shadowRoot.innerHTML = `
       <style>
-        /* Integrated Custom CSS */
+        /* Custom Carousel Styling */
         .carousel {
           position: relative;
           width: 100%;
@@ -144,6 +149,18 @@ export class CarouselComponent extends HTMLElement {
         .carousel__item-button {
           margin-top: auto;
           margin-block-start: 0 !important;
+          padding: var(--spacing-3);
+          background-color: #007BFF;
+          border: none;
+          border-radius: var(--rounded);
+          color: white;
+          cursor: pointer;
+          font-size: 14px;
+          transition: background-color 0.3s ease;
+        }
+
+        .carousel__item-button:hover {
+          background-color: #0056b3;
         }
 
         @media (min-width: 1000px) {
@@ -162,11 +179,24 @@ export class CarouselComponent extends HTMLElement {
         <div class="carousel__container">
           <!-- Carousel items will be dynamically added here -->
         </div>
-        <button class="carousel__button carousel__button--left" aria-label="Previous slide">&#9664;</button>
-        <button class="carousel__button carousel__button--right" aria-label="Next slide">&#9654;</button>
+        <button class="carousel__button carousel__button--left" aria-label="Previous slide">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+               xmlns="http://www.w3.org/2000/svg">
+            <path d="M15 18L9 12L15 6" stroke="currentColor" stroke-width="2"
+                  stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+        <button class="carousel__button carousel__button--right" aria-label="Next slide">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+               xmlns="http://www.w3.org/2000/svg">
+            <path d="M9 18L15 12L9 6" stroke="currentColor" stroke-width="2"
+                  stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
       </div>
     `;
 
+    // Reference to carousel container and navigation buttons
     this.carouselContainer = this.shadowRoot.querySelector(
       ".carousel__container"
     );
@@ -180,51 +210,52 @@ export class CarouselComponent extends HTMLElement {
       const item = document.createElement("div");
       item.classList.add("carousel__item");
 
-      // Wrapper for the content
-      const wrapper = document.createElement("div");
-      wrapper.classList.add("carousel__item-wrapper");
+      const itemWrapper = document.createElement("div");
+      itemWrapper.classList.add("carousel__item-wrapper");
 
-      // Content container
-      const content = document.createElement("div");
-      content.classList.add("carousel__item-content");
+      const itemContent = document.createElement("div");
+      itemContent.classList.add("carousel__item-content");
 
       // Image
-      const imageUrl = card.imageUrl
-        ? `<img src="${card.imageUrl}" alt="${
-            card.title || ""
-          }" class="carousel__item-image">`
-        : "";
-
-      // Title
-      const title = card.title
-        ? `<h6 class="carousel__item-title">${card.title}</h6>`
-        : "";
-
-      // Description
-      const descriptionText =
-        card.description && card.description.text ? card.description.text : "";
-      const description = `<p class="carousel__item-description">${descriptionText}</p>`;
-
-      // Button
-      let buttonHTML = "";
-      if (card.buttons && card.buttons.length > 0) {
-        const buttonData = card.buttons[0];
-        const buttonLabel = buttonData.name || "Select";
-        buttonHTML = `<button class="carousel__item-button" data-button-index="${index}">${buttonLabel}</button>`;
+      if (card.imageUrl) {
+        const img = document.createElement("img");
+        img.src = card.imageUrl;
+        img.alt = card.title || "";
+        img.classList.add("carousel__item-image");
+        itemContent.appendChild(img);
       }
 
-      // Assemble content
-      content.innerHTML = `
-        ${imageUrl}
-        ${title}
-        ${description}
-        ${buttonHTML}
-      `;
+      // Title
+      if (card.title) {
+        const title = document.createElement("h6");
+        title.classList.add("carousel__item-title");
+        title.textContent = card.title;
+        itemContent.appendChild(title);
+      }
 
-      // Assemble wrapper and item
-      wrapper.appendChild(content);
-      item.appendChild(wrapper);
+      // Description
+      if (card.description && card.description.text) {
+        const description = document.createElement("p");
+        description.classList.add("carousel__item-description");
+        description.textContent = card.description.text;
+        itemContent.appendChild(description);
+      }
 
+      // Button
+      if (card.buttons && card.buttons.length > 0) {
+        const button = document.createElement("button");
+        button.classList.add("carousel__item-button");
+        button.setAttribute("data-button-index", index);
+        button.textContent = card.buttons[0].name || "Select";
+        itemContent.appendChild(button);
+
+        // Add event listener for button click
+        button.addEventListener("click", this.handleButtonClick);
+      }
+
+      // Assemble the item structure
+      itemWrapper.appendChild(itemContent);
+      item.appendChild(itemWrapper);
       this.carouselContainer.appendChild(item);
       this.items.push(item);
     });
@@ -232,17 +263,12 @@ export class CarouselComponent extends HTMLElement {
     // Initialize Carousel Functionality
     this.initCarousel();
 
-    // Add event listeners to carousel navigation buttons
+    // Add event listeners to navigation buttons
     this.leftButton.addEventListener("click", this.moveLeft);
     this.rightButton.addEventListener("click", this.moveRight);
-    window.addEventListener("resize", this.handleResize);
 
-    // Add event listeners to carousel item buttons
-    this.shadowRoot
-      .querySelectorAll(".carousel__item-button")
-      .forEach((button) => {
-        button.addEventListener("click", this.handleButtonClick);
-      });
+    // Add event listener for window resize to adjust carousel
+    window.addEventListener("resize", this.handleResize);
 
     this.updateVisibility();
     this.updatePosition();
