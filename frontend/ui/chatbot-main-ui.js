@@ -13,11 +13,13 @@ class MainChatbotUI {
     this.form = this.container.querySelector(".chat-form");
     this.input = this.container.querySelector("input[type='text']");
     this.messageContainer = this.container.querySelector(".message-container");
+    this.typingIndicator = this.container.querySelector(".chat-typing");
 
     console.log("Chatbot UI Container:", this.container);
     console.log("Chat Form:", this.form);
     console.log("Chat Input:", this.input);
     console.log("Message Container:", this.messageContainer);
+    console.log("Typing Indicator:", this.typingIndicator);
 
     if (!this.container) {
       console.error("Main Chatbot UI container not found");
@@ -41,6 +43,15 @@ class MainChatbotUI {
         eventBus.emit("userMessage", message);
         this.input.value = "";
         this.saveToHistory("user", message);
+      }
+    });
+
+    // Listen for typing events
+    eventBus.on(`${EVENTS.PREFIX}:typing`, (data) => {
+      if (data.isTyping) {
+        this.showTypingIndicator();
+      } else {
+        this.hideTypingIndicator();
       }
     });
   }
@@ -138,17 +149,15 @@ class MainChatbotUI {
   }
 
   showTypingIndicator() {
-    const typing = this.container.querySelector(".chat-typing");
-    if (typing) {
-      typing.style.display = "flex";
+    if (this.typingIndicator) {
+      this.typingIndicator.style.display = "flex";
       this.scrollToBottom();
     }
   }
 
   hideTypingIndicator() {
-    const typing = this.container.querySelector(".chat-typing");
-    if (typing) {
-      typing.style.display = "none";
+    if (this.typingIndicator) {
+      this.typingIndicator.style.display = "none";
     }
   }
 

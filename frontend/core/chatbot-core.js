@@ -78,6 +78,9 @@ class ChatbotCore {
     const { signal } = this.abortController;
 
     try {
+      // Show typing indicator before sending request
+      eventBus.emit(`${this.eventPrefix}:typing`, { isTyping: true });
+
       const response = await fetch(this.endpoint, {
         method: "POST",
         headers: {
@@ -141,6 +144,9 @@ class ChatbotCore {
         });
       }
     } catch (error) {
+      // Hide typing indicator on error
+      eventBus.emit(`${this.eventPrefix}:typing`, { isTyping: false });
+
       if (error.name === "AbortError") {
         console.warn("SSE connection aborted");
       } else {
@@ -150,6 +156,8 @@ class ChatbotCore {
     } finally {
       this.abortController = null;
       eventBus.emit(`${this.eventPrefix}:end`, {});
+      // Hide typing indicator when everything is done
+      eventBus.emit(`${this.eventPrefix}:typing`, { isTyping: false });
     }
   }
 
@@ -162,6 +170,9 @@ class ChatbotCore {
       console.warn("Trace without type received:", trace);
       return;
     }
+
+    // Hide typing indicator when we receive any trace
+    eventBus.emit(`${this.eventPrefix}:typing`, { isTyping: false });
 
     switch (trace.type) {
       case "text":
