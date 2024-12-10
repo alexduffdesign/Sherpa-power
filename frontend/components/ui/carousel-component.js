@@ -181,23 +181,6 @@ export class CarouselComponent extends HTMLElement {
           flex-grow: 1;
         }
 
-        .carousel__item-button {
-          margin-top: auto;
-          margin-block-start: 0 !important;
-          padding: var(--spacing-3);
-          background-color: #007BFF;
-          border: none;
-          border-radius: var(--rounded);
-          color: white;
-          cursor: pointer;
-          font-size: 14px;
-          transition: background-color 0.3s ease;
-        }
-
-        .carousel__item-button:hover {
-          background-color: #0056b3;
-        }
-
         @media (min-width: 1000px) {
           .carousel__item {
             flex: 0 0 50%;
