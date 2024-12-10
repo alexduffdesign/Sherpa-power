@@ -44,12 +44,11 @@ class ChatbotCore {
     const payload = {
       action: {
         type: "launch",
-        payload: variables,
       },
       config: {}, // Additional configuration if needed
     };
 
-    this.sendAction(payload);
+    return this.sendAction(payload);
   }
 
   /**
@@ -60,9 +59,7 @@ class ChatbotCore {
     const payload = {
       action: {
         type: "text",
-        payload: {
-          message: message,
-        },
+        text: message,
       },
       config: {}, // Additional configuration if needed
     };
