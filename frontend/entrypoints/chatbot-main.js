@@ -43,9 +43,9 @@ class MainChatbot {
       this.core.sendMessage(message);
     });
 
-    // Listen to button clicks (both choice and carousel buttons)
+    // Listen to button clicks
     eventBus.on("buttonClicked", (data) => {
-      if (!data || !data.label || !data.payload) {
+      if (!data || !data.label) {
         console.error("Invalid button data:", data);
         return;
       }
@@ -54,8 +54,19 @@ class MainChatbot {
       this.ui.addMessage("user", data.label);
       this.saveToHistory("user", data.label);
 
-      // Send the button payload to ChatbotCore
-      this.core.sendAction(data.payload);
+      // Send the button payload to Voiceflow
+      const actionPayload = {
+        action: {
+          type: data.type,
+        },
+      };
+
+      // Only add payload if it exists and has content
+      if (data.payload && Object.keys(data.payload).length > 0) {
+        actionPayload.action.payload = data.payload;
+      }
+
+      this.core.sendAction(actionPayload);
     });
 
     // Listen to choicePresented events
@@ -80,16 +91,6 @@ class MainChatbot {
       } else {
         this.ui.hideTypingIndicator();
       }
-    });
-
-    // Listen for sendAction events from UI
-    eventBus.on("sendAction", (actionPayload) => {
-      this.core.sendAction(actionPayload).catch((error) => {
-        console.error("Error sending action:", error);
-        this.ui.displayError(
-          "An error occurred while processing your request."
-        );
-      });
     });
 
     // Listen for chatbot launch event
@@ -138,12 +139,18 @@ class MainChatbot {
     }
 
     this.core
-      .sendAction(actionPayload)
+      .sendAction({
+        action: actionPayload,
+        config: {},
+      })
       .then(() => {
         console.log("Action sent successfully:", actionPayload);
-        // Optionally, add a message indicating action execution
-        // this.ui.addMessage("user", "Action executed.", { type: "action" });
-        // this.saveToHistory("user", "Action executed.", { type: "action" });
+        this.ui.addMessage("user", actionPayload.label || "Action executed.", {
+          type: "action",
+        });
+        this.saveToHistory("user", JSON.stringify(actionPayload), {
+          type: "action",
+        });
       })
       .catch((error) => {
         console.error("Error sending action:", error);

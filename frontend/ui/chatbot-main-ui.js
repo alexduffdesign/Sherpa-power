@@ -71,40 +71,15 @@ class MainChatbotUI {
       }
     });
 
-    // Listen for unified buttonClicked events (includes carousel buttons)
-    eventBus.on("buttonClicked", (data) => {
-      if (!data || !data.payload) {
-        console.error("Invalid button data:", data);
+    // Listen for carousel button clicks specifically
+    eventBus.on("carouselButtonClicked", (payload) => {
+      if (!payload || !payload.type) {
+        console.error("Invalid carousel button payload:", payload);
         return;
       }
 
-      // Display the button's label as the user's message
-      if (data.label) {
-        this.addMessage("user", data.label);
-        this.saveToHistory("user", data.label);
-      }
-
-      // Send the button payload to ChatbotCore
-      if (data.payload) {
-        // Ensure the payload has a 'type' property
-        if (data.payload.type) {
-          // Construct the action payload
-          const actionPayload = {
-            action: {
-              type: data.payload.type,
-              // Include additional payload data if necessary
-              ...data.payload,
-            },
-          };
-          // Emit an event to send the action
-          eventBus.emit("sendAction", actionPayload);
-        } else {
-          console.error("Payload missing 'type' property:", data.payload);
-          this.displayError("Invalid action triggered.");
-        }
-      }
-
-      // Remove interactive elements from the UI
+      // Send the payload to ChatbotCore
+      eventBus.emit("userMessage", JSON.stringify(payload));
       this.removeInteractiveElements();
     });
   }
@@ -168,6 +143,7 @@ class MainChatbotUI {
 
   /**
    * Adds a carousel to the chatbot UI.
+   * Wraps the carouselItems array within a 'cards' key as expected by the carousel component.
    * @param {Array} carouselItems - Array of carousel card data.
    */
   addCarousel(carouselItems) {
@@ -235,46 +211,6 @@ class MainChatbotUI {
       "button-component, carousel-component"
     );
     interactiveElements.forEach((element) => element.remove());
-  }
-
-  /**
-   * Loads conversation history from localStorage and renders it.
-   */
-  loadHistory() {
-    const history = JSON.parse(localStorage.getItem(this.historyKey)) || [];
-    history.forEach((entry) => {
-      if (entry.sender === "user") {
-        this.addMessage("user", entry.message, entry.metadata);
-      } else if (entry.sender === "assistant") {
-        this.addMessage("assistant", entry.message, entry.metadata);
-        // Re-render interactive elements if present
-        if (entry.metadata) {
-          switch (entry.metadata.type) {
-            case "choice":
-              this.addButtons(entry.metadata.buttons);
-              break;
-            case "carousel":
-              this.addCarousel(entry.metadata.carouselItems);
-              break;
-            // Add more cases as needed
-            default:
-              break;
-          }
-        }
-      }
-    });
-  }
-
-  /**
-   * Saves a conversation entry to localStorage.
-   * @param {string} sender - 'user' or 'assistant'.
-   * @param {string} message - The message content.
-   * @param {Object} [metadata] - Additional metadata about the message.
-   */
-  saveToHistory(sender, message, metadata = null) {
-    const history = JSON.parse(localStorage.getItem(this.historyKey)) || [];
-    history.push({ sender, message, metadata });
-    localStorage.setItem(this.historyKey, JSON.stringify(history));
   }
 }
 
