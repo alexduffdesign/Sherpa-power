@@ -63,11 +63,7 @@ class MainChatbotUI {
         const button = e.target.closest("button.button");
         if (button) {
           const payload = JSON.parse(button.getAttribute("data-button-data"));
-          const label = button.textContent.trim();
-          eventBus.emit("buttonClicked", {
-            payload,
-            label,
-          });
+          eventBus.emit("buttonClicked", payload);
           this.removeInteractiveElements();
         }
       });
