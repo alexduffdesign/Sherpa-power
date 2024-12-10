@@ -8,11 +8,7 @@
     "name": "vendor"
   },
   "frontend/components/ui/chatbot-components.js": {
-<<<<<<< HEAD
     "file": "chatbot-components.DTeG7EXr.js",
-=======
-    "file": "chatbot-components.B5kW0R_E.js",
->>>>>>> parent of 5256455 (clicking buttons, sending payload and adding correct user message)
     "name": "chatbot-components",
     "src": "frontend/components/ui/chatbot-components.js",
     "isEntry": true,
@@ -30,11 +26,7 @@
     ]
   },
   "frontend/entrypoints/chatbot-drawer.js": {
-<<<<<<< HEAD
     "file": "chatbot-drawer.DHQrR99M.js",
-=======
-    "file": "chatbot-drawer.J7WiUugk.js",
->>>>>>> parent of 5256455 (clicking buttons, sending payload and adding correct user message)
     "name": "chatbot-drawer",
     "src": "frontend/entrypoints/chatbot-drawer.js",
     "isEntry": true,
@@ -46,11 +38,7 @@
     ]
   },
   "frontend/entrypoints/chatbot-main.js": {
-<<<<<<< HEAD
     "file": "chatbot-main.Ctj-9EXP.js",
-=======
-    "file": "chatbot-main.jSLDKLMp.js",
->>>>>>> parent of 5256455 (clicking buttons, sending payload and adding correct user message)
     "name": "chatbot-main",
     "src": "frontend/entrypoints/chatbot-main.js",
     "isEntry": true,
@@ -61,11 +49,7 @@
     ]
   },
   "frontend/entrypoints/chatbot-section.js": {
-<<<<<<< HEAD
     "file": "chatbot-section.VEzgTA7H.js",
-=======
-    "file": "chatbot-section.B4oYelnm.js",
->>>>>>> parent of 5256455 (clicking buttons, sending payload and adding correct user message)
     "name": "chatbot-section",
     "src": "frontend/entrypoints/chatbot-section.js",
     "isEntry": true,

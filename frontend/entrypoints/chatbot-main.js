@@ -43,6 +43,17 @@ class MainChatbot {
       this.core.sendMessage(message);
     });
 
+    // Listen to button clicks
+    eventBus.on("buttonClicked", (data) => {
+      const { payload, label } = data;
+      this.ui.addMessage("user", label);
+      this.saveToHistory("user", label);
+      // Send the original payload to maintain the correct flow
+      this.core.sendAction({
+        action: payload,
+      });
+    });
+
     // Listen to choicePresented events
     eventBus.on(EVENTS.MAIN_CHATBOT.CHOICE_PRESENTED, (data) => {
       this.ui.addButtons(data.buttons);
