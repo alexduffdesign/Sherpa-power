@@ -299,8 +299,3 @@ export class CarouselComponent extends HTMLElement {
     this.remove();
   }
 }
-
-// Define the custom element if not already defined
-if (!customElements.get("carousel-component")) {
-  customElements.define("carousel-component", CarouselComponent);
-}
