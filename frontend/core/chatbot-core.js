@@ -41,12 +41,13 @@ class ChatbotCore {
    * Sends a launch request to initiate the conversation.
    */
   sendLaunch(variables = {}) {
+    console.log("Constructing launch payload");
     const payload = {
       action: {
         type: "launch",
       },
-      config: {}, // Additional configuration if needed
     };
+    console.log("Final launch payload:", payload);
 
     return this.sendAction(payload);
   }
@@ -56,13 +57,14 @@ class ChatbotCore {
    * @param {string} message - The user's message.
    */
   sendMessage(message) {
+    console.log("Constructing message payload:", message);
     const payload = {
       action: {
         type: "text",
-        text: message,
+        payload: message,
       },
-      config: {}, // Additional configuration if needed
     };
+    console.log("Final message payload:", payload);
 
     return this.sendAction(payload);
   }
