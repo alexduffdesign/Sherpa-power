@@ -57,85 +57,104 @@ export class CarouselComponent extends HTMLElement {
     this.carouselData = carouselData;
     this.shadowRoot.innerHTML = `
       <style>
+        /* Integrated Custom CSS */
         .carousel {
           position: relative;
-          overflow: hidden;
           width: 100%;
-          margin-bottom: var(--spacing-6);
+          overflow: hidden;
+          margin-bottom: var(--spacing-4);
+          box-sizing: border-box;
         }
 
         .carousel__container {
           display: flex;
-          transition: transform 0.3s ease-in-out;
+          transition: transform 0.3s ease-out;
+          max-width: 100%;
         }
 
         .carousel__item {
-          min-width: 100%;
+          flex: 0 0 100%;
+          display: flex;
+          gap: var(--spacing-4);
           box-sizing: border-box;
-          padding: var(--spacing-2);
-        }
-
-        .carousel__item-image {
           max-width: 100%;
-          height: auto;
-          border-radius: 8px;
+          align-items: flex-start;
         }
 
-        .carousel__item-title {
-          margin: var(--spacing-2) 0 0 0;
-          font-size: 16px;
-          color: #231F25;
-        }
-
-        .carousel__item-description {
-          margin: var(--spacing-1) 0 0 0;
-          font-size: 14px;
-          color: #231F25;
-        }
-
-        .carousel__item-button {
-          margin-top: var(--spacing-2);
-          padding: var(--spacing-3);
-          background-color: #007BFF;
-          border: none;
-          border-radius: var(--rounded);
-          color: white;
-          cursor: pointer;
-          font-size: 14px;
-          transition: background-color 0.3s ease;
-        }
-
-        .carousel__item-button:hover {
-          background-color: #0056b3;
+        .carousel__item-wrapper {
+          flex: 0 0 100%;
+          max-width: 100%;
+          min-width: 0;
         }
 
         .carousel__button {
           position: absolute;
           top: 50%;
           transform: translateY(-50%);
-          background-color: rgba(0, 0, 0, 0.5);
-          border: none;
-          color: white;
-          padding: 10px;
-          cursor: pointer;
+          background: rgba(255, 255, 255, 0.8);
+          border: solid 1px #403545;
+          width: 40px;
+          height: 40px;
           border-radius: 50%;
-          font-size: 18px;
-          transition: background-color 0.3s ease;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          cursor: pointer;
+          z-index: 2;
+          margin-block-start: var(--spacing-0) !important;
         }
 
-        .carousel__button:hover {
-          background-color: rgba(0, 0, 0, 0.7);
+        .carousel__button--left {
+          left: 10px;
         }
 
-        .carousel__button:disabled {
-          background-color: rgba(0, 0, 0, 0.2);
-          cursor: not-allowed;
+        .carousel__button--right {
+          right: 10px;
         }
 
-        /* Responsive adjustments */
+        .carousel__item-content {
+          background: #FFFFFF;
+          border-radius: 8px;
+          padding: var(--spacing-4);
+          box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+          height: 100%;
+          display: flex;
+          flex-direction: column;
+        }
+
+        .carousel__item-image {
+          width: 100%;
+          height: auto;
+          border-radius: 8px;
+          margin-bottom: var(--spacing-2);
+          object-fit: cover;
+        }
+
+        .carousel__item-title {
+          font-weight: bold;
+          margin-bottom: var(--spacing-0);
+        }
+
+        .carousel__item-description {
+          margin-bottom: var(--spacing-4);
+          color: #403545 !important;
+          flex-grow: 1;
+        }
+
+        .carousel__item-button {
+          margin-top: auto;
+          margin-block-start: 0 !important;
+        }
+
         @media (min-width: 1000px) {
           .carousel__item {
-            min-width: 50%;
+            flex: 0 0 50%;
+            max-width: 50%;
+          }
+
+          .carousel__item-wrapper {
+            flex: 0 0 calc(100% - var(--spacing-2));
+            max-width: calc(100% - var(--spacing-2));
           }
         }
       </style>
@@ -161,21 +180,32 @@ export class CarouselComponent extends HTMLElement {
       const item = document.createElement("div");
       item.classList.add("carousel__item");
 
-      // Safely handle image URL
+      // Wrapper for the content
+      const wrapper = document.createElement("div");
+      wrapper.classList.add("carousel__item-wrapper");
+
+      // Content container
+      const content = document.createElement("div");
+      content.classList.add("carousel__item-content");
+
+      // Image
       const imageUrl = card.imageUrl
         ? `<img src="${card.imageUrl}" alt="${
             card.title || ""
           }" class="carousel__item-image">`
         : "";
 
+      // Title
       const title = card.title
         ? `<h6 class="carousel__item-title">${card.title}</h6>`
         : "";
+
+      // Description
       const descriptionText =
         card.description && card.description.text ? card.description.text : "";
       const description = `<p class="carousel__item-description">${descriptionText}</p>`;
 
-      // Safely handle buttons if present
+      // Button
       let buttonHTML = "";
       if (card.buttons && card.buttons.length > 0) {
         const buttonData = card.buttons[0];
@@ -183,12 +213,17 @@ export class CarouselComponent extends HTMLElement {
         buttonHTML = `<button class="carousel__item-button" data-button-index="${index}">${buttonLabel}</button>`;
       }
 
-      item.innerHTML = `
+      // Assemble content
+      content.innerHTML = `
         ${imageUrl}
         ${title}
         ${description}
         ${buttonHTML}
       `;
+
+      // Assemble wrapper and item
+      wrapper.appendChild(content);
+      item.appendChild(wrapper);
 
       this.carouselContainer.appendChild(item);
       this.items.push(item);
