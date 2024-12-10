@@ -147,7 +147,9 @@ class MainChatbotUI {
    * @param {Array} carouselItems - Array of carousel card data.
    */
   addCarousel(carouselItems) {
-    console.log("Adding carousel:", carouselItems);
+    console.log("Adding carousel with items:", carouselItems);
+    const carouselData = { cards: carouselItems };
+    console.log("Adding carousel:", carouselData);
 
     if (!Array.isArray(carouselItems)) {
       console.error(
@@ -158,11 +160,7 @@ class MainChatbotUI {
     }
 
     const carousel = document.createElement("carousel-component");
-    // Wrap carouselItems within an object containing 'cards' key
-    carousel.setAttribute(
-      "data-carousel",
-      JSON.stringify({ cards: carouselItems })
-    );
+    carousel.setAttribute("data-carousel", JSON.stringify(carouselData));
     this.messageContainer.appendChild(carousel);
     this.scrollToBottom();
   }
