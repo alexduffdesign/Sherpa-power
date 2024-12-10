@@ -71,7 +71,7 @@ export class CarouselComponent extends HTMLElement {
             letter-spacing: var(--heading-letter-spacing);
             text-transform: var(--heading-text-transform);
             overflow-wrap: anywhere;
-            text-size: var(--text-h6);
+            text-size: var(--text-sm);
         }
 
         .button {
@@ -81,6 +81,7 @@ export class CarouselComponent extends HTMLElement {
           --button-outline-color: white;
           -webkit-appearance: none;
           appearance: none;
+          border-color: white;
           border-radius: 8px;
           border-width: 1px;
           background-color: rgb(var(--button-background));
@@ -154,6 +155,10 @@ export class CarouselComponent extends HTMLElement {
           right: 10px;
         }
 
+        .carousel__item-button {
+        font-size: var(--text-sm);
+        }
+
         .carousel__item-content {
           background: #FFFFFF;
           border-radius: 8px;
@@ -175,6 +180,8 @@ export class CarouselComponent extends HTMLElement {
         .carousel__item-title {
           font-weight: bold;
           margin-bottom: var(--spacing-0);
+          margin-top: var(--spacing-0);
+          text-size: var(--text-base);
         }
 
         .carousel__item-description {
