@@ -63,6 +63,41 @@ export class CarouselComponent extends HTMLElement {
     this.shadowRoot.innerHTML = `
       <style>
         /* Custom Carousel Styling */
+
+        :host h6 {
+            font-family: var(--heading-font-family);
+            font-weight: var(--heading-font-weight);
+            font-style: var(--heading-font-style);
+            letter-spacing: var(--heading-letter-spacing);
+            text-transform: var(--heading-text-transform);
+            overflow-wrap: anywhere;
+        }
+
+        :host .button {
+          --button-background: var(--button-background-primary) /
+            var(--button-background-opacity, 1);
+          --button-text-color: var(--button-text-primary);
+          --button-outline-color: var(--button-background-primary);
+          -webkit-appearance: none;
+          appearance: none;
+          border-radius: var(--rounded-button);
+          background-color: rgb(var(--button-background));
+          color: rgb(var(--button-text-color));
+          text-align: center;
+          font-size: var(--text-sm);
+          letter-spacing: var(--text-letter-spacing);
+          padding-block-start: var(--spacing-2-5);
+          padding-block-end: var(--spacing-2-5);
+          padding-inline-start: var(--spacing-5);
+          padding-inline-end: var(--spacing-5);
+          font-weight: bold;
+          line-height: 1.6;
+          transition: background-color 0.15s ease-in-out, color 0.15s ease-in-out,
+            box-shadow 0.15s ease-in-out;
+          display: inline-block;
+          position: relative;
+        }
+
         .carousel {
           position: relative;
           width: 100%;
