@@ -88,9 +88,9 @@ class ChatbotCore {
         },
         body: JSON.stringify({
           userID: this.userID,
-          action: actionPayload, // Send the action payload directly
+          action: actionPayload.action,
         }),
-        credentials: "include",
+        credentials: "include", // Include cookies if needed
         signal: signal,
       });
 
