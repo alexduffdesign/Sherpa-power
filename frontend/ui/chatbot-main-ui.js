@@ -32,7 +32,6 @@ class MainChatbotUI {
     }
 
     this.setupEventListeners();
-    this.setupUIEventListeners();
   }
 
   setupEventListeners() {
@@ -53,29 +52,6 @@ class MainChatbotUI {
         this.hideTypingIndicator();
       }
     });
-  }
-
-  setupUIEventListeners() {
-    // Set up event delegation for button clicks
-    this.container
-      .querySelector(".chatbot-container")
-      .addEventListener("click", (e) => {
-        const button = e.target.closest("button-component");
-        if (button) {
-          const payload = JSON.parse(button.getAttribute("payload"));
-          const label = button.getAttribute("label");
-          eventBus.emit("buttonClicked", { ...payload, label });
-          this.removeInteractiveElements();
-        }
-      });
-  }
-
-  onUserMessage(callback) {
-    eventBus.on("userMessage", callback);
-  }
-
-  onButtonClick(callback) {
-    eventBus.on("buttonClicked", callback);
   }
 
   /**

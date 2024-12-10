@@ -90,11 +90,6 @@ class MainChatbot {
     document.addEventListener("chatbotLaunch", () => {
       this.launch();
     });
-
-    // Listen for user message submissions via UI
-    this.ui.onUserMessage((message) => {
-      this.sendMessage(message);
-    });
   }
 
   launch() {
