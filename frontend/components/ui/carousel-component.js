@@ -65,13 +65,13 @@ export class CarouselComponent extends HTMLElement {
         /* Custom Carousel Styling */
 
         h6 {
-            font-family: var(--heading-font-family);
-            font-weight: var(--heading-font-weight);
-            font-style: var(--heading-font-style);
-            letter-spacing: var(--heading-letter-spacing);
-            text-transform: var(--heading-text-transform);
-            overflow-wrap: anywhere;
-            font-size: var(--text-sm);
+          font-family: var(--heading-font-family);
+          font-weight: var(--heading-font-weight);
+          font-style: var(--heading-font-style);
+          letter-spacing: var(--heading-letter-spacing);
+          text-transform: var(--heading-text-transform);
+          overflow-wrap: anywhere;
+          font-size: var(--text-sm);
         }
 
         .button {
@@ -100,9 +100,6 @@ export class CarouselComponent extends HTMLElement {
           display: inline-block;
           position: relative;
         }
-          .button:hover {
-            background-color: #35AE87;
-          }
 
         .carousel {
           position: relative;
@@ -159,7 +156,7 @@ export class CarouselComponent extends HTMLElement {
         }
 
         .carousel__item-button {
-        font-size: var(--text-sm);
+          font-size: var(--text-sm);
         }
 
         .carousel__item-content {
@@ -378,20 +375,21 @@ export class CarouselComponent extends HTMLElement {
     const button = e.target;
     const buttonIndex = parseInt(button.getAttribute("data-button-index"), 10);
     const card = this.carouselData.cards[buttonIndex];
+
     if (!card || !card.buttons || card.buttons.length === 0) {
       console.warn("No button data found for this card.");
       return;
     }
 
     const buttonData = card.buttons[0];
-    const payload = buttonData.request;
-    const label = buttonData.name;
-    
-    if (payload) {
-      eventBus.emit("carouselButtonClicked", { payload, label });
-    }
+    const label = buttonData.name || "Select";
+    const payload = buttonData.request || {};
 
-    // Remove the carousel from the UI after interaction
+    // Emit 'buttonClicked' event with type, payload, and label
+    const type = payload.type || "action"; // Ensure a default type if not specified
+    eventBus.emit("buttonClicked", { type, payload, label });
+
+    // Optionally, remove the carousel from the UI after interaction
     this.remove();
   }
 }
