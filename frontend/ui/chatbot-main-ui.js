@@ -71,7 +71,25 @@ class MainChatbotUI {
       }
     });
 
-    // Note: Removed 'buttonClicked' listener from here to prevent undefined 'this.ui'
+    // Listen for 'buttonClicked' events from both button-component and carousel-component
+    eventBus.on("buttonClicked", (data) => {
+      if (!data || !data.label) {
+        console.error("Invalid button data:", data);
+        return;
+      }
+
+      // Display the button's label as the user's message
+      this.ui.addMessage("user", data.label);
+      this.saveToHistory("user", data.label);
+
+      // Send the button payload to Voiceflow
+      const actionPayload = {
+        type: data.type,
+        payload: data.payload,
+      };
+
+      this.core.sendAction(actionPayload);
+    });
   }
 
   /**

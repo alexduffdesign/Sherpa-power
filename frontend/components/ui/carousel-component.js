@@ -157,18 +157,6 @@ export class CarouselComponent extends HTMLElement {
 
         .carousel__item-button {
           font-size: var(--text-sm);
-          padding: var(--spacing-3);
-          background-color: #007BFF;
-          border: none;
-          border-radius: var(--rounded);
-          color: white;
-          cursor: pointer;
-          font-size: 14px;
-          transition: background-color 0.3s ease;
-        }
-
-        .carousel__item-button:hover {
-          background-color: #0056b3;
         }
 
         .carousel__item-content {
@@ -285,7 +273,7 @@ export class CarouselComponent extends HTMLElement {
       // Button
       if (card.buttons && card.buttons.length > 0) {
         const button = document.createElement("button");
-        button.classList.add("carousel__item-button");
+        button.classList.add("button", "carousel__item-button");
         button.setAttribute("data-button-index", index);
         button.textContent = card.buttons[0].name || "Select";
         itemContent.appendChild(button);
