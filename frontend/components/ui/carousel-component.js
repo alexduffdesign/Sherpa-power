@@ -65,13 +65,13 @@ export class CarouselComponent extends HTMLElement {
         /* Custom Carousel Styling */
 
         h6 {
-            font-family: var(--heading-font-family);
-            font-weight: var(--heading-font-weight);
-            font-style: var(--heading-font-style);
-            letter-spacing: var(--heading-letter-spacing);
-            text-transform: var(--heading-text-transform);
-            overflow-wrap: anywhere;
-            font-size: var(--text-sm);
+          font-family: var(--heading-font-family);
+          font-weight: var(--heading-font-weight);
+          font-style: var(--heading-font-style);
+          letter-spacing: var(--heading-letter-spacing);
+          text-transform: var(--heading-text-transform);
+          overflow-wrap: anywhere;
+          font-size: var(--text-sm);
         }
 
         .button {
@@ -156,7 +156,18 @@ export class CarouselComponent extends HTMLElement {
         }
 
         .carousel__item-button {
-        font-size: var(--text-sm);
+          font-size: var(--text-sm);
+          padding: var(--spacing-3);
+          background-color: #007BFF;
+          border: none;
+          border-radius: var(--rounded);
+          color: white;
+          cursor: pointer;
+          transition: background-color 0.3s ease;
+        }
+
+        .carousel__item-button:hover {
+          background-color: #0056b3;
         }
 
         .carousel__item-content {
@@ -275,6 +286,10 @@ export class CarouselComponent extends HTMLElement {
         const button = document.createElement("button");
         button.classList.add("button", "carousel__item-button");
         button.setAttribute("data-button-index", index);
+        button.setAttribute(
+          "data-button-label",
+          card.buttons[0].name || "Select"
+        );
         button.textContent = card.buttons[0].name || "Select";
         itemContent.appendChild(button);
 
@@ -374,6 +389,7 @@ export class CarouselComponent extends HTMLElement {
   handleButtonClick(e) {
     const button = e.target;
     const buttonIndex = parseInt(button.getAttribute("data-button-index"), 10);
+    const buttonLabel = button.getAttribute("data-button-label");
     const card = this.carouselData.cards[buttonIndex];
     if (!card || !card.buttons || card.buttons.length === 0) {
       console.warn("No button data found for this card.");
@@ -382,7 +398,12 @@ export class CarouselComponent extends HTMLElement {
 
     const payload = card.buttons[0].request;
     if (payload) {
-      eventBus.emit("carouselButtonClicked", payload);
+      // Emit a unified 'buttonClicked' event with both label and payload
+      eventBus.emit("buttonClicked", {
+        label: buttonLabel,
+        payload: payload,
+        type: payload.type, // Assuming payload has a 'type' property
+      });
     }
 
     // Remove the carousel from the UI after interaction if desired
