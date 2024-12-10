@@ -2,6 +2,10 @@
 
 import eventBus from "../../utils/event-bus.js";
 
+/**
+ * ButtonComponent Class
+ * Represents an interactive button within the chatbot UI.
+ */
 export class ButtonComponent extends HTMLElement {
   constructor() {
     super();
@@ -71,10 +75,16 @@ export class ButtonComponent extends HTMLElement {
 
     // Add event listener to the button
     this.shadowRoot.querySelector(".button").addEventListener("click", () => {
-      // Emit event via eventBus
+      // Emit 'buttonClicked' event via eventBus
       try {
         const parsedPayload = JSON.parse(payload);
-        eventBus.emit("buttonClicked", parsedPayload);
+        const labelText = this.getAttribute("label") || "Select";
+        const type = parsedPayload.type || "action"; // Ensure a default type if not specified
+        eventBus.emit("buttonClicked", {
+          type,
+          payload: parsedPayload,
+          label: labelText,
+        });
       } catch (error) {
         console.error("Error parsing button payload:", error);
       }
