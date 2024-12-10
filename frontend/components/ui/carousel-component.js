@@ -64,7 +64,7 @@ export class CarouselComponent extends HTMLElement {
       <style>
         /* Custom Carousel Styling */
 
-        :host h6 {
+        h6 {
             font-family: var(--heading-font-family);
             font-weight: var(--heading-font-weight);
             font-style: var(--heading-font-style);
@@ -73,7 +73,7 @@ export class CarouselComponent extends HTMLElement {
             overflow-wrap: anywhere;
         }
 
-        :host .button {
+        .button {
           --button-background: var(--button-background-primary) /
             var(--button-background-opacity, 1);
           --button-text-color: var(--button-text-primary);
