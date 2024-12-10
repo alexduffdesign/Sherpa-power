@@ -67,7 +67,7 @@ class ChatbotCore {
       config: {}, // Additional configuration if needed
     };
 
-    this.sendAction(payload);
+    return this.sendAction(payload);
   }
 
   /**
