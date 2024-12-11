@@ -375,17 +375,26 @@ export class CarouselComponent extends HTMLElement {
     const button = e.target;
     const buttonIndex = parseInt(button.getAttribute("data-button-index"), 10);
     const card = this.carouselData.cards[buttonIndex];
+
     if (!card || !card.buttons || card.buttons.length === 0) {
       console.warn("No button data found for this card.");
       return;
     }
 
-    const payload = card.buttons[0].request;
-    if (payload) {
-      eventBus.emit("carouselButtonClicked", payload);
-    }
+    const buttonData = card.buttons[0];
+    const payload = {
+      type: "text", // Change to 'text' to match Voiceflow's expected format
+      payload: buttonData.request, // Use the full request object from Voiceflow
+    };
 
-    // Remove the carousel from the UI after interaction if desired
+    // Emit the event with both the display text and the payload
+    eventBus.emit("carouselButtonClicked", {
+      type: "text",
+      payload: buttonData.request,
+      label: buttonData.name, // Include the button text to display in chat
+    });
+
+    // Remove the carousel from the UI after interaction
     this.remove();
   }
 }
