@@ -72,17 +72,14 @@ class MainChatbotUI {
     });
 
     // Listen for carousel button clicks specifically
-    eventBus.on("carouselButtonClicked", (data) => {
-      if (!data || !data.payload || !data.payload.type) {
-        console.error("Invalid carousel button payload:", data);
+    eventBus.on("carouselButtonClicked", (payload) => {
+      if (!payload || !payload.type) {
+        console.error("Invalid carousel button payload:", payload);
         return;
       }
 
-      // Add the user's selection as a message
-      this.addMessage('user', data.label);
-
       // Send the payload to ChatbotCore
-      eventBus.emit("userMessage", JSON.stringify(data.payload));
+      eventBus.emit("userMessage", JSON.stringify(payload));
       this.removeInteractiveElements();
     });
   }
