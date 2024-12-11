@@ -54,18 +54,20 @@ class ChatbotCore {
 
   /**
    * Sends a user message to the chatbot.
-   * @param {string} message - The user's message.
+   * @param {string | Object} message - The user's message or button payload
    */
   sendMessage(message) {
     console.log("Constructing message payload:", message);
+
+    // If message is an object (button payload), use it directly
     const payload = {
       action: {
         type: "text",
-        payload: message,
+        payload: typeof message === "object" ? message : message,
       },
     };
-    console.log("Final message payload:", payload);
 
+    console.log("Final message payload:", payload);
     return this.sendAction(payload);
   }
 

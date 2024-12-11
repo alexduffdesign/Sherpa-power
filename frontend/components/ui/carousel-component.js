@@ -379,26 +379,24 @@ export class CarouselComponent extends HTMLElement {
    */
   handleButtonClick(e) {
     const button = e.target;
-    const buttonPayload = button.getAttribute("data-button-payload");
-    const buttonText = button.getAttribute("data-button-text");
+    const buttonIndex = parseInt(button.getAttribute("data-button-index"), 10);
+    const card = this.carouselData.cards[buttonIndex];
 
-    if (!buttonPayload) {
-      console.error("No payload found for button");
+    if (!card || !card.buttons || card.buttons.length === 0) {
+      console.warn("No button data found for this card.");
       return;
     }
 
-    try {
-      const payload = JSON.parse(buttonPayload);
-      eventBus.emit("carouselButtonClicked", {
-        type: "text",
-        payload: payload,
-        label: buttonText,
-      });
+    const buttonData = card.buttons[0];
+    console.log("Button data:", buttonData);
 
-      // Remove the carousel after interaction
-      this.closest("carousel-component").remove();
-    } catch (error) {
-      console.error("Error parsing button payload:", error);
-    }
+    // Send the request payload directly - it's already in the correct format from Voiceflow
+    eventBus.emit("carouselButtonClicked", {
+      payload: buttonData.request,
+      label: buttonData.name,
+    });
+
+    // Remove the carousel after interaction
+    this.remove();
   }
 }
