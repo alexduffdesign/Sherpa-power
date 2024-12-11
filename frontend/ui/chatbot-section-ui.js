@@ -29,13 +29,19 @@ class SectionChatbotUI {
     }
 
     this.container = container;
-    this.form = this.container.querySelector(".chat-form");
-    this.input = this.container.querySelector("input[type='text']");
-    this.messageContainer = this.container.querySelector(".message-container");
-    this.typingIndicator = this.container.querySelector(".typing-indicator");
+    this.form = this.container.querySelector("#chatForm");
+    this.input = this.container.querySelector("#userInput");
+    this.messageContainer = this.container.querySelector("#messageContainer");
+    this.typingIndicator = this.container.querySelector(".chat-typing");
 
-    if (!this.form || !this.input || !this.messageContainer) {
-      throw new Error("Required UI elements not found in container");
+    if (!this.form) {
+      throw new Error("Chat form not found (id: chatForm)");
+    }
+    if (!this.input) {
+      throw new Error("Input field not found (id: userInput)");
+    }
+    if (!this.messageContainer) {
+      throw new Error("Message container not found (id: messageContainer)");
     }
 
     this.initializeProductDetails();
