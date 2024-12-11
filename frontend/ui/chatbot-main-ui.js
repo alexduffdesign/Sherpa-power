@@ -14,12 +14,14 @@ class MainChatbotUI {
     this.input = this.container.querySelector("input[type='text']");
     this.messageContainer = this.container.querySelector(".message-container");
     this.typingIndicator = this.container.querySelector(".chat-typing");
+    this.menuButton = this.container.querySelector(".main-menu");
 
     console.log("Chatbot UI Container:", this.container);
     console.log("Chat Form:", this.form);
     console.log("Chat Input:", this.input);
     console.log("Message Container:", this.messageContainer);
     console.log("Typing Indicator:", this.typingIndicator);
+    console.log("Menu Button:", this.menuButton);
 
     if (!this.container) {
       console.error("Main Chatbot UI container not found");
@@ -68,6 +70,21 @@ class MainChatbotUI {
           });
           this.removeInteractiveElements();
         }
+      }
+    });
+
+    this.container.addEventListener("click", (e) => {
+      const menuButton = e.target.closest(".main-menu");
+      if (menuButton) {
+        eventBus.emit("buttonClicked", {
+          type: "event",
+          payload: {
+            event: {
+              name: "main_menu",
+            },
+          },
+          label: "Back to Menu",
+        });
       }
     });
   }

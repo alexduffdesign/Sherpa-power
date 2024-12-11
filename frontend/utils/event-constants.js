@@ -12,6 +12,7 @@ export const EVENTS = {
     CHOICE_PRESENTED: "mainChatbot:choicePresented",
     CAROUSEL_PRESENTED: "mainChatbot:carouselPresented",
     ERROR: "mainChatbot:error",
+    MAIN_MENU_CLICKED: "mainChatbot:mainMenuClicked", // Add this new event
     // Additional events can be added here as needed
   },
   SECTION_CHATBOT: {
