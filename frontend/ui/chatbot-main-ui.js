@@ -132,8 +132,9 @@ class MainChatbotUI {
       return;
     }
 
-    // Store the buttons data if this isn't from history
+    // Only remove existing interactive elements if not loading from history
     if (!isHistory) {
+      this.removeInteractiveElements();
       this.storeInteractiveState("choice", buttons);
     }
 
@@ -147,14 +148,8 @@ class MainChatbotUI {
     this.scrollToBottom();
   }
 
-  /**
-   * Adds a carousel to the chatbot UI.
-   * @param {Array} carouselItems - Array of carousel card data.
-   * @param {boolean} [isHistory] - Whether this carousel is being loaded from history
-   */
   addCarousel(carouselItems, isHistory = false) {
     console.log("Adding carousel with items:", carouselItems);
-    const carouselData = { cards: carouselItems };
 
     if (!Array.isArray(carouselItems)) {
       console.error(
@@ -164,11 +159,13 @@ class MainChatbotUI {
       return;
     }
 
-    // Store the carousel data if this isn't from history
+    // Only remove existing interactive elements if not loading from history
     if (!isHistory) {
+      this.removeInteractiveElements();
       this.storeInteractiveState("carousel", carouselItems);
     }
 
+    const carouselData = { cards: carouselItems };
     const carousel = document.createElement("carousel-component");
     carousel.setAttribute("data-carousel", JSON.stringify(carouselData));
     this.messageContainer.appendChild(carousel);

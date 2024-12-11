@@ -72,11 +72,29 @@ class MainChatbot {
     // Listen to choicePresented events
     eventBus.on(EVENTS.MAIN_CHATBOT.CHOICE_PRESENTED, (data) => {
       this.ui.addButtons(data.buttons);
+      // Save to history with metadata
+      this.saveToHistory(
+        "assistant",
+        data.message || "Please select an option:",
+        {
+          type: "choice",
+          buttons: data.buttons,
+        }
+      );
     });
 
     // Listen to carouselPresented events
     eventBus.on(EVENTS.MAIN_CHATBOT.CAROUSEL_PRESENTED, (data) => {
       this.ui.addCarousel(data.carouselItems);
+      // Save to history with metadata
+      this.saveToHistory(
+        "assistant",
+        data.message || "Please select an option:",
+        {
+          type: "carousel",
+          carouselItems: data.carouselItems,
+        }
+      );
     });
 
     // Listen to error events
@@ -184,20 +202,20 @@ class MainChatbot {
     const historyEntry = {
       sender,
       message,
-      metadata,
       timestamp: Date.now(),
-      isInteractive: false,
+      isInteractive: false, // Add flag for interactive elements
     };
 
-    // If this is an assistant message with interactive elements, store the trace
+    // If this is an assistant message with choice or carousel, store the trace
     if (sender === "assistant" && metadata) {
-      if (metadata.type === "choice" || metadata.type === "carousel") {
+      if (metadata.type === "choice") {
         historyEntry.isInteractive = true;
-        historyEntry.traceType = metadata.type;
-        historyEntry.traceData =
-          metadata.type === "choice"
-            ? { buttons: metadata.buttons }
-            : { cards: metadata.carouselItems };
+        historyEntry.traceType = "choice";
+        historyEntry.traceData = { buttons: metadata.buttons };
+      } else if (metadata.type === "carousel") {
+        historyEntry.isInteractive = true;
+        historyEntry.traceType = "carousel";
+        historyEntry.traceData = { cards: metadata.carouselItems };
       }
     }
 
@@ -211,19 +229,15 @@ class MainChatbot {
     // Process all messages except the last one
     for (let i = 0; i < history.length - 1; i++) {
       const entry = history[i];
-      this.ui.addMessage(entry.sender, entry.message, entry.metadata);
+      this.ui.addMessage(entry.sender, entry.message);
     }
 
     // Special handling for the last message if it exists
     if (history.length > 0) {
       const lastEntry = history[history.length - 1];
-      this.ui.addMessage(
-        lastEntry.sender,
-        lastEntry.message,
-        lastEntry.metadata
-      );
+      this.ui.addMessage(lastEntry.sender, lastEntry.message);
 
-      // If the last message was interactive, restore the interactive element
+      // If the last message was interactive and from assistant, restore the interactive element
       if (lastEntry.isInteractive && lastEntry.sender === "assistant") {
         this.restoreInteractiveElement(lastEntry);
       }
