@@ -72,29 +72,21 @@ class MainChatbot {
     // Listen to choicePresented events
     eventBus.on(EVENTS.MAIN_CHATBOT.CHOICE_PRESENTED, (data) => {
       this.ui.addButtons(data.buttons);
-      // Save to history with metadata
-      this.saveToHistory(
-        "assistant",
-        data.message || "Please select an option:",
-        {
-          type: "choice",
-          buttons: data.buttons,
-        }
-      );
+      // Save to history with metadata, but without message
+      this.saveToHistory("assistant", "", {
+        type: "choice",
+        buttons: data.buttons,
+      });
     });
 
     // Listen to carouselPresented events
     eventBus.on(EVENTS.MAIN_CHATBOT.CAROUSEL_PRESENTED, (data) => {
       this.ui.addCarousel(data.carouselItems);
-      // Save to history with metadata
-      this.saveToHistory(
-        "assistant",
-        data.message || "Please select an option:",
-        {
-          type: "carousel",
-          carouselItems: data.carouselItems,
-        }
-      );
+      // Save to history with metadata, but without message
+      this.saveToHistory("assistant", "", {
+        type: "carousel",
+        carouselItems: data.carouselItems,
+      });
     });
 
     // Listen to error events
@@ -235,20 +227,22 @@ class MainChatbot {
     // Special handling for the last message if it exists
     if (history.length > 0) {
       const lastEntry = history[history.length - 1];
-      this.ui.addMessage(lastEntry.sender, lastEntry.message);
 
-      // If the last message was interactive and from assistant, restore the interactive element
+      // If the last message was interactive and from assistant, only restore the interactive element
       if (lastEntry.isInteractive && lastEntry.sender === "assistant") {
         this.restoreInteractiveElement(lastEntry);
+      } else {
+        // Otherwise, just add the message normally
+        this.ui.addMessage(lastEntry.sender, lastEntry.message);
       }
     }
   }
 
   restoreInteractiveElement(historyEntry) {
     if (historyEntry.traceType === "choice") {
-      this.ui.addButtons(historyEntry.traceData.buttons);
+      this.ui.addButtons(historyEntry.traceData.buttons, true);
     } else if (historyEntry.traceType === "carousel") {
-      this.ui.addCarousel(historyEntry.traceData.cards);
+      this.ui.addCarousel(historyEntry.traceData.cards, true);
     }
   }
 
