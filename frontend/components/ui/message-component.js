@@ -23,6 +23,9 @@ export class MessageComponent extends HTMLElement {
     const isAssistant = sender === "assistant";
     this.shadowRoot.innerHTML = `
       <style>
+        message-component {
+          width: 100%;
+        }
         .message-wrapper {
           display: flex;
           align-items: flex-end;
