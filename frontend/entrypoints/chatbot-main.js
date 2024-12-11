@@ -177,35 +177,65 @@ class MainChatbot {
       });
   }
 
-  loadHistory() {
-    const history = JSON.parse(localStorage.getItem(this.historyKey)) || [];
-    history.forEach((entry) => {
-      if (entry.sender === "user") {
-        this.ui.addMessage("user", entry.message, entry.metadata);
-      } else if (entry.sender === "assistant") {
-        this.ui.addMessage("assistant", entry.message, entry.metadata);
-        // Re-render interactive elements if present
-        if (entry.metadata) {
-          switch (entry.metadata.type) {
-            case "choice":
-              this.ui.addButtons(entry.metadata.buttons);
-              break;
-            case "carousel":
-              this.ui.addCarousel(entry.metadata.carouselItems);
-              break;
-            // Add more cases as needed
-            default:
-              break;
-          }
-        }
-      }
-    });
-  }
-
   saveToHistory(sender, message, metadata = null) {
     const history = JSON.parse(localStorage.getItem(this.historyKey)) || [];
-    history.push({ sender, message, metadata });
+
+    // Create history entry with additional trace data for interactive elements
+    const historyEntry = {
+      sender,
+      message,
+      metadata,
+      timestamp: Date.now(),
+      isInteractive: false,
+    };
+
+    // If this is an assistant message with interactive elements, store the trace
+    if (sender === "assistant" && metadata) {
+      if (metadata.type === "choice" || metadata.type === "carousel") {
+        historyEntry.isInteractive = true;
+        historyEntry.traceType = metadata.type;
+        historyEntry.traceData =
+          metadata.type === "choice"
+            ? { buttons: metadata.buttons }
+            : { cards: metadata.carouselItems };
+      }
+    }
+
+    history.push(historyEntry);
     localStorage.setItem(this.historyKey, JSON.stringify(history));
+  }
+
+  loadHistory() {
+    const history = JSON.parse(localStorage.getItem(this.historyKey)) || [];
+
+    // Process all messages except the last one
+    for (let i = 0; i < history.length - 1; i++) {
+      const entry = history[i];
+      this.ui.addMessage(entry.sender, entry.message, entry.metadata);
+    }
+
+    // Special handling for the last message if it exists
+    if (history.length > 0) {
+      const lastEntry = history[history.length - 1];
+      this.ui.addMessage(
+        lastEntry.sender,
+        lastEntry.message,
+        lastEntry.metadata
+      );
+
+      // If the last message was interactive, restore the interactive element
+      if (lastEntry.isInteractive && lastEntry.sender === "assistant") {
+        this.restoreInteractiveElement(lastEntry);
+      }
+    }
+  }
+
+  restoreInteractiveElement(historyEntry) {
+    if (historyEntry.traceType === "choice") {
+      this.ui.addButtons(historyEntry.traceData.buttons);
+    } else if (historyEntry.traceType === "carousel") {
+      this.ui.addCarousel(historyEntry.traceData.cards);
+    }
   }
 
   sanitizeInput(input) {

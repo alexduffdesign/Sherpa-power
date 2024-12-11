@@ -77,30 +77,42 @@ class MainChatbotUI {
    * @param {string} sender - 'user' or 'assistant'.
    * @param {string} content - The message content.
    * @param {Object} [metadata] - Additional metadata about the message.
+   * @param {boolean} [isHistory] - Whether this message is being loaded from history
    */
-  addMessage(sender, content, metadata = null) {
+  addMessage(sender, content, metadata = null, isHistory = false) {
     if (!this.messageContainer) {
       console.error("Message container not set");
       return;
     }
 
+    // Only remove interactive elements if this isn't from history loading
+    // and the current message isn't interactive
+    if (!isHistory && (!metadata || !metadata.isInteractive)) {
+      this.removeInteractiveElements();
+    }
+
     const message = document.createElement("message-component");
     message.setAttribute("sender", sender);
     message.setAttribute("content", content);
+
+    // Add image URL if available in metadata
+    if (metadata?.imageUrl) {
+      message.setAttribute("image-url", metadata.imageUrl);
+    }
+
     this.messageContainer.appendChild(message);
-    console.log("Message appended to messageContainer"); // Debug log
+    console.log("Message appended to messageContainer");
     this.scrollToBottom();
 
     // If metadata includes interactive elements, add them
     if (sender === "assistant" && metadata) {
       switch (metadata.type) {
         case "choice":
-          this.addButtons(metadata.buttons);
+          this.addButtons(metadata.buttons, isHistory);
           break;
         case "carousel":
-          this.addCarousel(metadata.carouselItems);
+          this.addCarousel(metadata.carouselItems, isHistory);
           break;
-        // Add more cases as needed
         default:
           break;
       }
@@ -110,13 +122,19 @@ class MainChatbotUI {
   /**
    * Adds interactive buttons to the chatbot UI.
    * @param {Array} buttons - Array of button data.
+   * @param {boolean} [isHistory] - Whether these buttons are being loaded from history
    */
-  addButtons(buttons) {
-    console.log("addButtons called with:", buttons); // Debug log
+  addButtons(buttons, isHistory = false) {
+    console.log("addButtons called with:", buttons);
 
     if (!Array.isArray(buttons)) {
       console.error("addButtons expected an array but received:", buttons);
       return;
+    }
+
+    // Store the buttons data if this isn't from history
+    if (!isHistory) {
+      this.storeInteractiveState("choice", buttons);
     }
 
     buttons.forEach((buttonData) => {
@@ -124,20 +142,19 @@ class MainChatbotUI {
       button.setAttribute("label", buttonData.name);
       button.setAttribute("payload", JSON.stringify(buttonData.request));
       this.messageContainer.appendChild(button);
-      console.log("Button appended to messageContainer"); // Debug log
+      console.log("Button appended to messageContainer");
     });
     this.scrollToBottom();
   }
 
   /**
    * Adds a carousel to the chatbot UI.
-   * Wraps the carouselItems array within a 'cards' key as expected by the carousel component.
    * @param {Array} carouselItems - Array of carousel card data.
+   * @param {boolean} [isHistory] - Whether this carousel is being loaded from history
    */
-  addCarousel(carouselItems) {
+  addCarousel(carouselItems, isHistory = false) {
     console.log("Adding carousel with items:", carouselItems);
     const carouselData = { cards: carouselItems };
-    console.log("Adding carousel:", carouselData);
 
     if (!Array.isArray(carouselItems)) {
       console.error(
@@ -147,6 +164,11 @@ class MainChatbotUI {
       return;
     }
 
+    // Store the carousel data if this isn't from history
+    if (!isHistory) {
+      this.storeInteractiveState("carousel", carouselItems);
+    }
+
     const carousel = document.createElement("carousel-component");
     carousel.setAttribute("data-carousel", JSON.stringify(carouselData));
     this.messageContainer.appendChild(carousel);
@@ -154,8 +176,41 @@ class MainChatbotUI {
   }
 
   /**
-   * Shows the typing indicator in the chatbot UI.
+   * Stores the state of the last interactive element
+   * @param {string} type - The type of interactive element ('choice' or 'carousel')
+   * @param {Array} data - The data for the interactive element
    */
+  storeInteractiveState(type, data) {
+    const interactiveState = {
+      type,
+      data,
+      timestamp: Date.now(),
+    };
+    localStorage.setItem(
+      "lastInteractiveElement",
+      JSON.stringify(interactiveState)
+    );
+  }
+
+  /**
+   * Restores the last interactive element if it exists
+   */
+  restoreInteractiveElement() {
+    const savedState = localStorage.getItem("lastInteractiveElement");
+    if (savedState) {
+      try {
+        const state = JSON.parse(savedState);
+        if (state.type === "choice") {
+          this.addButtons(state.data, true);
+        } else if (state.type === "carousel") {
+          this.addCarousel(state.data, true);
+        }
+      } catch (error) {
+        console.error("Error restoring interactive element:", error);
+      }
+    }
+  }
+
   showTypingIndicator() {
     if (this.typingIndicator) {
       this.typingIndicator.style.display = "flex";
@@ -163,19 +218,12 @@ class MainChatbotUI {
     }
   }
 
-  /**
-   * Hides the typing indicator in the chatbot UI.
-   */
   hideTypingIndicator() {
     if (this.typingIndicator) {
       this.typingIndicator.style.display = "none";
     }
   }
 
-  /**
-   * Displays an error message in the chatbot UI.
-   * @param {string} message - The error message to display.
-   */
   displayError(message) {
     const errorDiv = document.createElement("div");
     errorDiv.classList.add("error-message");
@@ -184,9 +232,6 @@ class MainChatbotUI {
     this.scrollToBottom();
   }
 
-  /**
-   * Scrolls the chatbot UI to the bottom to show the latest message.
-   */
   scrollToBottom() {
     this.messageContainer.scrollTop = this.messageContainer.scrollHeight;
   }
@@ -199,6 +244,8 @@ class MainChatbotUI {
       "button-component, carousel-component"
     );
     interactiveElements.forEach((element) => element.remove());
+    // Clear the stored interactive state
+    localStorage.removeItem("lastInteractiveElement");
   }
 }
 
