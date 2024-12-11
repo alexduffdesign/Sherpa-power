@@ -34,6 +34,12 @@ class SectionChatbotUI {
     this.messageContainer = this.container.querySelector("#messageContainer");
     this.typingIndicator = this.container.querySelector(".chat-typing");
 
+    console.log("Chatbot UI Container:", this.container);
+    console.log("Chat Form:", this.form);
+    console.log("Chat Input:", this.input);
+    console.log("Message Container:", this.messageContainer);
+    console.log("Typing Indicator:", this.typingIndicator);
+
     if (!this.form) {
       throw new Error("Chat form not found (id: chatForm)");
     }
