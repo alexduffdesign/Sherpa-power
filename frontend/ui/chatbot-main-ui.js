@@ -71,24 +71,19 @@ class MainChatbotUI {
       }
     });
 
-    // Listen for 'buttonClicked' events from both button-component and carousel-component
-    eventBus.on("buttonClicked", (data) => {
-      if (!data || !data.label) {
-        console.error("Invalid button data:", data);
+    // Listen for carousel button clicks specifically
+    eventBus.on("carouselButtonClicked", (data) => {
+      if (!data || !data.payload || !data.payload.type) {
+        console.error("Invalid carousel button payload:", data);
         return;
       }
 
-      // Display the button's label as the user's message
-      this.ui.addMessage("user", data.label);
-      this.saveToHistory("user", data.label);
+      // Add the user's selection as a message
+      this.addMessage('user', data.label);
 
-      // Send the button payload to Voiceflow
-      const actionPayload = {
-        type: data.type,
-        payload: data.payload,
-      };
-
-      this.core.sendAction(actionPayload);
+      // Send the payload to ChatbotCore
+      eventBus.emit("userMessage", JSON.stringify(data.payload));
+      this.removeInteractiveElements();
     });
   }
 
