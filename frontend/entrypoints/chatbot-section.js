@@ -243,9 +243,7 @@ document.addEventListener("DOMContentLoaded", () => {
   );
 
   // Handle launch event on first focus of the input field
-  const sectionInput = sectionChatbotContainer.querySelector(
-    "#section-chatbot-input"
-  );
+  const sectionInput = sectionChatbotContainer.querySelector("#userInput");
 
   if (sectionInput) {
     sectionInput.addEventListener("focus", () => {
