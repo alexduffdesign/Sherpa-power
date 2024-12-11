@@ -80,6 +80,8 @@ class ChatbotCore {
     const { signal } = this.abortController;
 
     try {
+      console.log("Sending action to Gadget API:", actionPayload);
+
       // Show typing indicator before sending request
       eventBus.emit(`${this.eventPrefix}:typing`, { isTyping: true });
 
@@ -92,7 +94,7 @@ class ChatbotCore {
           userID: this.userID,
           action: actionPayload.action,
         }),
-        credentials: "include", // Include cookies if needed
+        credentials: "include",
         signal: signal,
       });
 
