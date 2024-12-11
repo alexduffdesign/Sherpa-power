@@ -218,24 +218,27 @@ class MainChatbot {
   loadHistory() {
     const history = JSON.parse(localStorage.getItem(this.historyKey)) || [];
 
-    // Process all messages except the last one
-    for (let i = 0; i < history.length - 1; i++) {
-      const entry = history[i];
-      this.ui.addMessage(entry.sender, entry.message);
-    }
-
-    // Special handling for the last message if it exists
-    if (history.length > 0) {
-      const lastEntry = history[history.length - 1];
-
-      // If the last message was interactive and from assistant, only restore the interactive element
-      if (lastEntry.isInteractive && lastEntry.sender === "assistant") {
-        this.restoreInteractiveElement(lastEntry);
-      } else {
-        // Otherwise, just add the message normally
-        this.ui.addMessage(lastEntry.sender, lastEntry.message);
+    // Process all messages
+    history.forEach((entry, index) => {
+      // If it's an interactive element
+      if (entry.isInteractive) {
+        // Only restore interactive element if it's the last entry
+        if (index === history.length - 1) {
+          if (entry.traceType === "choice") {
+            this.ui.addButtons(entry.traceData.buttons, true);
+          } else if (entry.traceType === "carousel") {
+            this.ui.addCarousel(entry.traceData.cards, true);
+          }
+        }
+        // Skip adding message for interactive elements since they should have empty messages
+        return;
       }
-    }
+
+      // For non-interactive messages, display them normally
+      if (entry.message) {
+        this.ui.addMessage(entry.sender, entry.message);
+      }
+    });
   }
 
   restoreInteractiveElement(historyEntry) {
