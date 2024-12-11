@@ -40,13 +40,15 @@ class ChatbotCore {
   /**
    * Sends a launch request to initiate the conversation.
    */
-  sendLaunch(variables = {}) {
-    console.log("Constructing launch payload");
-    const payload = {
-      action: {
-        type: "launch",
-      },
-    };
+  sendLaunch(interactPayload = {}) {
+    console.log("Constructing launch payload with:", interactPayload);
+    const payload = interactPayload.action
+      ? interactPayload
+      : {
+          action: {
+            type: "launch",
+          },
+        };
     console.log("Final launch payload:", payload);
 
     return this.sendAction(payload);
