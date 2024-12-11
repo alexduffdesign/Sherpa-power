@@ -63,20 +63,6 @@ class MainChatbot {
       });
     });
 
-    // Listen to carouselPresented events
-    eventBus.on(EVENTS.MAIN_CHATBOT.CAROUSEL_PRESENTED, (data) => {
-      this.ui.addCarousel(data.carouselItems);
-      // Save to history with metadata
-      this.saveToHistory(
-        "assistant",
-        data.message || "Please select an option:",
-        {
-          type: "carousel",
-          carouselItems: data.carouselItems,
-        }
-      );
-    });
-
     // Listen to error events
     eventBus.on(EVENTS.MAIN_CHATBOT.ERROR, (error) => {
       this.ui.displayError(error.message);
