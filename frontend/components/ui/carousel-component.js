@@ -390,10 +390,15 @@ export class CarouselComponent extends HTMLElement {
     const buttonData = card.buttons[0];
     console.log("Original button data:", buttonData);
 
-    // Send the entire request object as the action
+    // Access the title from the payload
+    const productTitle = buttonData.request.payload.title;
+    const displayLabel = productTitle
+      ? `Selected ${productTitle}`
+      : "Selected Power Station";
+
     eventBus.emit("carouselButtonClicked", {
-      action: buttonData.request, // Use the entire request object
-      label: buttonData.name,
+      action: buttonData.request, // Keep the original request structure
+      label: displayLabel, // Use our new descriptive label with fallback
     });
 
     // Remove the carousel after interaction
