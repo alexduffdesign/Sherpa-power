@@ -140,7 +140,7 @@ class SectionChatbot {
         type: "launch",
         payload: {
           startBlock: "shopifySection",
-          productDetails: sanitizedDetails,
+          powerStationDetails: sanitizedDetails,
         },
       },
     };
