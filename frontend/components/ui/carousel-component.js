@@ -390,12 +390,9 @@ export class CarouselComponent extends HTMLElement {
     const buttonData = card.buttons[0];
     console.log("Original button data:", buttonData);
 
-    // Extract just the payload portion and wrap it in a text action
+    // Send the entire request object as the action
     eventBus.emit("carouselButtonClicked", {
-      action: {
-        type: "text",
-        payload: buttonData.request.payload,
-      },
+      action: buttonData.request, // Use the entire request object
       label: buttonData.name,
     });
 
