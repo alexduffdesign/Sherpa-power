@@ -190,6 +190,7 @@ class ChatbotCore {
         eventBus.emit(`${this.eventPrefix}:choicePresented`, {
           type: "choice",
           buttons: trace.payload.buttons,
+          message: "Please select an option:", // Or whatever message comes with the choice
         });
         break;
 
@@ -198,6 +199,7 @@ class ChatbotCore {
         eventBus.emit(`${this.eventPrefix}:carouselPresented`, {
           type: "carousel",
           carouselItems: trace.payload.cards,
+          message: "Please select a product:", // Or whatever message comes with the carousel
         });
         break;
       case "speak":

@@ -43,24 +43,44 @@ class MainChatbot {
       this.core.sendMessage(message);
     });
 
+    // Listen to button clicks
+    eventBus.on("buttonClicked", (data) => {
+      if (!data || !data.label) {
+        console.error("Invalid button data:", data);
+        return;
+      }
+
+      // Display the button's label as the user's message
+      this.ui.addMessage("user", data.label);
+      this.saveToHistory("user", data.label);
+
+      // Send the button payload to Voiceflow
+      const actionPayload = {
+        action: {
+          type: data.type,
+        },
+      };
+
+      // Only add payload if it exists and has content
+      if (data.payload && Object.keys(data.payload).length > 0) {
+        actionPayload.action.payload = data.payload;
+      }
+
+      this.core.sendAction(actionPayload);
+    });
+
     // Listen to choicePresented events
     eventBus.on(EVENTS.MAIN_CHATBOT.CHOICE_PRESENTED, (data) => {
       this.ui.addButtons(data.buttons);
-      // Save to history with metadata, but without a message
-      this.saveToHistory("assistant", "", {
-        type: "choice",
-        buttons: data.buttons,
-      });
-    });
-
-    // Listen to carouselPresented events
-    eventBus.on(EVENTS.MAIN_CHATBOT.CAROUSEL_PRESENTED, (data) => {
-      this.ui.addCarousel(data.carouselItems);
-      // Save to history with metadata, but without a message
-      this.saveToHistory("assistant", "", {
-        type: "carousel",
-        carouselItems: data.carouselItems,
-      });
+      // Save to history with metadata
+      this.saveToHistory(
+        "assistant",
+        data.message || "Please select an option:",
+        {
+          type: "choice",
+          buttons: data.buttons,
+        }
+      );
     });
 
     // Listen to carouselPresented events
