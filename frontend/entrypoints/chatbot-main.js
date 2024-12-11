@@ -195,23 +195,13 @@ class MainChatbot {
     // Process all messages except the last one
     for (let i = 0; i < history.length - 1; i++) {
       const entry = history[i];
-      if (entry.message && entry.message.trim() !== "") {
-        this.ui.addMessage(entry.sender, entry.message);
-      }
+      this.ui.addMessage(entry.sender, entry.message);
     }
 
     // Special handling for the last message if it exists
     if (history.length > 0) {
       const lastEntry = history[history.length - 1];
-
-      // Only add message if it has content and isn't interactive
-      if (
-        lastEntry.message &&
-        lastEntry.message.trim() !== "" &&
-        !lastEntry.isInteractive
-      ) {
-        this.ui.addMessage(lastEntry.sender, lastEntry.message);
-      }
+      this.ui.addMessage(lastEntry.sender, lastEntry.message);
 
       // If the last message was interactive and from assistant, restore the interactive element
       if (lastEntry.isInteractive && lastEntry.sender === "assistant") {
