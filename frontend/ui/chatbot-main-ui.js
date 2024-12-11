@@ -73,9 +73,11 @@ class MainChatbotUI {
       }
     });
 
-    this.container.addEventListener("click", (e) => {
+    // Listen at the custom-drawer level
+    document.querySelector("custom-drawer")?.addEventListener("click", (e) => {
       const menuButton = e.target.closest(".main-menu");
       if (menuButton) {
+        e.preventDefault();
         eventBus.emit("buttonClicked", {
           type: "event",
           payload: {
