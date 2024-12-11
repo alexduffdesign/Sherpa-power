@@ -70,23 +70,6 @@ class MainChatbotUI {
         }
       }
     });
-
-    // Listen for carousel button clicks specifically
-    eventBus.on("carouselButtonClicked", (data) => {
-      if (!data || !data.label) {
-        console.error("Invalid carousel button data:", data);
-        return;
-      }
-
-      // First add the user's selection as a message
-      this.addMessage("user", data.label);
-
-      // Then emit the action to ChatbotCore
-      eventBus.emit("userMessage", JSON.stringify(data.payload));
-
-      // Remove interactive elements
-      this.removeInteractiveElements();
-    });
   }
 
   /**

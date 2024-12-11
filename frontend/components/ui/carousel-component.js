@@ -272,10 +272,16 @@ export class CarouselComponent extends HTMLElement {
 
       // Button
       if (card.buttons && card.buttons.length > 0) {
+        const buttonData = card.buttons[0];
         const button = document.createElement("button");
         button.classList.add("button", "carousel__item-button");
         button.setAttribute("data-button-index", index);
-        button.textContent = card.buttons[0].name || "Select";
+        button.setAttribute(
+          "data-button-payload",
+          JSON.stringify(buttonData.request)
+        );
+        button.setAttribute("data-button-text", buttonData.name);
+        button.textContent = buttonData.name || "Select";
         itemContent.appendChild(button);
 
         // Add event listener for button click
@@ -373,28 +379,26 @@ export class CarouselComponent extends HTMLElement {
    */
   handleButtonClick(e) {
     const button = e.target;
-    const buttonIndex = parseInt(button.getAttribute("data-button-index"), 10);
-    const card = this.carouselData.cards[buttonIndex];
+    const buttonPayload = button.getAttribute("data-button-payload");
+    const buttonText = button.getAttribute("data-button-text");
 
-    if (!card || !card.buttons || card.buttons.length === 0) {
-      console.warn("No button data found for this card.");
+    if (!buttonPayload) {
+      console.error("No payload found for button");
       return;
     }
 
-    const buttonData = card.buttons[0];
-    const payload = {
-      type: "text", // Change to 'text' to match Voiceflow's expected format
-      payload: buttonData.request, // Use the full request object from Voiceflow
-    };
+    try {
+      const payload = JSON.parse(buttonPayload);
+      eventBus.emit("carouselButtonClicked", {
+        type: "text",
+        payload: payload,
+        label: buttonText,
+      });
 
-    // Emit the event with both the display text and the payload
-    eventBus.emit("carouselButtonClicked", {
-      type: "text",
-      payload: buttonData.request,
-      label: buttonData.name, // Include the button text to display in chat
-    });
-
-    // Remove the carousel from the UI after interaction
-    this.remove();
+      // Remove the carousel after interaction
+      this.closest("carousel-component").remove();
+    } catch (error) {
+      console.error("Error parsing button payload:", error);
+    }
   }
 }

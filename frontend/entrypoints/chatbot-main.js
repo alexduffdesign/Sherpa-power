@@ -97,6 +97,26 @@ class MainChatbot {
     document.addEventListener("chatbotLaunch", () => {
       this.launch();
     });
+
+    // Handle carousel button clicks
+    eventBus.on("carouselButtonClicked", (data) => {
+      if (!data || !data.payload) {
+        console.error("Invalid carousel button data:", data);
+        return;
+      }
+
+      // Add the button text as a user message
+      this.ui.addMessage("user", data.label);
+      this.saveToHistory("user", data.label);
+
+      // Send the actual payload to Voiceflow
+      this.core.sendAction({
+        action: {
+          type: "text",
+          payload: data.payload,
+        },
+      });
+    });
   }
 
   launch() {
