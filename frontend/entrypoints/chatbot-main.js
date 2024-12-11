@@ -100,7 +100,7 @@ class MainChatbot {
 
     // Handle carousel button clicks
     eventBus.on("carouselButtonClicked", (data) => {
-      if (!data || !data.payload) {
+      if (!data || !data.action) {
         console.error("Invalid carousel button data:", data);
         return;
       }
@@ -109,12 +109,9 @@ class MainChatbot {
       this.ui.addMessage("user", data.label);
       this.saveToHistory("user", data.label);
 
-      // Send the actual payload to Voiceflow
+      // Send the action to Voiceflow
       this.core.sendAction({
-        action: {
-          type: "text",
-          payload: data.payload,
-        },
+        action: data.action,
       });
     });
   }

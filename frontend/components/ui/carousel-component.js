@@ -388,11 +388,14 @@ export class CarouselComponent extends HTMLElement {
     }
 
     const buttonData = card.buttons[0];
-    console.log("Button data:", buttonData);
+    console.log("Original button data:", buttonData);
 
-    // Send the request payload directly - it's already in the correct format from Voiceflow
+    // Extract just the payload portion and wrap it in a text action
     eventBus.emit("carouselButtonClicked", {
-      payload: buttonData.request,
+      action: {
+        type: "text",
+        payload: buttonData.request.payload,
+      },
       label: buttonData.name,
     });
 

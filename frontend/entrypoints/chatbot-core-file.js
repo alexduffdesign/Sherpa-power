@@ -229,29 +229,27 @@ export class ChatbotCore extends EventEmitter {
     return html;
   }
 
-  async sendMessage(message) {
-    console.log("sendMessage called with:", message);
-    this.addMessage("user", message);
-    this.conversationHistory.push({ type: "user", message });
-    this.saveConversationToStorage();
+  sendMessage(message) {
+    console.log("Constructing message payload:", message);
 
-    try {
-      await this.handleStreaming({
+    let payload;
+    if (typeof message === "object" && message.action) {
+      // If it's a structured action (like from a button click), use it directly
+      payload = {
+        action: message.action,
+      };
+    } else {
+      // If it's a regular text message
+      payload = {
         action: {
           type: "text",
           payload: message,
         },
-        config: {
-          completion_events: true,
-        },
-      });
-    } catch (error) {
-      console.error("Error sending message:", error);
-      this.addMessage(
-        "assistant",
-        "Sorry, something went wrong. Please try again."
-      );
+      };
     }
+
+    console.log("Final payload being sent:", payload);
+    return this.sendAction(payload);
   }
 
   async sendLaunch() {
