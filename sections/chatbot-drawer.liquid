@@ -215,8 +215,7 @@
     {% render 'vite-tag' with 'frontend/mainChatbot/chatbot-main.js' %}
     
     <script type="module">
-      import { Drawer } from "@/theme.js";
-      import MainChatbot from "@/frontend/mainChatbot/chatbot-main.js";
+      import { Drawer } from "{{ 'theme.js' | asset_url }}";
     
       const DRAWER_LAUNCHED_KEY = 'drawerHasLaunched';
     
