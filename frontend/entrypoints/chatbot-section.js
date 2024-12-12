@@ -83,8 +83,8 @@ class SectionChatbot {
 
     // Typing text updates
     eventBus.on(EVENTS.SECTION_CHATBOT.TYPING_TEXT, (data) => {
-      this.ui.updateTypingText(data.text);
       this.ui.showTypingIndicator();
+      this.ui.updateTypingText(data.text);
     });
 
     // Button choice handling

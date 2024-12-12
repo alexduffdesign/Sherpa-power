@@ -30,6 +30,14 @@ class ChatbotCore {
 
     this.abortController = null; // For aborting the fetch request if needed
 
+    // Listen for user messages with the correct namespace
+    eventBus.on(
+      chatbotType === "main"
+        ? EVENTS.MAIN_CHATBOT.USER_MESSAGE
+        : EVENTS.SECTION_CHATBOT.USER_MESSAGE,
+      (message) => this.sendMessage(message)
+    );
+
     this.initialize();
   }
 
@@ -257,6 +265,12 @@ class ChatbotCore {
    */
   destroy() {
     this.closeConnection();
+    // Remove the user message listener based on chatbot type
+    eventBus.removeAllListeners(
+      this.chatbotType === "main"
+        ? EVENTS.MAIN_CHATBOT.USER_MESSAGE
+        : EVENTS.SECTION_CHATBOT.USER_MESSAGE
+    );
     eventBus.removeAllListeners(`${this.eventPrefix}:messageReceived`);
     eventBus.removeAllListeners(`${this.eventPrefix}:choicePresented`);
     eventBus.removeAllListeners(`${this.eventPrefix}:carouselPresented`);

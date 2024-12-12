@@ -86,7 +86,7 @@ class SectionChatbotUI {
       e.preventDefault();
       const message = this.input.value.trim();
       if (message) {
-        eventBus.emit("userMessage", message);
+        eventBus.emit(EVENTS.SECTION_CHATBOT.USER_MESSAGE, message);
         this.input.value = "";
       }
     });

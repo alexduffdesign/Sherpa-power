@@ -35,12 +35,12 @@ class MainChatbotUI {
   }
 
   setupEventListeners() {
-    // Handle form submission
+    // Handle form submissions
     this.form.addEventListener("submit", (e) => {
       e.preventDefault();
       const message = this.input.value.trim();
       if (message) {
-        eventBus.emit("userMessage", message);
+        eventBus.emit(EVENTS.MAIN_CHATBOT.USER_MESSAGE, message);
         this.input.value = "";
       }
     });
