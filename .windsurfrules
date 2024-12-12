@@ -5,6 +5,8 @@ Rule 1 - When writing code, ALWAYS follow the Architecture and Separation of Con
 
 ## Core Logic (baseChatbot/base-chatbot.js)
 
+Web Component: Utilized as a base class for both Main and Section Chatbots.
+
 Responsible for handling the conversation flow, sending requests to the Voiceflow API via the Gadget middleware, and processing the SSE (Server-Sent Events) responses.
 No direct DOM manipulation or UI rendering code. Only data handling, event emissions, and state management belong here.
 
@@ -46,6 +48,80 @@ Voiceflow and Gadget Integration
 # chatbot-drawer.liquid is where the main chatbots is rendered.
 
 # application.liquid is where the section chatbot is rendered.
+
+</rule>
+
+<rule>
+
+# Differentiate between the main chatbot features and the section chatbot features.
+
+Main Features Common to Both Chatbots:
+
+Differences between Main and Section Chatbots:
+
+## Main Chatbot Specific Features:
+
+Conversation History:
+
+Stores chat history in localStorage
+Can load and restore previous conversations
+Maintains interactive element state
+Stores user ID persistently
+
+Global Navigation:
+
+Has a main menu functionality (sends 'main-menu' event payload)
+Maintains conversation state across sessions
+
+Launch Behavior:
+
+Tracks launch state in localStorage
+Only launches once per session
+Can restore previous state on reload
+
+## Section Chatbot Specific Features:
+
+Product Context:
+
+Handles product-specific details
+Maintains product context in conversations
+Validates product information
+Product-specific launch payload
+
+Handles device_answer traces:
+Outputs device answers into the applications-grid
+
+Focused Interactions:
+
+No conversation history
+Stateless between sessions
+Focused on immediate product context
+Launches on first input focus
+
+Specialized UI:
+
+Product-specific UI elements for displaying device_answer traces
+
+Launch Behavior:
+
+Launches on input focus
+Includes product details in launch payload
+Validates product details before launch
+No persistent launch state
+
+</rule>
+
+<rule>
+
+# chatbot-drawer.liquid
+
+You will see in this file that we have a custom web component called custom-drawer.
+
+When we open the drawer for the first time, it will launch the main chatbot and save a flag to indicate that the drawer has been opened.
+
+This is to prevent the main chatbot from launching multiple times when the drawer is opened again.
+
+We need the main chatbot to launch when the drawer is first opened.
 
 </rule>
 

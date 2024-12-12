@@ -1,283 +1,111 @@
 // /assets/scripts/chatbot/section/section-chatbot-ui.js
 
-import eventBus from "../utils/event-bus.js";
-import { EVENTS } from "../utils/event-constants.js";
+import { BaseChatbotUI } from "../baseChatbot/base-chatbot-ui.js";
 
 /**
  * SectionChatbotUI Class
- * Handles all UI-specific functionalities for the Section Chatbot.
- * Manages message display, interactive elements, and product details.
- *
- * @class
- * @property {HTMLElement} container - The main container element for the chatbot UI
- * @property {HTMLFormElement} form - The form element for user input
- * @property {HTMLInputElement} input - The text input element
- * @property {HTMLElement} messageContainer - Container for chat messages
- * @property {Object} productDetails - Product information from data attributes
+ * Extends BaseChatbotUI with specific UI logic for the Section Chatbot
+ * Handles product-specific UI elements and device_answer displays
+ * @extends BaseChatbotUI
  */
-class SectionChatbotUI {
+export class SectionChatbotUI extends BaseChatbotUI {
   /**
-   * Creates a new SectionChatbotUI instance.
-   * Initializes UI elements and extracts product details from container attributes.
-   *
-   * @param {HTMLElement} container - The section chatbot UI container
-   * @throws {Error} If required UI elements are not found
+   * @param {ShadowRoot} shadowRoot - The shadow root of the chatbot component
+   * @param {EventEmitter} eventBus - The event bus for this chatbot instance
    */
-  constructor(container) {
-    if (!container) {
-      throw new Error("SectionChatbotUI requires a container element");
-    }
-
-    this.container = container;
-    this.form = this.container.querySelector("#chatForm");
-    this.input = this.container.querySelector("#userInput");
-    this.messageContainer = this.container.querySelector("#messageContainer");
-    this.typingIndicator = this.container.querySelector(".chat-typing");
-    this.typingText = this.typingIndicator?.querySelector(".typing-text");
-
-    console.log("Chatbot UI Container:", this.container);
-    console.log("Chat Form:", this.form);
-    console.log("Chat Input:", this.input);
-    console.log("Message Container:", this.messageContainer);
-    console.log("Typing Indicator:", this.typingIndicator);
-    console.log("Typing Text:", this.typingText);
-
-    if (!this.form) {
-      throw new Error("Chat form not found (id: chatForm)");
-    }
-    if (!this.input) {
-      throw new Error("Input field not found (id: userInput)");
-    }
-    if (!this.messageContainer) {
-      throw new Error("Message container not found (id: messageContainer)");
-    }
-
-    this.initializeProductDetails();
-    this.setupEventListeners();
+  constructor(shadowRoot, eventBus) {
+    super(shadowRoot, eventBus);
+    this.setupSectionSpecificEventListeners();
   }
 
   /**
-   * Initializes product details from container data attributes.
-   *
+   * Set up section-specific event listeners
    * @private
    */
-  initializeProductDetails() {
-    this.productDetails = {
-      title: this.getAttribute("product-title"),
-      capacity: this.getAttribute("product-capacity"),
-      ac_output_continuous_power: this.getAttribute(
-        "product-ac_output_continuous_power"
-      ),
-      ac_output_peak_power: this.getAttribute("product-ac_output_peak_power"),
-      dc_output_power: this.getAttribute("product-dc_output_power"),
-    };
-
-    console.log("Initialized product details:", this.productDetails);
-  }
-
-  /**
-   * Sets up event listeners for user interactions within the UI.
-   *
-   * @private
-   */
-  setupEventListeners() {
-    // Handle form submissions
-    this.form.addEventListener("submit", (e) => {
-      e.preventDefault();
-      const message = this.input.value.trim();
-      if (message) {
-        eventBus.emit(EVENTS.SECTION_CHATBOT.USER_MESSAGE, message);
-        this.input.value = "";
-      }
-    });
-
-    // Handle button clicks through event delegation
-    this.messageContainer.addEventListener("click", (e) => {
-      const button = e.target.closest("button-component");
-      if (button) {
-        const payload = this.getButtonPayload(button);
-        if (payload) {
-          eventBus.emit("buttonClicked", payload);
-          this.removeInteractiveElements();
-        }
-      }
-    });
-
-    // Handle carousel interactions
-    this.messageContainer.addEventListener("click", (e) => {
-      const carousel = e.target.closest("carousel-component");
-      if (carousel) {
-        const button = e.target.closest(".carousel-button");
-        if (button) {
-          const payload = this.getButtonPayload(button);
-          if (payload) {
-            eventBus.emit("carouselButtonClicked", payload);
-          }
-        }
-      }
+  setupSectionSpecificEventListeners() {
+    // Handle device answer displays
+    this.eventBus.on("deviceAnswer", ({ applications }) => {
+      this.displayDeviceAnswer(applications);
     });
   }
 
   /**
-   * Gets the payload data from a button element.
-   *
+   * Display device answer in the applications grid
    * @private
-   * @param {HTMLElement} button - The button element
-   * @returns {Object|null} The button's payload data or null if invalid
+   * @param {Array} applications - List of applications from device_answer
    */
-  getButtonPayload(button) {
-    try {
-      return JSON.parse(button.getAttribute("payload") || "null");
-    } catch (error) {
-      console.error("Error parsing button payload:", error);
-      return null;
-    }
+  displayDeviceAnswer(applications) {
+    const applicationsGrid = document.querySelector(".applications-grid");
+    if (!applicationsGrid) return;
+
+    // Clear existing applications
+    applicationsGrid.innerHTML = "";
+
+    // Create and append application elements
+    applications.forEach((app) => {
+      const appElement = this.createApplicationElement(app);
+      applicationsGrid.appendChild(appElement);
+    });
   }
 
   /**
-   * Adds a message to the chatbot UI.
-   *
-   * @public
-   * @param {string} sender - 'user' or 'assistant'
-   * @param {string} content - The message content
-   * @param {Object} [metadata] - Optional metadata for the message
+   * Create an application element for the grid
+   * @private
+   * @param {Object} app - Application data
+   * @returns {HTMLElement} The created application element
+   */
+  createApplicationElement(app) {
+    const element = document.createElement("div");
+    element.className = "application-item";
+
+    const icon = document.createElement("img");
+    icon.src = app.iconUrl || "";
+    icon.alt = app.name || "Application Icon";
+    icon.className = "application-icon";
+
+    const name = document.createElement("span");
+    name.textContent = app.name || "Unknown Application";
+    name.className = "application-name";
+
+    const power = document.createElement("span");
+    power.className = "power-requirement";
+    power.textContent = app.powerRequirement
+      ? `${app.powerRequirement}W`
+      : "N/A";
+
+    element.appendChild(icon);
+    element.appendChild(name);
+    element.appendChild(power);
+
+    return element;
+  }
+
+  /**
+   * Override addMessage to handle section-specific message formatting
+   * @override
+   * @param {string} sender - Message sender (user/assistant)
+   * @param {string} content - Message content
+   * @param {Object} metadata - Additional message metadata
    */
   addMessage(sender, content, metadata = null) {
-    const message = document.createElement("message-component");
-    message.setAttribute("sender", sender);
-    message.setAttribute("content", content);
-
-    if (metadata) {
-      message.setAttribute("metadata", JSON.stringify(metadata));
+    if (sender === "assistant" && metadata?.productContext) {
+      content = this.formatMessageWithProductContext(
+        content,
+        metadata.productContext
+      );
     }
-
-    this.messageContainer.appendChild(message);
-    this.scrollToBottom();
+    super.addMessage(sender, content, metadata);
   }
 
   /**
-   * Adds interactive buttons to the chatbot UI.
-   *
-   * @public
-   * @param {Array} buttons - Array of button data
-   */
-  addButtons(buttons) {
-    if (!Array.isArray(buttons)) {
-      console.error("Invalid buttons data:", buttons);
-      return;
-    }
-
-    const buttonsContainer = document.createElement("div");
-    buttonsContainer.className = "buttons-container";
-
-    buttons.forEach((buttonData) => {
-      const button = document.createElement("button-component");
-      button.setAttribute("label", buttonData.name);
-      button.setAttribute("payload", JSON.stringify(buttonData.request));
-      buttonsContainer.appendChild(button);
-    });
-
-    this.messageContainer.appendChild(buttonsContainer);
-    this.scrollToBottom();
-  }
-
-  /**
-   * Adds a carousel to the chatbot UI.
-   *
-   * @public
-   * @param {Array} items - Array of carousel items
-   */
-  addCarousel(items) {
-    if (!Array.isArray(items)) {
-      console.error("Invalid carousel items:", items);
-      return;
-    }
-
-    const carousel = document.createElement("carousel-component");
-    carousel.setAttribute("items", JSON.stringify(items));
-    this.messageContainer.appendChild(carousel);
-    this.scrollToBottom();
-  }
-
-  /**
-   * Updates the typing indicator text.
-   *
-   * @public
-   * @param {string} text - The text to display in the typing indicator
-   */
-  updateTypingText(text) {
-    if (this.typingText) {
-      this.typingText.textContent = text;
-    }
-  }
-
-  /**
-   * Shows the typing indicator.
-   *
-   * @public
-   */
-  showTypingIndicator() {
-    if (this.typingIndicator) {
-      this.typingIndicator.style.display = "flex";
-      this.scrollToBottom();
-    }
-  }
-
-  /**
-   * Hides the typing indicator.
-   *
-   * @public
-   */
-  hideTypingIndicator() {
-    if (this.typingIndicator) {
-      this.typingIndicator.style.display = "none";
-    }
-  }
-
-  /**
-   * Displays an error message in the chatbot UI.
-   *
-   * @public
-   * @param {string} message - The error message
-   */
-  displayError(message) {
-    const errorDiv = document.createElement("div");
-    errorDiv.classList.add("error-message");
-    errorDiv.innerText = message;
-    this.messageContainer.appendChild(errorDiv);
-    this.scrollToBottom();
-  }
-
-  /**
-   * Scrolls the message container to the bottom.
-   *
+   * Format message with product context
    * @private
+   * @param {string} message - Original message
+   * @param {Object} context - Product context
+   * @returns {string} Formatted message
    */
-  scrollToBottom() {
-    this.messageContainer.scrollTop = this.messageContainer.scrollHeight;
-  }
-
-  /**
-   * Retrieves the value of a specified attribute from the chatbot container.
-   *
-   * @private
-   * @param {string} attrName - The name of the attribute
-   * @returns {string|null} The value of the attribute or null if not found
-   */
-  getAttribute(attrName) {
-    return this.container.getAttribute(attrName);
-  }
-
-  /**
-   * Removes all interactive elements from the UI.
-   *
-   * @public
-   */
-  removeInteractiveElements() {
-    const elements = this.messageContainer.querySelectorAll(
-      "button-component, carousel-component, .buttons-container"
-    );
-    elements.forEach((element) => element.remove());
+  formatMessageWithProductContext(message, context) {
+    return message.replace(/\{(\w+)\}/g, (match, key) => context[key] || match);
   }
 }
 

@@ -25,7 +25,7 @@
     width: auto !important;
   }
 
-  .main-chatbot-ui {
+  main-chatbot {
     height: 100%;
     display: flex;
     flex-direction: column;
@@ -40,7 +40,7 @@
     padding: var(--spacing-4);
   }
   
-   #{{ drawer_id }} .chatbot-content {
+  #{{ drawer_id }} .chatbot-content {
     height: 100%;
     padding-bottom: 2rem;
   }
@@ -51,7 +51,7 @@
   }
   
   #{{ drawer_id }} .chat-form {
-  margin-top: 0;
+    margin-top: 0;
   }  
   
   #{{ drawer_id }}::part(content) {
@@ -67,13 +67,13 @@
     background-color: #403545;
     padding: var(--spacing-4) var(--spacing-6);
     color: white;
-    border-bottom: solid 1px #da9bfb;;
+    border-bottom: solid 1px #da9bfb;
     display: flex;
     justify-content: flex-start;
     grid-gap: 0.5rem;
   }
   
-   #{{ drawer_id }}:not([header-bordered])::part(header):after {
+  #{{ drawer_id }}:not([header-bordered])::part(header):after {
     height: var(--spacing-6);
     background: linear-gradient(to bottom, rgb(64 53 69), rgb(64 53 69 / 52%) 50%, rgb(64 53 69 / 0%));
     z-index: 3;
@@ -96,8 +96,9 @@
   }
   
   @media screen and (min-width: 700px) {
-  .main-chatbot-ui {
-    width: 500px;  }
+    main-chatbot {
+      width: 500px;
+    }
   }
 
   @media screen and (max-width: 699px) {
@@ -199,43 +200,50 @@
     </div>
   
 
-      <!-- Main Chatbot UI Container -->
-  <div id="main-chatbot-ui" class="main-chatbot-ui">
+      <!-- Main Chatbot Web Component -->
+  <main-chatbot>
     {% render 'chatbot-template' %}
     <footer class="footer-form">
       {{ form }}
     </footer>
-  </div>
+  </main-chatbot>
 </custom-drawer>
 
-{% render 'vite-tag' with 'components/ui/chatbot-components.js' %}
+{% render 'vite-tag' with 'mainChatbot/chatbot-main.js' %}
 
-<!-- Include the updated chatbot-main.js script -->
-{% render 'vite-tag' with 'chatbot-main.js' %}
-
-<!-- Initialize the chatbot when the drawer is opened -->
+<!-- Initialize the custom drawer -->
 <script type="module">
-  import { Drawer } from "{{ 'theme.js' | asset_url }}"; // Import the theme web component
+  import { Drawer } from "{{ 'theme.js' | asset_url }}";
+
+  const DRAWER_LAUNCHED_KEY = 'drawerHasLaunched';
 
   class CustomDrawer extends Drawer {
+    constructor() {
+      super();
+      this.hasLaunched = localStorage.getItem(DRAWER_LAUNCHED_KEY) === 'true';
+    }
+
     connectedCallback() {
       super.connectedCallback();
-      this.addEventListener('dialog:after-show', () => {
-        console.log('CustomDrawer: dialog:after-show event triggered'); // Debug log
-        if (!this.hasLaunched) {
-          const launchEvent = new Event('chatbotLaunch');
-          document.dispatchEvent(launchEvent);
-          console.log('CustomDrawer: chatbotLaunch event dispatched'); // Debug log
+      this.addEventListener('dialog:after-show', this.handleDrawerOpen.bind(this));
+    }
+
+    handleDrawerOpen() {
+      if (!this.hasLaunched) {
+        const mainChatbot = this.querySelector('main-chatbot');
+        if (mainChatbot) {
+          console.log('Launching main chatbot for the first time');
+          mainChatbot.launch();
+          localStorage.setItem(DRAWER_LAUNCHED_KEY, 'true');
           this.hasLaunched = true;
         }
-      });
+      }
     }
   }
 
-  window.customElements.define('custom-drawer', CustomDrawer);
+  // Register custom drawer
+  customElements.define('custom-drawer', CustomDrawer);
 </script>
-
-
 
 {% schema %}
 {

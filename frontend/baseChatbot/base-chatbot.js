@@ -46,6 +46,13 @@ export class BaseChatbot extends HTMLElement {
    */
   initialize() {
     this.setupEventListeners();
+  }
+
+  /**
+   * Launch the chatbot
+   * @public
+   */
+  launch() {
     this.sendLaunch();
   }
 
