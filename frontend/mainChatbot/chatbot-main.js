@@ -19,6 +19,21 @@ export class MainChatbot extends BaseChatbot {
     this.isLaunched = this.hasLaunched();
   }
 
+  connectedCallback() {
+    super.connectedCallback();
+
+    // Load user ID
+    let mainUserId = localStorage.getItem("mainChatbotUserId");
+    if (!mainUserId) {
+      mainUserId = generateUserId("mainChatbot");
+      localStorage.setItem("mainChatbotUserId", mainUserId);
+    }
+    this.userID = mainUserId;
+
+    // Load history if needed
+    this.loadHistory();
+  }
+
   /**
    * Initialize the chatbot UI
    * @protected
@@ -27,7 +42,6 @@ export class MainChatbot extends BaseChatbot {
   initializeUI() {
     this.ui = new MainChatbotUI(this.shadowRoot, this.eventBus);
     this.setupMainChatbotEventListeners();
-    this.loadHistory(); // Changed from restoreHistory to loadHistory to maintain interactive elements
   }
 
   /**
@@ -167,41 +181,5 @@ export class MainChatbot extends BaseChatbot {
   }
 }
 
-// Initialize Main Chatbot on DOMContentLoaded
-document.addEventListener("DOMContentLoaded", () => {
-  const mainChatbotContainer = document.querySelector("main-chatbot");
-
-  if (!mainChatbotContainer) {
-    console.error("Main Chatbot UI container not found");
-    return;
-  }
-
-  // Generate or retrieve existing userID for Main Chatbot
-  let mainUserId = localStorage.getItem("mainChatbotUserId");
-  if (!mainUserId) {
-    mainUserId = generateUserId("mainChatbot");
-    localStorage.setItem("mainChatbotUserId", mainUserId);
-  }
-
-  // Initialize ChatbotCore with the generated userID
-  const mainChatbotCore = new ChatbotCore({
-    userID: mainUserId,
-    endpoint:
-      "https://chatbottings--development.gadget.app/voiceflowAPI/voiceflow-streaming", // Update to your actual endpoint
-    chatbotType: "main",
-  });
-
-  // Initialize MainChatbotUI
-  const mainChatbotUI = new MainChatbotUI(mainChatbotContainer);
-
-  // Initialize MainChatbot
-  const mainChatbot = new MainChatbot(mainChatbotCore, mainChatbotUI);
-
-  // Load conversation history
-  mainChatbot.loadHistory();
-});
-
-console.log("Main chatbot script loading...");
 // Register the web component
 customElements.define("main-chatbot", MainChatbot);
-console.log("Main chatbot component registered");
