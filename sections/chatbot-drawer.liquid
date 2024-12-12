@@ -209,6 +209,9 @@
   </main-chatbot>
 </custom-drawer>
 
+
+<!-- Include all chatbot components -->
+{% render 'vite-tag' with 'baseChatbot/base-chatbot.js' %}
 {% render 'vite-tag' with 'mainChatbot/chatbot-main.js' %}
 
 <!-- Initialize the custom drawer -->

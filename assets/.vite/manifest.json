@@ -41,12 +41,6 @@
       "_vendor.DqvJXvYX.js"
     ]
   },
-  "frontend/entrypoints/chatbot-drawer.js": {
-    "file": "chatbot-drawer.DwJjsNWy.js",
-    "name": "chatbot-drawer",
-    "src": "frontend/entrypoints/chatbot-drawer.js",
-    "isEntry": true
-  },
   "frontend/entrypoints/theme.js": {
     "file": "theme.nWpejdIS.js",
     "name": "theme",
