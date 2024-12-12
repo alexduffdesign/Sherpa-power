@@ -209,6 +209,9 @@
   </main-chatbot>
 </custom-drawer>
 
+{% comment %}Debug: Show what files are being loaded{% endcomment %}
+{{ 'frontend/baseChatbot/base-chatbot.js' | asset_url }}
+{{ 'frontend/mainChatbot/chatbot-main.js' | asset_url }}
 
 <!-- Include all chatbot components -->
 {% render 'vite-tag' with 'frontend/baseChatbot/base-chatbot.js' %}
