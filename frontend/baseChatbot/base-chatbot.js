@@ -1,81 +1,39 @@
+// /assets/scripts/chatbot/core/chatbot-core.js
+
 import EventEmitter from "eventemitter3";
-import { generateUserId } from "../utils/user-id-generator.js";
 
 /**
- * Gadget API endpoint for Voiceflow streaming
- * @constant
- * @type {string}
+ * ChatbotCore Class
+ * Handles communication with Voiceflow API via Gadget middleware and processes responses
  */
-const GADGET_API_ENDPOINT =
-  "https://chatbottings--development.gadget.app/voiceflowAPI/voiceflow-streaming";
+class ChatbotCore {
+  /**
+   * @param {Object} config - Configuration object
+   * @param {string} config.type - Type of chatbot ('main' or 'section')
+   * @param {string} config.endpoint - API endpoint URL
+   * @param {string} config.userID - Unique user identifier
+   */
+  constructor(config) {
+    if (!config.userID) {
+      throw new Error("ChatbotCore requires a userID");
+    }
+    if (!config.endpoint) {
+      throw new Error("ChatbotCore requires an endpoint URL");
+    }
+    if (!config.type) {
+      throw new Error("ChatbotCore requires a type ('main' or 'section')");
+    }
 
-/**
- * BaseChatbot Web Component
- * Base class for all chatbot implementations
- * Handles core functionality and communication with Voiceflow API
- */
-export class BaseChatbot extends HTMLElement {
-  constructor() {
-    super();
-    this.attachShadow({ mode: "open" });
-
-    // Create local event bus
+    this.userID = config.userID;
+    this.endpoint = config.endpoint;
+    this.type = config.type;
     this.eventBus = new EventEmitter();
-
-    // Initialize state
-    this.userID = generateUserId();
     this.abortController = null;
   }
 
   /**
-   * Define observed attributes for the web component
-   */
-  static get observedAttributes() {
-    return ["endpoint"];
-  }
-
-  /**
-   * Called when the element is added to the document
-   */
-  connectedCallback() {
-    this.initialize();
-  }
-
-  /**
-   * Called when the element is removed from the document
-   */
-  disconnectedCallback() {
-    this.cleanup();
-  }
-
-  /**
-   * Initialize the chatbot
-   * @private
-   */
-  initialize() {
-    this.setupEventListeners();
-  }
-
-  /**
-   * Launch the chatbot
-   * @public
-   */
-  launch() {
-    this.sendLaunch();
-  }
-
-  /**
-   * Set up core event listeners
-   * @private
-   */
-  setupEventListeners() {
-    // Message handling
-    this.eventBus.on("userMessage", (message) => this.sendMessage(message));
-    this.eventBus.on("buttonClicked", (payload) => this.sendMessage(payload));
-  }
-
-  /**
    * Sends a launch request to initiate the conversation
+   * @param {Object} interactPayload - Optional payload for launch
    */
   async sendLaunch(interactPayload = {}) {
     console.log("Constructing launch payload:", interactPayload);
@@ -95,7 +53,7 @@ export class BaseChatbot extends HTMLElement {
    * @param {string | Object} message - The user's message or button payload
    */
   async sendMessage(message) {
-    console.log("Sending message:", message);
+    console.log("Constructing message payload:", message);
     const payload = {
       action: {
         type: "text",
@@ -115,7 +73,6 @@ export class BaseChatbot extends HTMLElement {
       // Only abort if there's an existing connection
       if (this.abortController) {
         this.abortController.abort();
-        // Wait a bit for cleanup
         await new Promise((resolve) => setTimeout(resolve, 100));
       }
 
@@ -125,7 +82,7 @@ export class BaseChatbot extends HTMLElement {
       // Show typing indicator
       this.eventBus.emit("typing", { isTyping: true });
 
-      const response = await fetch(GADGET_API_ENDPOINT, {
+      const response = await fetch(this.endpoint, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -156,6 +113,7 @@ export class BaseChatbot extends HTMLElement {
   /**
    * Handles the SSE response from the API
    * @private
+   * @param {Response} response - Fetch API response object
    */
   async handleSSEResponse(response) {
     const reader = response.body.getReader();
@@ -174,10 +132,10 @@ export class BaseChatbot extends HTMLElement {
         const events = buffer.split("\n\n");
         buffer = events.pop();
 
-        for (const eventStr of events) {
-          if (eventStr.trim() === "") continue;
+        events.forEach((eventStr) => {
+          if (eventStr.trim() === "") return;
           this.processEventString(eventStr);
-        }
+        });
       }
     } catch (error) {
       this.handleError(error);
@@ -189,6 +147,7 @@ export class BaseChatbot extends HTMLElement {
   /**
    * Process an individual SSE event string
    * @private
+   * @param {string} eventStr - The event string to process
    */
   processEventString(eventStr) {
     try {
@@ -213,7 +172,8 @@ export class BaseChatbot extends HTMLElement {
 
   /**
    * Process a trace event from Voiceflow
-   * @protected - Can be extended by child classes
+   * @protected
+   * @param {Object} trace - The trace object to process
    */
   processTrace(trace) {
     if (!trace.type) {
@@ -246,11 +206,10 @@ export class BaseChatbot extends HTMLElement {
         });
         break;
 
-      case "waiting_text":
-        this.eventBus.emit("typingText", {
-          text: trace.payload.text,
-        });
-        this.eventBus.emit("typing", { isTyping: true });
+      case "device_answer":
+        if (this.type === "section") {
+          this.eventBus.emit("deviceAnswer", trace.payload);
+        }
         break;
 
       default:
@@ -260,7 +219,8 @@ export class BaseChatbot extends HTMLElement {
 
   /**
    * Handle errors in the chatbot
-   * @protected - Can be extended by child classes
+   * @private
+   * @param {Error} error - The error to handle
    */
   handleError(error) {
     console.error("Chatbot error:", error);
@@ -269,12 +229,15 @@ export class BaseChatbot extends HTMLElement {
   }
 
   /**
-   * Clean up resources when the component is destroyed
+   * Clean up resources
+   * @public
    */
-  cleanup() {
+  destroy() {
     if (this.abortController) {
       this.abortController.abort();
     }
     this.eventBus.removeAllListeners();
   }
 }
+
+export default ChatbotCore;

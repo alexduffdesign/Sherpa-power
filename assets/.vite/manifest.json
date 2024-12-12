@@ -1,23 +1,16 @@
 {
-  "_event-bus.CuQuEjt-.js": {
-    "file": "event-bus.CuQuEjt-.js",
-    "name": "event-bus",
-    "imports": [
-      "_vendor.DqvJXvYX.js"
-    ]
-  },
   "_vendor.DqvJXvYX.js": {
     "file": "vendor.DqvJXvYX.js",
     "name": "vendor"
   },
   "frontend/baseChatbot/base-chatbot-ui.js": {
-    "file": "base-chatbot-ui.VFY9Qhos.js",
+    "file": "base-chatbot-ui.l0sNRNKZ.js",
     "name": "base-chatbot-ui",
     "src": "frontend/baseChatbot/base-chatbot-ui.js",
     "isEntry": true
   },
   "frontend/baseChatbot/base-chatbot.js": {
-    "file": "base-chatbot.5yo_lTNg.js",
+    "file": "base-chatbot.BjM46aZ2.js",
     "name": "base-chatbot",
     "src": "frontend/baseChatbot/base-chatbot.js",
     "isEntry": true,
@@ -26,12 +19,11 @@
     ]
   },
   "frontend/components/ui/chatbot-components.js": {
-    "file": "chatbot-components.zaKhN2MP.js",
+    "file": "chatbot-components.DzezZUEQ.js",
     "name": "chatbot-components",
     "src": "frontend/components/ui/chatbot-components.js",
     "isEntry": true,
     "imports": [
-      "_event-bus.CuQuEjt-.js",
       "_vendor.DqvJXvYX.js"
     ]
   },
@@ -51,48 +43,33 @@
     "isEntry": true
   },
   "frontend/mainChatbot/chatbot-main-ui.js": {
-    "file": "chatbot-main-ui.BDU8vwN8.js",
+    "file": "chatbot-main-ui.l0sNRNKZ.js",
     "name": "chatbot-main-ui",
     "src": "frontend/mainChatbot/chatbot-main-ui.js",
-    "isEntry": true,
-    "imports": [
-      "_event-bus.CuQuEjt-.js",
-      "frontend/baseChatbot/base-chatbot-ui.js",
-      "_vendor.DqvJXvYX.js"
-    ]
+    "isEntry": true
   },
   "frontend/mainChatbot/chatbot-main.js": {
-    "file": "chatbot-main.EBZRZHxd.js",
+    "file": "chatbot-main.BjM46aZ2.js",
     "name": "chatbot-main",
     "src": "frontend/mainChatbot/chatbot-main.js",
     "isEntry": true,
     "imports": [
-      "frontend/baseChatbot/base-chatbot.js",
-      "frontend/mainChatbot/chatbot-main-ui.js",
-      "_event-bus.CuQuEjt-.js",
-      "_vendor.DqvJXvYX.js",
-      "frontend/baseChatbot/base-chatbot-ui.js"
+      "_vendor.DqvJXvYX.js"
     ]
   },
   "frontend/sectionChatbot/chatbot-section-ui.js": {
-    "file": "chatbot-section-ui.Ooiy0Kqy.js",
+    "file": "chatbot-section-ui.l0sNRNKZ.js",
     "name": "chatbot-section-ui",
     "src": "frontend/sectionChatbot/chatbot-section-ui.js",
-    "isEntry": true,
-    "imports": [
-      "frontend/baseChatbot/base-chatbot-ui.js"
-    ]
+    "isEntry": true
   },
   "frontend/sectionChatbot/chatbot-section.js": {
-    "file": "chatbot-section.DkHcczcQ.js",
+    "file": "chatbot-section.BjM46aZ2.js",
     "name": "chatbot-section",
     "src": "frontend/sectionChatbot/chatbot-section.js",
     "isEntry": true,
     "imports": [
-      "frontend/baseChatbot/base-chatbot.js",
-      "frontend/sectionChatbot/chatbot-section-ui.js",
-      "_vendor.DqvJXvYX.js",
-      "frontend/baseChatbot/base-chatbot-ui.js"
+      "_vendor.DqvJXvYX.js"
     ]
   }
 }

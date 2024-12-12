@@ -1,117 +1,116 @@
-// /assets/scripts/chatbot/main/main-chatbot-ui.js
+// /assets/scripts/chatbot/main/chatbot-main-ui.js
 
-import eventBus from "../utils/event-bus.js";
-import { MAIN_CHATBOT } from "../utils/event-constants.js";
-import { BaseChatbotUI } from "../baseChatbot/base-chatbot-ui.js";
+import ChatbotUI from "../baseChatbot/base-chatbot-ui.js";
 
 /**
  * MainChatbotUI Class
- * Extends BaseChatbotUI with drawer-specific functionality
+ * Extends base ChatbotUI with main chatbot specific functionality
  */
-export class MainChatbotUI extends BaseChatbotUI {
+class MainChatbotUI extends ChatbotUI {
   /**
-   * @param {ShadowRoot} shadowRoot - The shadow root of the chatbot component
-   * @param {EventEmitter} eventBus - The event bus for this chatbot instance
+   * @param {Object} config - Configuration object
+   * @param {HTMLElement} config.container - The container element
+   * @param {EventEmitter} config.eventBus - Event bus instance
+   * @param {string} config.type - Type of chatbot
    */
-  constructor(shadowRoot, eventBus) {
-    super(shadowRoot, eventBus);
+  constructor(config) {
+    super(config);
     this.setupMainChatbotUI();
   }
 
   /**
-   * Set up main chatbot specific UI elements and functionality
+   * Set up main chatbot specific UI elements
    * @private
    */
   setupMainChatbotUI() {
-    // Set up footer elements
-    this.footer = this.shadowRoot.querySelector(".chatbot-footer");
-    this.setupFooterEventListeners();
+    this.footer = this.container.querySelector(".chatbot-footer");
+    this.setupFooterControls();
+    this.setupMainMenu();
   }
 
   /**
-   * Set up event listeners specific to the main chatbot
-   * @protected
-   * @override
+   * Set up footer controls
+   * @private
    */
-  setupEventListeners() {
-    super.setupEventListeners();
+  setupFooterControls() {
+    if (!this.footer) return;
 
-    // Handle button clicks with main chatbot namespace
-    this.messageContainer.addEventListener("click", (e) => {
-      const button = e.target.closest("button-component");
-      if (button) {
-        const payload = JSON.parse(button.getAttribute("payload"));
-        const label = button.getAttribute("label");
+    // Clear history button
+    const clearButton = this.footer.querySelector(".clear-history");
+    if (clearButton) {
+      clearButton.addEventListener("click", () => {
+        this.eventBus.emit("clearHistory");
+      });
+    }
 
-        this.eventBus.emit(MAIN_CHATBOT.BUTTON_CLICK, {
-          ...payload,
-          label,
-          type: "choice",
-        });
-
-        // Add the button text as a user message
-        this.addMessage("user", label);
-        this.removeInteractiveElements();
-      }
-    });
-
-    // Handle carousel button clicks with main chatbot namespace
-    this.messageContainer.addEventListener("click", (e) => {
-      const carouselButton = e.target.closest("carousel-button");
-      if (carouselButton) {
-        const payload = JSON.parse(carouselButton.getAttribute("payload"));
-        const label = carouselButton.getAttribute("label");
-
-        this.eventBus.emit(MAIN_CHATBOT.CAROUSEL_BUTTON_CLICK, {
-          ...payload,
-          label,
-          type: "carousel_click",
-        });
-
-        // Add the button text as a user message
-        this.addMessage("user", label);
-      }
-    });
+    // Minimize button
+    const minimizeButton = this.footer.querySelector(".minimize-chatbot");
+    if (minimizeButton) {
+      minimizeButton.addEventListener("click", () => {
+        this.eventBus.emit("minimize");
+      });
+    }
   }
 
   /**
-   * Add buttons to the chat
+   * Set up main menu functionality
+   * @private
+   */
+  setupMainMenu() {
+    const menuButton = this.container.querySelector(".main-menu");
+    if (menuButton) {
+      menuButton.addEventListener("click", () => {
+        this.eventBus.emit("mainMenu");
+      });
+    }
+  }
+
+  /**
+   * Override base addButtons to add main-specific functionality
+   * @override
    * @param {Array} buttons - Array of button data
    * @param {boolean} isRestored - Whether these buttons are being restored from history
-   * @override
    */
   addButtons(buttons, isRestored = false) {
-    const buttonsContainer = document.createElement("div");
-    buttonsContainer.className = "buttons-container";
+    if (!Array.isArray(buttons)) {
+      console.error("Invalid buttons data:", buttons);
+      return;
+    }
+
+    const buttonGroup = document.createElement("div");
+    buttonGroup.className = "button-group";
 
     buttons.forEach((buttonData) => {
       const button = document.createElement("button-component");
       button.setAttribute("label", buttonData.name);
       button.setAttribute("payload", JSON.stringify(buttonData.request));
 
-      // Add any additional attributes needed for restored buttons
       if (isRestored) {
         button.setAttribute("data-restored", "true");
       }
 
-      buttonsContainer.appendChild(button);
+      buttonGroup.appendChild(button);
     });
 
-    this.messageContainer.appendChild(buttonsContainer);
+    this.messageContainer.appendChild(buttonGroup);
     this.scrollToBottom();
   }
 
   /**
-   * Add a carousel to the chat
+   * Override base addCarousel to add main-specific functionality
+   * @override
    * @param {Array} items - Array of carousel items
    * @param {boolean} isRestored - Whether this carousel is being restored from history
-   * @override
    */
   addCarousel(items, isRestored = false) {
-    const carousel = document.createElement("carousel-component");
-    carousel.setAttribute("items", JSON.stringify(items));
+    if (!Array.isArray(items)) {
+      console.error("Invalid carousel items:", items);
+      return;
+    }
 
-    // Add any additional attributes needed for restored carousels
+    const carousel = document.createElement("carousel-component");
+    carousel.setAttribute("data-carousel", JSON.stringify({ cards: items }));
+
     if (isRestored) {
       carousel.setAttribute("data-restored", "true");
     }
@@ -121,33 +120,8 @@ export class MainChatbotUI extends BaseChatbotUI {
   }
 
   /**
-   * Set up event listeners for footer elements
-   * @private
-   */
-  setupFooterEventListeners() {
-    if (!this.footer) return;
-
-    // Handle clear history button
-    const clearButton = this.footer.querySelector(".clear-history");
-    if (clearButton) {
-      clearButton.addEventListener("click", () => {
-        this.clearChat();
-        this.eventBus.emit(MAIN_CHATBOT.CLEAR_HISTORY);
-      });
-    }
-
-    // Handle minimize button
-    const minimizeButton = this.footer.querySelector(".minimize-chatbot");
-    if (minimizeButton) {
-      minimizeButton.addEventListener("click", () => {
-        this.eventBus.emit(MAIN_CHATBOT.MINIMIZE);
-      });
-    }
-  }
-
-  /**
-   * Clear the chat
-   * @private
+   * Clear the chat messages
+   * @public
    */
   clearChat() {
     while (this.messageContainer.firstChild) {
@@ -156,8 +130,9 @@ export class MainChatbotUI extends BaseChatbotUI {
   }
 
   /**
-   * Update the footer visibility
+   * Update footer visibility
    * @public
+   * @param {boolean} visible - Whether footer should be visible
    */
   updateFooterVisibility(visible) {
     if (this.footer) {
@@ -165,3 +140,5 @@ export class MainChatbotUI extends BaseChatbotUI {
     }
   }
 }
+
+export default MainChatbotUI;

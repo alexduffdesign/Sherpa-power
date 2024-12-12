@@ -1,165 +1,173 @@
-</rules>
-
-<rule>
-Rule 1 - When writing code, ALWAYS follow the Architecture and Separation of Concerns:
-
-## Core Logic (baseChatbot/base-chatbot.js)
-
-Web Component: Utilized as a base class for both Main and Section Chatbots.
-
-Responsible for handling the conversation flow, sending requests to the Voiceflow API via the Gadget middleware, and processing the SSE (Server-Sent Events) responses.
-No direct DOM manipulation or UI rendering code. Only data handling, event emissions, and state management belong here.
-
-## Core UI (baseChatbot/base-chatbot-ui.js)
-
-Responsible for rendering messages, interactive elements (buttons, carousels), and updating the frontend as instructed by events from the core.
-
-## Main Chatbot (mainChatbot/chatbot-main.js)
-
-Extends BaseChatbot with specific logic for the Main Chatbot.
-Responsible for managing the Main Chatbot's conversation history, UI updates, and user input handling.
-No direct API calls.
-
-## Main Chatbot UI (mainChatbot/chatbot-main-ui.js)
-
-Responsible for rendering specific UI elements for the Main Chatbot.
-
-## Section Chatbot (sectionChatbot/chatbot-section.js)
-
-Extends BaseChatbot with specific logic for the Section Chatbot. (deviece_answer)
-
-## Section Chatbot UI (sectionChatbot/chatbot-section-ui.js)
-
-Responsible for rendering specific UI elements for the Section Chatbot. (deviece_answer)
-
-## UI Components (message-component, button-component, carousel-component)
-
-Self-contained UI elements.
-No network requests or complex logic, just represent and display data passed to them.
-
-# Utils (event-bus, event-constants, user-id-generator)
-
-Shared logic or services used across Core and UI layers, such as event handling and ID generation.
-No domain-specific business logic or UI rendering should occur here.
-Voiceflow and Gadget Integration
-
-# chatbot-template.liquid is the html file that both chatbots use.
-
-# chatbot-drawer.liquid is where the main chatbots is rendered.
-
-# application.liquid is where the section chatbot is rendered.
-
-</rule>
-
-<rule>
-
-# Differentiate between the main chatbot features and the section chatbot features.
-
-Main Features Common to Both Chatbots:
-
-Differences between Main and Section Chatbots:
-
-## Main Chatbot Specific Features:
-
-Conversation History:
-
-Stores chat history in localStorage
-Can load and restore previous conversations
-Maintains interactive element state
-Stores user ID persistently
-
-Global Navigation:
-
-Has a main menu functionality (sends 'main-menu' event payload)
-Maintains conversation state across sessions
-
-Launch Behavior:
-
-Tracks launch state in localStorage
-Only launches once per session
-Can restore previous state on reload
-
-## Section Chatbot Specific Features:
-
-Product Context:
-
-Handles product-specific details
-Maintains product context in conversations
-Validates product information
-Product-specific launch payload
-
-Handles device_answer traces:
-Outputs device answers into the applications-grid
-
-Focused Interactions:
-
-No conversation history
-Stateless between sessions
-Focused on immediate product context
-Launches on first input focus
-
-Specialized UI:
-
-Product-specific UI elements for displaying device_answer traces
-
-Launch Behavior:
-
-Launches on input focus
-Includes product details in launch payload
-Validates product details before launch
-No persistent launch state
-
-</rule>
-
-<rule>
-
-# chatbot-drawer.liquid
-
-You will see in this file that we have a custom web component called custom-drawer.
-
-When we open the drawer for the first time, it will launch the main chatbot and save a flag to indicate that the drawer has been opened.
-
-This is to prevent the main chatbot from launching multiple times when the drawer is opened again.
-
-We need the main chatbot to launch when the drawer is first opened.
-
-</rule>
-
-<rule>
-Rule 2 - Remember the tech stack used:Voiceflow and Gadget Integration:
-Voiceflow API
-
-All communication with Voiceflow occurs through the Gadget API endpoint.
-Voiceflow Project ID and API Key are configured via environment variables.
-No direct Voiceflow calls in UI files—only from ChatbotCore or Gadget routes.
-Gadget Middleware
-
-Acts as a proxy to Voiceflow’s SSE endpoint.
-Handles authentication, streaming events, and error handling before passing data back to the frontend.
-Documentation and Style
-
-We are using eventemitter3 for event handling.
-We are using vite for bundling.
-</rule>
-
-<rule>
-Rule 3 - For each function or class, write a JSDoc Comments:
-
-Every function and class should include a JSDoc header block describing parameters, return values, and purpose.
-Maintain consistent JSDoc format throughout the codebase.
-Code Consistency
-</rule>
-
-<rule>
-
-# Give confidence score to your analysis or errors
-
-</rule>
-
-<rule>
-
-# After implementing a fix in the code, write a inside the progress-report.txt file notes on what we tried and what we learned and tried to fix and what we implemented. Only needs to be brief but needs to be clear.
-
-</rule>
-
+<rules>
+<architecture>
+  ## Core Architecture Rules
+  <coreLogic>
+    <!-- chatbot/baseChatbot/base-chatbot.js -->
+    - Handles all API communication through Gadget middleware
+    - Manages SSE response processing
+    - Handles state management and event emissions 
+    - No UI code or DOM manipulation
+    - Responsible for trace processing
+    - Manages user sessions and conversations
+  </coreLogic>
+  <coreUI>
+    <!-- chatbot/baseChatbot/base-chatbot-ui.js -->
+    - Base UI functionality shared by both chatbots
+    - Handles message rendering
+    - Manages interactive elements (buttons, carousels)
+    - DOM manipulation and UI updates
+    - No direct API calls
+    - Event handling for UI interactions
+  </coreUI>
+  <mainChatbot>
+    <!-- chatbot/mainChatbot/chatbot-main.js -->
+    - Extends core functionality for main chatbot
+    - Manages conversation history
+    - Handles localStorage persistence
+    - Controls launch behavior with drawer
+    - Global navigation functionality
+    - No direct API calls
+  </mainChatbot>
+  <mainChatbotUI>
+    <!-- chatbot/mainChatbot/chatbot-main-ui.js -->
+    - Extends core UI for main chatbot
+    - Implements main-specific UI elements
+    - Handles history restoration
+    - Manages drawer-specific UI
+    - Footer controls (clear/minimize)
+  </mainChatbotUI>
+  <sectionChatbot>
+    <!-- chatbot/sectionChatbot/chatbot-section.js -->
+    - Extends core functionality for section chatbot
+    - Handles product context
+    - Manages device_answer traces
+    - Focus-based launch behavior
+    - Stateless operation
+    - Product validation
+  </sectionChatbot>
+  <sectionChatbotUI>
+    <!-- chatbot/sectionChatbot/chatbot-section-ui.js -->
+    - Extends core UI for section chatbot
+    - Product-specific UI elements
+    - Device answer grid updates
+    - Product context display
+    - Focus handling
+  </sectionChatbotUI>
+  <components>
+    <!-- UI Components -->
+    - message-component: Display chat messages
+    - button-component: Interactive buttons
+    - carousel-component: Carousel displays
+    - Pure presentation components
+    - No business logic
+    - Event emission only
+  </components>
+  <utils>
+    <!-- Utility Modules -->
+    - event-bus: EventEmitter3 instance
+    - event-constants: Event type definitions
+    - user-id-generator: ID management
+    - Shared helper functions
+    - No business logic
+  </utils>
+</architecture>
+<templates>
+  <chatbotTemplate>
+    <!-- chatbot-template.liquid -->
+    - Shared HTML structure
+    - Used by both chatbot types
+    - Basic chat interface elements
+    - No type-specific elements
+  </chatbotTemplate>
+  <drawerTemplate>
+    <!-- chatbot-drawer.liquid -->
+    - Main chatbot container
+    - Drawer initialization
+    - Launch state management
+  </drawerTemplate>
+  <applicationTemplate>
+    <!-- application.liquid -->
+    - Section chatbot container
+    - Product attributes
+    - Context initialization
+  </applicationTemplate>
+</templates>
+<features>
+  <commonFeatures>
+    - Message sending/receiving
+    - Button interactions
+    - Carousel display
+    - Typing indicators
+    - Error handling
+    - Event-based communication
+  </commonFeatures>
+  <mainFeatures>
+    - Conversation history (localStorage)
+    - State persistence
+    - Interactive element restoration
+    - Global navigation
+    - Drawer-based launch
+    - Session management
+  </mainFeatures>
+  <sectionFeatures>
+    - Product context
+    - Device answers
+    - Focus-based launch
+    - Stateless operation
+    - Product validation
+    - Grid updates
+  </sectionFeatures>
+</features>
+<technicalRequirements>
+  <api>
+    - All Voiceflow communication via Gadget
+    - Environment-based configuration
+    - SSE handling
+    - Error management
+  </api>
+  <dependencies>
+    - eventemitter3 for events
+    - vite for bundling
+    - No direct API calls in UI
+  </dependencies>
+  <documentation>
+    <!-- JSDoc Requirements -->
+    <classDoc>
+      /**
+       * @class
+       * @description Purpose of the class
+       * @param {Object} config - Configuration object
+       */
+    </classDoc>
+Copy<methodDoc>
+  /**
+   * @method
+   * @description Purpose of the method
+   * @param {type} paramName - Parameter description
+   * @returns {type} Description of return value
+   */
+</methodDoc>
+  </documentation>
+</technicalRequirements>
+<qualityStandards>
+  <codeQuality>
+    - Clear separation of concerns
+    - No cross-boundary responsibilities
+    - Event-driven communication
+    - Proper error handling
+    - Clean code principles
+  </codeQuality>
+  <testing>
+    - Unit tests for core functionality
+    - Integration tests for chatbot flows
+    - Event handling tests
+    - UI interaction tests
+  </testing>
+  <maintenance>
+    - Regular progress reports
+    - Clear documentation updates
+    - Code review requirements
+    - Performance monitoring
+  </maintenance>
+</qualityStandards>
 </rules>

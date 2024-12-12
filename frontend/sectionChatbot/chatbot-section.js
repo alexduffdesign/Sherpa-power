@@ -1,56 +1,49 @@
-// /assets/scripts/chatbot/section/section-chatbot.js
+// /frontend/sectionChatbot/chatbot-section.js
 
-import { BaseChatbot } from "../baseChatbot/base-chatbot.js";
-import { SectionChatbotUI } from "./chatbot-section-ui.js";
+import ChatbotCore from "../baseChatbot/base-chatbot.js";
+import SectionChatbotUI from "./chatbot-section-ui.js";
 import { generateUserId } from "../utils/user-id-generator.js";
 
 /**
- * SectionChatbot Web Component
- * Extends BaseChatbot with specific logic for the Section Chatbot
- * Handles product context, device answers, and focused interactions
- * @extends BaseChatbot
+ * SectionChatbot Class
+ * Handles section-specific chatbot functionality including product context and device answers
  */
-export class SectionChatbot extends BaseChatbot {
-  constructor() {
-    super();
-    this.productDetails = {};
-  }
-
+class SectionChatbot {
   /**
-   * Initialize the chatbot UI
-   * @protected
-   * @override
+   * @param {HTMLElement} container - The container element
+   * @param {Object} productDetails - Product-specific information
    */
-  initializeUI() {
-    this.ui = new SectionChatbotUI(this.shadowRoot, this.eventBus);
-    this.setupSectionChatbotEventListeners();
-  }
+  constructor(container, productDetails) {
+    this.container = container;
+    this.productDetails = productDetails;
+    this.isLaunched = false;
 
-  /**
-   * Initialize product details from element attributes
-   * @private
-   */
-  initializeProductDetails() {
-    this.productDetails = {
-      title: this.getAttribute("product-title"),
-      capacity: this.getAttribute("product-capacity"),
-      ac_output_continuous_power: this.getAttribute(
-        "product-ac_output_continuous_power"
-      ),
-      ac_output_peak_power: this.getAttribute("product-ac_output_peak_power"),
-      dc_output_power: this.getAttribute("product-dc_output_power"),
-    };
+    this.initialize();
     this.validateProductDetails();
   }
 
   /**
-   * Override initialize to add product context initialization
-   * @protected
-   * @override
+   * Initialize the chatbot components
+   * @private
    */
   initialize() {
-    this.initializeProductDetails();
-    super.initialize();
+    // Initialize core
+    this.core = new ChatbotCore({
+      type: "section",
+      endpoint:
+        "https://chatbottings--development.gadget.app/voiceflowAPI/voiceflow-streaming",
+      userID: generateUserId(),
+    });
+
+    // Initialize UI
+    this.ui = new SectionChatbotUI({
+      container: this.container,
+      eventBus: this.core.eventBus,
+      type: "section",
+      productDetails: this.productDetails,
+    });
+
+    this.setupEventListeners();
   }
 
   /**
@@ -65,78 +58,115 @@ export class SectionChatbot extends BaseChatbot {
 
     if (missingFields.length > 0) {
       console.error(
-        `Missing required product details: ${missingFields.join(", ")}`
+        "Missing required product details:",
+        missingFields.join(", ")
       );
-      this.eventBus.emit("error", {
-        message:
-          "Some product information is missing. Chat functionality may be limited.",
-      });
+      this.ui.displayError(
+        "Some product information is missing. Chat functionality may be limited."
+      );
     }
   }
 
   /**
-   * Set up section-specific event listeners
+   * Set up event listeners
    * @private
    */
-  setupSectionChatbotEventListeners() {
-    // Handle device_answer traces
-    this.eventBus.on("trace", ({ type, payload }) => {
-      if (type === "device_answer") {
-        this.handleDeviceAnswer(payload);
-      }
+  setupEventListeners() {
+    // Handle device answers
+    this.core.eventBus.on("deviceAnswer", (payload) => {
+      this.handleDeviceAnswer(payload);
     });
 
-    // Handle input focus for launching
-    this.shadowRoot
-      .querySelector(".chat-input")
-      ?.addEventListener("focus", () => {
+    // Handle input focus for launch
+    const input = this.container.querySelector(".chat-input");
+    if (input) {
+      input.addEventListener("focus", () => {
         if (!this.isLaunched) {
           this.launch();
         }
       });
-  }
-
-  /**
-   * Handle device_answer traces by updating the applications grid
-   * @private
-   * @param {Object} payload - The device_answer payload
-   */
-  handleDeviceAnswer(payload) {
-    if (payload.applications) {
-      this.eventBus.emit("deviceAnswer", {
-        applications: payload.applications,
-      });
     }
   }
 
   /**
-   * Get product-specific launch payload
-   * @private
-   * @returns {Object} Launch payload with product details
+   * Launch the chatbot with product context
+   * @public
    */
-  getProductLaunchPayload() {
-    return {
-      action: {
-        type: "launch",
-        payload: {
-          context: {
+  async launch() {
+    if (this.isLaunched) {
+      console.log("Section chatbot already launched");
+      return;
+    }
+
+    try {
+      const sanitizedDetails = this.sanitizeProductDetails();
+      await this.core.sendLaunch({
+        action: {
+          type: "launch",
+          payload: {
             startBlock: "shopifySection",
-            powerStationDetails: this.productDetails,
+            powerStationDetails: sanitizedDetails,
           },
         },
-      },
+      });
+      this.isLaunched = true;
+    } catch (error) {
+      console.error("Error launching section chatbot:", error);
+      this.ui.displayError("Failed to start the chat. Please try again.");
+    }
+  }
+
+  /**
+   * Handle device answer traces
+   * @private
+   * @param {Object} payload - Device answer payload
+   */
+  handleDeviceAnswer(payload) {
+    if (!payload || !payload.data) {
+      console.warn("Invalid device answer payload:", payload);
+      return;
+    }
+
+    // Process device answer data
+    const processedData = this.processDeviceAnswerData(payload.data);
+    this.ui.updateDeviceAnswers(processedData);
+  }
+
+  /**
+   * Process device answer data for UI
+   * @private
+   * @param {Object} data - Raw device answer data
+   * @returns {Object} Processed data for UI
+   */
+  processDeviceAnswerData(data) {
+    return {
+      deviceName: data.deviceName || this.productDetails.title,
+      results: data.results || [],
+      recommendations: data.recommendations || [],
+      calculationDetails: data.calculationDetails || {},
     };
   }
 
   /**
-   * Override launch to include product details
-   * @public
-   * @override
+   * Sanitize product details for API
+   * @private
+   * @returns {Object}
    */
-  launch() {
-    this.sendLaunch(this.getProductLaunchPayload());
+  sanitizeProductDetails() {
+    return Object.entries(this.productDetails).reduce((acc, [key, value]) => {
+      acc[key] = value ? String(value).trim() : "";
+      return acc;
+    }, {});
+  }
+
+  /**
+   * Clean up resources
+   * @public
+   */
+  destroy() {
+    this.core.destroy();
+    this.ui.destroy();
   }
 }
 
-// Register the web component
-customElements.define("section-chatbot", SectionChatbot);
+export default SectionChatbot;

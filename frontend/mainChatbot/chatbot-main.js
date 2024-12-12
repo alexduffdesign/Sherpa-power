@@ -1,87 +1,104 @@
-// /assets/scripts/chatbot/chatbot-main.js
+// /frontend/mainChatbot/chatbot-main.js
 
-import { BaseChatbot } from "../baseChatbot/base-chatbot.js";
-import { MainChatbotUI } from "./chatbot-main-ui.js";
-import { MAIN_CHATBOT } from "../utils/event-constants.js";
-import eventBus from "../utils/event-bus.js";
+import ChatbotCore from "../baseChatbot/base-chatbot.js";
+import MainChatbotUI from "./chatbot-main-ui.js";
 import { generateUserId } from "../utils/user-id-generator.js";
 
 /**
  * MainChatbot Class
- * Extends BaseChatbot with drawer-specific functionality
- * Manages the Main Chatbot's conversation history and UI updates
+ * Handles main chatbot functionality including history management and drawer integration
  */
-export class MainChatbot extends BaseChatbot {
-  constructor() {
-    super();
+class MainChatbot {
+  /**
+   * @param {HTMLElement} container - The container element for the chatbot
+   */
+  constructor(container) {
+    this.container = container;
     this.historyKey = "mainChatbotHistory";
     this.launchKey = "chatHasLaunched";
     this.isLaunched = this.hasLaunched();
+
+    // Initialize core and UI
+    this.initialize();
   }
 
-  connectedCallback() {
-    super.connectedCallback();
-
-    // Load user ID
-    let mainUserId = localStorage.getItem("mainChatbotUserId");
-    if (!mainUserId) {
-      mainUserId = generateUserId("mainChatbot");
-      localStorage.setItem("mainChatbotUserId", mainUserId);
+  /**
+   * Initialize the chatbot components
+   * @private
+   */
+  initialize() {
+    // Set up user ID
+    let userId = localStorage.getItem("mainChatbotUserId");
+    if (!userId) {
+      userId = generateUserId("mainChatbot");
+      localStorage.setItem("mainChatbotUserId", userId);
     }
-    this.userID = mainUserId;
 
-    // Load history if needed
+    // Initialize core
+    this.core = new ChatbotCore({
+      type: "main",
+      endpoint:
+        "https://chatbottings--development.gadget.app/voiceflowAPI/voiceflow-streaming",
+      userID: userId,
+    });
+
+    // Initialize UI
+    this.ui = new MainChatbotUI({
+      container: this.container,
+      eventBus: this.core.eventBus,
+      type: "main",
+    });
+
+    this.setupEventListeners();
     this.loadHistory();
   }
 
   /**
-   * Initialize the chatbot UI
-   * @protected
-   * @override
-   */
-  initializeUI() {
-    this.ui = new MainChatbotUI(this.shadowRoot, this.eventBus);
-    this.setupMainChatbotEventListeners();
-    this.loadHistory(); // Changed from restoreHistory to loadHistory to maintain interactive elements
-  }
-
-  /**
-   * Set up event listeners specific to the main chatbot
+   * Set up event listeners
    * @private
    */
-  setupMainChatbotEventListeners() {
-    // Handle button clicks
-    this.eventBus.on(MAIN_CHATBOT.BUTTON_CLICK, (payload) => {
-      this.sendAction(payload);
-    });
-
-    // Handle carousel button clicks
-    this.eventBus.on(MAIN_CHATBOT.CAROUSEL_BUTTON_CLICK, (payload) => {
-      this.sendAction(payload);
-    });
-
-    // Handle user messages with history saving
-    this.eventBus.on("userMessage", (message) => {
+  setupEventListeners() {
+    // Handle user messages
+    this.core.eventBus.on("userMessage", (message) => {
       this.saveToHistory("user", message);
-      this.sendMessage(message);
     });
 
-    // Handle bot messages with history saving
-    this.eventBus.on("messageReceived", ({ content, metadata }) => {
+    // Handle bot messages
+    this.core.eventBus.on("messageReceived", ({ content, metadata }) => {
       this.saveToHistory("assistant", content, metadata);
     });
+
+    // Handle button clicks
+    this.core.eventBus.on("buttonClicked", (payload) => {
+      this.saveToHistory("user", payload.label || "Button clicked");
+    });
+
+    // Handle main menu
+    this.core.eventBus.on("mainMenu", () => {
+      this.core.sendAction({
+        action: {
+          type: "event",
+          payload: {
+            event: {
+              name: "main_menu",
+            },
+          },
+        },
+      });
+    });
   }
 
   /**
-   * Check if the chatbot has been launched before
+   * Check if chatbot has been launched before
    * @private
+   * @returns {boolean}
    */
   hasLaunched() {
     return localStorage.getItem(this.launchKey) === "true";
   }
 
   /**
-   * Set the launched state in localStorage
+   * Set launched state
    * @private
    */
   setLaunched() {
@@ -90,14 +107,36 @@ export class MainChatbot extends BaseChatbot {
   }
 
   /**
-   * Save a message to the conversation history
-   * Preserves interactive element data for choices and carousels
+   * Launch the chatbot
+   * @public
+   */
+  async launch() {
+    if (this.isLaunched) {
+      console.log("Chat already launched, skipping launch request");
+      return;
+    }
+
+    try {
+      await this.core.sendLaunch();
+      this.setLaunched();
+    } catch (error) {
+      console.error("Error launching chatbot:", error);
+      this.ui.displayError(
+        "Failed to launch the chatbot. Please try again later."
+      );
+    }
+  }
+
+  /**
+   * Save message to history
    * @private
+   * @param {string} sender - Message sender
+   * @param {string} message - Message content
+   * @param {Object} metadata - Optional metadata
    */
   saveToHistory(sender, message, metadata = null) {
     const history = JSON.parse(localStorage.getItem(this.historyKey)) || [];
 
-    // Create history entry with additional trace data for interactive elements
     const historyEntry = {
       sender,
       message,
@@ -105,7 +144,6 @@ export class MainChatbot extends BaseChatbot {
       isInteractive: false,
     };
 
-    // If this is an assistant message with choice or carousel, store the trace
     if (sender === "assistant" && metadata) {
       if (metadata.type === "choice") {
         historyEntry.isInteractive = true;
@@ -123,26 +161,20 @@ export class MainChatbot extends BaseChatbot {
   }
 
   /**
-   * Load conversation history from localStorage
-   * Handles interactive elements specially
+   * Load conversation history
    * @private
    */
   loadHistory() {
     const history = JSON.parse(localStorage.getItem(this.historyKey)) || [];
 
-    // Process all messages
     history.forEach((entry, index) => {
-      // If it's an interactive element
       if (entry.isInteractive) {
-        // Only restore interactive element if it's the last entry
         if (index === history.length - 1) {
           this.restoreInteractiveElement(entry);
         }
-        // Skip adding message for interactive elements since they should have empty messages
         return;
       }
 
-      // For non-interactive messages, display them normally
       if (entry.message) {
         this.ui.addMessage(entry.sender, entry.message);
       }
@@ -150,8 +182,9 @@ export class MainChatbot extends BaseChatbot {
   }
 
   /**
-   * Restore an interactive element (choice or carousel)
+   * Restore interactive elements from history
    * @private
+   * @param {Object} historyEntry - The history entry to restore
    */
   restoreInteractiveElement(historyEntry) {
     if (historyEntry.traceType === "choice") {
@@ -162,25 +195,24 @@ export class MainChatbot extends BaseChatbot {
   }
 
   /**
-   * Clear the conversation history
+   * Clear chat history
    * @public
    */
   clearHistory() {
     localStorage.removeItem(this.historyKey);
     localStorage.removeItem(this.launchKey);
     this.isLaunched = false;
+    this.ui.clearChat();
   }
 
   /**
-   * Sanitize user input
-   * @private
+   * Clean up resources
+   * @public
    */
-  sanitizeInput(input) {
-    const div = document.createElement("div");
-    div.textContent = input;
-    return div.innerHTML;
+  destroy() {
+    this.core.destroy();
+    this.ui.destroy();
   }
 }
 
-// Register the web component
-customElements.define("main-chatbot", MainChatbot);
+export default MainChatbot;

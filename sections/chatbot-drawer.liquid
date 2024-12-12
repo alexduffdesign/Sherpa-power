@@ -198,73 +198,58 @@
         Back to Menu
       </button>
     </div>
-  
-
-      <!-- Main Chatbot Web Component -->
-  <main-chatbot>
-    {% render 'chatbot-template' %}
-    <footer class="footer-form">
-      {{ form }}
-    </footer>
-  </main-chatbot>
-</custom-drawer>
-
-<!-- Include all chatbot components -->
-{% render 'vite-tag' with '/frontend/baseChatbot/base-chatbot.js' %}
-{% render 'vite-tag' with '/frontend/mainChatbot/chatbot-main.js' %}
-
-<!-- Initialize the custom drawer -->
-<script type="module">
-  import { Drawer } from "{{ 'theme.js' | asset_url }}";
-
-  console.log('Drawer script starting...');
-
-  const DRAWER_LAUNCHED_KEY = 'drawerHasLaunched';
-
-  class CustomDrawer extends Drawer {
-    constructor() {
-      super();
-      console.log('CustomDrawer constructed');
-      this.hasLaunched = localStorage.getItem(DRAWER_LAUNCHED_KEY) === 'true';
-    }
-
-    connectedCallback() {
-      super.connectedCallback();
-      console.log('CustomDrawer connected');
-      this.addEventListener('dialog:after-show', this.handleDrawerOpen.bind(this));
-    }
-
-    async handleDrawerOpen() {
-      console.log('HandleDrawerOpen called');
-      if (!this.hasLaunched) {
-        console.log('Waiting for main-chatbot to be defined...');
-        try {
-          await customElements.whenDefined('main-chatbot');
-          console.log('main-chatbot is now defined');
-        } catch (error) {
-          console.error('Error waiting for main-chatbot:', error);
+        <div id="main-chatbot-container">
+          {% render 'chatbot-template' %}
+          <footer class="chatbot-footer">
+            {{ form }}
+            <div class="footer-controls">
+            </div>
+          </footer>
+        </div>
+    </custom-drawer>
+    
+    <!-- Include required scripts -->
+    {% render 'vite-tag' with 'frontend/components/chatbot-component.js' %}
+    {% render 'vite-tag' with 'frontend/baseChatbot/base-chatbot.js' %}
+    {% render 'vite-tag' with 'frontend/baseChatbot/base-chatbot-ui.js' %}
+    {% render 'vite-tag' with 'frontend/mainChatbot/chatbot-main.js' %}
+    
+    <script type="module">
+      import { Drawer } from "{{ 'theme.js' | asset_url }}";
+      import MainChatbot from '/frontend/mainChatbot/chatbot-main.js';
+    
+      const DRAWER_LAUNCHED_KEY = 'drawerHasLaunched';
+    
+      class CustomDrawer extends Drawer {
+        constructor() {
+          super();
+          this.hasLaunched = localStorage.getItem(DRAWER_LAUNCHED_KEY) === 'true';
+          this.mainChatbot = null;
         }
-        
-        const mainChatbot = this.querySelector('main-chatbot');
-        console.log('Found main chatbot:', mainChatbot);
-        if (mainChatbot) {
-          console.log('Main chatbot element:', mainChatbot);
-          console.log('Main chatbot prototype:', Object.getPrototypeOf(mainChatbot));
-          console.log('Available methods:', Object.getOwnPropertyNames(Object.getPrototypeOf(mainChatbot)));
-          console.log('Launching main chatbot for the first time');
-          mainChatbot.launch();
-          localStorage.setItem(DRAWER_LAUNCHED_KEY, 'true');
-          this.hasLaunched = true;
+    
+        connectedCallback() {
+          super.connectedCallback();
+          this.addEventListener('dialog:after-show', this.handleDrawerOpen.bind(this));
+          
+          // Initialize main chatbot
+          const container = this.querySelector('#main-chatbot-container');
+          if (container) {
+            this.mainChatbot = new MainChatbot(container);
+          }
+        }
+    
+        handleDrawerOpen() {
+          if (!this.hasLaunched && this.mainChatbot) {
+            this.mainChatbot.launch();
+            localStorage.setItem(DRAWER_LAUNCHED_KEY, 'true');
+            this.hasLaunched = true;
+          }
         }
       }
-    }
-  }
-
-  // Register custom drawer
-  console.log('About to register CustomDrawer');
-  customElements.define('custom-drawer', CustomDrawer);
-  console.log('CustomDrawer registered');
-</script>
+    
+      // Register custom drawer
+      customElements.define('custom-drawer', CustomDrawer);
+    </script>
 
 {% schema %}
 {

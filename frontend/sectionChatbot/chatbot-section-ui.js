@@ -1,111 +1,162 @@
-// /assets/scripts/chatbot/section/section-chatbot-ui.js
+// /assets/scripts/chatbot/section/chatbot-section-ui.js
 
-import { BaseChatbotUI } from "../baseChatbot/base-chatbot-ui.js";
+import ChatbotUI from "../baseChatbot/base-chatbot-ui.js";
 
 /**
  * SectionChatbotUI Class
- * Extends BaseChatbotUI with specific UI logic for the Section Chatbot
- * Handles product-specific UI elements and device_answer displays
- * @extends BaseChatbotUI
+ * Extends base ChatbotUI with section-specific functionality
  */
-export class SectionChatbotUI extends BaseChatbotUI {
+class SectionChatbotUI extends ChatbotUI {
   /**
-   * @param {ShadowRoot} shadowRoot - The shadow root of the chatbot component
-   * @param {EventEmitter} eventBus - The event bus for this chatbot instance
+   * @param {Object} config - Configuration object
+   * @param {HTMLElement} config.container - The container element
+   * @param {EventEmitter} config.eventBus - Event bus instance
+   * @param {string} config.type - Type of chatbot
+   * @param {Object} config.productDetails - Product-specific information
    */
-  constructor(shadowRoot, eventBus) {
-    super(shadowRoot, eventBus);
-    this.setupSectionSpecificEventListeners();
+  constructor(config) {
+    super(config);
+    this.productDetails = config.productDetails;
+    this.setupSectionChatbotUI();
   }
 
   /**
-   * Set up section-specific event listeners
+   * Set up section-specific UI elements
    * @private
    */
-  setupSectionSpecificEventListeners() {
-    // Handle device answer displays
-    this.eventBus.on("deviceAnswer", ({ applications }) => {
-      this.displayDeviceAnswer(applications);
-    });
+  setupSectionChatbotUI() {
+    this.deviceAnswerGrid = this.container.querySelector(".device-answer-grid");
+    this.setupProductContext();
   }
 
   /**
-   * Display device answer in the applications grid
+   * Set up product context in UI
    * @private
-   * @param {Array} applications - List of applications from device_answer
    */
-  displayDeviceAnswer(applications) {
-    const applicationsGrid = document.querySelector(".applications-grid");
-    if (!applicationsGrid) return;
+  setupProductContext() {
+    if (!this.productDetails) return;
 
-    // Clear existing applications
-    applicationsGrid.innerHTML = "";
+    const productContext = document.createElement("div");
+    productContext.className = "product-context";
+    productContext.innerHTML = `
+      <div class="product-title">${this.productDetails.title}</div>
+      ${
+        this.productDetails.capacity
+          ? `<div class="product-capacity">Capacity: ${this.productDetails.capacity}</div>`
+          : ""
+      }
+    `;
 
-    // Create and append application elements
-    applications.forEach((app) => {
-      const appElement = this.createApplicationElement(app);
-      applicationsGrid.appendChild(appElement);
-    });
+    this.container.insertBefore(productContext, this.messageContainer);
   }
 
   /**
-   * Create an application element for the grid
-   * @private
-   * @param {Object} app - Application data
-   * @returns {HTMLElement} The created application element
+   * Update device answers in the grid
+   * @public
+   * @param {Object} data - Device answer data
    */
-  createApplicationElement(app) {
-    const element = document.createElement("div");
-    element.className = "application-item";
+  updateDeviceAnswers(data) {
+    if (!this.deviceAnswerGrid) {
+      console.warn("Device answer grid not found");
+      return;
+    }
 
-    const icon = document.createElement("img");
-    icon.src = app.iconUrl || "";
-    icon.alt = app.name || "Application Icon";
-    icon.className = "application-icon";
+    // Clear existing content
+    this.deviceAnswerGrid.innerHTML = "";
 
-    const name = document.createElement("span");
-    name.textContent = app.name || "Unknown Application";
-    name.className = "application-name";
+    // Add device name
+    if (data.deviceName) {
+      const deviceName = document.createElement("div");
+      deviceName.className = "device-name";
+      deviceName.textContent = data.deviceName;
+      this.deviceAnswerGrid.appendChild(deviceName);
+    }
 
-    const power = document.createElement("span");
-    power.className = "power-requirement";
-    power.textContent = app.powerRequirement
-      ? `${app.powerRequirement}W`
-      : "N/A";
+    // Add results
+    if (Array.isArray(data.results)) {
+      const resultsContainer = document.createElement("div");
+      resultsContainer.className = "results-container";
 
-    element.appendChild(icon);
-    element.appendChild(name);
-    element.appendChild(power);
+      data.results.forEach((result) => {
+        const resultItem = document.createElement("div");
+        resultItem.className = "result-item";
+        resultItem.innerHTML = `
+          <div class="result-value">${result.value}</div>
+          <div class="result-label">${result.label}</div>
+        `;
+        resultsContainer.appendChild(resultItem);
+      });
 
-    return element;
+      this.deviceAnswerGrid.appendChild(resultsContainer);
+    }
+
+    // Add recommendations
+    if (Array.isArray(data.recommendations)) {
+      const recommendationsContainer = document.createElement("div");
+      recommendationsContainer.className = "recommendations-container";
+
+      data.recommendations.forEach((recommendation) => {
+        const recommendationItem = document.createElement("div");
+        recommendationItem.className = "recommendation-item";
+        recommendationItem.textContent = recommendation;
+        recommendationsContainer.appendChild(recommendationItem);
+      });
+
+      this.deviceAnswerGrid.appendChild(recommendationsContainer);
+    }
   }
 
   /**
-   * Override addMessage to handle section-specific message formatting
+   * Override message addition to handle product-specific formatting
    * @override
-   * @param {string} sender - Message sender (user/assistant)
+   * @param {string} sender - Message sender
    * @param {string} content - Message content
-   * @param {Object} metadata - Additional message metadata
+   * @param {Object} metadata - Optional metadata
    */
   addMessage(sender, content, metadata = null) {
-    if (sender === "assistant" && metadata?.productContext) {
-      content = this.formatMessageWithProductContext(
-        content,
-        metadata.productContext
-      );
+    // Add product context to assistant messages if needed
+    if (sender === "assistant" && this.productDetails.title) {
+      content = this.addProductContext(content);
     }
+
     super.addMessage(sender, content, metadata);
   }
 
   /**
-   * Format message with product context
+   * Add product context to message content
    * @private
-   * @param {string} message - Original message
-   * @param {Object} context - Product context
-   * @returns {string} Formatted message
+   * @param {string} content - Original message content
+   * @returns {string} Content with product context
    */
-  formatMessageWithProductContext(message, context) {
-    return message.replace(/\{(\w+)\}/g, (match, key) => context[key] || match);
+  addProductContext(content) {
+    const productPlaceholder = "{product_name}";
+    return content.replace(productPlaceholder, this.productDetails.title);
+  }
+
+  /**
+   * Display error with product context
+   * @override
+   * @param {string} message - Error message
+   */
+  displayError(message) {
+    const errorDiv = document.createElement("div");
+    errorDiv.classList.add("error-message", "section-error");
+    errorDiv.textContent = message;
+    this.messageContainer.appendChild(errorDiv);
+    this.scrollToBottom();
+  }
+
+  /**
+   * Update product information
+   * @public
+   * @param {Object} newDetails - Updated product details
+   */
+  updateProductDetails(newDetails) {
+    this.productDetails = { ...this.productDetails, ...newDetails };
+    const productContext = this.container.querySelector(".product-context");
+    if (productContext) {
+      this.setupProductContext();
+    }
   }
 }
 
