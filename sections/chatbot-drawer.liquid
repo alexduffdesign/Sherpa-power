@@ -214,8 +214,8 @@
 {{ 'frontend/mainChatbot/chatbot-main.js' | asset_url }}
 
 <!-- Include all chatbot components -->
-{% render 'vite-tag' with 'frontend/baseChatbot/base-chatbot.js' %}
-{% render 'vite-tag' with 'frontend/mainChatbot/chatbot-main.js' %}
+{% render 'vite-tag' with '/frontend/baseChatbot/base-chatbot.js' %}
+{% render 'vite-tag' with '/frontend/mainChatbot/chatbot-main.js' %}
 
 <!-- Initialize the custom drawer -->
 <script type="module">

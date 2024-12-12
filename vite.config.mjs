@@ -30,15 +30,6 @@ export default defineConfig({
         assetFileNames: `[name].[hash].[ext]`,
         manualChunks: {
           vendor: ["eventemitter3"],
-          chatbot: [
-            "./frontend/baseChatbot/base-chatbot.js",
-            "./frontend/baseChatbot/base-chatbot-ui.js",
-            "./frontend/mainChatbot/chatbot-main.js",
-            "./frontend/mainChatbot/chatbot-main-ui.js",
-            "./frontend/sectionChatbot/chatbot-section.js",
-            "./frontend/sectionChatbot/chatbot-section-ui.js",
-            "./frontend/components/ui/chatbot-components.js",
-          ],
         },
       },
     },
