@@ -1,9 +1,8 @@
 // /assets/scripts/chatbot/main/main-chatbot-ui.js
 
 import eventBus from "../utils/event-bus.js";
-import { EVENTS } from "../utils/event-constants.js";
-import { BaseChatbotUI } from "../baseChatbot/base-chatbot-ui.js";
 import { MAIN_CHATBOT } from "../utils/event-constants.js";
+import { BaseChatbotUI } from "../baseChatbot/base-chatbot-ui.js";
 
 /**
  * MainChatbotUI Class

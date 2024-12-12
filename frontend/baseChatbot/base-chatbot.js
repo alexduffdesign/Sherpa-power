@@ -2,6 +2,14 @@ import EventEmitter from "eventemitter3";
 import { generateUserId } from "../utils/user-id-generator.js";
 
 /**
+ * Gadget API endpoint for Voiceflow streaming
+ * @constant
+ * @type {string}
+ */
+const GADGET_API_ENDPOINT =
+  "https://chatbottings--development.gadget.app/voiceflowAPI/voiceflow-streaming";
+
+/**
  * BaseChatbot Web Component
  * Base class for all chatbot implementations
  * Handles core functionality and communication with Voiceflow API
@@ -103,14 +111,19 @@ export class BaseChatbot extends HTMLElement {
    * @param {Object} actionPayload - The action payload to send
    */
   async sendAction(actionPayload) {
-    this.abortController = new AbortController();
-    const { signal } = this.abortController;
-
     try {
-      const endpoint = this.getAttribute("endpoint");
+      const endpoint = this.getAttribute("endpoint") || GADGET_API_ENDPOINT;
       if (!endpoint) {
         throw new Error("Endpoint attribute is required");
       }
+
+      // Abort any existing request
+      if (this.abortController) {
+        this.abortController.abort();
+      }
+
+      this.abortController = new AbortController();
+      const { signal } = this.abortController;
 
       // Show typing indicator
       this.eventBus.emit("typing", { isTyping: true });

@@ -9,7 +9,6 @@ export default defineConfig({
     shopify({
       snippetFile: "vite-tag.liquid",
       additionalEntrypoints: [
-        "./frontend/baseChatbot/chatbot-main.js",
         "./frontend/baseChatbot/base-chatbot.js",
         "./frontend/baseChatbot/base-chatbot-ui.js",
         "./frontend/mainChatbot/chatbot-main.js",
@@ -32,7 +31,6 @@ export default defineConfig({
         manualChunks: {
           vendor: ["eventemitter3"],
           chatbot: [
-            "./frontend/baseChatbot/chatbot-main.js",
             "./frontend/baseChatbot/base-chatbot.js",
             "./frontend/baseChatbot/base-chatbot-ui.js",
             "./frontend/mainChatbot/chatbot-main.js",
