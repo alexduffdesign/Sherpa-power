@@ -231,10 +231,16 @@
       this.addEventListener('dialog:after-show', this.handleDrawerOpen.bind(this));
     }
 
-    handleDrawerOpen() {
+    async handleDrawerOpen() {
       if (!this.hasLaunched) {
+        // Wait for custom element to be defined
+        await customElements.whenDefined('main-chatbot');
+        
         const mainChatbot = this.querySelector('main-chatbot');
         if (mainChatbot) {
+          console.log('Main chatbot element:', mainChatbot);
+          console.log('Main chatbot prototype:', Object.getPrototypeOf(mainChatbot));
+          console.log('Available methods:', Object.getOwnPropertyNames(Object.getPrototypeOf(mainChatbot)));
           console.log('Launching main chatbot for the first time');
           mainChatbot.launch();
           localStorage.setItem(DRAWER_LAUNCHED_KEY, 'true');
