@@ -246,13 +246,6 @@ export class BaseChatbot extends HTMLElement {
         this.eventBus.emit("typing", { isTyping: true });
         break;
 
-      // Handle flow control traces
-      case "flow":
-      case "block":
-      case "debug":
-        // These are control flow traces, no UI updates needed
-        break;
-
       default:
         console.warn(`Unhandled trace type: ${trace.type}`, trace);
     }
