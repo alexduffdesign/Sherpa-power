@@ -201,5 +201,7 @@ document.addEventListener("DOMContentLoaded", () => {
   mainChatbot.loadHistory();
 });
 
+console.log("Main chatbot script loading...");
 // Register the web component
 customElements.define("main-chatbot", MainChatbot);
+console.log("Main chatbot component registered");

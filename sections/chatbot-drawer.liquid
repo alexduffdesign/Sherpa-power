@@ -218,25 +218,36 @@
 <script type="module">
   import { Drawer } from "{{ 'theme.js' | asset_url }}";
 
+  console.log('Drawer script starting...');
+
   const DRAWER_LAUNCHED_KEY = 'drawerHasLaunched';
 
   class CustomDrawer extends Drawer {
     constructor() {
       super();
+      console.log('CustomDrawer constructed');
       this.hasLaunched = localStorage.getItem(DRAWER_LAUNCHED_KEY) === 'true';
     }
 
     connectedCallback() {
       super.connectedCallback();
+      console.log('CustomDrawer connected');
       this.addEventListener('dialog:after-show', this.handleDrawerOpen.bind(this));
     }
 
     async handleDrawerOpen() {
+      console.log('HandleDrawerOpen called');
       if (!this.hasLaunched) {
-        // Wait for custom element to be defined
-        await customElements.whenDefined('main-chatbot');
+        console.log('Waiting for main-chatbot to be defined...');
+        try {
+          await customElements.whenDefined('main-chatbot');
+          console.log('main-chatbot is now defined');
+        } catch (error) {
+          console.error('Error waiting for main-chatbot:', error);
+        }
         
         const mainChatbot = this.querySelector('main-chatbot');
+        console.log('Found main chatbot:', mainChatbot);
         if (mainChatbot) {
           console.log('Main chatbot element:', mainChatbot);
           console.log('Main chatbot prototype:', Object.getPrototypeOf(mainChatbot));
@@ -251,7 +262,9 @@
   }
 
   // Register custom drawer
+  console.log('About to register CustomDrawer');
   customElements.define('custom-drawer', CustomDrawer);
+  console.log('CustomDrawer registered');
 </script>
 
 {% schema %}
