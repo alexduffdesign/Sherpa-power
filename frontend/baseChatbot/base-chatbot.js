@@ -112,11 +112,6 @@ export class BaseChatbot extends HTMLElement {
    */
   async sendAction(actionPayload) {
     try {
-      const endpoint = this.getAttribute("endpoint") || GADGET_API_ENDPOINT;
-      if (!endpoint) {
-        throw new Error("Endpoint attribute is required");
-      }
-
       // Abort any existing request
       if (this.abortController) {
         this.abortController.abort();
@@ -128,7 +123,7 @@ export class BaseChatbot extends HTMLElement {
       // Show typing indicator
       this.eventBus.emit("typing", { isTyping: true });
 
-      const response = await fetch(endpoint, {
+      const response = await fetch(GADGET_API_ENDPOINT, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
