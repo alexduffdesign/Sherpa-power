@@ -81,6 +81,12 @@ class SectionChatbot {
       }
     });
 
+    // Typing text updates
+    eventBus.on(EVENTS.SECTION_CHATBOT.TYPING_TEXT, (data) => {
+      this.ui.updateTypingText(data.text);
+      this.ui.showTypingIndicator();
+    });
+
     // Button choice handling
     eventBus.on(EVENTS.SECTION_CHATBOT.CHOICE_PRESENTED, (data) => {
       this.ui.hideTypingIndicator();

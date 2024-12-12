@@ -187,6 +187,7 @@ class ChatbotCore {
           metadata: trace.payload.metadata || null, // Include metadata if available
         });
         break;
+
       case "choice":
         console.log("Choice received trace:", trace);
         eventBus.emit(`${this.eventPrefix}:choicePresented`, {
@@ -202,22 +203,36 @@ class ChatbotCore {
           carouselItems: trace.payload.cards,
         });
         break;
+
+      case "waiting_text":
+        console.log("Waiting text received trace:", trace);
+        eventBus.emit(`${this.eventPrefix}:typingText`, {
+          text: trace.payload.text,
+        });
+        // Show typing indicator with the custom text
+        eventBus.emit(`${this.eventPrefix}:typing`, { isTyping: true });
+        break;
+
       case "speak":
         console.log("Speak received trace:", trace);
         // Handle speak traces if necessary
         break;
+
       case "visual":
         console.log("Visual received trace:", trace);
         // Handle visual traces if necessary
         break;
+
       case "no-reply":
         console.log("No-reply received trace:", trace);
         // Handle no-reply traces if necessary
         break;
+
       case "end":
         console.log("End trace received:", trace);
         eventBus.emit(`${this.eventPrefix}:end`, {});
         break;
+
       case "completion-events":
         console.log("Completion event trace received:", trace);
         // Handle completion events if necessary

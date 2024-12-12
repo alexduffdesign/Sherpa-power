@@ -33,12 +33,14 @@ class SectionChatbotUI {
     this.input = this.container.querySelector("#userInput");
     this.messageContainer = this.container.querySelector("#messageContainer");
     this.typingIndicator = this.container.querySelector(".chat-typing");
+    this.typingText = this.typingIndicator?.querySelector(".typing-text");
 
     console.log("Chatbot UI Container:", this.container);
     console.log("Chat Form:", this.form);
     console.log("Chat Input:", this.input);
     console.log("Message Container:", this.messageContainer);
     console.log("Typing Indicator:", this.typingIndicator);
+    console.log("Typing Text:", this.typingText);
 
     if (!this.form) {
       throw new Error("Chat form not found (id: chatForm)");
@@ -195,6 +197,18 @@ class SectionChatbotUI {
     carousel.setAttribute("items", JSON.stringify(items));
     this.messageContainer.appendChild(carousel);
     this.scrollToBottom();
+  }
+
+  /**
+   * Updates the typing indicator text.
+   *
+   * @public
+   * @param {string} text - The text to display in the typing indicator
+   */
+  updateTypingText(text) {
+    if (this.typingText) {
+      this.typingText.textContent = text;
+    }
   }
 
   /**
