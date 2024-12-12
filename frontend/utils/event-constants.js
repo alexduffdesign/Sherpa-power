@@ -14,8 +14,6 @@ export const EVENTS = {
     ERROR: "mainChatbot:error",
     MAIN_MENU_CLICKED: "mainChatbot:mainMenuClicked",
     USER_MESSAGE: "mainChatbot:userMessage",
-    BUTTON_CLICKED: "mainChatbot:buttonClicked",
-    CAROUSEL_BUTTON_CLICKED: "mainChatbot:carouselButtonClicked",
     // Additional events can be added here as needed
   },
   SECTION_CHATBOT: {
@@ -25,8 +23,6 @@ export const EVENTS = {
     CAROUSEL_PRESENTED: "sectionChatbot:carouselPresented",
     ERROR: "sectionChatbot:error",
     USER_MESSAGE: "sectionChatbot:userMessage",
-    BUTTON_CLICKED: "sectionChatbot:buttonClicked",
-    CAROUSEL_BUTTON_CLICKED: "sectionChatbot:carouselButtonClicked",
     // Additional events can be added here as needed
   },
 };

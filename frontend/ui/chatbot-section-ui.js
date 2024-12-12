@@ -97,7 +97,7 @@ class SectionChatbotUI {
       if (button) {
         const payload = this.getButtonPayload(button);
         if (payload) {
-          eventBus.emit(EVENTS.SECTION_CHATBOT.BUTTON_CLICKED, payload);
+          eventBus.emit("buttonClicked", payload);
           this.removeInteractiveElements();
         }
       }
@@ -111,10 +111,7 @@ class SectionChatbotUI {
         if (button) {
           const payload = this.getButtonPayload(button);
           if (payload) {
-            eventBus.emit(
-              EVENTS.SECTION_CHATBOT.CAROUSEL_BUTTON_CLICKED,
-              payload
-            );
+            eventBus.emit("carouselButtonClicked", payload);
           }
         }
       }

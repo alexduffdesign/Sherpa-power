@@ -38,22 +38,6 @@ class ChatbotCore {
       (message) => this.sendMessage(message)
     );
 
-    // Listen for button clicks with the correct namespace
-    eventBus.on(
-      chatbotType === "main"
-        ? EVENTS.MAIN_CHATBOT.BUTTON_CLICKED
-        : EVENTS.SECTION_CHATBOT.BUTTON_CLICKED,
-      (payload) => this.sendMessage(payload)
-    );
-
-    // Listen for carousel button clicks with the correct namespace
-    eventBus.on(
-      chatbotType === "main"
-        ? EVENTS.MAIN_CHATBOT.CAROUSEL_BUTTON_CLICKED
-        : EVENTS.SECTION_CHATBOT.CAROUSEL_BUTTON_CLICKED,
-      (payload) => this.sendMessage(payload)
-    );
-
     this.initialize();
   }
 
@@ -281,30 +265,19 @@ class ChatbotCore {
    */
   destroy() {
     this.closeConnection();
-    const events = [
-      // Remove the user message listener based on chatbot type
+    // Remove the user message listener based on chatbot type
+    eventBus.removeAllListeners(
       this.chatbotType === "main"
         ? EVENTS.MAIN_CHATBOT.USER_MESSAGE
-        : EVENTS.SECTION_CHATBOT.USER_MESSAGE,
-      // Remove button click listeners
-      this.chatbotType === "main"
-        ? EVENTS.MAIN_CHATBOT.BUTTON_CLICKED
-        : EVENTS.SECTION_CHATBOT.BUTTON_CLICKED,
-      // Remove carousel button click listeners
-      this.chatbotType === "main"
-        ? EVENTS.MAIN_CHATBOT.CAROUSEL_BUTTON_CLICKED
-        : EVENTS.SECTION_CHATBOT.CAROUSEL_BUTTON_CLICKED,
-      // Remove other event listeners
-      `${this.eventPrefix}:messageReceived`,
-      `${this.eventPrefix}:choicePresented`,
-      `${this.eventPrefix}:carouselPresented`,
-      `${this.eventPrefix}:deviceAnswer`,
-      `${this.eventPrefix}:error`,
-      `${this.eventPrefix}:typing`,
-      `${this.eventPrefix}:end`,
-    ];
-
-    events.forEach((event) => eventBus.removeAllListeners(event));
+        : EVENTS.SECTION_CHATBOT.USER_MESSAGE
+    );
+    eventBus.removeAllListeners(`${this.eventPrefix}:messageReceived`);
+    eventBus.removeAllListeners(`${this.eventPrefix}:choicePresented`);
+    eventBus.removeAllListeners(`${this.eventPrefix}:carouselPresented`);
+    eventBus.removeAllListeners(`${this.eventPrefix}:deviceAnswer`);
+    eventBus.removeAllListeners(`${this.eventPrefix}:error`);
+    eventBus.removeAllListeners(`${this.eventPrefix}:typing`);
+    eventBus.removeAllListeners(`${this.eventPrefix}:end`);
   }
 }
 
