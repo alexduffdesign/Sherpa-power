@@ -169,7 +169,7 @@ export class MainChatbot extends BaseChatbot {
 
 // Initialize Main Chatbot on DOMContentLoaded
 document.addEventListener("DOMContentLoaded", () => {
-  const mainChatbotContainer = document.getElementById("main-chatbot-ui");
+  const mainChatbotContainer = document.querySelector("main-chatbot");
 
   if (!mainChatbotContainer) {
     console.error("Main Chatbot UI container not found");

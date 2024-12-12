@@ -150,4 +150,16 @@ Maintain consistent JSDoc format throughout the codebase.
 Code Consistency
 </rule>
 
+<rule>
+
+# Give confidence score to your analysis or errors
+
+</rule>
+
+<rule>
+
+# After implementing a fix in the code, write a inside the progress-report.txt file notes on what we tried and what we learned and tried to fix and what we implemented. Only needs to be brief but needs to be clear.
+
+</rule>
+
 </rules>
