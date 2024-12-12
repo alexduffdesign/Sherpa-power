@@ -42,6 +42,7 @@ export class MainChatbot extends BaseChatbot {
   initializeUI() {
     this.ui = new MainChatbotUI(this.shadowRoot, this.eventBus);
     this.setupMainChatbotEventListeners();
+    this.loadHistory(); // Changed from restoreHistory to loadHistory to maintain interactive elements
   }
 
   /**

@@ -112,9 +112,11 @@ export class BaseChatbot extends HTMLElement {
    */
   async sendAction(actionPayload) {
     try {
-      // Abort any existing request
+      // Only abort if there's an existing connection
       if (this.abortController) {
         this.abortController.abort();
+        // Wait a bit for cleanup
+        await new Promise((resolve) => setTimeout(resolve, 100));
       }
 
       this.abortController = new AbortController();
@@ -127,6 +129,7 @@ export class BaseChatbot extends HTMLElement {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Accept: "text/event-stream",
         },
         body: JSON.stringify({
           userID: this.userID,
@@ -142,6 +145,10 @@ export class BaseChatbot extends HTMLElement {
 
       await this.handleSSEResponse(response);
     } catch (error) {
+      if (error.name === "AbortError") {
+        console.debug("Request aborted, new request in progress");
+        return;
+      }
       this.handleError(error);
     }
   }
