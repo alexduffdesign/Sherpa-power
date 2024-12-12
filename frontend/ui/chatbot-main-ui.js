@@ -61,7 +61,7 @@ class MainChatbotUI {
         const payload = JSON.parse(button.getAttribute("payload") || "{}");
         const label = button.getAttribute("label");
         if (label) {
-          eventBus.emit("buttonClicked", {
+          eventBus.emit(EVENTS.MAIN_CHATBOT.BUTTON_CLICKED, {
             type: payload.type,
             payload,
             label,
@@ -76,7 +76,7 @@ class MainChatbotUI {
       const menuButton = e.target.closest(".main-menu");
       if (menuButton) {
         e.preventDefault();
-        eventBus.emit("buttonClicked", {
+        eventBus.emit(EVENTS.MAIN_CHATBOT.BUTTON_CLICKED, {
           type: "event",
           payload: {
             event: {
