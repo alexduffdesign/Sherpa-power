@@ -1,7 +1,7 @@
 // /assets/scripts/chatbot/section/section-chatbot.js
 
-import ChatbotCore from "../core/chatbot-core.js";
-import SectionChatbotUI from "../ui/chatbot-section-ui.js";
+import ChatbotCore from "../baseChatbot/chatbot-core.js";
+import SectionChatbotUI from "./chatbot-section-ui.js";
 import eventBus from "../utils/event-bus.js";
 import { EVENTS } from "../utils/event-constants.js";
 import { generateUserId } from "../utils/user-id-generator.js";

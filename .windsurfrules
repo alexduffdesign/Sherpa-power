@@ -1,32 +1,52 @@
 </rules>
 
 <rule>
-Rule 1 - When writing code, ALWAYSFollow the Architecture and Separation of Concerns:
+Rule 1 - When writing code, ALWAYS follow the Architecture and Separation of Concerns:
 
-Core Logic (ChatbotCore)
+## Core Logic (baseChatbot/base-chatbot.js)
 
 Responsible for handling the conversation flow, sending requests to the Voiceflow API via the Gadget middleware, and processing the SSE (Server-Sent Events) responses.
 No direct DOM manipulation or UI rendering code. Only data handling, event emissions, and state management belong here.
-UI Layers (MainChatbotUI, SectionChatbotUI)
 
-Responsible solely for rendering messages, interactive elements (buttons, carousels), and updating the frontend as instructed by events from the core.
-No direct API calls or business logic. Strictly presentational and user interaction handling.
-Manager Classes (MainChatbot, SectionChatbot)
+## Core UI (baseChatbot/base-chatbot-ui.js)
 
-Bridge the gap between Core (logic) and UI (presentation).
-Listen for events from the Core, update the UI, handle user input events, and send them back to the Core.
-Store and restore conversation history in localStorage if needed.
-Components (message-component, button-component, carousel-component)
+Responsible for rendering messages, interactive elements (buttons, carousels), and updating the frontend as instructed by events from the core.
+
+## Main Chatbot (mainChatbot/chatbot-main.js)
+
+Extends BaseChatbot with specific logic for the Main Chatbot.
+Responsible for managing the Main Chatbot's conversation history, UI updates, and user input handling.
+No direct API calls.
+
+## Main Chatbot UI (mainChatbot/chatbot-main-ui.js)
+
+Responsible for rendering specific UI elements for the Main Chatbot.
+
+## Section Chatbot (sectionChatbot/chatbot-section.js)
+
+Extends BaseChatbot with specific logic for the Section Chatbot. (deviece_answer)
+
+## Section Chatbot UI (sectionChatbot/chatbot-section-ui.js)
+
+Responsible for rendering specific UI elements for the Section Chatbot. (deviece_answer)
+
+## UI Components (message-component, button-component, carousel-component)
 
 Self-contained UI elements.
 No network requests or complex logic, just represent and display data passed to them.
-Utils (event-bus, event-constants, user-id-generator)
+
+# Utils (event-bus, event-constants, user-id-generator)
 
 Shared logic or services used across Core and UI layers, such as event handling and ID generation.
 No domain-specific business logic or UI rendering should occur here.
 Voiceflow and Gadget Integration
 
-chatbot-template.liquid is the html file that both chatbots use.
+# chatbot-template.liquid is the html file that both chatbots use.
+
+# chatbot-drawer.liquid is where the main chatbots is rendered.
+
+# application.liquid is where the section chatbot is rendered.
+
 </rule>
 
 <rule>

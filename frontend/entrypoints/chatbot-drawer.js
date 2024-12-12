@@ -1,6 +1,6 @@
 // chatbot-drawer.js
 
-import MainChatbot from "./chatbot-main.js";
+import MainChatbot from "../mainChatbot/chatbot-main.js";
 
 console.log("Chatbot drawer script loaded");
 
