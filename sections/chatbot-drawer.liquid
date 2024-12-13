@@ -216,6 +216,7 @@
       
     <script type="module">
       import { Drawer } from "{{ 'theme.js' | asset_url }}";
+      import MainChatbot from '/frontend/mainChatbot/chatbot-main.js';
       
       const DRAWER_LAUNCHED_KEY = 'drawerHasLaunched';
     
@@ -232,8 +233,8 @@
           
           // Initialize main chatbot
           const container = document.querySelector('#main-chatbot-container');
-          if (container && window.MainChatbot) {
-            const mainChatbot = new window.MainChatbot(container);
+          if (container) {
+            const mainChatbot = new MainChatbot(container);
             mainChatbot.launch();
           }
         }
