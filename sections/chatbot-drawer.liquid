@@ -215,42 +215,35 @@
     {% render 'vite-tag' with '/frontend/mainChatbot/chatbot-main.js' %}
       
     <script type="module">
-      import { Drawer } from "{{ 'theme.js' | asset_url }}";
-      import MainChatbot from '@frontend/mainChatbot/chatbot-main.js';
-      
-      const DRAWER_LAUNCHED_KEY = 'drawerHasLaunched';
-    
-      class CustomDrawer extends Drawer {
-        constructor() {
-          super();
-          this.hasLaunched = localStorage.getItem(DRAWER_LAUNCHED_KEY) === 'true';
-          this.mainChatbot = null;
-        }
-    
-        connectedCallback() {
-          super.connectedCallback();
-          this.addEventListener('dialog:after-show', this.handleDrawerOpen.bind(this));
-          
-          // Initialize main chatbot
-          const container = document.querySelector('#main-chatbot-container');
-          if (container) {
-            const mainChatbot = new MainChatbot(container);
-            mainChatbot.launch();
+        import { Drawer } from "{{ 'theme.js' | asset_url }}";
+
+        const DRAWER_LAUNCHED_KEY = 'drawerHasLaunched';
+
+        class CustomDrawer extends Drawer {
+          constructor() {
+            super();
+            this.hasLaunched = localStorage.getItem(DRAWER_LAUNCHED_KEY) === 'true';
+            this.mainChatbot = null;
+          }
+
+          connectedCallback() {
+            super.connectedCallback();
+            this.addEventListener('dialog:after-show', this.handleDrawerOpen.bind(this));
+          }
+
+          handleDrawerOpen() {
+            const container = this.querySelector('#main-chatbot-container');
+            if (!this.hasLaunched && container && window.MainChatbot) {
+              this.mainChatbot = new window.MainChatbot(container);
+              this.mainChatbot.launch();
+              localStorage.setItem(DRAWER_LAUNCHED_KEY, 'true');
+              this.hasLaunched = true;
+            }
           }
         }
-    
-        handleDrawerOpen() {
-          if (!this.hasLaunched && this.mainChatbot) {
-            this.mainChatbot.launch();
-            localStorage.setItem(DRAWER_LAUNCHED_KEY, 'true');
-            this.hasLaunched = true;
-          }
-        }
-      }
-    
-      // Register custom drawer
-      customElements.define('custom-drawer', CustomDrawer);
-    </script>
+
+        customElements.define('custom-drawer', CustomDrawer);
+</script>
 
 {% schema %}
 {

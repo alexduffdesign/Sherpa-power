@@ -216,3 +216,4 @@ class MainChatbot {
 }
 
 export default MainChatbot;
+window.MainChatbot = MainChatbot;
