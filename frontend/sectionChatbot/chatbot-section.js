@@ -32,7 +32,7 @@ class SectionChatbot {
       type: "section",
       endpoint:
         "https://chatbottings--development.gadget.app/voiceflowAPI/voiceflow-streaming",
-      userID: generateUserId(),
+      userID: this.generateSessionId(),
     });
 
     // Initialize UI
@@ -44,6 +44,15 @@ class SectionChatbot {
     });
 
     this.setupEventListeners();
+  }
+
+  /**
+   * Generate a session ID for this instance
+   * @private
+   * @returns {string}
+   */
+  generateSessionId() {
+    return `section_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
   }
 
   /**
