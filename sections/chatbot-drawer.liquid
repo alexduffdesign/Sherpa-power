@@ -231,9 +231,10 @@
           this.addEventListener('dialog:after-show', this.handleDrawerOpen.bind(this));
           
           // Initialize main chatbot
-          const container = this.querySelector('#main-chatbot-container');
-          if (container) {
-            this.mainChatbot = new MainChatbot(container);
+          const container = document.querySelector('#main-chatbot-container');
+          if (container && window.MainChatbot) {
+            const mainChatbot = new window.MainChatbot(container);
+            mainChatbot.launch();
           }
         }
     
