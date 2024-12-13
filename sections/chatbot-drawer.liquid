@@ -209,14 +209,13 @@
     </custom-drawer>
     
     <!-- Include required scripts -->
-    {% render 'vite-tag' with 'frontend/components/chatbot-component.js' %}
-    {% render 'vite-tag' with 'frontend/baseChatbot/base-chatbot.js' %}
-    {% render 'vite-tag' with 'frontend/baseChatbot/base-chatbot-ui.js' %}
-    {% render 'vite-tag' with 'frontend/mainChatbot/chatbot-main.js' %}
+    {% render 'vite-tag' with '/frontend/components/chatbot-component.js' %}
+    {% render 'vite-tag' with '/frontend/baseChatbot/base-chatbot.js' %}
+    {% render 'vite-tag' with '/frontend/baseChatbot/base-chatbot-ui.js' %}
+    {% render 'vite-tag' with '/frontend/mainChatbot/chatbot-main.js' %}
       
     <script type="module">
       import { Drawer } from "{{ 'theme.js' | asset_url }}";
-      import { MainChatbot } from "{{ 'frontend/mainChatbot/chatbot-main.js' | asset_url }}";
       
       const DRAWER_LAUNCHED_KEY = 'drawerHasLaunched';
     
