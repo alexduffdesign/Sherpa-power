@@ -301,8 +301,7 @@
 
   <!-- Form Element ✉️ -->
 
-  {% if section.settings.is_section_chatbot %}
-
+  {% unless section.settings.is_section_chatbot %}
     <form id="chatForm" class="chat-form">
       <input
         type="text"
@@ -322,9 +321,7 @@
         </svg>
       </button>
     </form>
-
-  {% endif %}
-
+  {% endunless %}
 <!-- Form Element ✉️ -->
 
 </div>
