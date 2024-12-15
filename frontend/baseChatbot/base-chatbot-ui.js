@@ -34,7 +34,7 @@ class ChatbotUI {
   setupUIElements() {
     this.messageContainer = this.container.querySelector(".message-container");
     this.form = this.container.querySelector(".chat-form");
-    this.input = this.container.getElementById("#userInput");
+    this.input = this.container.getElementById("userInput");
     this.typingIndicator = this.container.querySelector(".chat-typing");
     this.typingText = this.typingIndicator?.querySelector(".typing-text");
 
