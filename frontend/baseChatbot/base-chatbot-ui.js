@@ -32,7 +32,6 @@ class ChatbotUI {
    * @private
    */
   setupUIElements() {
-    // Use querySelectorAll to find all matching elements and take the first one if it exists
     const messageContainers =
       this.container.querySelectorAll(".message-container");
     this.messageContainer = messageContainers[0];
@@ -53,7 +52,6 @@ class ChatbotUI {
     this.typingText = this.typingIndicator?.querySelector(".typing-text");
     console.log("Typing text found:", !!this.typingText);
 
-    // Log the full container HTML for debugging
     console.log("Container HTML:", this.container.innerHTML);
 
     if (!this.messageContainer || !this.form || !this.input) {
@@ -75,12 +73,13 @@ class ChatbotUI {
       e.preventDefault();
       const message = this.input.value.trim();
       if (message) {
+        // Emit a 'userMessage' event. The ChatbotCore will handle the logic and respond.
         this.eventBus.emit("userMessage", message);
         this.input.value = "";
       }
     });
 
-    // Listen for chatbot events
+    // Listen for chatbot events and update the UI accordingly
     this.eventBus.on("messageReceived", ({ content, metadata }) => {
       this.addMessage("assistant", content, metadata);
     });
@@ -107,13 +106,14 @@ class ChatbotUI {
   }
 
   /**
-   * Add a message to the chat
+   * Add a message to the chat using the message-component
    * @public
    * @param {string} sender - The sender of the message ('user' or 'assistant')
    * @param {string} content - The message content
    * @param {Object} metadata - Optional metadata for the message
    */
   addMessage(sender, content, metadata = null) {
+    // Create a message-component instead of manually constructing HTML
     const message = document.createElement("message-component");
     message.setAttribute("sender", sender);
     message.setAttribute("content", content);
@@ -127,7 +127,7 @@ class ChatbotUI {
   }
 
   /**
-   * Add interactive buttons to the chat
+   * Add interactive buttons to the chat using button-component
    * @public
    * @param {Array} buttons - Array of button data
    */
@@ -137,6 +137,8 @@ class ChatbotUI {
       return;
     }
 
+    // Instead of manually creating HTML buttons, we use <button-component>
+    // for each button. The button-component handles its own styling and click event.
     const buttonGroup = document.createElement("div");
     buttonGroup.className = "button-group";
 
@@ -152,7 +154,7 @@ class ChatbotUI {
   }
 
   /**
-   * Add a carousel to the chat
+   * Add a carousel to the chat using carousel-component
    * @public
    * @param {Array} items - Array of carousel items
    */
@@ -162,6 +164,7 @@ class ChatbotUI {
       return;
     }
 
+    // Use <carousel-component> with a data-carousel attribute
     const carousel = document.createElement("carousel-component");
     carousel.setAttribute("data-carousel", JSON.stringify({ cards: items }));
     this.messageContainer.appendChild(carousel);
@@ -195,6 +198,7 @@ class ChatbotUI {
    * @param {string} message - The error message to display
    */
   displayError(message) {
+    // For errors, we can still just create a div since it's simple text
     const errorDiv = document.createElement("div");
     errorDiv.classList.add("error-message");
     errorDiv.textContent = message;
@@ -207,6 +211,7 @@ class ChatbotUI {
    * @public
    */
   removeInteractiveElements() {
+    // Remove all custom components and groups of interactive elements
     const elements = this.messageContainer.querySelectorAll(
       "button-component, carousel-component, .button-group"
     );
