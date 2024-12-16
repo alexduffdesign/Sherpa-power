@@ -102,7 +102,7 @@
   }
 
   @media screen and (max-width: 699px) {
-  .#main-chatbot-container-ui {
+  #main-chatbot-container {
     width: 95dvw;  }
 
   .button.sherpa-guide {
@@ -198,7 +198,7 @@
         Back to Menu
       </button>
     </div>
-        <div id="#main-chatbot-container-container">
+        <div id="#main-chatbot-container">
           {% render 'chatbot-template' with is_section_chatbot: false %}
           <footer class="chatbot-footer">
             {{ form }}
@@ -232,7 +232,7 @@
           }
 
           handleDrawerOpen() {
-            const container = this.querySelector('#main-chatbot-container-container');
+            const container = this.querySelector('#main-chatbot-container');
             if (!this.hasLaunched && container && window.MainChatbot) {
               this.mainChatbot = new window.MainChatbot(container);
               this.mainChatbot.launch();
