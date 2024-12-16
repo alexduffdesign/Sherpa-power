@@ -150,6 +150,7 @@ class ChatbotCore {
    * @param {string} eventStr - The event string to process
    */
   processEventString(eventStr) {
+    console.log("Raw SSE event string:", eventStr);
     try {
       const lines = eventStr.split("\n");
       const eventTypeLine = lines.find((line) => line.startsWith("event:"));
@@ -181,11 +182,11 @@ class ChatbotCore {
       return;
     }
 
-    // Hide typing indicator when we receive any trace
-    this.eventBus.emit("typing", { isTyping: false });
+    console.log("processTrace called with:", trace);
 
     switch (trace.type) {
       case "text":
+        console.log("Emitting messageReceived event...");
         this.eventBus.emit("messageReceived", {
           content: trace.payload.message,
           metadata: trace.payload.metadata || null,

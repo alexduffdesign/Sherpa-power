@@ -81,6 +81,7 @@ class ChatbotUI {
 
     // Listen for chatbot events and update the UI accordingly
     this.eventBus.on("messageReceived", ({ content, metadata }) => {
+      console.log("UI received messageReceived event:", content, metadata);
       this.addMessage("assistant", content, metadata);
     });
 
