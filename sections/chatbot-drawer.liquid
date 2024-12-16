@@ -231,8 +231,8 @@
 
           handleDrawerOpen() {
             const container = this.querySelector('#main-chatbot-container');
+            this.mainChatbot = new window.MainChatbot(container);
             if (!this.hasLaunched && container && window.MainChatbot) {
-              this.mainChatbot = new window.MainChatbot(container);
               this.mainChatbot.launch();
               localStorage.setItem(DRAWER_LAUNCHED_KEY, 'true');
               this.hasLaunched = true;
