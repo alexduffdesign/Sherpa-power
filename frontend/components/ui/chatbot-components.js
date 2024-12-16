@@ -7,3 +7,6 @@ import { CarouselComponent } from "./carousel-component.js";
 customElements.define("button-component", ButtonComponent);
 customElements.define("message-component", MessageComponent);
 customElements.define("carousel-component", CarouselComponent);
+console.log("MessageComponent defined");
+console.log("ButtonComponent defined");
+console.log("CarouselComponent defined");
