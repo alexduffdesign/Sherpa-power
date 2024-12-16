@@ -174,16 +174,25 @@ class MainChatbot {
    */
   loadHistory() {
     const history = JSON.parse(localStorage.getItem(this.historyKey)) || [];
+    console.log("Loading history:", history); // Log the entire history array
 
     history.forEach((entry, index) => {
+      console.log("Processing history entry:", entry);
+
       if (entry.isInteractive) {
+        console.log("Entry is interactive:", entry);
+
         if (index === history.length - 1) {
+          console.log("Restoring interactive element from history");
+
           this.restoreInteractiveElement(entry);
         }
         return;
       }
 
       if (entry.message) {
+        console.log("Adding message from history:", entry);
+
         this.ui.addMessage(entry.sender, entry.message);
       }
     });

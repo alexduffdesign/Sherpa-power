@@ -114,6 +114,11 @@ class ChatbotUI {
    * @param {Object} metadata - Optional metadata for the message
    */
   addMessage(sender, content, metadata = null) {
+    console.log(
+      `addMessage called with sender=${sender}, content=${content}, metadata=`,
+      metadata
+    );
+
     // Create a message-component instead of manually constructing HTML
     const message = document.createElement("message-component");
     message.setAttribute("sender", sender);
