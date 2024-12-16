@@ -32,7 +32,7 @@
     justify-content: space-between;
   }
 
-  {{ drawer_id }}
+  #{{ drawer_id }}
   .chatbot-container {
     height: 100%;
     color: rgb(var(--text-color, 255 255 255));
@@ -41,24 +41,24 @@
     padding: var(--spacing-4);
   }
 
-  {{ drawer_id }}
+  #{{ drawer_id }}
   .chatbot-content {
     height: 100%;
     padding-bottom: 2rem;
   }
 
-  {{ drawer_id }}
+  #{{ drawer_id }}
   .chat-messages {
     overflow: hidden;
     height: 100%;
   }
 
-  {{ drawer_id }}
+  #{{ drawer_id }}
   .chat-form {
     margin-top: 0;
   }
 
-  {{ drawer_id }}::part(content) {
+  #{{ drawer_id }}::part(content) {
     background-color: #403545;
     border: 2px solid #DB9BFB;
     border-radius: var(--rounded);
@@ -67,7 +67,7 @@
     overflow: hidden;
   }
 
-  {{ drawer_id }}::part(header) {
+  #{{ drawer_id }}::part(header) {
     background-color: #403545;
     padding: var(--spacing-4) var(--spacing-6);
     color: white;
@@ -77,7 +77,7 @@
     grid-gap: 0.5rem;
   }
 
-  {{ drawer_id }}:not([header-bordered])::part(header):after {
+  #{{ drawer_id }}:not([header-bordered])::part(header):after {
     height: var(--spacing-6);
     background: linear-gradient(to bottom, rgb(64 53 69), rgb(64 53 69 / 52%) 50%, rgb(64 53 69 / 0%));
     z-index: 3;
@@ -85,7 +85,7 @@
     display: none;
   }
 
-  {{ drawer_id }}::part(body) {
+  #{{ drawer_id }}::part(body) {
     background-color: #403545;
     padding: var(--spacing-0);
   }
