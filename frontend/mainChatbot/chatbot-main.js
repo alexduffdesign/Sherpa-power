@@ -68,6 +68,14 @@ class MainChatbot {
       this.saveToHistory("assistant", content, metadata);
     });
 
+    // Handle choice presentation (saves them to history)
+    this.core.eventBus.on("choicePresented", ({ buttons }) => {
+      this.saveToHistory("assistant", "Choice presented", {
+        type: "choice",
+        buttons: buttons,
+      });
+    });
+
     // Handle button clicks
     this.core.eventBus.on("buttonClicked", (payload) => {
       this.saveToHistory("user", payload.label || "Button clicked");
