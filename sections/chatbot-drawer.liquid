@@ -144,7 +144,7 @@
 {% capture form %}
 
   <form id="chatForm" class="chat-form">
-      <input type="text" id="userInput" placeholder="Type your message here..." autocomplete="off" required>
+      <input type="text" class="chatbot-input" id="userInput" placeholder="Type your message here..." autocomplete="off" required>
       <button type="submit">
         <svg width="20" height="18" viewBox="0 0 20 18" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M1.4 17.3984L18.85 9.91844C19.0304 9.84159 19.1842 9.71341 19.2923 9.54984C19.4004 9.38626 19.4581 9.19451 19.4581 8.99844C19.4581 8.80236 19.4004 8.61061 19.2923 8.44704C19.1842 8.28346 19.0304 8.15528 18.85 8.07844L1.4 0.598438C1.2489 0.532533 1.08377 0.505281 0.919509 0.519141C0.755246 0.533002 0.597018 0.587538 0.459098 0.67783C0.321179 0.768123 0.207908 0.891331 0.129505 1.03634C0.0511009 1.18135 0.010031 1.34359 0.00999999 1.50844L0 6.11844C0 6.61844 0.37 7.04844 0.87 7.10844L15 8.99844L0.87 10.8784C0.37 10.9484 0 11.3784 0 11.8784L0.00999999 16.4884C0.00999999 17.1984 0.74 17.6884 1.4 17.3984Z" fill="#231F25"/>
@@ -202,8 +202,6 @@
           {% render 'chatbot-template' %}
           <footer class="chatbot-footer">
             {{ form }}
-            <div class="footer-controls">
-            </div>
           </footer>
         </div>
     </custom-drawer>
