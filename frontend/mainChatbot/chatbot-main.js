@@ -144,12 +144,14 @@ class MainChatbot {
       const { type, payload: actionData } = payload.action;
 
       if (type === "button") {
-        // Treat this as a text input
-        // We'll send an action of type "text" so Voiceflow sets last_utterance
+        // Treat it as a text input, but send the entire object so Voiceflow has `item`, `title`, etc.
         const actionPayload = {
           action: {
             type: "text",
-            payload: userMessage,
+            payload: {
+              item: actionData.item,
+              title: actionData.title,
+            },
           },
         };
         this.core.sendAction(actionPayload);
