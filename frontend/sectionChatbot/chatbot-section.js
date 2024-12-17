@@ -179,3 +179,4 @@ class SectionChatbot {
 }
 
 export default SectionChatbot;
+window.sectionChatbot = sectionChatbot;
