@@ -78,55 +78,46 @@ class MainChatbot {
 
     // Handle button clicks
     this.core.eventBus.on("buttonClicked", (payload) => {
-      // Save to history and show the user's choice in the UI
-      this.saveToHistory("user", payload.label || "Button clicked");
-      const userMessage = payload.label || "Button clicked";
+      // payload is now { type: 'path-4ragy3i2y', payload: { label: "...", actions: [] } }
+
+      // Save the user's choice and display it in the UI
+      const userMessage = payload.payload.label || "Button clicked";
+      this.saveToHistory("user", userMessage);
       this.ui.addMessage("user", userMessage);
+
+      // Remove previous interactive elements
       this.ui.removeInteractiveElements();
 
-      // Handle the payload based on request.type
-      let actionPayload;
-
-      if (payload.action && typeof payload.action === "object") {
-        // payload.action should have a structure like { type: 'path-xyz' or 'intent', payload: {...} }
-        const { type, payload: actionData } = payload.action;
-
-        if (type && type.startsWith("path-")) {
-          // For a path type:
-          actionPayload = {
-            action: {
-              type: type, // e.g. "path-xyz"
-              payload: {
-                label: payload.label, // optional but recommended
-              },
+      // Handle sending the request to Voiceflow based on payload.type
+      if (payload.type && payload.type.startsWith("path-")) {
+        // If this is a path type request, build the action as per Voiceflow docs
+        const actionPayload = {
+          action: {
+            type: payload.type, // e.g. "path-4ragy3i2y"
+            payload: {
+              label: userMessage, // optional but recommended to set last_utterance
             },
-          };
+          },
+        };
 
-          // Send this action payload to Voiceflow
-          this.core.sendAction(actionPayload);
-        } else if (type === "intent") {
-          // For an intent type:
-
-          actionPayload = {
-            action: {
-              type: "intent",
-              payload: {
-                intent: actionData.intent, // {name: "forgot_password"}
-                query: actionData.query || "",
-                entities: actionData.entities || [],
-                // "label" can be set if you want to store last_utterance
-              },
+        // Use sendAction with the constructed payload
+        this.core.sendAction(actionPayload);
+      } else if (payload.type === "intent") {
+        // If it were an intent, you'd do something like:
+        const actionPayload = {
+          action: {
+            type: "intent",
+            payload: {
+              intent: payload.payload.intent,
+              query: payload.payload.query || "",
+              entities: payload.payload.entities || [],
+              // label could be included here if desired
             },
-          };
-
-          this.core.sendAction(actionPayload);
-        } else {
-          // For any other type, just send the userMessage as text
-
-          this.core.sendMessage(userMessage);
-        }
+          },
+        };
+        this.core.sendAction(actionPayload);
       } else {
-        // If no structured payload, just send the userMessage as text
+        // If it's neither path nor intent, fall back to treating it as text input:
         this.core.sendMessage(userMessage);
       }
     });
