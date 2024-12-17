@@ -165,7 +165,7 @@ class MainChatbot {
           title: actionData.title,
         });
         const requestPayload = {
-          request: {
+          action: {
             type: "text",
             payload: jsonPayload,
           },
