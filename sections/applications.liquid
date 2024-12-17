@@ -219,9 +219,12 @@
     </div>
   </div>
 
+  {% render 'vite-tag' with '/frontend/components/ui/chatbot-components.js' %}
+  {% render 'vite-tag' with '/frontend/baseChatbot/base-chatbot.js' %}
+  {% render 'vite-tag' with '/frontend/baseChatbot/base-chatbot-ui.js' %}
+  {% render 'vite-tag' with '/frontend/mainChatbot/section-chatbot.js' %}
+
   <script type="module">
-    import SectionChatbot from '/frontend/sectionChatbot/chatbot-section.js';
-      
     document.addEventListener('DOMContentLoaded', () => {
       const container = document.getElementById('section-chatbot-container');
       if (!container) return;
