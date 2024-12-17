@@ -132,9 +132,10 @@ class MainChatbot {
 
       this.saveToHistory("user", userMessage);
       this.ui.addMessage("user", userMessage);
-      this.ui.removeInteractiveElements();
 
       const { type, payload: actionData } = payload.action;
+
+      const action = JSON.stringify(actionData);
 
       if (type && type.startsWith("path-")) {
         // path request
@@ -162,7 +163,7 @@ class MainChatbot {
         const requestPayload = {
           action: {
             type: "text",
-            payload: actionData,
+            payload: action,
           },
         };
         this.core.sendAction(requestPayload);
