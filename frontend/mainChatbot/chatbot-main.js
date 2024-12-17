@@ -186,6 +186,9 @@ class MainChatbot {
 
     // Handle main menu
     this.core.eventBus.on("mainMenu", () => {
+      const userMessage = "Main menu";
+      this.saveToHistory("user", userMessage);
+      this.ui.addMessage("user", userMessage);
       this.core.sendAction({
         action: {
           type: "event",
