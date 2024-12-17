@@ -159,15 +159,10 @@ class MainChatbot {
         };
         this.core.sendAction(requestPayload);
       } else if (type === "button") {
-        // Convert item/title into a JSON string and send as text
-        const jsonPayload = JSON.stringify({
-          item: actionData.item,
-          title: actionData.title,
-        });
         const requestPayload = {
           action: {
             type: "text",
-            payload: jsonPayload,
+            payload: actionData,
           },
         };
         this.core.sendAction(requestPayload);
