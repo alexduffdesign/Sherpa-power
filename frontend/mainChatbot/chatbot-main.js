@@ -127,36 +127,28 @@ class MainChatbot {
       }
     });
 
-    // Handle carousel button clicks
     this.core.eventBus.on("carouselButtonClicked", (payload) => {
-      // payload.action is { type: "button", payload: { item: 0, title: "Sherpa PEAK 0.6", ... } }
-      const { type, payload: actionData } = payload.action;
-
-      // Use the label from the payload or a default
       const userMessage = payload.label || "Button clicked";
 
-      // Save to history and display user's choice
       this.saveToHistory("user", userMessage);
       this.ui.addMessage("user", userMessage);
-
-      // Remove old UI elements
       this.ui.removeInteractiveElements();
 
+      const { type, payload: actionData } = payload.action;
+
       if (type && type.startsWith("path-")) {
-        // Handle path as before
-        const actionPayload = {
-          action: {
+        // path request
+        const requestPayload = {
+          request: {
             type: type,
-            payload: {
-              label: userMessage,
-            },
+            payload: { label: userMessage },
           },
         };
-        this.core.sendAction(actionPayload);
+        this.core.sendAction(requestPayload);
       } else if (type === "intent") {
-        // Handle intent as before
-        const actionPayload = {
-          action: {
+        // intent request
+        const requestPayload = {
+          request: {
             type: "intent",
             payload: {
               intent: actionData.intent,
@@ -165,23 +157,29 @@ class MainChatbot {
             },
           },
         };
-        this.core.sendAction(actionPayload);
+        this.core.sendAction(requestPayload);
       } else if (type === "button") {
-        // Treat it as a text input, but send the entire object so Voiceflow has `item`, `title`, etc.
-        const actionPayload = {
-          action: {
+        // Convert item/title into a JSON string and send as text
+        const jsonPayload = JSON.stringify({
+          item: actionData.item,
+          title: actionData.title,
+        });
+        const requestPayload = {
+          request: {
             type: "text",
-            payload: {
-              item: actionData.item,
-              title: actionData.title,
-              // You can also include imgUrl or anything else you need
-            },
+            payload: jsonPayload,
           },
         };
-        this.core.sendAction(actionPayload);
+        this.core.sendAction(requestPayload);
       } else {
-        // Fallback if some unknown type appears
-        this.core.sendMessage(userMessage);
+        // Fallback to just sending userMessage as text if unknown
+        const requestPayload = {
+          request: {
+            type: "text",
+            payload: userMessage,
+          },
+        };
+        this.core.sendAction(requestPayload);
       }
     });
 
