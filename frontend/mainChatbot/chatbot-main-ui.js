@@ -57,7 +57,8 @@ class MainChatbotUI extends ChatbotUI {
    * @private
    */
   setupMainMenu() {
-    const menuButton = this.container.querySelector(".main-menu");
+    const menuButton = document.querySelector(".main-menu");
+    console.log("Menu Button:", menuButton);
     if (menuButton) {
       menuButton.addEventListener("click", () => {
         this.eventBus.emit("mainMenu");

@@ -40,7 +40,7 @@
     "isEntry": true
   },
   "frontend/mainChatbot/chatbot-main-ui.js": {
-    "file": "chatbot-main-ui.NxfPDkiT.js",
+    "file": "chatbot-main-ui.DycHDrfW.js",
     "name": "chatbot-main-ui",
     "src": "frontend/mainChatbot/chatbot-main-ui.js",
     "isEntry": true,
@@ -49,7 +49,7 @@
     ]
   },
   "frontend/mainChatbot/chatbot-main.js": {
-    "file": "chatbot-main.BVtbb7tZ.js",
+    "file": "chatbot-main.ZwECQUnv.js",
     "name": "chatbot-main",
     "src": "frontend/mainChatbot/chatbot-main.js",
     "isEntry": true,
