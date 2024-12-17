@@ -78,17 +78,57 @@ class MainChatbot {
 
     // Handle button clicks
     this.core.eventBus.on("buttonClicked", (payload) => {
+      // Save to history and show the user's choice in the UI
       this.saveToHistory("user", payload.label || "Button clicked");
-      // Show user's choice as a message in the UI
       const userMessage = payload.label || "Button clicked";
       this.ui.addMessage("user", userMessage);
-
-      // Remove old interactive elements now that the user has chosen
       this.ui.removeInteractiveElements();
 
-      // Send payload to Voiceflow
-      // Adjust as needed if the payload structure differs
-      this.core.sendMessage(payload.action || userMessage);
+      // Handle the payload based on request.type
+      let actionPayload;
+
+      if (payload.action && typeof payload.action === "object") {
+        // payload.action should have a structure like { type: 'path-xyz' or 'intent', payload: {...} }
+        const { type, payload: actionData } = payload.action;
+
+        if (type && type.startsWith("path-")) {
+          // For a path type:
+          actionPayload = {
+            action: {
+              type: type, // e.g. "path-xyz"
+              payload: {
+                label: payload.label, // optional but recommended
+              },
+            },
+          };
+
+          // Send this action payload to Voiceflow
+          this.core.sendAction(actionPayload);
+        } else if (type === "intent") {
+          // For an intent type:
+
+          actionPayload = {
+            action: {
+              type: "intent",
+              payload: {
+                intent: actionData.intent, // {name: "forgot_password"}
+                query: actionData.query || "",
+                entities: actionData.entities || [],
+                // "label" can be set if you want to store last_utterance
+              },
+            },
+          };
+
+          this.core.sendAction(actionPayload);
+        } else {
+          // For any other type, just send the userMessage as text
+
+          this.core.sendMessage(userMessage);
+        }
+      } else {
+        // If no structured payload, just send the userMessage as text
+        this.core.sendMessage(userMessage);
+      }
     });
 
     // Handle main menu
