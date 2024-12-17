@@ -1,18 +1,19 @@
 // /assets/scripts/chatbot/components/button-component.js
 
-import eventBus from "../../utils/event-bus.js";
-
 export class ButtonComponent extends HTMLElement {
   constructor() {
     super();
-    // Attach Shadow DOM to encapsulate styles
     this.attachShadow({ mode: "open" });
+    this._eventBus = null; // Will be set via setter
+  }
+
+  set eventBus(bus) {
+    this._eventBus = bus;
   }
 
   connectedCallback() {
     const label = this.getAttribute("label");
     const payload = this.getAttribute("payload");
-
     this.render(label, payload);
   }
 
@@ -47,20 +48,21 @@ export class ButtonComponent extends HTMLElement {
         .button:hover {
           background-color: #f0f0f0;
         }
-
-        /* Additional styles as needed */
       </style>
       <div class="button-container">
         <button class="button" data-button-data='${payload}' aria-label="${label}">${label}</button>
       </div>
     `;
 
-    // Add event listener to the button
     this.shadowRoot.querySelector(".button").addEventListener("click", () => {
-      // Emit event via eventBus
+      if (!this._eventBus) {
+        console.error("No eventBus assigned to ButtonComponent");
+        return;
+      }
+
       try {
         const parsedPayload = JSON.parse(payload);
-        eventBus.emit("buttonClicked", parsedPayload);
+        this._eventBus.emit("buttonClicked", parsedPayload);
       } catch (error) {
         console.error("Error parsing button payload:", error);
       }

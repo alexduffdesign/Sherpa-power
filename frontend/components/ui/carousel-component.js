@@ -1,16 +1,10 @@
 // /assets/scripts/chatbot/components/carousel-component.js
 
-import eventBus from "../../utils/event-bus.js";
-
-/**
- * CarouselComponent Class
- * Renders a carousel of cards with images, titles, descriptions, and action buttons.
- */
 export class CarouselComponent extends HTMLElement {
   constructor() {
     super();
-    // Attach Shadow DOM to encapsulate styles and markup
     this.attachShadow({ mode: "open" });
+    this._eventBus = null; // Will be set via setter
 
     // Initialize properties
     this.items = []; // To store carousel items
@@ -18,16 +12,17 @@ export class CarouselComponent extends HTMLElement {
     this.isDesktop = window.matchMedia("(min-width: 1000px)").matches;
     this.itemsPerSlide = this.isDesktop ? 2 : 1;
 
-    // Bind methods to maintain context
+    // Bind methods
     this.moveLeft = this.moveLeft.bind(this);
     this.moveRight = this.moveRight.bind(this);
     this.handleResize = this.handleResize.bind(this);
     this.handleButtonClick = this.handleButtonClick.bind(this);
   }
 
-  /**
-   * Lifecycle method called when the component is added to the DOM.
-   */
+  set eventBus(bus) {
+    this._eventBus = bus;
+  }
+
   connectedCallback() {
     const dataAttr = this.getAttribute("data-carousel");
     if (!dataAttr) {
@@ -62,16 +57,14 @@ export class CarouselComponent extends HTMLElement {
     this.carouselData = carouselData;
     this.shadowRoot.innerHTML = `
       <style>
-        /* Custom Carousel Styling */
-
         h6 {
-            font-family: var(--heading-font-family);
-            font-weight: var(--heading-font-weight);
-            font-style: var(--heading-font-style);
-            letter-spacing: var(--heading-letter-spacing);
-            text-transform: var(--heading-text-transform);
-            overflow-wrap: anywhere;
-            font-size: var(--text-sm);
+          font-family: var(--heading-font-family);
+          font-weight: var(--heading-font-weight);
+          font-style: var(--heading-font-style);
+          letter-spacing: var(--heading-letter-spacing);
+          text-transform: var(--heading-text-transform);
+          overflow-wrap: anywhere;
+          font-size: var(--text-sm);
         }
 
         .button {
@@ -95,8 +88,7 @@ export class CarouselComponent extends HTMLElement {
           padding-inline-end: var(--spacing-5);
           font-weight: bold;
           line-height: 1.6;
-          transition: background-color 0.15s ease-in-out, color 0.15s ease-in-out,
-            box-shadow 0.15s ease-in-out;
+          transition: background-color 0.15s ease-in-out, color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
           display: inline-block;
           position: relative;
         }
@@ -144,7 +136,6 @@ export class CarouselComponent extends HTMLElement {
           justify-content: center;
           cursor: pointer;
           z-index: 2;
-          margin-block-start: var(--spacing-0) !important;
         }
 
         .carousel__button--left {
@@ -156,7 +147,7 @@ export class CarouselComponent extends HTMLElement {
         }
 
         .carousel__item-button {
-        font-size: var(--text-sm);
+          font-size: var(--text-sm);
         }
 
         .carousel__item-content {
@@ -206,7 +197,7 @@ export class CarouselComponent extends HTMLElement {
       </style>
       <div class="carousel">
         <div class="carousel__container">
-          <!-- Carousel items will be dynamically added here -->
+          <!-- Items appended here -->
         </div>
         <button class="carousel__button carousel__button--left" aria-label="Previous slide">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
@@ -225,7 +216,6 @@ export class CarouselComponent extends HTMLElement {
       </div>
     `;
 
-    // Reference to carousel container and navigation buttons
     this.carouselContainer = this.shadowRoot.querySelector(
       ".carousel__container"
     );
@@ -234,7 +224,6 @@ export class CarouselComponent extends HTMLElement {
       ".carousel__button--right"
     );
 
-    // Add carousel items
     this.carouselData.cards.forEach((card, index) => {
       const item = document.createElement("div");
       item.classList.add("carousel__item");
@@ -245,7 +234,6 @@ export class CarouselComponent extends HTMLElement {
       const itemContent = document.createElement("div");
       itemContent.classList.add("carousel__item-content");
 
-      // Image
       if (card.imageUrl) {
         const img = document.createElement("img");
         img.src = card.imageUrl;
@@ -254,7 +242,6 @@ export class CarouselComponent extends HTMLElement {
         itemContent.appendChild(img);
       }
 
-      // Title
       if (card.title) {
         const title = document.createElement("h6");
         title.classList.add("carousel__item-title");
@@ -262,7 +249,6 @@ export class CarouselComponent extends HTMLElement {
         itemContent.appendChild(title);
       }
 
-      // Description
       if (card.description && card.description.text) {
         const description = document.createElement("p");
         description.classList.add("carousel__item-description");
@@ -270,7 +256,7 @@ export class CarouselComponent extends HTMLElement {
         itemContent.appendChild(description);
       }
 
-      // Button
+      // If the card has buttons, create a button
       if (card.buttons && card.buttons.length > 0) {
         const buttonData = card.buttons[0];
         const button = document.createElement("button");
@@ -283,35 +269,25 @@ export class CarouselComponent extends HTMLElement {
         button.setAttribute("data-button-text", buttonData.name);
         button.textContent = buttonData.name || "Select";
         itemContent.appendChild(button);
-
-        // Add event listener for button click
         button.addEventListener("click", this.handleButtonClick);
       }
 
-      // Assemble the item structure
       itemWrapper.appendChild(itemContent);
       item.appendChild(itemWrapper);
       this.carouselContainer.appendChild(item);
       this.items.push(item);
     });
 
-    // Initialize Carousel Functionality
     this.initCarousel();
 
-    // Add event listeners to navigation buttons
     this.leftButton.addEventListener("click", this.moveLeft);
     this.rightButton.addEventListener("click", this.moveRight);
-
-    // Add event listener for window resize to adjust carousel
     window.addEventListener("resize", this.handleResize);
 
     this.updateVisibility();
     this.updatePosition();
   }
 
-  /**
-   * Initializes carousel settings based on screen size.
-   */
   initCarousel() {
     this.isDesktop = window.matchMedia("(min-width: 1000px)").matches;
     this.itemsPerSlide = this.isDesktop ? 2 : 1;
@@ -320,9 +296,6 @@ export class CarouselComponent extends HTMLElement {
     this.updatePosition();
   }
 
-  /**
-   * Handles window resize events to adjust carousel settings.
-   */
   handleResize() {
     this.isDesktop = window.matchMedia("(min-width: 1000px)").matches;
     this.itemsPerSlide = this.isDesktop ? 2 : 1;
@@ -331,9 +304,6 @@ export class CarouselComponent extends HTMLElement {
     this.updateVisibility();
   }
 
-  /**
-   * Moves the carousel to the left.
-   */
   moveLeft() {
     const itemsPerSlide = this.itemsPerSlide;
     this.currentIndex = Math.max(0, this.currentIndex - itemsPerSlide);
@@ -341,9 +311,6 @@ export class CarouselComponent extends HTMLElement {
     this.updateVisibility();
   }
 
-  /**
-   * Moves the carousel to the right.
-   */
   moveRight() {
     const itemsPerSlide = this.itemsPerSlide;
     this.currentIndex = Math.min(
@@ -354,30 +321,23 @@ export class CarouselComponent extends HTMLElement {
     this.updateVisibility();
   }
 
-  /**
-   * Updates the carousel's position based on the current index.
-   */
   updatePosition() {
-    const itemsPerSlide = this.itemsPerSlide;
-    const offset = -(this.currentIndex / itemsPerSlide) * 100;
+    const offset = -(this.currentIndex / this.itemsPerSlide) * 100;
     this.carouselContainer.style.transform = `translateX(${offset}%)`;
   }
 
-  /**
-   * Updates the visibility of navigation buttons based on the current index.
-   */
   updateVisibility() {
-    const itemsPerSlide = this.itemsPerSlide;
     this.leftButton.disabled = this.currentIndex === 0;
     this.rightButton.disabled =
-      this.currentIndex >= this.items.length - itemsPerSlide;
+      this.currentIndex >= this.items.length - this.itemsPerSlide;
   }
 
-  /**
-   * Handles button clicks within carousel items.
-   * @param {Event} e - The click event
-   */
   handleButtonClick(e) {
+    if (!this._eventBus) {
+      console.error("No eventBus assigned to CarouselComponent");
+      return;
+    }
+
     const button = e.target;
     const buttonIndex = parseInt(button.getAttribute("data-button-index"), 10);
     const card = this.carouselData.cards[buttonIndex];
@@ -390,15 +350,14 @@ export class CarouselComponent extends HTMLElement {
     const buttonData = card.buttons[0];
     console.log("Original button data:", buttonData);
 
-    // Access the title from the payload
     const productTitle = buttonData.request.payload.title;
     const displayLabel = productTitle
       ? `Selected ${productTitle}`
       : "Selected Power Station";
 
-    eventBus.emit("carouselButtonClicked", {
-      action: buttonData.request, // Keep the original request structure
-      label: displayLabel, // Use our new descriptive label with fallback
+    this._eventBus.emit("carouselButtonClicked", {
+      action: buttonData.request,
+      label: displayLabel,
     });
 
     // Remove the carousel after interaction

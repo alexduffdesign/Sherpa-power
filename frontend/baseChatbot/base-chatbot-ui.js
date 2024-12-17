@@ -121,6 +121,7 @@ class ChatbotUI {
 
     // Create a message-component instead of manually constructing HTML
     const message = document.createElement("message-component");
+    message.eventBus = this.eventBus;
     message.setAttribute("sender", sender);
     message.setAttribute("content", content);
 
@@ -150,6 +151,7 @@ class ChatbotUI {
 
     buttons.forEach((buttonData) => {
       const button = document.createElement("button-component");
+      button.eventBus = this.eventBus;
       button.setAttribute("label", buttonData.name);
       button.setAttribute("payload", JSON.stringify(buttonData.request));
       buttonGroup.appendChild(button);
@@ -172,6 +174,7 @@ class ChatbotUI {
 
     // Use <carousel-component> with a data-carousel attribute
     const carousel = document.createElement("carousel-component");
+    carousel.eventBus = this.eventBus;
     carousel.setAttribute("data-carousel", JSON.stringify({ cards: items }));
     this.messageContainer.appendChild(carousel);
     this.scrollToBottom();

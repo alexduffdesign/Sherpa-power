@@ -3,30 +3,23 @@
 export class MessageComponent extends HTMLElement {
   constructor() {
     super();
-    // Attach Shadow DOM to encapsulate styles
     this.attachShadow({ mode: "open" });
   }
 
   connectedCallback() {
     const sender = this.getAttribute("sender");
     const content = this.getAttribute("content");
-
     this.render(sender, content);
   }
 
-  /**
-   * Renders the message with appropriate styling based on the sender.
-   * @param {string} sender - 'user' or 'assistant'
-   * @param {string} content - The message content
-   */
   render(sender, content) {
     const isAssistant = sender === "assistant";
     this.shadowRoot.innerHTML = `
       <style>
-       :host {
-        display: block;
-        width: 100%;
-      }
+        :host {
+          display: block;
+          width: 100%;
+        }
         .message-wrapper {
           display: flex;
           align-items: flex-end;
@@ -93,12 +86,6 @@ export class MessageComponent extends HTMLElement {
     `;
   }
 
-  /**
-   * Converts markdown to HTML.
-   * For simplicity, using basic line breaks. Integrate a markdown library if needed.
-   * @param {string} markdown - The markdown content
-   * @returns {string} - HTML content
-   */
   markdownToHtml(markdown) {
     if (!markdown) return "";
     return markdown.replace(/\n/g, "<br>");

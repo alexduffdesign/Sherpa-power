@@ -1,4 +1,4 @@
-import{E as u}from"./vendor.DqvJXvYX.js";const l={MESSAGE_RECEIVED:"messageReceived",TYPING:"typing",TYPING_TEXT:"typingText",CHOICE_PRESENTED:"choicePresented",CAROUSEL_PRESENTED:"carouselPresented",ERROR:"error",END:"end",USER_MESSAGE:"userMessage"};({...Object.entries(l).reduce((a,[t,e])=>({...a,[t]:`mainChatbot:${e}`}),{})});({...Object.entries(l).reduce((a,[t,e])=>({...a,[t]:`sectionChatbot:${e}`}),{})});class h extends u{emitTyping(t,e){this.emit(`${t}:${l.TYPING}`,{isTyping:e})}emitError(t,e){this.emit(`${t}:${l.ERROR}`,{message:e})}emitEnd(t){this.emit(`${t}:${l.END}`,{})}getEventName(t,e){return`${t}:${e}`}}const c=new h;class m extends HTMLElement{constructor(){super(),this.attachShadow({mode:"open"})}connectedCallback(){const t=this.getAttribute("label"),e=this.getAttribute("payload");this.render(t,e)}render(t,e){this.shadowRoot.innerHTML=`
+class d extends HTMLElement{constructor(){super(),this.attachShadow({mode:"open"}),this._eventBus=null}set eventBus(t){this._eventBus=t}connectedCallback(){const t=this.getAttribute("label"),e=this.getAttribute("payload");this.render(t,e)}render(t,e){this.shadowRoot.innerHTML=`
       <style>
         .button-container {
           display: flex;
@@ -23,18 +23,16 @@ import{E as u}from"./vendor.DqvJXvYX.js";const l={MESSAGE_RECEIVED:"messageRecei
         .button:hover {
           background-color: #f0f0f0;
         }
-
-        /* Additional styles as needed */
       </style>
       <div class="button-container">
         <button class="button" data-button-data='${e}' aria-label="${t}">${t}</button>
       </div>
-    `,this.shadowRoot.querySelector(".button").addEventListener("click",()=>{try{const o=JSON.parse(e);c.emit("buttonClicked",o)}catch(o){console.error("Error parsing button payload:",o)}})}}class p extends HTMLElement{constructor(){super(),this.attachShadow({mode:"open"})}connectedCallback(){const t=this.getAttribute("sender"),e=this.getAttribute("content");this.render(t,e)}render(t,e){const o=t==="assistant";this.shadowRoot.innerHTML=`
+    `,this.shadowRoot.querySelector(".button").addEventListener("click",()=>{if(!this._eventBus){console.error("No eventBus assigned to ButtonComponent");return}try{const s=JSON.parse(e);this._eventBus.emit("buttonClicked",s)}catch(s){console.error("Error parsing button payload:",s)}})}}class c extends HTMLElement{constructor(){super(),this.attachShadow({mode:"open"})}connectedCallback(){const t=this.getAttribute("sender"),e=this.getAttribute("content");this.render(t,e)}render(t,e){const s=t==="assistant";this.shadowRoot.innerHTML=`
       <style>
-       :host {
-        display: block;
-        width: 100%;
-      }
+        :host {
+          display: block;
+          width: 100%;
+        }
         .message-wrapper {
           display: flex;
           align-items: flex-end;
@@ -65,9 +63,9 @@ import{E as u}from"./vendor.DqvJXvYX.js";const l={MESSAGE_RECEIVED:"messageRecei
           padding: var(--spacing-4);
           border-radius: 20px;
           word-wrap: break-word;
-          background-color: ${o?"#FFFFFF":"rgba(255, 255, 255, 0.1)"};
-          color: ${o?"#231F25":"#FFFFFF"};
-          border: ${o?"none":"1px solid #FFFFFF"};
+          background-color: ${s?"#FFFFFF":"rgba(255, 255, 255, 0.1)"};
+          color: ${s?"#231F25":"#FFFFFF"};
+          border: ${s?"none":"1px solid #FFFFFF"};
         }
 
         .message--assistant {
@@ -91,23 +89,21 @@ import{E as u}from"./vendor.DqvJXvYX.js";const l={MESSAGE_RECEIVED:"messageRecei
         }
       </style>
       <div class="message-wrapper message-wrapper--${t}">
-        ${o?'<div class="assistant-icon">🚀</div>':""}
+        ${s?'<div class="assistant-icon">🚀</div>':""}
         <div class="message message--${t}">
           <div class="message__content">${this.markdownToHtml(e)}</div>
         </div>
       </div>
-    `}markdownToHtml(t){return t?t.replace(/\n/g,"<br>"):""}}class b extends HTMLElement{constructor(){super(),this.attachShadow({mode:"open"}),this.items=[],this.currentIndex=0,this.isDesktop=window.matchMedia("(min-width: 1000px)").matches,this.itemsPerSlide=this.isDesktop?2:1,this.moveLeft=this.moveLeft.bind(this),this.moveRight=this.moveRight.bind(this),this.handleResize=this.handleResize.bind(this),this.handleButtonClick=this.handleButtonClick.bind(this)}connectedCallback(){const t=this.getAttribute("data-carousel");if(!t){console.error("No data-carousel attribute found. Cannot render carousel.");return}let e;try{e=JSON.parse(t)}catch(o){console.error("Failed to parse carousel data:",o);return}if(!e||!Array.isArray(e.cards)){console.error("carouselData.cards is not defined or not an array");return}this.renderCarousel(e)}renderCarousel(t){this.carouselData=t,this.shadowRoot.innerHTML=`
+    `}markdownToHtml(t){return t?t.replace(/\n/g,"<br>"):""}}class u extends HTMLElement{constructor(){super(),this.attachShadow({mode:"open"}),this._eventBus=null,this.items=[],this.currentIndex=0,this.isDesktop=window.matchMedia("(min-width: 1000px)").matches,this.itemsPerSlide=this.isDesktop?2:1,this.moveLeft=this.moveLeft.bind(this),this.moveRight=this.moveRight.bind(this),this.handleResize=this.handleResize.bind(this),this.handleButtonClick=this.handleButtonClick.bind(this)}set eventBus(t){this._eventBus=t}connectedCallback(){const t=this.getAttribute("data-carousel");if(!t){console.error("No data-carousel attribute found. Cannot render carousel.");return}let e;try{e=JSON.parse(t)}catch(s){console.error("Failed to parse carousel data:",s);return}if(!e||!Array.isArray(e.cards)){console.error("carouselData.cards is not defined or not an array");return}this.renderCarousel(e)}renderCarousel(t){this.carouselData=t,this.shadowRoot.innerHTML=`
       <style>
-        /* Custom Carousel Styling */
-
         h6 {
-            font-family: var(--heading-font-family);
-            font-weight: var(--heading-font-weight);
-            font-style: var(--heading-font-style);
-            letter-spacing: var(--heading-letter-spacing);
-            text-transform: var(--heading-text-transform);
-            overflow-wrap: anywhere;
-            font-size: var(--text-sm);
+          font-family: var(--heading-font-family);
+          font-weight: var(--heading-font-weight);
+          font-style: var(--heading-font-style);
+          letter-spacing: var(--heading-letter-spacing);
+          text-transform: var(--heading-text-transform);
+          overflow-wrap: anywhere;
+          font-size: var(--text-sm);
         }
 
         .button {
@@ -131,8 +127,7 @@ import{E as u}from"./vendor.DqvJXvYX.js";const l={MESSAGE_RECEIVED:"messageRecei
           padding-inline-end: var(--spacing-5);
           font-weight: bold;
           line-height: 1.6;
-          transition: background-color 0.15s ease-in-out, color 0.15s ease-in-out,
-            box-shadow 0.15s ease-in-out;
+          transition: background-color 0.15s ease-in-out, color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
           display: inline-block;
           position: relative;
         }
@@ -180,7 +175,6 @@ import{E as u}from"./vendor.DqvJXvYX.js";const l={MESSAGE_RECEIVED:"messageRecei
           justify-content: center;
           cursor: pointer;
           z-index: 2;
-          margin-block-start: var(--spacing-0) !important;
         }
 
         .carousel__button--left {
@@ -192,7 +186,7 @@ import{E as u}from"./vendor.DqvJXvYX.js";const l={MESSAGE_RECEIVED:"messageRecei
         }
 
         .carousel__item-button {
-        font-size: var(--text-sm);
+          font-size: var(--text-sm);
         }
 
         .carousel__item-content {
@@ -242,7 +236,7 @@ import{E as u}from"./vendor.DqvJXvYX.js";const l={MESSAGE_RECEIVED:"messageRecei
       </style>
       <div class="carousel">
         <div class="carousel__container">
-          <!-- Carousel items will be dynamically added here -->
+          <!-- Items appended here -->
         </div>
         <button class="carousel__button carousel__button--left" aria-label="Previous slide">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
@@ -259,5 +253,5 @@ import{E as u}from"./vendor.DqvJXvYX.js";const l={MESSAGE_RECEIVED:"messageRecei
           </svg>
         </button>
       </div>
-    `,this.carouselContainer=this.shadowRoot.querySelector(".carousel__container"),this.leftButton=this.shadowRoot.querySelector(".carousel__button--left"),this.rightButton=this.shadowRoot.querySelector(".carousel__button--right"),this.carouselData.cards.forEach((e,o)=>{const s=document.createElement("div");s.classList.add("carousel__item");const r=document.createElement("div");r.classList.add("carousel__item-wrapper");const n=document.createElement("div");if(n.classList.add("carousel__item-content"),e.imageUrl){const i=document.createElement("img");i.src=e.imageUrl,i.alt=e.title||"",i.classList.add("carousel__item-image"),n.appendChild(i)}if(e.title){const i=document.createElement("h6");i.classList.add("carousel__item-title"),i.textContent=e.title,n.appendChild(i)}if(e.description&&e.description.text){const i=document.createElement("p");i.classList.add("carousel__item-description"),i.textContent=e.description.text,n.appendChild(i)}if(e.buttons&&e.buttons.length>0){const i=e.buttons[0],d=document.createElement("button");d.classList.add("button","carousel__item-button"),d.setAttribute("data-button-index",o),d.setAttribute("data-button-payload",JSON.stringify(i.request)),d.setAttribute("data-button-text",i.name),d.textContent=i.name||"Select",n.appendChild(d),d.addEventListener("click",this.handleButtonClick)}r.appendChild(n),s.appendChild(r),this.carouselContainer.appendChild(s),this.items.push(s)}),this.initCarousel(),this.leftButton.addEventListener("click",this.moveLeft),this.rightButton.addEventListener("click",this.moveRight),window.addEventListener("resize",this.handleResize),this.updateVisibility(),this.updatePosition()}initCarousel(){this.isDesktop=window.matchMedia("(min-width: 1000px)").matches,this.itemsPerSlide=this.isDesktop?2:1,this.currentIndex=0,this.updateVisibility(),this.updatePosition()}handleResize(){this.isDesktop=window.matchMedia("(min-width: 1000px)").matches,this.itemsPerSlide=this.isDesktop?2:1,this.currentIndex=0,this.updatePosition(),this.updateVisibility()}moveLeft(){const t=this.itemsPerSlide;this.currentIndex=Math.max(0,this.currentIndex-t),this.updatePosition(),this.updateVisibility()}moveRight(){const t=this.itemsPerSlide;this.currentIndex=Math.min(this.items.length-t,this.currentIndex+t),this.updatePosition(),this.updateVisibility()}updatePosition(){const t=this.itemsPerSlide,e=-(this.currentIndex/t)*100;this.carouselContainer.style.transform=`translateX(${e}%)`}updateVisibility(){const t=this.itemsPerSlide;this.leftButton.disabled=this.currentIndex===0,this.rightButton.disabled=this.currentIndex>=this.items.length-t}handleButtonClick(t){const e=t.target,o=parseInt(e.getAttribute("data-button-index"),10),s=this.carouselData.cards[o];if(!s||!s.buttons||s.buttons.length===0){console.warn("No button data found for this card.");return}const r=s.buttons[0];console.log("Original button data:",r);const n=r.request.payload.title,i=n?`Selected ${n}`:"Selected Power Station";c.emit("carouselButtonClicked",{action:r.request,label:i}),this.remove()}}customElements.define("button-component",m);customElements.define("message-component",p);customElements.define("carousel-component",b);console.log("MessageComponent defined");console.log("ButtonComponent defined");console.log("CarouselComponent defined");
-//# sourceMappingURL=chatbot-components.BXvwsMW4.js.map
+    `,this.carouselContainer=this.shadowRoot.querySelector(".carousel__container"),this.leftButton=this.shadowRoot.querySelector(".carousel__button--left"),this.rightButton=this.shadowRoot.querySelector(".carousel__button--right"),this.carouselData.cards.forEach((e,s)=>{const o=document.createElement("div");o.classList.add("carousel__item");const a=document.createElement("div");a.classList.add("carousel__item-wrapper");const n=document.createElement("div");if(n.classList.add("carousel__item-content"),e.imageUrl){const i=document.createElement("img");i.src=e.imageUrl,i.alt=e.title||"",i.classList.add("carousel__item-image"),n.appendChild(i)}if(e.title){const i=document.createElement("h6");i.classList.add("carousel__item-title"),i.textContent=e.title,n.appendChild(i)}if(e.description&&e.description.text){const i=document.createElement("p");i.classList.add("carousel__item-description"),i.textContent=e.description.text,n.appendChild(i)}if(e.buttons&&e.buttons.length>0){const i=e.buttons[0],r=document.createElement("button");r.classList.add("button","carousel__item-button"),r.setAttribute("data-button-index",s),r.setAttribute("data-button-payload",JSON.stringify(i.request)),r.setAttribute("data-button-text",i.name),r.textContent=i.name||"Select",n.appendChild(r),r.addEventListener("click",this.handleButtonClick)}a.appendChild(n),o.appendChild(a),this.carouselContainer.appendChild(o),this.items.push(o)}),this.initCarousel(),this.leftButton.addEventListener("click",this.moveLeft),this.rightButton.addEventListener("click",this.moveRight),window.addEventListener("resize",this.handleResize),this.updateVisibility(),this.updatePosition()}initCarousel(){this.isDesktop=window.matchMedia("(min-width: 1000px)").matches,this.itemsPerSlide=this.isDesktop?2:1,this.currentIndex=0,this.updateVisibility(),this.updatePosition()}handleResize(){this.isDesktop=window.matchMedia("(min-width: 1000px)").matches,this.itemsPerSlide=this.isDesktop?2:1,this.currentIndex=0,this.updatePosition(),this.updateVisibility()}moveLeft(){const t=this.itemsPerSlide;this.currentIndex=Math.max(0,this.currentIndex-t),this.updatePosition(),this.updateVisibility()}moveRight(){const t=this.itemsPerSlide;this.currentIndex=Math.min(this.items.length-t,this.currentIndex+t),this.updatePosition(),this.updateVisibility()}updatePosition(){const t=-(this.currentIndex/this.itemsPerSlide)*100;this.carouselContainer.style.transform=`translateX(${t}%)`}updateVisibility(){this.leftButton.disabled=this.currentIndex===0,this.rightButton.disabled=this.currentIndex>=this.items.length-this.itemsPerSlide}handleButtonClick(t){if(!this._eventBus){console.error("No eventBus assigned to CarouselComponent");return}const e=t.target,s=parseInt(e.getAttribute("data-button-index"),10),o=this.carouselData.cards[s];if(!o||!o.buttons||o.buttons.length===0){console.warn("No button data found for this card.");return}const a=o.buttons[0];console.log("Original button data:",a);const n=a.request.payload.title,i=n?`Selected ${n}`:"Selected Power Station";this._eventBus.emit("carouselButtonClicked",{action:a.request,label:i}),this.remove()}}customElements.define("button-component",d);customElements.define("message-component",c);customElements.define("carousel-component",u);console.log("MessageComponent defined");console.log("ButtonComponent defined");console.log("CarouselComponent defined");
+//# sourceMappingURL=chatbot-components.BDr6ZK3e.js.map
