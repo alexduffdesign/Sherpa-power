@@ -79,6 +79,16 @@ class MainChatbot {
     // Handle button clicks
     this.core.eventBus.on("buttonClicked", (payload) => {
       this.saveToHistory("user", payload.label || "Button clicked");
+      // Show user's choice as a message in the UI
+      const userMessage = payload.label || "Button clicked";
+      this.ui.addMessage("user", userMessage);
+
+      // Remove old interactive elements now that the user has chosen
+      this.ui.removeInteractiveElements();
+
+      // Send payload to Voiceflow
+      // Adjust as needed if the payload structure differs
+      this.core.sendMessage(payload.action || userMessage);
     });
 
     // Handle main menu
