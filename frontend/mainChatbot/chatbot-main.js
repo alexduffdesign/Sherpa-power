@@ -69,7 +69,14 @@ class MainChatbot {
     });
 
     // Handle choice presentation (saves them to history)
-    this.core.eventBus.on("choicePresented", ({ items }) => {
+    this.core.eventBus.on("choicePresented", ({ buttons }) => {
+      this.saveToHistory("assistant", "Choice presented", {
+        type: "choice",
+        buttons: buttons,
+      });
+    });
+
+    this.core.eventBus.on("carouselPresented", ({ items }) => {
       this.saveToHistory("assistant", "Carousel presented", {
         type: "carousel",
         carouselItems: items,
@@ -158,8 +165,8 @@ class MainChatbot {
           },
         };
         this.core.sendAction(actionPayload);
-      } else {
-        // If neither path nor intent, just send the user's message as text
+      } else if (type === "button") {
+        // If Voiceflow doesn't understand "button", treat it like text
         this.core.sendMessage(userMessage);
       }
     });
