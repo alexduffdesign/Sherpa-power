@@ -60,7 +60,14 @@ class MainChatbot {
   setupEventListeners() {
     // Handle user messages
     this.core.eventBus.on("userMessage", (message) => {
+      // Add the message to the UI as a user message
+      this.ui.addMessage("user", message);
+
+      // Save the message to history
       this.saveToHistory("user", message);
+
+      // Send the typed message to Voiceflow so it processes it
+      this.core.sendMessage(message);
     });
 
     // Handle bot messages
