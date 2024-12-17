@@ -66,61 +66,6 @@ class MainChatbotUI extends ChatbotUI {
     }
   }
 
-  // /**
-  //  * Override base addButtons to add main-specific functionality
-  //  * @override
-  //  * @param {Array} buttons - Array of button data
-  //  * @param {boolean} isRestored - Whether these buttons are being restored from history
-  //  */
-  // addButtons(buttons, isRestored = false) {
-  //   if (!Array.isArray(buttons)) {
-  //     console.error("Invalid buttons data:", buttons);
-  //     return;
-  //   }
-
-  //   const buttonGroup = document.createElement("div");
-  //   buttonGroup.className = "button-group";
-
-  //   buttons.forEach((buttonData) => {
-  //     const button = document.createElement("button-component");
-  //     button.setAttribute("label", buttonData.name);
-  //     button.setAttribute("payload", JSON.stringify(buttonData.request));
-  //     button.eventBus = this.eventBus;
-
-  //     if (isRestored) {
-  //       button.setAttribute("data-restored", "true");
-  //     }
-  //     buttonGroup.appendChild(button);
-  //   });
-
-  //   this.messageContainer.appendChild(buttonGroup);
-  //   this.scrollToBottom();
-  // }
-
-  // /**
-  //  * Override base addCarousel to add main-specific functionality
-  //  * @override
-  //  * @param {Array} items - Array of carousel items
-  //  * @param {boolean} isRestored - Whether this carousel is being restored from history
-  //  */
-  // addCarousel(items, isRestored = false) {
-  //   if (!Array.isArray(items)) {
-  //     console.error("Invalid carousel items:", items);
-  //     return;
-  //   }
-
-  //   const carousel = document.createElement("carousel-component");
-  //   carousel.setAttribute("data-carousel", JSON.stringify({ cards: items }));
-
-  //   if (isRestored) {
-  //     carousel.setAttribute("data-restored", "true");
-  //   }
-
-  //   carousel.eventBus = this.eventBus;
-  //   this.messageContainer.appendChild(carousel);
-  //   this.scrollToBottom();
-  // }
-
   /**
    * Clear the chat messages
    * @public
