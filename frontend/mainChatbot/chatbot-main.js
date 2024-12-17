@@ -173,6 +173,7 @@ class MainChatbot {
             type: "text",
             payload: {
               item: actionData.item,
+              title: actionData.title,
               // You can also include imgUrl or anything else you need
             },
           },
