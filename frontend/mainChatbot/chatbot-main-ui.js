@@ -88,7 +88,7 @@ class MainChatbotUI extends ChatbotUI {
       if (isRestored) {
         button.setAttribute("data-restored", "true");
       }
-
+      button.eventBus = this.eventBus;
       buttonGroup.appendChild(button);
     });
 
@@ -115,6 +115,7 @@ class MainChatbotUI extends ChatbotUI {
       carousel.setAttribute("data-restored", "true");
     }
 
+    carousel.eventBus = this.eventBus;
     this.messageContainer.appendChild(carousel);
     this.scrollToBottom();
   }
