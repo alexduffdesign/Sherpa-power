@@ -26,7 +26,7 @@ class SectionChatbotUI extends ChatbotUI {
    * @private
    */
   setupSectionChatbotUI() {
-    this.deviceAnswerGrid = this.container.querySelector(".applications-grid");
+    this.deviceAnswerGrid = document.querySelector(".applications-grid");
     if (!this.deviceAnswerGrid) {
       console.error("Applications grid not found");
       this.displayError("UI setup error: applications grid not found.");
@@ -38,7 +38,7 @@ class SectionChatbotUI extends ChatbotUI {
    * @private
    */
   setupViewMoreButton() {
-    this.viewMoreButton = this.container.querySelector(".view-more-button");
+    this.viewMoreButton = document.querySelector(".view-more-button");
     if (this.viewMoreButton) {
       this.viewMoreButton.addEventListener("click", () =>
         this.toggleDevicesView()

@@ -122,11 +122,8 @@ class SectionChatbot {
       const sanitizedDetails = this.sanitizeProductDetails();
       await this.core.sendLaunch({
         action: {
-          type: "event",
+          type: "launch",
           payload: {
-            event: {
-              name: "launch_section",
-            },
             variables: {
               startBlock: "shopifySection",
               powerStationDetails: sanitizedDetails,
