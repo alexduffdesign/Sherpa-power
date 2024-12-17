@@ -133,6 +133,7 @@ class MainChatbot {
       // displayLabel = "Selected ${productTitle}" if productTitle is defined
 
       const userMessage = payload.label || "Button clicked";
+      console.log("User selected:", userMessage);
 
       // Save to history and display the user's choice
       this.saveToHistory("user", userMessage);
