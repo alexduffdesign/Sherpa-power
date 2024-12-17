@@ -148,10 +148,7 @@ class MainChatbot {
         const actionPayload = {
           action: {
             type: "text",
-            payload: {
-              item: actionData.item,
-              title: actionData.title,
-            },
+            payload: payload.action,
           },
         };
         this.core.sendAction(actionPayload);
