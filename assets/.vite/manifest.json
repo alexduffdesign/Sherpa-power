@@ -61,21 +61,24 @@
     ]
   },
   "frontend/sectionChatbot/chatbot-section-ui.js": {
-    "file": "chatbot-section-ui.BjM46aZ2.js",
+    "file": "chatbot-section-ui.BZk2VR1m.js",
     "name": "chatbot-section-ui",
     "src": "frontend/sectionChatbot/chatbot-section-ui.js",
     "isEntry": true,
     "imports": [
-      "_vendor.DqvJXvYX.js"
+      "frontend/baseChatbot/base-chatbot-ui.js"
     ]
   },
   "frontend/sectionChatbot/chatbot-section.js": {
-    "file": "chatbot-section.CshNLTn0.js",
+    "file": "chatbot-section.CRco8pMr.js",
     "name": "chatbot-section",
     "src": "frontend/sectionChatbot/chatbot-section.js",
     "isEntry": true,
     "imports": [
-      "_vendor.DqvJXvYX.js"
+      "frontend/baseChatbot/base-chatbot.js",
+      "frontend/sectionChatbot/chatbot-section-ui.js",
+      "_vendor.DqvJXvYX.js",
+      "frontend/baseChatbot/base-chatbot-ui.js"
     ]
   }
 }
