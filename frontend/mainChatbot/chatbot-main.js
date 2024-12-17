@@ -142,7 +142,17 @@ class MainChatbot {
       // payload.action might look like { type: "path-xyz", payload: {...} } or {type: "intent", ...}
       const { type, payload: actionData } = payload.action;
 
-      if (type && type.startsWith("path-")) {
+      if (type === "button") {
+        // Treat this as a text input
+        // We'll send an action of type "text" so Voiceflow sets last_utterance
+        const actionPayload = {
+          action: {
+            type: "text",
+            payload: userMessage,
+          },
+        };
+        this.core.sendAction(actionPayload);
+      } else if (type && type.startsWith("path-")) {
         const actionPayload = {
           action: {
             type: type, // e.g. "path-4ragy3i2y"
@@ -165,7 +175,7 @@ class MainChatbot {
           },
         };
         this.core.sendAction(actionPayload);
-      } else if (type === "button") {
+      } else {
         // If Voiceflow doesn't understand "button", treat it like text
         this.core.sendMessage(userMessage);
       }
