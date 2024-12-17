@@ -135,8 +135,6 @@ class MainChatbot {
 
       const { type, payload: actionData } = payload.action;
 
-      const action = JSON.stringify(actionData);
-
       if (type && type.startsWith("path-")) {
         // path request
         const requestPayload = {
@@ -163,7 +161,7 @@ class MainChatbot {
         const requestPayload = {
           action: {
             type: "button",
-            payload: action,
+            payload: actionData,
           },
         };
         this.core.sendAction(requestPayload);
