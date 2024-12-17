@@ -69,17 +69,15 @@ class MainChatbot {
     });
 
     // Handle choice presentation (saves them to history)
-    this.core.eventBus.on("choicePresented", ({ buttons }) => {
-      this.saveToHistory("assistant", "Choice presented", {
-        type: "choice",
-        buttons: buttons,
+    this.core.eventBus.on("choicePresented", ({ items }) => {
+      this.saveToHistory("assistant", "Carousel presented", {
+        type: "carousel",
+        carouselItems: items,
       });
     });
 
     // Handle button clicks
     this.core.eventBus.on("buttonClicked", (payload) => {
-      // payload is now { type: 'path-4ragy3i2y', payload: { label: "...", actions: [] } }
-
       // Save the user's choice and display it in the UI
       const userMessage = payload.payload.label || "Button clicked";
       this.saveToHistory("user", userMessage);
@@ -118,6 +116,50 @@ class MainChatbot {
         this.core.sendAction(actionPayload);
       } else {
         // If it's neither path nor intent, fall back to treating it as text input:
+        this.core.sendMessage(userMessage);
+      }
+    });
+
+    // Handle carousel button clicks
+    this.core.eventBus.on("carouselButtonClicked", (payload) => {
+      // payload is { action: buttonData.request, label: displayLabel }
+      // displayLabel = "Selected ${productTitle}" if productTitle is defined
+
+      const userMessage = payload.label || "Button clicked";
+
+      // Save to history and display the user's choice
+      this.saveToHistory("user", userMessage);
+      this.ui.addMessage("user", userMessage);
+
+      // Handle sending the request to Voiceflow based on payload.action.type
+      // payload.action might look like { type: "path-xyz", payload: {...} } or {type: "intent", ...}
+      const { type, payload: actionData } = payload.action;
+
+      if (type && type.startsWith("path-")) {
+        const actionPayload = {
+          action: {
+            type: type, // e.g. "path-4ragy3i2y"
+            payload: {
+              label: userMessage,
+            },
+          },
+        };
+        this.core.sendAction(actionPayload);
+      } else if (type === "intent") {
+        const actionPayload = {
+          action: {
+            type: "intent",
+            payload: {
+              intent: actionData.intent,
+              query: actionData.query || "",
+              entities: actionData.entities || [],
+              // label can be included if needed
+            },
+          },
+        };
+        this.core.sendAction(actionPayload);
+      } else {
+        // If neither path nor intent, just send the user's message as text
         this.core.sendMessage(userMessage);
       }
     });
