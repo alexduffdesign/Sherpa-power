@@ -162,7 +162,7 @@ class MainChatbot {
       } else if (type === "button") {
         const requestPayload = {
           action: {
-            type: "text",
+            type: "button",
             payload: action,
           },
         };
