@@ -26,7 +26,6 @@ class SectionChatbotUI extends ChatbotUI {
    */
   setupSectionChatbotUI() {
     this.deviceAnswerGrid = this.container.querySelector(".device-answer-grid");
-    this.setupProductContext();
   }
 
   /**
