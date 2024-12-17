@@ -100,18 +100,6 @@ class SectionChatbotUI extends ChatbotUI {
 
     super.addMessage(sender, content, metadata);
   }
-
-  /**
-   * Add product context to message content
-   * @private
-   * @param {string} content - Original message content
-   * @returns {string} Content with product context
-   */
-  addProductContext(content) {
-    const productPlaceholder = "{product_name}";
-    return content.replace(productPlaceholder, this.productDetails.title);
-  }
-
   /**
    * Display error with product context
    * @override
@@ -123,19 +111,6 @@ class SectionChatbotUI extends ChatbotUI {
     errorDiv.textContent = message;
     this.messageContainer.appendChild(errorDiv);
     this.scrollToBottom();
-  }
-
-  /**
-   * Update product information
-   * @public
-   * @param {Object} newDetails - Updated product details
-   */
-  updateProductDetails(newDetails) {
-    this.productDetails = { ...this.productDetails, ...newDetails };
-    const productContext = this.container.querySelector(".product-context");
-    if (productContext) {
-      this.setupProductContext();
-    }
   }
 }
 
