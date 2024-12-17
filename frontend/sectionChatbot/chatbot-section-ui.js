@@ -30,27 +30,6 @@ class SectionChatbotUI extends ChatbotUI {
   }
 
   /**
-   * Set up product context in UI
-   * @private
-   */
-  setupProductContext() {
-    if (!this.productDetails) return;
-
-    const productContext = document.createElement("div");
-    productContext.className = "product-context";
-    productContext.innerHTML = `
-      <div class="product-title">${this.productDetails.title}</div>
-      ${
-        this.productDetails.capacity
-          ? `<div class="product-capacity">Capacity: ${this.productDetails.capacity}</div>`
-          : ""
-      }
-    `;
-
-    this.container.insertBefore(productContext, this.messageContainer);
-  }
-
-  /**
    * Update device answers in the grid
    * @public
    * @param {Object} data - Device answer data
