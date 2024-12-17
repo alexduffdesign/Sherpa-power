@@ -44,6 +44,7 @@ class SectionChatbot {
     });
 
     this.setupEventListeners();
+    this.loadStoredDeviceAnswers();
   }
 
   /**
@@ -86,8 +87,18 @@ class SectionChatbot {
       this.handleDeviceAnswer(payload);
     });
 
+    // Handle button clicks
+    this.core.eventBus.on("buttonClicked", (payload) => {
+      this.handleButtonClicked(payload);
+    });
+
+    // Handle carousel button clicks
+    this.core.eventBus.on("carouselButtonClicked", (payload) => {
+      this.handleCarouselButtonClicked(payload);
+    });
+
     // Handle input focus for launch
-    const input = this.container.querySelector(".chat-input");
+    const input = this.container.querySelector(".chatbot-input");
     if (input) {
       input.addEventListener("focus", () => {
         if (!this.isLaunched) {
@@ -111,10 +122,15 @@ class SectionChatbot {
       const sanitizedDetails = this.sanitizeProductDetails();
       await this.core.sendLaunch({
         action: {
-          type: "launch",
+          type: "event",
           payload: {
-            startBlock: "shopifySection",
-            powerStationDetails: sanitizedDetails,
+            event: {
+              name: "launch_section",
+            },
+            variables: {
+              startBlock: "shopifySection",
+              powerStationDetails: sanitizedDetails,
+            },
           },
         },
       });
@@ -139,6 +155,7 @@ class SectionChatbot {
     // Process device answer data
     const processedData = this.processDeviceAnswerData(payload.data);
     this.ui.updateDeviceAnswers(processedData);
+    this.saveDeviceAnswerToStorage(processedData);
   }
 
   /**
@@ -166,6 +183,101 @@ class SectionChatbot {
       acc[key] = value ? String(value).trim() : "";
       return acc;
     }, {});
+  }
+
+  /**
+   * Handle button clicks
+   * @private
+   * @param {Object} payload - Button click payload
+   */
+  handleButtonClicked(payload) {
+    this.processButtonOrCarouselClick(payload);
+  }
+
+  /**
+   * Handle carousel button clicks
+   * @private
+   * @param {Object} payload - Carousel button click payload
+   */
+  handleCarouselButtonClicked(payload) {
+    this.processButtonOrCarouselClick(payload);
+  }
+
+  /**
+   * Process button or carousel button click payload
+   * @private
+   * @param {Object} payload - Button or carousel button click payload
+   */
+  processButtonOrCarouselClick(payload) {
+    // Extract relevant data from payload
+    const userMessage = payload.payload.label || "Button clicked";
+
+    // Display user message in UI
+    this.ui.addMessage("user", userMessage);
+
+    // Remove previous interactive elements
+    this.ui.removeInteractiveElements();
+
+    // Handle sending the request to Voiceflow based on payload.type
+    if (payload.type && payload.type.startsWith("path-")) {
+      // If this is a path type request, build the action as per Voiceflow docs
+      const actionPayload = {
+        action: {
+          type: payload.type, // e.g. "path-4ragy3i2y"
+          payload: {
+            label: userMessage, // optional but recommended to set last_utterance
+          },
+        },
+      };
+
+      // Use sendAction with the constructed payload
+      this.core.sendAction(actionPayload);
+    } else if (payload.type === "intent") {
+      // Intent request
+      const actionPayload = {
+        action: {
+          type: "intent",
+          payload: {
+            intent: payload.payload.intent,
+            query: payload.payload.query || "",
+            entities: payload.payload.entities || [],
+            // label could be included here if desired
+          },
+        },
+      };
+      this.core.sendAction(actionPayload);
+    } else {
+      // Fallback to treating it as text input
+      this.core.sendMessage(userMessage);
+    }
+  }
+
+  /**
+   * Save device answer to local storage
+   * @private
+   * @param {Object} deviceAnswer - Processed device answer data
+   */
+  saveDeviceAnswerToStorage(deviceAnswer) {
+    const key = `sectionChatbot_${this.productDetails.title}_answers`;
+    let answers = JSON.parse(localStorage.getItem(key) || "[]");
+
+    // Optionally, ensure no duplicates or manage ordering
+    answers.unshift(deviceAnswer); // Add to beginning
+
+    localStorage.setItem(key, JSON.stringify(answers));
+  }
+
+  /**
+   * Load stored device answers from local storage and display them
+   * @private
+   */
+  loadStoredDeviceAnswers() {
+    const key = `sectionChatbot_${this.productDetails.title}_answers`;
+    const storedAnswers = JSON.parse(localStorage.getItem(key) || "[]");
+
+    storedAnswers.forEach((answer) => {
+      this.ui.updateDeviceAnswers(answer);
+    });
   }
 
   /**
