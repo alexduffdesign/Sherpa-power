@@ -129,33 +129,24 @@ class MainChatbot {
 
     // Handle carousel button clicks
     this.core.eventBus.on("carouselButtonClicked", (payload) => {
-      // payload is { action: buttonData.request, label: displayLabel }
-      // displayLabel = "Selected ${productTitle}" if productTitle is defined
+      // payload.action is { type: "button", payload: { item: 0, title: "Sherpa PEAK 0.6", ... } }
+      const { type, payload: actionData } = payload.action;
 
+      // Use the label from the payload or a default
       const userMessage = payload.label || "Button clicked";
-      console.log("User selected: ", userMessage);
 
-      // Save to history and display the user's choice
+      // Save to history and display user's choice
       this.saveToHistory("user", userMessage);
       this.ui.addMessage("user", userMessage);
 
-      // Handle sending the request to Voiceflow based on payload.action.type
-      // payload.action might look like { type: "path-xyz", payload: {...} } or {type: "intent", ...}
-      const { type, payload: actionData } = payload.action;
+      // Remove old UI elements
+      this.ui.removeInteractiveElements();
 
-      if (type === "button") {
-        // Treat it as a text input, but send the entire object so Voiceflow has `item`, `title`, etc.
+      if (type && type.startsWith("path-")) {
+        // Handle path as before
         const actionPayload = {
           action: {
-            type: "text",
-            payload: payload.action,
-          },
-        };
-        this.core.sendAction(actionPayload);
-      } else if (type && type.startsWith("path-")) {
-        const actionPayload = {
-          action: {
-            type: type, // e.g. "path-4ragy3i2y"
+            type: type,
             payload: {
               label: userMessage,
             },
@@ -163,6 +154,7 @@ class MainChatbot {
         };
         this.core.sendAction(actionPayload);
       } else if (type === "intent") {
+        // Handle intent as before
         const actionPayload = {
           action: {
             type: "intent",
@@ -170,13 +162,24 @@ class MainChatbot {
               intent: actionData.intent,
               query: actionData.query || "",
               entities: actionData.entities || [],
-              // label can be included if needed
+            },
+          },
+        };
+        this.core.sendAction(actionPayload);
+      } else if (type === "button") {
+        // Treat it as a text input, but send the entire object so Voiceflow has `item`, `title`, etc.
+        const actionPayload = {
+          action: {
+            type: "text",
+            payload: {
+              item: actionData.item,
+              // You can also include imgUrl or anything else you need
             },
           },
         };
         this.core.sendAction(actionPayload);
       } else {
-        // If Voiceflow doesn't understand "button", treat it like text
+        // Fallback if some unknown type appears
         this.core.sendMessage(userMessage);
       }
     });
