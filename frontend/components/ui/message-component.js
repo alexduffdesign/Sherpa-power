@@ -135,7 +135,6 @@ export class MessageComponent extends HTMLElement {
         .message__content {
           display: flex;
           flex-direction: column;
-          gap: 1em;
           flex-grow: 1;
           font-family: inherit;
         }
