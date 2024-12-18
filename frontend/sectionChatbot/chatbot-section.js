@@ -148,6 +148,7 @@ class SectionChatbot {
    * @param {Object} payload - Device answer payload
    */
   handleDeviceAnswer(payload) {
+    console.log("Received device answer:", payload);
     if (!payload || !payload.data) {
       console.warn("Invalid device answer payload:", payload);
       return;

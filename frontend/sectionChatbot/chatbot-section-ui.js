@@ -39,6 +39,7 @@ class SectionChatbotUI extends ChatbotUI {
    */
   setupViewMoreButton() {
     this.viewMoreButton = document.querySelector(".view-more-button");
+    console.log(this.viewMoreButton);
     if (this.viewMoreButton) {
       this.viewMoreButton.addEventListener("click", () =>
         this.toggleDevicesView()
