@@ -55,8 +55,11 @@ export class MessageComponent extends HTMLElement {
    */
   updateContent(newContent) {
     this.content = newContent;
-    const sender = this.getAttribute("sender");
-    this.render(sender, this.content);
+    const messageContent = this.shadowRoot.querySelector(".message__content");
+    if (messageContent) {
+      // Directly set the parsed markdown without re-rendering
+      messageContent.innerHTML = parseMarkdown(newContent);
+    }
   }
 
   /**
@@ -210,11 +213,30 @@ export class MessageComponent extends HTMLElement {
    * @returns {Promise} - Resolves when all nodes are animated
    */
   async animateNodesSequentially(container, nodes) {
+    const blockLevelElements = new Set([
+      "p",
+      "div",
+      "h1",
+      "h2",
+      "h3",
+      "ul",
+      "ol",
+      "li",
+      "blockquote",
+      "pre",
+      "h4",
+      "h5",
+      "h6",
+    ]);
+
     for (const node of nodes) {
       if (node.nodeType === Node.TEXT_NODE) {
         await this.animateTextNode(container, node.textContent);
       } else if (node.nodeType === Node.ELEMENT_NODE) {
-        const element = document.createElement(node.tagName.toLowerCase());
+        const tagName = node.tagName.toLowerCase();
+        const isBlock = blockLevelElements.has(tagName);
+
+        const element = document.createElement(tagName);
 
         // Copy attributes
         Array.from(node.attributes).forEach((attr) => {
@@ -222,7 +244,14 @@ export class MessageComponent extends HTMLElement {
         });
 
         container.appendChild(element);
-        await this.animateNodesSequentially(element, node.childNodes);
+
+        if (isBlock) {
+          // Animate child nodes without wrapping in spans
+          await this.animateNodesSequentially(element, node.childNodes);
+        } else {
+          // For inline elements, animate child nodes
+          await this.animateNodesSequentially(element, node.childNodes);
+        }
       }
     }
   }
