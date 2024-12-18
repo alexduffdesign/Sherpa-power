@@ -7,8 +7,8 @@ export class MessageComponent extends HTMLElement {
     super();
     this.attachShadow({ mode: "open" });
     this.content = ""; // Initialize empty content
-    this.animationInterval = null;
-    this.defaultAnimationSpeed = 30; // milliseconds per character
+    this.animationFrameId = null; // To track the current animation frame
+    this.defaultAnimationSpeed = 15; // milliseconds per character (quicker)
     this.currentAnimationSpeed = this.defaultAnimationSpeed;
     this.shouldAnimate = true;
   }
@@ -75,10 +75,6 @@ export class MessageComponent extends HTMLElement {
           display: block;
           width: 100%;
         }
-        p {
-        margin-top: var(--spacing-1);
-        margin-bottom: var(--spacing-1);
-        }
         .message-wrapper {
           display: flex;
           align-items: flex-end;
@@ -133,9 +129,11 @@ export class MessageComponent extends HTMLElement {
         }
 
         .message__content {
-          font-family: inherit;
           display: flex;
           flex-direction: column;
+          gap: 1em;
+          flex-grow: 1;
+          font-family: inherit;
         }
 
         /* Markdown styling */
@@ -179,6 +177,7 @@ export class MessageComponent extends HTMLElement {
 
   /**
    * Animates the message content by revealing it character by character
+   * Uses requestAnimationFrame for better performance
    * @param {string} content - The raw markdown content to animate
    */
   animateContent(content) {
@@ -261,7 +260,7 @@ export class MessageComponent extends HTMLElement {
   }
 
   /**
-   * Animates a text node by revealing it character by character
+   * Animates a text node by revealing it character by character using requestAnimationFrame
    * @param {HTMLElement} container - The container to append the text
    * @param {string} text - The text content to animate
    * @returns {Promise} - Resolves when animation is complete
@@ -272,16 +271,24 @@ export class MessageComponent extends HTMLElement {
       const span = document.createElement("span");
       container.appendChild(span);
 
-      const animateInterval = setInterval(() => {
-        if (index < text.length) {
+      let lastTime = performance.now();
+
+      const animate = (currentTime) => {
+        const deltaTime = currentTime - lastTime;
+        if (deltaTime >= this.currentAnimationSpeed) {
           span.textContent += text[index];
           index++;
           this.scrollToBottom();
+          lastTime = currentTime;
+        }
+        if (index < text.length) {
+          this.animationFrameId = requestAnimationFrame(animate);
         } else {
-          clearInterval(animateInterval);
           resolve();
         }
-      }, this.currentAnimationSpeed);
+      };
+
+      this.animationFrameId = requestAnimationFrame(animate);
     });
   }
 
@@ -291,5 +298,14 @@ export class MessageComponent extends HTMLElement {
    */
   scrollToBottom() {
     this.parentElement.scrollTop = this.parentElement.scrollHeight;
+  }
+
+  /**
+   * Clean up any ongoing animations when the component is disconnected
+   */
+  disconnectedCallback() {
+    if (this.animationFrameId) {
+      cancelAnimationFrame(this.animationFrameId);
+    }
   }
 }
