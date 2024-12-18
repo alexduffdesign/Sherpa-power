@@ -150,7 +150,6 @@ class ChatbotCore {
    * @param {string} eventStr - The event string to process
    */
   processEventString(eventStr) {
-    console.log("Raw SSE event string:", eventStr);
     try {
       const lines = eventStr.split("\n");
       const eventTypeLine = lines.find((line) => line.startsWith("event:"));

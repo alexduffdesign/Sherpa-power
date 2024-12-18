@@ -10,7 +10,7 @@
     "isEntry": true
   },
   "frontend/baseChatbot/base-chatbot.js": {
-    "file": "base-chatbot.B-MLoxE6.js",
+    "file": "base-chatbot.Dm4LnDQy.js",
     "name": "base-chatbot",
     "src": "frontend/baseChatbot/base-chatbot.js",
     "isEntry": true,
@@ -49,7 +49,7 @@
     ]
   },
   "frontend/mainChatbot/chatbot-main.js": {
-    "file": "chatbot-main.BGo9DjrL.js",
+    "file": "chatbot-main.V4MhM6Lw.js",
     "name": "chatbot-main",
     "src": "frontend/mainChatbot/chatbot-main.js",
     "isEntry": true,
@@ -70,7 +70,7 @@
     ]
   },
   "frontend/sectionChatbot/chatbot-section.js": {
-    "file": "chatbot-section.C603gy_y.js",
+    "file": "chatbot-section.ioFgHt55.js",
     "name": "chatbot-section",
     "src": "frontend/sectionChatbot/chatbot-section.js",
     "isEntry": true,
