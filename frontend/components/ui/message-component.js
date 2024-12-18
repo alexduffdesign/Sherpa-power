@@ -75,6 +75,10 @@ export class MessageComponent extends HTMLElement {
           display: block;
           width: 100%;
         }
+        p {
+        margin-top: var(--spacing-1);
+        margin-bottom: var(--spacing-1);
+        }
         .message-wrapper {
           display: flex;
           align-items: flex-end;
@@ -129,10 +133,6 @@ export class MessageComponent extends HTMLElement {
         }
 
         .message__content {
-          display: flex;
-          flex-direction: column;
-          gap: 1em;
-          flex-grow: 1;
           font-family: inherit;
         }
 
