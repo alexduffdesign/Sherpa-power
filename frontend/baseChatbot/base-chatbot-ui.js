@@ -2,7 +2,7 @@
 
 /**
  * ChatbotUI Class
- * Handles base UI functionality for chatbots
+ * Handles base UI functionality for chatbots with markdown and streaming support
  */
 class ChatbotUI {
   /**
@@ -22,6 +22,9 @@ class ChatbotUI {
     this.container = config.container;
     this.eventBus = config.eventBus;
     this.type = config.type;
+
+    this.currentAssistantMessage = null; // Track the current assistant message
+    this.accumulatedContent = ""; // For accumulating partial messages
 
     this.setupUIElements();
     this.setupEventListeners();
@@ -82,7 +85,16 @@ class ChatbotUI {
     // Listen for chatbot events and update the UI accordingly
     this.eventBus.on("messageReceived", ({ content, metadata }) => {
       console.log("UI received messageReceived event:", content, metadata);
-      this.addMessage("assistant", content, metadata);
+      this.handleAssistantMessage(content, metadata);
+    });
+
+    // Listen for partial and final messages
+    this.eventBus.on("partialMessage", (content) => {
+      this.handlePartialMessage(content);
+    });
+
+    this.eventBus.on("finalMessage", (fullContent) => {
+      this.handleFinalMessage(fullContent);
     });
 
     this.eventBus.on("typing", ({ isTyping }) => {
@@ -104,6 +116,120 @@ class ChatbotUI {
     this.eventBus.on("carouselPresented", ({ items }) => {
       this.addCarousel(items);
     });
+
+    // Reset current assistant message on end
+    this.eventBus.on("end", () => {
+      this.currentAssistantMessage = null;
+      this.accumulatedContent = "";
+    });
+  }
+
+  /**
+   * Handle assistant messages with markdown support
+   * @private
+   * @param {string} content - The message content
+   * @param {Object} metadata - Optional metadata
+   */
+  handleAssistantMessage(content, metadata) {
+    // This handles non-streamed messages (trace type: text)
+    const htmlContent = parseMarkdown(content);
+    const message = this.createMessage("assistant", htmlContent, metadata);
+    this.messageContainer.appendChild(message);
+    this.scrollToBottom();
+  }
+
+  /**
+   * Handle partial assistant messages (streamed content)
+   * @private
+   * @param {string} content - Partial message content
+   */
+  handlePartialMessage(content) {
+    this.accumulatedContent += content;
+
+    // Check for sentence-ending punctuation
+    const sentenceEndRegex = /([.!?;]\s)|(\n)/;
+    const match = this.accumulatedContent.match(sentenceEndRegex);
+
+    if (match) {
+      const sentenceEndIndex = match.index + match[0].length;
+      const completeSentence = this.accumulatedContent
+        .slice(0, sentenceEndIndex)
+        .trim();
+      const remaining = this.accumulatedContent.slice(sentenceEndIndex).trim();
+
+      if (this.currentAssistantMessage) {
+        // Append complete sentence to the current message
+        this.currentAssistantMessage.appendContent(
+          parseMarkdown(completeSentence)
+        );
+      } else {
+        // Create a new assistant message component
+        this.currentAssistantMessage = this.createMessage(
+          "assistant",
+          parseMarkdown(completeSentence),
+          null
+        );
+        this.messageContainer.appendChild(this.currentAssistantMessage);
+      }
+
+      this.accumulatedContent = remaining;
+      this.scrollToBottom();
+    } else {
+      // No sentence boundary yet, append as is
+      if (this.currentAssistantMessage) {
+        this.currentAssistantMessage.appendContent(parseMarkdown(content));
+      } else {
+        this.currentAssistantMessage = this.createMessage(
+          "assistant",
+          parseMarkdown(content),
+          null
+        );
+        this.messageContainer.appendChild(this.currentAssistantMessage);
+      }
+      this.scrollToBottom();
+    }
+  }
+
+  /**
+   * Handle final assistant message (complete message)
+   * @private
+   * @param {string} fullContent - The complete message content
+   */
+  handleFinalMessage(fullContent) {
+    if (this.currentAssistantMessage) {
+      // Append the remaining content
+      this.currentAssistantMessage.appendContent(parseMarkdown(fullContent));
+      this.currentAssistantMessage = null;
+      this.accumulatedContent = "";
+      this.scrollToBottom();
+    } else {
+      // In case finalMessage is received without a partial message
+      const htmlContent = parseMarkdown(fullContent);
+      const message = this.createMessage("assistant", htmlContent, null);
+      this.messageContainer.appendChild(message);
+      this.scrollToBottom();
+    }
+  }
+
+  /**
+   * Create a message component
+   * @private
+   * @param {string} sender - The sender of the message ('user' or 'assistant')
+   * @param {string} content - The message content
+   * @param {Object} metadata - Optional metadata for the message
+   * @returns {MessageComponent} The created message component
+   */
+  createMessage(sender, content, metadata = null) {
+    const message = document.createElement("message-component");
+    message.eventBus = this.eventBus;
+    message.setAttribute("sender", sender);
+    message.setAttribute("content", content);
+
+    if (metadata) {
+      message.setAttribute("metadata", JSON.stringify(metadata));
+    }
+
+    return message;
   }
 
   /**
@@ -119,18 +245,14 @@ class ChatbotUI {
       metadata
     );
 
-    // Create a message-component instead of manually constructing HTML
-    const message = document.createElement("message-component");
-    message.eventBus = this.eventBus;
-    message.setAttribute("sender", sender);
-    message.setAttribute("content", content);
-
-    if (metadata) {
-      message.setAttribute("metadata", JSON.stringify(metadata));
+    if (sender === "assistant") {
+      this.handleAssistantMessage(content, metadata);
+    } else {
+      // For user messages, always create a new message
+      const message = this.createMessage(sender, content, metadata);
+      this.messageContainer.appendChild(message);
+      this.scrollToBottom();
     }
-
-    this.messageContainer.appendChild(message);
-    this.scrollToBottom();
   }
 
   /**

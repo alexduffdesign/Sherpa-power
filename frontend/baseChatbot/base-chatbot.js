@@ -29,6 +29,7 @@ class ChatbotCore {
     this.type = config.type;
     this.eventBus = new EventEmitter();
     this.abortController = null;
+    this.currentCompletion = null; // For handling completion events
   }
 
   /**
@@ -185,11 +186,11 @@ class ChatbotCore {
 
     switch (trace.type) {
       case "text":
-        console.log("Emitting messageReceived event...");
-        this.eventBus.emit("messageReceived", {
-          content: trace.payload.message,
-          metadata: trace.payload.metadata || null,
-        });
+        this.emitMessageReceived(trace.payload.message, trace.payload.metadata);
+        break;
+
+      case "completion":
+        this.handleCompletion(trace.payload);
         break;
 
       case "choice":
@@ -215,6 +216,49 @@ class ChatbotCore {
       default:
         console.warn(`Unhandled trace type: ${trace.type}`, trace);
     }
+  }
+
+  /**
+   * Handle completion trace events for streaming
+   * @private
+   * @param {Object} payload - The payload from completion trace
+   */
+  handleCompletion(payload) {
+    if (!payload || !payload.state) {
+      console.warn("Invalid completion payload:", payload);
+      return;
+    }
+
+    switch (payload.state) {
+      case "start":
+        this.currentCompletion = "";
+        break;
+
+      case "content":
+        if (payload.content) {
+          this.currentCompletion += payload.content;
+          this.eventBus.emit("partialMessage", payload.content);
+        }
+        break;
+
+      case "end":
+        this.eventBus.emit("finalMessage", this.currentCompletion);
+        this.currentCompletion = null;
+        break;
+
+      default:
+        console.warn("Unknown completion state:", payload.state);
+    }
+  }
+
+  /**
+   * Emit a complete message received
+   * @private
+   * @param {string} message - The message content
+   * @param {Object} metadata - Optional metadata
+   */
+  emitMessageReceived(message, metadata) {
+    this.eventBus.emit("messageReceived", { content: message, metadata });
   }
 
   /**
