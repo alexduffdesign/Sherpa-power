@@ -76,8 +76,8 @@ export class MessageComponent extends HTMLElement {
           width: 100%;
         }
         p {
-          margin-top: var(--spacing-2);
-          margin-bottom: var(--spacing-2);
+          margin-top: var(--spacing-1);
+          margin-bottom: var(--spacing-1);
         }
         .message-wrapper {
           display: flex;
