@@ -135,6 +135,7 @@ export class MessageComponent extends HTMLElement {
         .message__content {
           font-family: inherit;
           display: flex;
+          flex-direction: column;
         }
 
         /* Markdown styling */
