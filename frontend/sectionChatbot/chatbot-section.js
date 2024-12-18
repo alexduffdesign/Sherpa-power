@@ -124,10 +124,8 @@ class SectionChatbot {
         action: {
           type: "launch",
           payload: {
-            variables: {
-              startBlock: "shopifySection",
-              powerStationDetails: sanitizedDetails,
-            },
+            startBlock: "shopifySection",
+            powerStationDetails: sanitizedDetails,
           },
         },
       });
