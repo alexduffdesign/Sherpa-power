@@ -6,10 +6,11 @@ export class MessageComponent extends HTMLElement {
   constructor() {
     super();
     this.attachShadow({ mode: "open" });
-    this.content = ""; // Complete content
+    this.content = ""; // Initialize empty content
+    this.displayedContent = ""; // Content currently displayed
     this.animationInterval = null;
-    this.defaultAnimationSpeed = 30; // Default speed in ms per character
-    this.animationSpeed = this.defaultAnimationSpeed;
+    this.defaultAnimationSpeed = 30; // milliseconds per character
+    this.currentAnimationSpeed = this.defaultAnimationSpeed;
     this.shouldAnimate = true;
   }
 
@@ -20,17 +21,17 @@ export class MessageComponent extends HTMLElement {
 
     // Determine if animation should occur
     const animateAttr = this.getAttribute("data-animate");
-    this.shouldAnimate = animateAttr !== "false"; // Default to true
+    this.shouldAnimate = animateAttr !== "false"; // default to true
 
     // Determine animation speed
     const animationSpeedAttr = this.getAttribute("data-animation-speed");
     if (animationSpeedAttr) {
       const speed = parseInt(animationSpeedAttr, 10);
       if (!isNaN(speed)) {
-        this.animationSpeed = speed;
+        this.currentAnimationSpeed = speed;
       }
     } else {
-      this.animationSpeed = this.defaultAnimationSpeed;
+      this.currentAnimationSpeed = this.defaultAnimationSpeed;
     }
 
     this.render(sender, this.content);
@@ -66,6 +67,7 @@ export class MessageComponent extends HTMLElement {
    */
   render(sender, content) {
     const isAssistant = sender === "assistant";
+    this.displayedContent = "";
     this.shadowRoot.innerHTML = `
       <style>
         :host {
@@ -160,16 +162,13 @@ export class MessageComponent extends HTMLElement {
       <div class="message-wrapper message-wrapper--${sender}">
         ${isAssistant ? `<div class="assistant-icon">🤖</div>` : ""}
         <div class="message message--${sender}">
-          <div class="message__content"></div>
+          <div class="message__content">${content}</div>
         </div>
       </div>
     `;
 
     if (isAssistant && this.shouldAnimate) {
-      this.animateContent(content);
-    } else {
-      // For deterministic messages or if animation is disabled
-      this.updateContent(content);
+      this.animateContent();
     }
   }
 
@@ -186,8 +185,16 @@ export class MessageComponent extends HTMLElement {
     const messageContent = this.shadowRoot.querySelector(".message__content");
     if (!messageContent) return;
 
-    // Use the parseMarkdown to parse the full content into HTML
-    const parsedHTML = parseMarkdown(this.content);
+    // If newContent is provided, we need to append it; otherwise, animate the full content
+    let contentToAnimate = newContent || this.content;
+
+    if (!newContent) {
+      // For initial render
+      contentToAnimate = this.content;
+    }
+
+    // Use the parseMarkdown to parse the full content
+    const parsedHTML = parseMarkdown(contentToAnimate);
 
     // Create a temporary container to traverse the HTML elements
     const tempDiv = document.createElement("div");
@@ -195,7 +202,15 @@ export class MessageComponent extends HTMLElement {
 
     // Initialize animation queue
     const nodes = Array.from(tempDiv.childNodes);
-    this.animateNodesSequentially(messageContent, nodes);
+
+    // Clear existing content if animating entire message
+    if (!newContent) {
+      messageContent.innerHTML = "";
+    }
+
+    this.animateNodesSequentially(messageContent, nodes).then(() => {
+      // Animation complete
+    });
   }
 
   /**
@@ -243,7 +258,7 @@ export class MessageComponent extends HTMLElement {
           clearInterval(animateInterval);
           resolve();
         }
-      }, this.animationSpeed);
+      }, this.currentAnimationSpeed);
     });
   }
 
