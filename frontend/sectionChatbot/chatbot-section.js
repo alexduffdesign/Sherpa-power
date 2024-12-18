@@ -149,15 +149,16 @@ class SectionChatbot {
    */
   handleDeviceAnswer(payload) {
     console.log("Received device answer:", payload);
-    if (!payload || !payload.data) {
+    if (!payload || !payload.devices) {
+      // Updated condition
       console.warn("Invalid device answer payload:", payload);
       return;
     }
 
     // Process device answer data
-    const processedData = this.processDeviceAnswerData(payload.data);
+    const processedData = this.processDeviceAnswerData(payload); // Pass payload directly
     this.ui.updateDeviceAnswers(processedData);
-    this.saveDeviceAnswerToStorage(processedData);
+    this.saveDeviceAnswerToStorage(payload); // Save the entire deviceAnswer object
   }
 
   /**
@@ -254,7 +255,7 @@ class SectionChatbot {
   /**
    * Save device answer to local storage
    * @private
-   * @param {Array} deviceAnswer - Processed device answer data
+   * @param {Object} deviceAnswer - Processed device answer data
    */
   saveDeviceAnswerToStorage(deviceAnswer) {
     const key = `sectionChatbot_${this.productDetails.title}_answers`;
@@ -275,7 +276,7 @@ class SectionChatbot {
     const storedAnswers = JSON.parse(localStorage.getItem(key) || "[]");
 
     storedAnswers.forEach((answer) => {
-      this.ui.updateDeviceAnswers(answer);
+      this.ui.updateDeviceAnswers(answer.devices); // Pass the devices array
     });
   }
 
