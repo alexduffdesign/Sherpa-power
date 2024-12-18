@@ -130,20 +130,19 @@ class ChatbotUI {
   /**
    * Handle assistant messages with markdown support
    * @private
-   * @param {string} content - The message content
+   * @param {string} content - The raw markdown message content
    * @param {Object} metadata - Optional metadata
    */
   handleAssistantMessage(content, metadata) {
-    // This handles non-streamed messages (trace type: text)
-    // For deterministic messages (loaded from history), we can set data-animate to false
+    // Determine if the message is loaded from history
     const isFromHistory = metadata && metadata.fromHistory;
     const animate = !isFromHistory;
     const animationSpeed = isFromHistory ? 10 : undefined; // Faster for deterministic messages
 
-    const htmlContent = parseMarkdown(content);
+    // Create the message component without pre-parsing Markdown
     const message = this.createMessage(
       "assistant",
-      htmlContent,
+      content,
       metadata,
       animate,
       animationSpeed
@@ -173,14 +172,12 @@ class ChatbotUI {
 
       if (this.currentAssistantMessage) {
         // Append complete sentence to the current message
-        this.currentAssistantMessage.appendContent(
-          parseMarkdown(completeSentence)
-        );
+        this.currentAssistantMessage.appendContent(completeSentence);
       } else {
-        // Create a new assistant message component
+        // Create a new assistant message component with animation
         this.currentAssistantMessage = this.createMessage(
           "assistant",
-          parseMarkdown(completeSentence),
+          completeSentence,
           null,
           true, // animate
           undefined // default animation speed
@@ -191,13 +188,13 @@ class ChatbotUI {
       this.accumulatedContent = remaining;
       this.scrollToBottom();
     } else {
-      // No sentence boundary yet, append as is
+      // No sentence boundary yet, append as is with animation
       if (this.currentAssistantMessage) {
-        this.currentAssistantMessage.appendContent(parseMarkdown(content));
+        this.currentAssistantMessage.appendContent(content);
       } else {
         this.currentAssistantMessage = this.createMessage(
           "assistant",
-          parseMarkdown(content),
+          content,
           null,
           true, // animate
           undefined // default animation speed
@@ -216,18 +213,17 @@ class ChatbotUI {
   handleFinalMessage(fullContent) {
     if (this.currentAssistantMessage) {
       // Append the remaining content
-      this.currentAssistantMessage.appendContent(parseMarkdown(fullContent));
+      this.currentAssistantMessage.appendContent(fullContent);
       this.currentAssistantMessage = null;
       this.accumulatedContent = "";
       this.scrollToBottom();
     } else {
       // In case finalMessage is received without a partial message
-      const htmlContent = parseMarkdown(fullContent);
       const message = this.createMessage(
         "assistant",
-        htmlContent,
+        fullContent,
         null,
-        true,
+        true, // animate
         undefined
       );
       this.messageContainer.appendChild(message);
@@ -239,7 +235,7 @@ class ChatbotUI {
    * Create a message component
    * @private
    * @param {string} sender - The sender of the message ('user' or 'assistant')
-   * @param {string} content - The message content
+   * @param {string} content - The raw markdown message content
    * @param {Object} metadata - Optional metadata for the message
    * @param {boolean} animate - Whether to animate the message
    * @param {number} [animationSpeed] - Optional animation speed in ms per character
@@ -277,7 +273,7 @@ class ChatbotUI {
    * Add a message to the chat using the message-component
    * @public
    * @param {string} sender - The sender of the message ('user' or 'assistant')
-   * @param {string} content - The message content
+   * @param {string} content - The raw markdown message content
    * @param {Object} metadata - Optional metadata for the message
    * @param {boolean} fromHistory - Indicates if the message is loaded from history
    * @param {number} [animationSpeed] - Optional animation speed in ms per character

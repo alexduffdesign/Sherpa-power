@@ -7,7 +7,6 @@ export class MessageComponent extends HTMLElement {
     super();
     this.attachShadow({ mode: "open" });
     this.content = ""; // Initialize empty content
-    this.displayedContent = ""; // Content currently displayed
     this.animationInterval = null;
     this.defaultAnimationSpeed = 30; // milliseconds per character
     this.currentAnimationSpeed = this.defaultAnimationSpeed;
@@ -63,11 +62,10 @@ export class MessageComponent extends HTMLElement {
   /**
    * Renders the message with markdown support and initializes animation
    * @param {string} sender - The sender of the message ('user' or 'assistant')
-   * @param {string} content - The message content with HTML from markdown
+   * @param {string} content - The raw markdown content
    */
   render(sender, content) {
     const isAssistant = sender === "assistant";
-    this.displayedContent = "";
     this.shadowRoot.innerHTML = `
       <style>
         :host {
@@ -162,21 +160,23 @@ export class MessageComponent extends HTMLElement {
       <div class="message-wrapper message-wrapper--${sender}">
         ${isAssistant ? `<div class="assistant-icon">🤖</div>` : ""}
         <div class="message message--${sender}">
-          <div class="message__content">${content}</div>
+          <div class="message__content"></div>
         </div>
       </div>
     `;
 
     if (isAssistant && this.shouldAnimate) {
-      this.animateContent();
+      this.animateContent(content);
+    } else {
+      this.updateContent(content);
     }
   }
 
   /**
    * Animates the message content by revealing it character by character
-   * @param {string} [newContent] - Optional new content to animate
+   * @param {string} content - The raw markdown content to animate
    */
-  animateContent(newContent) {
+  animateContent(content) {
     const sender = this.getAttribute("sender");
     const isAssistant = sender === "assistant";
 
@@ -185,16 +185,11 @@ export class MessageComponent extends HTMLElement {
     const messageContent = this.shadowRoot.querySelector(".message__content");
     if (!messageContent) return;
 
-    // If newContent is provided, we need to append it; otherwise, animate the full content
-    let contentToAnimate = newContent || this.content;
+    // Parse markdown once to avoid double parsing
+    const parsedHTML = parseMarkdown(content);
 
-    if (!newContent) {
-      // For initial render
-      contentToAnimate = this.content;
-    }
-
-    // Use the parseMarkdown to parse the full content
-    const parsedHTML = parseMarkdown(contentToAnimate);
+    // Clear existing content
+    messageContent.innerHTML = "";
 
     // Create a temporary container to traverse the HTML elements
     const tempDiv = document.createElement("div");
@@ -202,11 +197,6 @@ export class MessageComponent extends HTMLElement {
 
     // Initialize animation queue
     const nodes = Array.from(tempDiv.childNodes);
-
-    // Clear existing content if animating entire message
-    if (!newContent) {
-      messageContent.innerHTML = "";
-    }
 
     this.animateNodesSequentially(messageContent, nodes).then(() => {
       // Animation complete
