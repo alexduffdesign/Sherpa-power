@@ -1,5 +1,8 @@
 // /assets/scripts/chatbot/core/chatbot-ui.js
 
+import EventEmitter from "eventemitter3";
+import { parseMarkdown } from "../utils/markdown-util.js";
+
 /**
  * ChatbotUI Class
  * Handles base UI functionality for chatbots with markdown and streaming support
