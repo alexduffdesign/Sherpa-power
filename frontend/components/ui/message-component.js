@@ -7,10 +7,12 @@ export class MessageComponent extends HTMLElement {
     super();
     this.attachShadow({ mode: "open" });
     this.content = ""; // Initialize empty content
-    this.animationInterval = null;
-    this.defaultAnimationSpeed = 30; // milliseconds per character
+    this.animationFrameId = null;
+    this.defaultAnimationSpeed = 10; // Reduced from 30 to 10 milliseconds per character for quicker animation
     this.currentAnimationSpeed = this.defaultAnimationSpeed;
     this.shouldAnimate = true;
+    this.lastRenderTime = null;
+    this.charIndex = 0;
   }
 
   connectedCallback() {
@@ -178,7 +180,7 @@ export class MessageComponent extends HTMLElement {
   }
 
   /**
-   * Animates the message content by revealing it character by character
+   * Animates the message content by revealing it character by character using requestAnimationFrame
    * @param {string} content - The raw markdown content to animate
    */
   animateContent(content) {
@@ -203,13 +205,15 @@ export class MessageComponent extends HTMLElement {
     // Initialize animation queue
     const nodes = Array.from(tempDiv.childNodes);
 
-    this.animateNodesSequentially(messageContent, nodes).then(() => {
-      // Animation complete
-    });
+    this.animateNodesSequentially((container = messageContent), nodes).then(
+      () => {
+        // Animation complete
+      }
+    );
   }
 
   /**
-   * Recursively animates HTML nodes one after another
+   * Recursively animates HTML nodes one after another using requestAnimationFrame
    * @param {HTMLElement} container - The container to append animated nodes
    * @param {NodeList} nodes - The list of nodes to animate
    * @returns {Promise} - Resolves when all nodes are animated
@@ -261,27 +265,36 @@ export class MessageComponent extends HTMLElement {
   }
 
   /**
-   * Animates a text node by revealing it character by character
+   * Animates a text node by revealing it character by character using requestAnimationFrame
    * @param {HTMLElement} container - The container to append the text
    * @param {string} text - The text content to animate
    * @returns {Promise} - Resolves when animation is complete
    */
   animateTextNode(container, text) {
     return new Promise((resolve) => {
-      let index = 0;
       const span = document.createElement("span");
       container.appendChild(span);
+      this.charIndex = 0;
+      this.lastRenderTime = performance.now();
 
-      const animateInterval = setInterval(() => {
-        if (index < text.length) {
-          span.textContent += text[index];
-          index++;
+      const render = (currentTime) => {
+        const elapsed = currentTime - this.lastRenderTime;
+
+        if (elapsed > this.currentAnimationSpeed) {
+          span.textContent += text[this.charIndex];
+          this.charIndex++;
+          this.lastRenderTime = currentTime;
           this.scrollToBottom();
+        }
+
+        if (this.charIndex < text.length) {
+          this.animationFrameId = requestAnimationFrame(render);
         } else {
-          clearInterval(animateInterval);
           resolve();
         }
-      }, this.currentAnimationSpeed);
+      };
+
+      this.animationFrameId = requestAnimationFrame(render);
     });
   }
 
@@ -291,5 +304,11 @@ export class MessageComponent extends HTMLElement {
    */
   scrollToBottom() {
     this.parentElement.scrollTop = this.parentElement.scrollHeight;
+  }
+
+  disconnectedCallback() {
+    if (this.animationFrameId) {
+      cancelAnimationFrame(this.animationFrameId);
+    }
   }
 }
