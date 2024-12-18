@@ -75,6 +75,10 @@ export class MessageComponent extends HTMLElement {
           display: block;
           width: 100%;
         }
+        p {
+          margin-top: var(--spacing-2);
+          margin-bottom: var(--spacing-2);
+        }
         .message-wrapper {
           display: flex;
           align-items: flex-end;
