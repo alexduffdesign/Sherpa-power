@@ -52,17 +52,20 @@ class SectionChatbotUI extends ChatbotUI {
   /**
    * Update device answers in the grid
    * @public
-   * @param {Object} data - Device answer data
+   * @param {Array} devices - Array of device answer data
    */
-  updateDeviceAnswers(data) {
+  updateDeviceAnswers(devices) {
     if (!this.deviceAnswerGrid) {
       console.warn("Applications grid not found");
       return;
     }
 
-    // Create device card
-    const card = this.createDeviceCard(data);
-    this.deviceAnswerGrid.appendChild(card);
+    // Iterate over each device and create a card
+    devices.forEach((device) => {
+      const card = this.createDeviceCard(device);
+      this.deviceAnswerGrid.appendChild(card);
+    });
+
     this.scrollToBottom();
 
     // Update view based on number of cards
@@ -89,26 +92,9 @@ class SectionChatbotUI extends ChatbotUI {
       </div>
       <div class="application-card__content">
         <div class="application-card__title">${device.deviceName}</div>
-        <div class="application-card__results">
-          ${device.results
-            .map(
-              (r) =>
-                `<div class="result-item"><span class="result-label">${r.label}:</span> <span class="result-value">${r.value}</span></div>`
-            )
-            .join("")}
+        <div class="application-card__runtime">
+          Runtime: ${device.runtime}
         </div>
-        ${
-          device.recommendations.length > 0
-            ? `
-          <div class="recommendations-container">
-            <h4>Recommendations:</h4>
-            <ul>
-              ${device.recommendations.map((rec) => `<li>${rec}</li>`).join("")}
-            </ul>
-          </div>
-        `
-            : ""
-        }
       </div>
     `;
 

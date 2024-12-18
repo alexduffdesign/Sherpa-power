@@ -164,15 +164,12 @@ class SectionChatbot {
    * Process device answer data for UI
    * @private
    * @param {Object} data - Raw device answer data
-   * @returns {Object} Processed data for UI
+   * @returns {Array} Processed data for UI
    */
   processDeviceAnswerData(data) {
-    return {
-      deviceName: data.deviceName || this.productDetails.title,
-      results: data.results || [],
-      recommendations: data.recommendations || [],
-      calculationDetails: data.calculationDetails || {},
-    };
+    // Assuming data has the structure:
+    // { devices: [ { deviceName: "...", runtime: "..." }, ... ] }
+    return data.devices || [];
   }
 
   /**
@@ -257,7 +254,7 @@ class SectionChatbot {
   /**
    * Save device answer to local storage
    * @private
-   * @param {Object} deviceAnswer - Processed device answer data
+   * @param {Array} deviceAnswer - Processed device answer data
    */
   saveDeviceAnswerToStorage(deviceAnswer) {
     const key = `sectionChatbot_${this.productDetails.title}_answers`;
