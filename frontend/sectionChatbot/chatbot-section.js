@@ -82,6 +82,12 @@ class SectionChatbot {
    * @private
    */
   setupEventListeners() {
+    // Handle user messages
+    this.core.eventBus.on("userMessage", (message) => {
+      this.ui.addMessage("user", message);
+      this.core.sendMessage(message);
+    });
+
     // Handle device answers
     this.core.eventBus.on("deviceAnswer", (payload) => {
       this.handleDeviceAnswer(payload);
