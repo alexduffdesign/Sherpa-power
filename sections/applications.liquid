@@ -220,8 +220,8 @@
 </div>
 
   {% comment %} {% render 'vite-tag' with '/frontend/components/ui/chatbot-components.js' %}
-          {% render 'vite-tag' with '/frontend/baseChatbot/base-chatbot.js' %}
-      {% render 'vite-tag' with '/frontend/baseChatbot/base-chatbot-ui.js' %} {% endcomment %}
+              {% render 'vite-tag' with '/frontend/baseChatbot/base-chatbot.js' %}
+        {% render 'vite-tag' with '/frontend/baseChatbot/base-chatbot-ui.js' %} {% endcomment %}
   {% render 'vite-tag' with '/frontend/sectionChatbot/chatbot-section.js' %}
 
   <script type="module">
@@ -233,9 +233,9 @@
       const productDetails = {
         title: container.dataset.productTitle,
         capacity: container.dataset.productCapacity,
-        acOutputContinuousPower: container.dataset.productAcOutputContinuousPower,
-        acOutputPeakPower: container.dataset.productAcOutputPeakPower,
-        dcOutputPower: container.dataset.productDcOutputPower
+        ac_output_continuous_power: container.dataset.productAcOutputContinuousPower,
+        ac_output_peak_power: container.dataset.productAcOutputPeakPower,
+        dc_output_power: container.dataset.productDcOutputPower
       };
       
       // Initialize section chatbot
