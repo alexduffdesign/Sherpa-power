@@ -188,7 +188,8 @@ class MainChatbot {
     this.core.eventBus.on("mainMenu", () => {
       const userMessage = "Main menu";
       this.saveToHistory("user", userMessage);
-      this.ui.addMessage("user", userMessage);
+      // Add message without animation and faster speed
+      this.ui.addMessage("user", userMessage, null, false, 10);
       this.core.sendAction({
         action: {
           type: "event",
@@ -199,6 +200,19 @@ class MainChatbot {
           },
         },
       });
+    });
+
+    // Handle clearing history
+    this.core.eventBus.on("clearHistory", () => {
+      this.clearHistory();
+    });
+
+    // Handle minimizing chatbot
+    this.core.eventBus.on("minimize", () => {
+      // Implement minimize functionality as needed
+      console.log("Minimize chatbot");
+      // For example, hide the chatbot container or trigger a CSS class
+      this.container.classList.toggle("minimized");
     });
   }
 
@@ -299,7 +313,8 @@ class MainChatbot {
       if (entry.message) {
         console.log("Adding message from history:", entry);
 
-        this.ui.addMessage(entry.sender, entry.message);
+        // Pass fromHistory=true to disable animation
+        this.ui.addMessage(entry.sender, entry.message, null, true);
       }
     });
   }

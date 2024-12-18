@@ -9,13 +9,31 @@ export class MessageComponent extends HTMLElement {
     this.content = ""; // Initialize empty content
     this.displayedContent = ""; // Content currently displayed
     this.animationInterval = null;
-    this.animationSpeed = 30; // milliseconds per character
+    this.defaultAnimationSpeed = 30; // milliseconds per character
+    this.currentAnimationSpeed = this.defaultAnimationSpeed;
+    this.shouldAnimate = true;
   }
 
   connectedCallback() {
     const sender = this.getAttribute("sender");
     const initialContent = this.getAttribute("content") || "";
     this.content = initialContent;
+
+    // Determine if animation should occur
+    const animateAttr = this.getAttribute("data-animate");
+    this.shouldAnimate = animateAttr !== "false"; // default to true
+
+    // Determine animation speed
+    const animationSpeedAttr = this.getAttribute("data-animation-speed");
+    if (animationSpeedAttr) {
+      const speed = parseInt(animationSpeedAttr, 10);
+      if (!isNaN(speed)) {
+        this.currentAnimationSpeed = speed;
+      }
+    } else {
+      this.currentAnimationSpeed = this.defaultAnimationSpeed;
+    }
+
     this.render(sender, this.content);
   }
 
@@ -25,7 +43,11 @@ export class MessageComponent extends HTMLElement {
    */
   appendContent(newContent) {
     this.content += newContent;
-    this.animateContent();
+    if (this.shouldAnimate) {
+      this.animateContent(newContent);
+    } else {
+      this.updateContent(this.content);
+    }
   }
 
   /**
@@ -78,6 +100,7 @@ export class MessageComponent extends HTMLElement {
         }
 
         .message {
+          display: flex;
           max-width: 80%;
           padding: var(--spacing-4);
           border-radius: 20px;
@@ -144,15 +167,16 @@ export class MessageComponent extends HTMLElement {
       </div>
     `;
 
-    if (isAssistant) {
+    if (isAssistant && this.shouldAnimate) {
       this.animateContent();
     }
   }
 
   /**
    * Animates the message content by revealing it character by character
+   * @param {string} [newContent] - Optional new content to animate
    */
-  animateContent() {
+  animateContent(newContent) {
     const sender = this.getAttribute("sender");
     const isAssistant = sender === "assistant";
 
@@ -161,19 +185,16 @@ export class MessageComponent extends HTMLElement {
     const messageContent = this.shadowRoot.querySelector(".message__content");
     if (!messageContent) return;
 
-    const fullContent = this.content;
-    this.displayedContent = "";
+    // If newContent is provided, we need to append it; otherwise, animate the full content
+    let contentToAnimate = newContent || this.content;
 
-    // Clear any existing animation
-    if (this.animationInterval) {
-      clearInterval(this.animationInterval);
+    if (!newContent) {
+      // For initial render
+      contentToAnimate = this.content;
     }
 
-    // Clear the content for animation
-    messageContent.innerHTML = "";
-
-    // Use the marked parser to parse the full content into HTML
-    const parsedHTML = parseMarkdown(fullContent);
+    // Use the parseMarkdown to parse the full content
+    const parsedHTML = parseMarkdown(contentToAnimate);
 
     // Create a temporary container to traverse the HTML elements
     const tempDiv = document.createElement("div");
@@ -181,18 +202,27 @@ export class MessageComponent extends HTMLElement {
 
     // Initialize animation queue
     const nodes = Array.from(tempDiv.childNodes);
-    this.animateNodes(messageContent, nodes);
+
+    // Clear existing content if animating entire message
+    if (!newContent) {
+      messageContent.innerHTML = "";
+    }
+
+    this.animateNodesSequentially(messageContent, nodes).then(() => {
+      // Animation complete
+    });
   }
 
   /**
-   * Recursively animates HTML nodes
+   * Recursively animates HTML nodes one after another
    * @param {HTMLElement} container - The container to append animated nodes
    * @param {NodeList} nodes - The list of nodes to animate
+   * @returns {Promise} - Resolves when all nodes are animated
    */
-  animateNodes(container, nodes) {
-    nodes.forEach((node) => {
+  async animateNodesSequentially(container, nodes) {
+    for (const node of nodes) {
       if (node.nodeType === Node.TEXT_NODE) {
-        this.animateTextNode(container, node.textContent);
+        await this.animateTextNode(container, node.textContent);
       } else if (node.nodeType === Node.ELEMENT_NODE) {
         const element = document.createElement(node.tagName.toLowerCase());
 
@@ -202,31 +232,34 @@ export class MessageComponent extends HTMLElement {
         });
 
         container.appendChild(element);
-        this.animateNodes(element, node.childNodes);
+        await this.animateNodesSequentially(element, node.childNodes);
       }
-    });
+    }
   }
 
   /**
    * Animates a text node by revealing it character by character
    * @param {HTMLElement} container - The container to append the text
    * @param {string} text - The text content to animate
+   * @returns {Promise} - Resolves when animation is complete
    */
   animateTextNode(container, text) {
-    let index = 0;
-    const span = document.createElement("span");
-    container.appendChild(span);
+    return new Promise((resolve) => {
+      let index = 0;
+      const span = document.createElement("span");
+      container.appendChild(span);
 
-    this.animationInterval = setInterval(() => {
-      if (index < text.length) {
-        span.textContent += text[index];
-        index++;
-        this.scrollToBottom();
-      } else {
-        clearInterval(this.animationInterval);
-        this.animationInterval = null;
-      }
-    }, this.animationSpeed);
+      const animateInterval = setInterval(() => {
+        if (index < text.length) {
+          span.textContent += text[index];
+          index++;
+          this.scrollToBottom();
+        } else {
+          clearInterval(animateInterval);
+          resolve();
+        }
+      }, this.currentAnimationSpeed);
+    });
   }
 
   /**

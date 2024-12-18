@@ -1,4 +1,4 @@
-// /assets/scripts/chatbot/core/chatbot-ui.js
+// /assets/scripts/chatbot/core/base-chatbot-ui.js
 
 import EventEmitter from "eventemitter3";
 import { parseMarkdown } from "../utils/markdown-util.js";
@@ -135,8 +135,19 @@ class ChatbotUI {
    */
   handleAssistantMessage(content, metadata) {
     // This handles non-streamed messages (trace type: text)
+    // For deterministic messages (loaded from history), we can set data-animate to false
+    const isFromHistory = metadata && metadata.fromHistory;
+    const animate = !isFromHistory;
+    const animationSpeed = isFromHistory ? 10 : undefined; // Faster for deterministic messages
+
     const htmlContent = parseMarkdown(content);
-    const message = this.createMessage("assistant", htmlContent, metadata);
+    const message = this.createMessage(
+      "assistant",
+      htmlContent,
+      metadata,
+      animate,
+      animationSpeed
+    );
     this.messageContainer.appendChild(message);
     this.scrollToBottom();
   }
@@ -170,7 +181,9 @@ class ChatbotUI {
         this.currentAssistantMessage = this.createMessage(
           "assistant",
           parseMarkdown(completeSentence),
-          null
+          null,
+          true, // animate
+          undefined // default animation speed
         );
         this.messageContainer.appendChild(this.currentAssistantMessage);
       }
@@ -185,7 +198,9 @@ class ChatbotUI {
         this.currentAssistantMessage = this.createMessage(
           "assistant",
           parseMarkdown(content),
-          null
+          null,
+          true, // animate
+          undefined // default animation speed
         );
         this.messageContainer.appendChild(this.currentAssistantMessage);
       }
@@ -208,7 +223,13 @@ class ChatbotUI {
     } else {
       // In case finalMessage is received without a partial message
       const htmlContent = parseMarkdown(fullContent);
-      const message = this.createMessage("assistant", htmlContent, null);
+      const message = this.createMessage(
+        "assistant",
+        htmlContent,
+        null,
+        true,
+        undefined
+      );
       this.messageContainer.appendChild(message);
       this.scrollToBottom();
     }
@@ -220,9 +241,17 @@ class ChatbotUI {
    * @param {string} sender - The sender of the message ('user' or 'assistant')
    * @param {string} content - The message content
    * @param {Object} metadata - Optional metadata for the message
+   * @param {boolean} animate - Whether to animate the message
+   * @param {number} [animationSpeed] - Optional animation speed in ms per character
    * @returns {MessageComponent} The created message component
    */
-  createMessage(sender, content, metadata = null) {
+  createMessage(
+    sender,
+    content,
+    metadata = null,
+    animate = true,
+    animationSpeed
+  ) {
     const message = document.createElement("message-component");
     message.eventBus = this.eventBus;
     message.setAttribute("sender", sender);
@@ -230,6 +259,15 @@ class ChatbotUI {
 
     if (metadata) {
       message.setAttribute("metadata", JSON.stringify(metadata));
+    }
+
+    // Set data attributes for animation
+    if (!animate) {
+      message.setAttribute("data-animate", "false");
+    }
+
+    if (animationSpeed) {
+      message.setAttribute("data-animation-speed", animationSpeed.toString());
     }
 
     return message;
@@ -241,18 +279,35 @@ class ChatbotUI {
    * @param {string} sender - The sender of the message ('user' or 'assistant')
    * @param {string} content - The message content
    * @param {Object} metadata - Optional metadata for the message
+   * @param {boolean} fromHistory - Indicates if the message is loaded from history
+   * @param {number} [animationSpeed] - Optional animation speed in ms per character
    */
-  addMessage(sender, content, metadata = null) {
+  addMessage(
+    sender,
+    content,
+    metadata = null,
+    fromHistory = false,
+    animationSpeed = undefined
+  ) {
     console.log(
       `addMessage called with sender=${sender}, content=${content}, metadata=`,
       metadata
     );
 
     if (sender === "assistant") {
-      this.handleAssistantMessage(content, metadata);
+      this.handleAssistantMessage(content, { ...metadata, fromHistory });
     } else {
-      // For user messages, always create a new message
-      const message = this.createMessage(sender, content, metadata);
+      // For user messages, determine if it's from history or a new message
+      const animate = !fromHistory;
+      const speed = animationSpeed || (fromHistory ? 10 : undefined);
+
+      const message = this.createMessage(
+        sender,
+        content,
+        metadata,
+        animate,
+        speed
+      );
       this.messageContainer.appendChild(message);
       this.scrollToBottom();
     }
@@ -262,15 +317,15 @@ class ChatbotUI {
    * Add interactive buttons to the chat using button-component
    * @public
    * @param {Array} buttons - Array of button data
+   * @param {boolean} fromHistory - Indicates if the buttons are loaded from history
    */
-  addButtons(buttons) {
+  addButtons(buttons, fromHistory = false) {
     if (!Array.isArray(buttons)) {
       console.error("Invalid buttons data:", buttons);
       return;
     }
 
-    // Instead of manually creating HTML buttons, we use <button-component>
-    // for each button. The button-component handles its own styling and click event.
+    // Use <button-component> for each button
     const buttonGroup = document.createElement("div");
     buttonGroup.className = "button-group";
 
@@ -290,8 +345,9 @@ class ChatbotUI {
    * Add a carousel to the chat using carousel-component
    * @public
    * @param {Array} items - Array of carousel items
+   * @param {boolean} fromHistory - Indicates if the carousel is loaded from history
    */
-  addCarousel(items) {
+  addCarousel(items, fromHistory = false) {
     if (!Array.isArray(items)) {
       console.error("Invalid carousel items:", items);
       return;
@@ -332,7 +388,7 @@ class ChatbotUI {
    * @param {string} message - The error message to display
    */
   displayError(message) {
-    // For errors, we can still just create a div since it's simple text
+    // For errors, create a div with the error message
     const errorDiv = document.createElement("div");
     errorDiv.classList.add("error-message");
     errorDiv.textContent = message;

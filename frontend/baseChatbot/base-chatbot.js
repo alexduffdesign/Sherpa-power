@@ -1,4 +1,4 @@
-// /assets/scripts/chatbot/core/chatbot-core.js
+// /assets/scripts/chatbot/core/base-chatbot.js
 
 import EventEmitter from "eventemitter3";
 
