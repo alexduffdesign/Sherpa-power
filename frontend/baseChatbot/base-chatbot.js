@@ -54,7 +54,7 @@ class ChatbotCore {
    * @param {string | Object} message - The user's message or button payload
    */
   async sendMessage(message) {
-    console.log("Constructing message payload:", message);
+    console.log("Message payload:", message);
     const payload = {
       action: {
         type: "text",
