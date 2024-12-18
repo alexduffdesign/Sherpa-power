@@ -292,7 +292,7 @@ class ChatbotUI {
 
     if (sender === "assistant") {
       this.handleAssistantMessage(content, { ...metadata, fromHistory });
-    } else {
+    } else if (sender === "user") {
       // For user messages, determine if it's from history or a new message
       const animate = !fromHistory;
       const speed = animationSpeed || (fromHistory ? 10 : undefined);
