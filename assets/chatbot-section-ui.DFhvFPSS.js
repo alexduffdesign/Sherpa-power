@@ -1,4 +1,4 @@
-import{C as o}from"./base-chatbot-ui.BzGndWVX.js";class a extends o{constructor(e){super(e),this.productDetails=e.productDetails,this.setupSectionChatbotUI(),this.setupViewMoreButton()}setupSectionChatbotUI(){this.deviceAnswerGrid=document.querySelector(".applications-grid"),this.deviceAnswerGrid||(console.error("Applications grid not found"),this.displayError("UI setup error: applications grid not found."))}setupViewMoreButton(){this.viewMoreButton=document.querySelector(".view-more-button"),console.log(this.viewMoreButton),this.viewMoreButton?this.viewMoreButton.addEventListener("click",()=>this.toggleDevicesView()):console.warn("View more button not found")}updateDeviceAnswers(e){if(!this.deviceAnswerGrid){console.warn("Applications grid not found");return}const t=this.createDeviceCard(e);this.deviceAnswerGrid.appendChild(t),this.scrollToBottom(),this.updateDevicesView()}createDeviceCard(e){const t=document.createElement("div");return t.className="application-card chatbot-card",t.innerHTML=`
+import{C as r}from"./base-chatbot-ui.BzGndWVX.js";class a extends r{constructor(e){super(e),this.productDetails=e.productDetails,this.setupSectionChatbotUI(),this.setupViewMoreButton()}setupSectionChatbotUI(){this.deviceAnswerGrid=document.querySelector(".applications-grid"),this.deviceAnswerGrid||(console.error("Applications grid not found"),this.displayError("UI setup error: applications grid not found."))}setupViewMoreButton(){this.viewMoreButton=document.querySelector(".view-more-button"),console.log(this.viewMoreButton),this.viewMoreButton?this.viewMoreButton.addEventListener("click",()=>this.toggleDevicesView()):console.warn("View more button not found")}updateDeviceAnswers(e){if(!this.deviceAnswerGrid){console.warn("Applications grid not found");return}e.forEach(t=>{const i=this.createDeviceCard(t);this.deviceAnswerGrid.appendChild(i)}),this.scrollToBottom(),this.updateDevicesView()}createDeviceCard(e){const t=document.createElement("div");return t.className="application-card chatbot-card",t.innerHTML=`
       <div class="application-card__image">
         <svg width="80" height="81" viewBox="0 0 80 81" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M80 40.5C80 62.5914 62.0914 80.5 40 80.5C17.9086 80.5 0 62.5914 0 40.5C0 18.4086 17.9086 0.5 40 0.5C62.0914 0.5 80 18.4086 80 40.5Z" fill="#71527E" fill-opacity="0.52"/>
@@ -8,17 +8,9 @@ import{C as o}from"./base-chatbot-ui.BzGndWVX.js";class a extends o{constructor(
       </div>
       <div class="application-card__content">
         <div class="application-card__title">${e.deviceName}</div>
-        <div class="application-card__results">
-          ${e.results.map(i=>`<div class="result-item"><span class="result-label">${i.label}:</span> <span class="result-value">${i.value}</span></div>`).join("")}
+        <div class="application-card__runtime">
+          Runtime: ${e.runtime}
         </div>
-        ${e.recommendations.length>0?`
-          <div class="recommendations-container">
-            <h4>Recommendations:</h4>
-            <ul>
-              ${e.recommendations.map(i=>`<li>${i}</li>`).join("")}
-            </ul>
-          </div>
-        `:""}
       </div>
-    `,t}toggleDevicesView(){const e=this.deviceAnswerGrid.querySelectorAll(".application-card.chatbot-card"),t=Array.from(e).filter(i=>i.style.display==="none");t.length>0?(t.forEach(i=>i.style.display="flex"),this.viewMoreButton.textContent="Hide"):(Array.from(e).slice(2).forEach(i=>i.style.display="none"),this.viewMoreButton.textContent="View More")}updateDevicesView(){if(!this.deviceAnswerGrid)return;const e=this.deviceAnswerGrid.querySelectorAll(".application-card.chatbot-card"),t=2;e.length>t?(this.viewMoreButton&&(this.viewMoreButton.style.display="block",this.viewMoreButton.textContent="View More"),e.forEach((i,s)=>{i.style.display=s<t?"flex":"none"})):(this.viewMoreButton&&(this.viewMoreButton.style.display="none"),e.forEach(i=>{i.style.display="flex"}))}displayError(e){const t=document.createElement("div");t.classList.add("error-message","section-error"),t.textContent=e,this.messageContainer.appendChild(t),this.scrollToBottom()}}export{a as S};
-//# sourceMappingURL=chatbot-section-ui.BKdNwalv.js.map
+    `,t}toggleDevicesView(){const e=this.deviceAnswerGrid.querySelectorAll(".application-card.chatbot-card"),t=Array.from(e).filter(i=>i.style.display==="none");t.length>0?(t.forEach(i=>i.style.display="flex"),this.viewMoreButton.textContent="Hide"):(Array.from(e).slice(2).forEach(i=>i.style.display="none"),this.viewMoreButton.textContent="View More")}updateDevicesView(){if(!this.deviceAnswerGrid)return;const e=this.deviceAnswerGrid.querySelectorAll(".application-card.chatbot-card"),t=2;e.length>t?(this.viewMoreButton&&(this.viewMoreButton.style.display="block",this.viewMoreButton.textContent="View More"),e.forEach((i,o)=>{i.style.display=o<t?"flex":"none"})):(this.viewMoreButton&&(this.viewMoreButton.style.display="none"),e.forEach(i=>{i.style.display="flex"}))}displayError(e){const t=document.createElement("div");t.classList.add("error-message","section-error"),t.textContent=e,this.messageContainer.appendChild(t),this.scrollToBottom()}}export{a as S};
+//# sourceMappingURL=chatbot-section-ui.DFhvFPSS.js.map
