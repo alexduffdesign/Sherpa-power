@@ -231,6 +231,8 @@ export class MessageComponent extends HTMLElement {
 
     for (const node of nodes) {
       if (node.nodeType === Node.TEXT_NODE) {
+        // Skip empty or whitespace-only text nodes
+        if (node.textContent.trim() === "") continue;
         await this.animateTextNode(container, node.textContent);
       } else if (node.nodeType === Node.ELEMENT_NODE) {
         const tagName = node.tagName.toLowerCase();
