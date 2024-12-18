@@ -72,7 +72,21 @@ class MainChatbot {
 
     // Handle bot messages
     this.core.eventBus.on("messageReceived", ({ content, metadata }) => {
-      this.saveToHistory("assistant", content, metadata);
+      // Determine if message is deterministic (no streaming)
+      const isDeterministic = !metadata || !metadata.streamed;
+      this.saveToHistory("assistant", content, {
+        ...metadata,
+        streamed: false,
+      });
+    });
+
+    // Handle partial presentation of streamed messages
+    this.core.eventBus.on("partialMessage", (content) => {
+      this.saveToHistory("assistant", content, { streamed: true });
+    });
+
+    this.core.eventBus.on("finalMessage", (fullContent) => {
+      this.saveToHistory("assistant", fullContent, { streamed: true });
     });
 
     // Handle choice presentation (saves them to history)
@@ -314,7 +328,8 @@ class MainChatbot {
         console.log("Adding message from history:", entry);
 
         // Pass fromHistory=true to disable animation
-        this.ui.addMessage(entry.sender, entry.message, null, true);
+        this.ui.addMessage(sender, message, metadata, true);
+        this.ui.addMessage(entry.sender, entry.message, { fromHistory: true });
       }
     });
   }

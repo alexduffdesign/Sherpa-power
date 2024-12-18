@@ -134,17 +134,21 @@ class ChatbotUI {
    * @param {Object} metadata - Optional metadata
    */
   handleAssistantMessage(content, metadata) {
-    // This handles non-streamed messages (trace type: text)
-    // For deterministic messages (loaded from history), we can set data-animate to false
-    const isFromHistory = metadata && metadata.fromHistory;
-    const animate = !isFromHistory;
-    const animationSpeed = isFromHistory ? 10 : undefined; // Faster for deterministic messages
+    // Determine if the message is deterministic or streamed
+    const isDeterministic = !metadata || !metadata.streamed;
+    const animate = isDeterministic ? true : true; // Change to false if needed
+    const animationSpeed = isDeterministic ? 10 : undefined; // Faster for deterministic messages
+
+    // For deterministic messages (complete), pass metadata indicating non-streamed
+    const messageMetadata = isDeterministic
+      ? { ...metadata, fromHistory: metadata?.fromHistory || false }
+      : metadata;
 
     const htmlContent = parseMarkdown(content);
     const message = this.createMessage(
       "assistant",
       htmlContent,
-      metadata,
+      messageMetadata,
       animate,
       animationSpeed
     );
