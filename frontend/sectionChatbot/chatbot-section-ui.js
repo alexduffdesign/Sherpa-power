@@ -56,7 +56,6 @@ class SectionChatbotUI extends ChatbotUI {
    */
   updateDeviceAnswers(devices) {
     if (!this.deviceAnswerGrid) {
-      console.warn("Applications grid not found");
       return;
     }
 
