@@ -434,46 +434,38 @@ export class MessageComponent extends HTMLElement {
       this.updateContent(content);
     }
   }
-
   /**
    * Animates the message content by revealing it character by character
+   * Uses requestAnimationFrame for better performance
    * @param {string} content - The raw markdown content to animate
    */
-  async animateContent(content) {
+  animateContent(content) {
+    const sender = this.getAttribute("sender");
+    const isAssistant = sender === "assistant";
+
+    if (!isAssistant) return; // Only animate assistant messages
+
     const messageContent = this.shadowRoot.querySelector(".message__content");
     if (!messageContent) return;
 
+    // Parse markdown once to avoid double parsing
     const parsedHTML = parseMarkdown(content);
+
+    // Clear existing content
+    messageContent.innerHTML = "";
+
+    // Create a temporary container to traverse the HTML elements
     const tempDiv = document.createElement("div");
     tempDiv.innerHTML = parsedHTML;
 
-    await this.animateNodes(messageContent, Array.from(tempDiv.childNodes));
+    // Initialize animation queue
+    const nodes = Array.from(tempDiv.childNodes);
+
+    this.animateNodesSequentially(messageContent, nodes).then(() => {
+      // Animation complete
+    });
   }
 
-  /**
-   * Animate nodes recursively
-   * @param {HTMLElement} container - Container to append animated content
-   * @param {Array<Node>} nodes - Array of nodes to animate
-   */
-  async animateNodes(container, nodes) {
-    for (const node of nodes) {
-      if (node.nodeType === Node.TEXT_NODE) {
-        if (node.textContent.trim()) {
-          await this.animateText(container, node.textContent);
-        }
-      } else if (node.nodeType === Node.ELEMENT_NODE) {
-        const element = document.createElement(node.tagName);
-
-        // Copy attributes
-        for (const attr of node.attributes || []) {
-          element.setAttribute(attr.name, attr.value);
-        }
-
-        container.appendChild(element);
-        await this.animateNodes(element, Array.from(node.childNodes));
-      }
-    }
-  }
   /**
    * Recursively animates HTML nodes one after another
    * @param {HTMLElement} container - The container to append animated nodes
