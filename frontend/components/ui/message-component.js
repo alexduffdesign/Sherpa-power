@@ -45,7 +45,7 @@ export class MessageComponent extends HTMLElement {
     if (this.shouldAnimate) {
       this.animateContent(newContent);
     } else {
-      this.updateContent(this.content);
+      this.appendContentStreamed(newContent);
     }
   }
 
@@ -60,6 +60,29 @@ export class MessageComponent extends HTMLElement {
       // Directly set the parsed markdown without re-rendering
       messageContent.innerHTML = parseMarkdown(newContent);
     }
+  }
+
+  /**
+   * Append content for streamed messages without re-parsing the entire content
+   * @param {string} newContent - The new content to append
+   */
+  appendContentStreamed(newContent) {
+    const messageContent = this.shadowRoot.querySelector(".message__content");
+    if (!messageContent) return;
+
+    // Parse the new content chunk
+    const parsedHTML = parseMarkdown(newContent);
+
+    // Create a temporary container to extract the parsed elements
+    const tempDiv = document.createElement("div");
+    tempDiv.innerHTML = parsedHTML;
+
+    // Append each child from the parsed HTML to the message content
+    Array.from(tempDiv.childNodes).forEach((node) => {
+      messageContent.appendChild(node.cloneNode(true));
+    });
+
+    this.scrollToBottom();
   }
 
   /**
@@ -173,6 +196,8 @@ export class MessageComponent extends HTMLElement {
 
     if (isAssistant && this.shouldAnimate) {
       this.animateContent(content);
+    } else if (isAssistant && !this.shouldAnimate) {
+      this.updateContentStreamed(content);
     } else {
       this.updateContent(content);
     }
@@ -293,6 +318,29 @@ export class MessageComponent extends HTMLElement {
 
       this.animationFrameId = requestAnimationFrame(animate);
     });
+  }
+
+  /**
+   * Update the message content for streamed messages without re-parsing the entire content
+   * @param {string} newContent - The new content to set
+   */
+  updateContentStreamed(newContent) {
+    const messageContent = this.shadowRoot.querySelector(".message__content");
+    if (!messageContent) return;
+
+    // Parse the new content chunk
+    const parsedHTML = parseMarkdown(newContent);
+
+    // Create a temporary container to extract the parsed elements
+    const tempDiv = document.createElement("div");
+    tempDiv.innerHTML = parsedHTML;
+
+    // Append each child from the parsed HTML to the message content
+    Array.from(tempDiv.childNodes).forEach((node) => {
+      messageContent.appendChild(node.cloneNode(true));
+    });
+
+    this.scrollToBottom();
   }
 
   /**
