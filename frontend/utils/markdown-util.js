@@ -12,6 +12,9 @@ import { marked } from "marked";
 export function parseMarkdown(text) {
   if (!text) return "";
 
-  // Sanitize and parse markdown
-  return marked.parse(text);
+  // Clean up markdown headers that might have been split across chunks
+  const cleanedText = text.replace(/([^\n])(#+ )/g, "$1\n$2");
+
+  // Parse the cleaned markdown
+  return marked.parse(cleanedText);
 }
