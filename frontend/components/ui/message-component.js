@@ -39,19 +39,21 @@ export class MessageComponent extends HTMLElement {
   }
 
   /**
-   * Append new content to the message and handle markdown formatting
+   * Append new content to the message and handle newline-delimited blocks
    * @param {string} newContent - The new content to append
    */
   appendContent(newContent) {
+    // Accumulate chunks in the buffer
     this.buffer += newContent;
 
     // Process complete blocks
-    const completeBlock = this.extractCompleteBlock(this.buffer);
-    if (completeBlock) {
+    let completeBlock;
+    while ((completeBlock = this.extractCompleteBlock(this.buffer))) {
       const { block, remaining } = completeBlock;
-      this.content += block;
-      this.buffer = remaining;
+      this.buffer = remaining; // Update the buffer with remaining content
+      this.content += block; // Add complete block to the main content
 
+      // Render the block
       if (this.shouldAnimate) {
         this.animateContent(block);
       } else {
@@ -61,125 +63,21 @@ export class MessageComponent extends HTMLElement {
   }
 
   /**
-   * Extracts a complete block from the buffer
+   * Extracts a complete block delimited by a newline
    * @param {string} buffer - The current buffer
    * @returns {Object|null} - Contains the complete block and remaining buffer or null
    */
   extractCompleteBlock(buffer) {
-    // Track markdown block state
-    const state = {
-      inCodeBlock: false,
-      codeBlockDelimiters: 0,
-      inHeader: false,
-      inList: false,
-      inParagraph: false,
-      listIndentation: 0,
-    };
+    // Find the position of the first newline
+    const newlineIndex = buffer.indexOf("\n");
 
-    // Split buffer into lines for analysis
-    const lines = buffer.split("\n");
-    let completeBlock = [];
-    let remainingLines = [];
-    let foundComplete = false;
-
-    for (let i = 0; i < lines.length; i++) {
-      const line = lines[i];
-      const trimmedLine = line.trim();
-
-      // Handle code blocks
-      if (trimmedLine.startsWith("```")) {
-        state.codeBlockDelimiters++;
-        state.inCodeBlock = state.codeBlockDelimiters % 2 !== 0;
-        completeBlock.push(line);
-
-        // If we're closing a code block, mark it as complete
-        if (!state.inCodeBlock) {
-          foundComplete = true;
-          remainingLines = lines.slice(i + 1);
-          break;
-        }
-        continue;
-      }
-
-      // Skip processing markdown inside code blocks
-      if (state.inCodeBlock) {
-        completeBlock.push(line);
-        continue;
-      }
-
-      // Check for headers
-      const headerMatch = trimmedLine.match(/^(#{1,6})\s/);
-      if (headerMatch) {
-        if (state.inHeader && completeBlock.length > 0) {
-          foundComplete = true;
-          remainingLines = lines.slice(i);
-          break;
-        }
-        state.inHeader = true;
-        state.inParagraph = false;
-        state.inList = false;
-      }
-
-      // Check for list items
-      const listMatch = trimmedLine.match(/^([-*+]|\d+\.)\s/);
-      if (listMatch) {
-        const indentation = line.search(/\S/);
-
-        // If we're starting a new list or changing indentation
-        if (!state.inList || indentation !== state.listIndentation) {
-          if (completeBlock.length > 0) {
-            foundComplete = true;
-            remainingLines = lines.slice(i);
-            break;
-          }
-          state.listIndentation = indentation;
-        }
-
-        state.inList = true;
-        state.inParagraph = false;
-        state.inHeader = false;
-      }
-
-      // Handle paragraphs and text blocks
-      if (trimmedLine === "") {
-        if (completeBlock.length > 0) {
-          foundComplete = true;
-          remainingLines = lines.slice(i + 1);
-          break;
-        }
-        state.inParagraph = false;
-        state.inHeader = false;
-        state.inList = false;
-      } else if (!state.inHeader && !state.inList) {
-        state.inParagraph = true;
-      }
-
-      // Add line to current block
-      completeBlock.push(line);
-
-      // Check for sentence endings in regular text
-      if (
-        state.inParagraph &&
-        trimmedLine.match(/[.!?](\s|$)/) &&
-        i < lines.length - 1 &&
-        !lines[i + 1].trim().match(/^[-*+]|\d+\.|#/)
-      ) {
-        foundComplete = true;
-        remainingLines = lines.slice(i + 1);
-        break;
-      }
+    if (newlineIndex !== -1) {
+      const block = buffer.slice(0, newlineIndex + 1); // Include the newline
+      const remaining = buffer.slice(newlineIndex + 1); // Remaining buffer
+      return { block, remaining };
     }
 
-    if (
-      foundComplete ||
-      (state.codeBlockDelimiters % 2 === 0 && state.inCodeBlock)
-    ) {
-      return {
-        block: completeBlock.join("\n"),
-        remaining: remainingLines.join("\n"),
-      };
-    }
-
+    // No complete block found
     return null;
   }
 
