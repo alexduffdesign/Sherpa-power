@@ -86,18 +86,23 @@ class ChatbotUI {
     });
 
     // Listen for chatbot events and update the UI accordingly
-    this.eventBus.on("messageReceived", ({ content, metadata }) => {
-      console.log("UI received messageReceived event:", content, metadata);
-      this.handleAssistantMessage(content, metadata);
+    this.eventBus.on("messageReceived", ({ content, metadata, isStreamed }) => {
+      console.log(
+        "UI received messageReceived event:",
+        content,
+        metadata,
+        isStreamed
+      );
+      this.handleAssistantMessage(content, metadata, isStreamed);
     });
 
     // Listen for partial and final messages
-    this.eventBus.on("partialMessage", (content) => {
-      this.handlePartialMessage(content);
+    this.eventBus.on("partialMessage", ({ content, isStreamed }) => {
+      this.handlePartialMessage(content, isStreamed);
     });
 
-    this.eventBus.on("finalMessage", (fullContent) => {
-      this.handleFinalMessage(fullContent);
+    this.eventBus.on("finalMessage", ({ content, isStreamed }) => {
+      this.handleFinalMessage(content, isStreamed);
     });
 
     this.eventBus.on("typing", ({ isTyping }) => {
@@ -132,20 +137,22 @@ class ChatbotUI {
    * @private
    * @param {string} content - The raw markdown message content
    * @param {Object} metadata - Optional metadata
+   * @param {boolean} isStreamed - Indicates if the message is streamed
    */
-  handleAssistantMessage(content, metadata) {
+  handleAssistantMessage(content, metadata, isStreamed) {
     // Determine if the message is loaded from history
     const isFromHistory = metadata && metadata.fromHistory;
-    const animate = !isFromHistory;
+    const animate = !isStreamed && !isFromHistory;
     const animationSpeed = isFromHistory ? 10 : undefined; // Faster for deterministic messages
 
-    // Create the message component without pre-parsing Markdown
+    // Create the message component with appropriate animation settings
     const message = this.createMessage(
       "assistant",
       content,
       metadata,
       animate,
-      animationSpeed
+      animationSpeed,
+      isStreamed
     );
     this.messageContainer.appendChild(message);
     this.scrollToBottom();
@@ -155,8 +162,9 @@ class ChatbotUI {
    * Handle partial assistant messages (streamed content)
    * @private
    * @param {string} content - Partial message content
+   * @param {boolean} isStreamed - Indicates if the message is streamed
    */
-  handlePartialMessage(content) {
+  handlePartialMessage(content, isStreamed) {
     this.accumulatedContent += content;
 
     // Check for sentence-ending punctuation
@@ -174,13 +182,14 @@ class ChatbotUI {
         // Append complete sentence to the current message
         this.currentAssistantMessage.appendContent(completeSentence);
       } else {
-        // Create a new assistant message component with animation
+        // Create a new assistant message component with animation if not streamed
         this.currentAssistantMessage = this.createMessage(
           "assistant",
           completeSentence,
           null,
-          true, // animate
-          undefined // default animation speed
+          !isStreamed, // animate only if not streamed
+          undefined, // default animation speed
+          isStreamed
         );
         this.messageContainer.appendChild(this.currentAssistantMessage);
       }
@@ -188,7 +197,7 @@ class ChatbotUI {
       this.accumulatedContent = remaining;
       this.scrollToBottom();
     } else {
-      // No sentence boundary yet, append as is with animation
+      // No sentence boundary yet, append as is with animation if not streamed
       if (this.currentAssistantMessage) {
         this.currentAssistantMessage.appendContent(content);
       } else {
@@ -196,8 +205,9 @@ class ChatbotUI {
           "assistant",
           content,
           null,
-          true, // animate
-          undefined // default animation speed
+          !isStreamed, // animate only if not streamed
+          undefined, // default animation speed
+          isStreamed
         );
         this.messageContainer.appendChild(this.currentAssistantMessage);
       }
@@ -209,8 +219,9 @@ class ChatbotUI {
    * Handle final assistant message (complete message)
    * @private
    * @param {string} fullContent - The complete message content
+   * @param {boolean} isStreamed - Indicates if the message is streamed
    */
-  handleFinalMessage(fullContent) {
+  handleFinalMessage(fullContent, isStreamed) {
     if (this.currentAssistantMessage) {
       // Append the remaining content
       this.currentAssistantMessage.appendContent(fullContent);
@@ -223,8 +234,9 @@ class ChatbotUI {
         "assistant",
         fullContent,
         null,
-        true, // animate
-        undefined
+        !isStreamed, // animate only if not streamed
+        undefined,
+        isStreamed
       );
       this.messageContainer.appendChild(message);
       this.scrollToBottom();
@@ -239,6 +251,7 @@ class ChatbotUI {
    * @param {Object} metadata - Optional metadata for the message
    * @param {boolean} animate - Whether to animate the message
    * @param {number} [animationSpeed] - Optional animation speed in ms per character
+   * @param {boolean} isStreamed - Indicates if the message is streamed
    * @returns {MessageComponent} The created message component
    */
   createMessage(
@@ -246,7 +259,8 @@ class ChatbotUI {
     content,
     metadata = null,
     animate = true,
-    animationSpeed
+    animationSpeed,
+    isStreamed = false
   ) {
     const message = document.createElement("message-component");
     message.eventBus = this.eventBus;
@@ -309,7 +323,8 @@ class ChatbotUI {
           content,
           metadata,
           false, // animate
-          animationSpeed
+          animationSpeed,
+          isStreamed
         );
         this.messageContainer.appendChild(message);
       } else {
@@ -319,7 +334,8 @@ class ChatbotUI {
           content,
           metadata,
           animate,
-          speed
+          speed,
+          isStreamed
         );
         this.messageContainer.appendChild(message);
       }
@@ -334,7 +350,8 @@ class ChatbotUI {
         content,
         metadata,
         animate,
-        speed
+        speed,
+        isStreamed
       );
       this.messageContainer.appendChild(message);
       this.scrollToBottom();
@@ -449,6 +466,9 @@ class ChatbotUI {
    * @public
    */
   destroy() {
+    if (this.abortController) {
+      this.abortController.abort();
+    }
     this.eventBus.removeAllListeners();
   }
 }

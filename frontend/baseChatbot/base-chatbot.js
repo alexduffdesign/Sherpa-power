@@ -237,12 +237,18 @@ class ChatbotCore {
       case "content":
         if (payload.content) {
           this.currentCompletion += payload.content;
-          this.eventBus.emit("partialMessage", payload.content);
+          this.eventBus.emit("partialMessage", {
+            content: payload.content,
+            isStreamed: true, // Indicate that this is a streamed message
+          });
         }
         break;
 
       case "end":
-        this.eventBus.emit("finalMessage", this.currentCompletion);
+        this.eventBus.emit("finalMessage", {
+          content: this.currentCompletion,
+          isStreamed: true, // Indicate that this is a streamed message
+        });
         this.currentCompletion = null;
         break;
 
@@ -258,7 +264,11 @@ class ChatbotCore {
    * @param {Object} metadata - Optional metadata
    */
   emitMessageReceived(message, metadata) {
-    this.eventBus.emit("messageReceived", { content: message, metadata });
+    this.eventBus.emit("messageReceived", {
+      content: message,
+      metadata,
+      isStreamed: false,
+    });
   }
 
   /**
