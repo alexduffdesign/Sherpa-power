@@ -67,18 +67,57 @@ export class MessageComponent extends HTMLElement {
    * @returns {Object|null} - Contains the complete block and remaining buffer or null
    */
   extractCompleteBlock(buffer) {
-    // Updated regex to only detect sentence endings
-    const regex = /[\.\?\!]\s/;
-    const match = buffer.match(regex);
+    // First check for complete markdown blocks
+    const blockPatterns = [
+      /^#{1,6}\s[^\n]+$/m, // Headers
+      /^[*-]\s[^\n]+$/m, // List items
+      /^```[\s\S]*?```$/m, // Code blocks
+      /^>[^\n]+$/m, // Blockquotes
+      /^[^\n]+\n$/m, // Paragraphs (text followed by newline)
+    ];
 
-    if (match) {
-      const index = match.index + match[0].length;
-      const block = buffer.slice(0, index).trim();
-      const remaining = buffer.slice(index).trim();
-      return { block, remaining };
+    // Try to find complete markdown blocks first
+    for (const pattern of blockPatterns) {
+      const match = buffer.match(pattern);
+      if (match) {
+        const block = match[0];
+        const startIndex = buffer.indexOf(block);
+        const endIndex = startIndex + block.length;
+        return {
+          block,
+          remaining: buffer.slice(endIndex).trim(),
+        };
+      }
+    }
+
+    // Fall back to sentence detection for regular text
+    const sentenceEnd = buffer.match(/[.!?]\s+/);
+    if (sentenceEnd) {
+      const index = sentenceEnd.index + sentenceEnd[0].length;
+      // Check if we're breaking in the middle of markdown syntax
+      const block = buffer.slice(0, index);
+      if (!this.hasIncompleteMarkdown(block)) {
+        return {
+          block,
+          remaining: buffer.slice(index).trim(),
+        };
+      }
     }
 
     return null;
+  }
+
+  hasIncompleteMarkdown(text) {
+    // Check for incomplete markdown syntax
+    const incomplete = [
+      /[*_]([^*_]*?)$/, // Incomplete emphasis
+      /`[^`]*$/, // Incomplete code
+      /\[[^\]]*$/, // Incomplete link
+      /#\s*$/, // Incomplete header
+      /\*\*[^*]*$/, // Incomplete bold
+    ];
+
+    return incomplete.some((pattern) => pattern.test(text));
   }
 
   /**
