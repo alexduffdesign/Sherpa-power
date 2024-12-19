@@ -39,107 +39,91 @@ export class MessageComponent extends HTMLElement {
   }
 
   /**
-   * Append new content to the buffer and process it for Markdown elements.
+   * Append new content to the message and handle newline-delimited blocks
    * @param {string} newContent - The new content to append
    */
   appendContent(newContent) {
+    // Accumulate chunks in the buffer
     this.buffer += newContent;
-    this.processBuffer();
-  }
 
-  /**
-   * Processes the buffer, extracting and rendering complete Markdown elements.
-   */
-  processBuffer() {
-    let processedLength = 0;
-    while (processedLength < this.buffer.length) {
-      const extractionResult = this.extractNextMarkdownElement(
-        this.buffer.slice(processedLength)
-      );
+    // Process complete blocks
+    let completeBlock;
+    while ((completeBlock = this.extractCompleteBlock(this.buffer))) {
+      const { block, remaining } = completeBlock;
+      this.buffer = remaining; // Update the buffer with remaining content
+      this.content += block; // Add complete block to the main content
 
-      if (!extractionResult) {
-        break; // Not enough content to form a complete element
+      // Render the block
+      if (this.shouldAnimate) {
+        this.animateContent(block);
+      } else {
+        this.appendContentStreamed(block);
       }
-
-      const { elementContent, length } = extractionResult;
-      this.appendContentStreamedBuffered(elementContent);
-      processedLength += length;
     }
-    this.buffer = this.buffer.slice(processedLength); // Update buffer
   }
 
   /**
-   * Extracts the next complete Markdown element from the buffer.
+   * Extracts a complete block delimited by a newline
    * @param {string} buffer - The current buffer
-   * @returns {Object|null} - Object containing the element content and length, or null if no complete element found.
+   * @returns {Object|null} - Contains the complete block and remaining buffer or null
    */
-  extractNextMarkdownElement(buffer) {
-    // Check for headings
-    const headingMatch = buffer.match(/^(#+)\s+([^\n]+)\n/);
-    if (headingMatch) {
-      return {
-        elementContent: headingMatch[0],
-        length: headingMatch[0].length,
-      };
+  extractCompleteBlock(buffer) {
+    // Find the position of the first newline
+    const newlineIndex = buffer.indexOf("\n");
+
+    if (newlineIndex !== -1) {
+      const block = buffer.slice(0, newlineIndex + 1); // Include the newline
+      const remaining = buffer.slice(newlineIndex + 1); // Remaining buffer
+      return { block, remaining };
     }
 
-    // Check for ordered list items
-    const orderedListMatch = buffer.match(/^(\d+)\.\s+([^\n]+)\n/m);
-    if (orderedListMatch) {
-      const fullMatch = buffer.slice(
-        0,
-        buffer.indexOf("\n", orderedListMatch.index) + 1
-      );
-      return { elementContent: fullMatch, length: fullMatch.length };
-    }
-
-    // Check for unordered list items
-    const unorderedListMatch = buffer.match(/^([*\-+])\s+([^\n]+)\n/m);
-    if (unorderedListMatch) {
-      const fullMatch = buffer.slice(
-        0,
-        buffer.indexOf("\n", unorderedListMatch.index) + 1
-      );
-      return { elementContent: fullMatch, length: fullMatch.length };
-    }
-
-    // Check for bold (**...**)
-    const boldMatch = buffer.match(/\*\*([^*]+?)\*\*/);
-    if (boldMatch) {
-      return { elementContent: boldMatch[0], length: boldMatch[0].length };
-    }
-
-    // Check for italics (*...*)
-    const italicMatch = buffer.match(/\*([^*]+?)\*/);
-    if (italicMatch) {
-      return { elementContent: italicMatch[0], length: italicMatch[0].length };
-    }
-
-    // Check for paragraphs (anything followed by a double newline or end of buffer)
-    const paragraphMatch = buffer.match(/^([^\n]+?)(?:\n\n|$)/);
-    if (paragraphMatch) {
-      return {
-        elementContent: paragraphMatch[0],
-        length: paragraphMatch[0].length,
-      };
-    }
-
-    return null; // No complete element found
+    // No complete block found
+    return null;
   }
 
   /**
-   * Append content for streamed messages with buffering of markdown elements.
-   * @param {string} markdownContent - The complete markdown element content to append
+   * Append content for streamed messages with markdown support
+   * @param {string} newContent - The new content to append
    */
-  appendContentStreamedBuffered(markdownContent) {
+  appendContentStreamed(newContent) {
     const messageContent = this.shadowRoot.querySelector(".message__content");
     if (!messageContent) return;
 
-    const parsedHTML = parseMarkdown(markdownContent);
+    // Create a temporary container
     const tempDiv = document.createElement("div");
+
+    // Parse the markdown for this chunk
+    const parsedHTML = parseMarkdown(newContent);
     tempDiv.innerHTML = parsedHTML;
 
-    // Append the parsed HTML
+    // Merge with existing content if needed
+    const lastChild = messageContent.lastChild;
+    if (lastChild) {
+      const lastTag = lastChild.tagName?.toLowerCase();
+      const firstNewChild = tempDiv.firstChild;
+      const firstNewTag = firstNewChild?.tagName?.toLowerCase();
+
+      // If both are the same type of header or paragraph, merge them
+      if (
+        lastTag === firstNewTag &&
+        (lastTag?.startsWith("h") || lastTag === "p")
+      ) {
+        lastChild.innerHTML += " " + firstNewChild.innerHTML;
+        tempDiv.removeChild(firstNewChild);
+      }
+      // Handle list merging
+      else if (
+        (lastTag === "ul" && firstNewTag === "ul") ||
+        (lastTag === "ol" && firstNewTag === "ol")
+      ) {
+        while (firstNewChild.firstChild) {
+          lastChild.appendChild(firstNewChild.firstChild);
+        }
+        tempDiv.removeChild(firstNewChild);
+      }
+    }
+
+    // Append remaining new content
     while (tempDiv.firstChild) {
       messageContent.appendChild(tempDiv.firstChild);
     }
@@ -232,8 +216,8 @@ export class MessageComponent extends HTMLElement {
         }
 
         /* Markdown styling */
-        .message__content h1,
-        .message__content h2,
+        .message__content h1, 
+        .message__content h2, 
         .message__content h3,
         .message__content h4,
         .message__content h5,
@@ -343,7 +327,7 @@ export class MessageComponent extends HTMLElement {
     if (isAssistant && this.shouldAnimate) {
       this.animateContent(content);
     } else if (isAssistant && !this.shouldAnimate) {
-      this.updateContentStreamedBuffered(content); // Use the buffered version for initial content
+      this.updateContentStreamed(content);
     } else {
       this.updateContent(content);
     }
@@ -471,6 +455,29 @@ export class MessageComponent extends HTMLElement {
 
       this.animationFrameId = requestAnimationFrame(animate);
     });
+  }
+
+  /**
+   * Update the message content for streamed messages without re-parsing the entire content
+   * @param {string} newContent - The new content to set
+   */
+  updateContentStreamed(newContent) {
+    const messageContent = this.shadowRoot.querySelector(".message__content");
+    if (!messageContent) return;
+
+    // Parse the new content chunk
+    const parsedHTML = parseMarkdown(newContent);
+
+    // Create a temporary container to extract the parsed elements
+    const tempDiv = document.createElement("div");
+    tempDiv.innerHTML = parsedHTML;
+
+    // Append each child from the parsed HTML to the message content
+    Array.from(tempDiv.childNodes).forEach((node) => {
+      messageContent.appendChild(node.cloneNode(true));
+    });
+
+    this.scrollToBottom();
   }
 
   /**
