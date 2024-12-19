@@ -276,6 +276,7 @@ class ChatbotUI {
    * @param {string} content - The raw markdown message content
    * @param {Object} metadata - Optional metadata for the message
    * @param {boolean} fromHistory - Indicates if the message is loaded from history
+   * @param {boolean} isStreamed - Indicates if the message is streamed via completion events
    * @param {number} [animationSpeed] - Optional animation speed in ms per character
    */
   addMessage(
@@ -283,15 +284,46 @@ class ChatbotUI {
     content,
     metadata = null,
     fromHistory = false,
+    isStreamed = false,
     animationSpeed = undefined
   ) {
     console.log(
       `addMessage called with sender=${sender}, content=${content}, metadata=`,
-      metadata
+      metadata,
+      `, fromHistory=${fromHistory}, isStreamed=${isStreamed}, animationSpeed=${animationSpeed}`
     );
 
     if (sender === "assistant") {
-      this.handleAssistantMessage(content, { ...metadata, fromHistory });
+      // Determine if the message is streamed
+      const animate = !isStreamed && !fromHistory;
+      const speed = isStreamed
+        ? undefined // No animation
+        : fromHistory
+        ? 10
+        : animationSpeed;
+
+      if (isStreamed) {
+        // For streamed messages, set data-animate="false" to disable animation
+        const message = this.createMessage(
+          "assistant",
+          content,
+          metadata,
+          false, // animate
+          animationSpeed
+        );
+        this.messageContainer.appendChild(message);
+      } else {
+        // For static messages, animate as before
+        const message = this.createMessage(
+          "assistant",
+          content,
+          metadata,
+          animate,
+          speed
+        );
+        this.messageContainer.appendChild(message);
+      }
+      this.scrollToBottom();
     } else if (sender === "user") {
       // For user messages, determine if it's from history or a new message
       const animate = !fromHistory;
