@@ -1,3 +1,5 @@
+// /assets/scripts/chatbot/utils/markdown-util.js
+
 import { marked } from "marked";
 
 /**
@@ -11,18 +13,7 @@ export function parseMarkdown(text) {
   if (!text) return "";
 
   // Clean up markdown headers that might have been split across chunks
-  let cleanedText = text
-    // Fix headers that don't start on a new line
-    .replace(/([^\n])(#+ )/g, "$1\n$2")
-    // Fix lists that don't start on a new line
-    .replace(/([^\n])([-*+] )/g, "$1\n$2")
-    // Fix numbered lists that don't start on a new line
-    .replace(/([^\n])(\d+\. )/g, "$1\n$2")
-    // Ensure proper spacing around headers
-    .replace(/(#+) /g, "\n$1 ")
-    // Remove duplicate newlines
-    .replace(/\n\s*\n/g, "\n\n")
-    .trim();
+  const cleanedText = text.replace(/([^\n])(#+ )/g, "$1\n$2");
 
   // Parse the cleaned markdown
   return marked.parse(cleanedText);
