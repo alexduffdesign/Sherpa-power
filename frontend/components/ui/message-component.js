@@ -11,6 +11,8 @@ export class MessageComponent extends HTMLElement {
     this.defaultAnimationSpeed = 15; // milliseconds per character (quicker)
     this.currentAnimationSpeed = this.defaultAnimationSpeed;
     this.shouldAnimate = true;
+
+    this.buffer = ""; // Buffer to accumulate incoming chunks
   }
 
   connectedCallback() {
@@ -41,25 +43,42 @@ export class MessageComponent extends HTMLElement {
    * @param {string} newContent - The new content to append
    */
   appendContent(newContent) {
-    this.content += newContent;
-    if (this.shouldAnimate) {
-      this.animateContent(newContent);
-    } else {
-      this.appendContentStreamed(newContent);
+    this.buffer += newContent;
+
+    // Check if the buffer contains a complete sentence or Markdown block
+    const completeBlock = this.extractCompleteBlock(this.buffer);
+    if (completeBlock) {
+      const { block, remaining } = completeBlock;
+      this.content += block;
+      this.buffer = remaining;
+
+      if (this.shouldAnimate) {
+        this.animateContent(block);
+      } else {
+        this.appendContentStreamed(block);
+      }
     }
+    // If no complete block is found, do not parse yet
   }
 
   /**
-   * Update the entire message content and re-render with markdown
-   * @param {string} newContent - The new content to set
+   * Extracts a complete sentence or Markdown block from the buffer
+   * @param {string} buffer - The current buffer
+   * @returns {Object|null} - Contains the complete block and remaining buffer or null
    */
-  updateContent(newContent) {
-    this.content = newContent;
-    const messageContent = this.shadowRoot.querySelector(".message__content");
-    if (messageContent) {
-      // Directly set the parsed markdown without re-rendering
-      messageContent.innerHTML = parseMarkdown(newContent);
+  extractCompleteBlock(buffer) {
+    // Define regex to detect sentence endings or Markdown block endings
+    const regex = /([\.\?\!]\s)|([:\*#]\s)/; // Adjust as needed for more Markdown structures
+    const match = buffer.match(regex);
+
+    if (match) {
+      const index = match.index + match[0].length;
+      const block = buffer.slice(0, index).trim();
+      const remaining = buffer.slice(index).trim();
+      return { block, remaining };
     }
+
+    return null;
   }
 
   /**
@@ -83,6 +102,19 @@ export class MessageComponent extends HTMLElement {
     });
 
     this.scrollToBottom();
+  }
+
+  /**
+   * Update the entire message content and re-render with markdown
+   * @param {string} newContent - The new content to set
+   */
+  updateContent(newContent) {
+    this.content = newContent;
+    const messageContent = this.shadowRoot.querySelector(".message__content");
+    if (messageContent) {
+      // Directly set the parsed markdown without re-rendering
+      messageContent.innerHTML = parseMarkdown(newContent);
+    }
   }
 
   /**
