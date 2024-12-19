@@ -75,7 +75,7 @@ export class MessageComponent extends HTMLElement {
    */
   extractNextMarkdownElement(buffer) {
     // Check for headings
-    const headingMatch = buffer.match(/^(#+)\s+([^\n]+?)\n/);
+    const headingMatch = buffer.match(/^(#+)\s+([^\n]+)\n/);
     if (headingMatch) {
       return {
         elementContent: headingMatch[0],
@@ -83,32 +83,24 @@ export class MessageComponent extends HTMLElement {
       };
     }
 
-    // Check for ordered lists
-    const orderedListMatch = buffer.match(/^(\d+)\.\s+([^\n]+?)(?:\n|$)/m);
+    // Check for ordered list items
+    const orderedListMatch = buffer.match(/^(\d+)\.\s+([^\n]+)\n/m);
     if (orderedListMatch) {
-      const listBlock = buffer.substring(
+      const fullMatch = buffer.slice(
         0,
-        buffer.indexOf(
-          buffer.match(/^(\d+)\.\s+([^\n]+?)(?:\n|$)/m, "gm").slice(-1)[0]
-        ) +
-          buffer.match(/^(\d+)\.\s+([^\n]+?)(?:\n|$)/m, "gm").slice(-1)[0]
-            .length
+        buffer.indexOf("\n", orderedListMatch.index) + 1
       );
-      return { elementContent: listBlock, length: listBlock.length };
+      return { elementContent: fullMatch, length: fullMatch.length };
     }
 
-    // Check for unordered lists
-    const unorderedListMatch = buffer.match(/^([*\-+])\s+([^\n]+?)(?:\n|$)/m);
+    // Check for unordered list items
+    const unorderedListMatch = buffer.match(/^([*\-+])\s+([^\n]+)\n/m);
     if (unorderedListMatch) {
-      const listBlock = buffer.substring(
+      const fullMatch = buffer.slice(
         0,
-        buffer.indexOf(
-          buffer.match(/^([*\-+])\s+([^\n]+?)(?:\n|$)/m, "gm").slice(-1)[0]
-        ) +
-          buffer.match(/^([*\-+])\s+([^\n]+?)(?:\n|$)/m, "gm").slice(-1)[0]
-            .length
+        buffer.indexOf("\n", unorderedListMatch.index) + 1
       );
-      return { elementContent: listBlock, length: listBlock.length };
+      return { elementContent: fullMatch, length: fullMatch.length };
     }
 
     // Check for bold (**...**)
@@ -123,10 +115,8 @@ export class MessageComponent extends HTMLElement {
       return { elementContent: italicMatch[0], length: italicMatch[0].length };
     }
 
-    // Check for paragraphs (non-empty line not starting with #, *, -, +, or number followed by dot, ending with double newline or end of buffer)
-    const paragraphMatch = buffer.match(
-      /^(?!(#|\*|\-|\+|\d+\.))([^\n]+?)(?:\n\n+|$)/
-    );
+    // Check for paragraphs (anything followed by a double newline or end of buffer)
+    const paragraphMatch = buffer.match(/^([^\n]+?)(?:\n\n|$)/);
     if (paragraphMatch) {
       return {
         elementContent: paragraphMatch[0],
