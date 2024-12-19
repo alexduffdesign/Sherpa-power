@@ -45,7 +45,7 @@ export class MessageComponent extends HTMLElement {
   appendContent(newContent) {
     this.buffer += newContent;
 
-    // Check if the buffer contains a complete sentence or Markdown block
+    // Check if the buffer contains a complete sentence
     const completeBlock = this.extractCompleteBlock(this.buffer);
     if (completeBlock) {
       const { block, remaining } = completeBlock;
@@ -67,8 +67,8 @@ export class MessageComponent extends HTMLElement {
    * @returns {Object|null} - Contains the complete block and remaining buffer or null
    */
   extractCompleteBlock(buffer) {
-    // Define regex to detect sentence endings or Markdown block endings
-    const regex = /([\.\?\!]\s)|([:\*#]\s)/; // Adjust as needed for more Markdown structures
+    // Updated regex to only detect sentence endings
+    const regex = /[\.\?\!]\s/;
     const match = buffer.match(regex);
 
     if (match) {
