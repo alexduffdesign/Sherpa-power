@@ -1,6 +1,9 @@
 // /assets/scripts/chatbot/components/message-component.js
 
-import { parseMarkdown } from "../../utils/markdown-util.js";
+import { remark } from "remark";
+import html from "remark-html";
+import gfm from "remark-gfm";
+import DOMPurify from "dompurify"; // Ensure you install DOMPurify via npm or include it in your project
 
 export class MessageComponent extends HTMLElement {
   constructor() {
@@ -8,7 +11,7 @@ export class MessageComponent extends HTMLElement {
     this.attachShadow({ mode: "open" });
     this.content = ""; // Initialize empty content
     this.animationFrameId = null; // To track the current animation frame
-    this.defaultAnimationSpeed = 15; // milliseconds per character (quicker)
+    this.defaultAnimationSpeed = 5; // milliseconds per character (quicker)
     this.currentAnimationSpeed = this.defaultAnimationSpeed;
     this.shouldAnimate = true;
 
@@ -45,9 +48,9 @@ export class MessageComponent extends HTMLElement {
   appendContent(newContent) {
     this.buffer += newContent;
 
-    // Process complete blocks
-    const completeBlock = this.extractCompleteBlock(this.buffer);
-    if (completeBlock) {
+    // Process all complete blocks in the buffer
+    let completeBlock = this.extractCompleteBlock(this.buffer);
+    while (completeBlock) {
       const { block, remaining } = completeBlock;
       this.content += block;
       this.buffer = remaining;
@@ -57,30 +60,34 @@ export class MessageComponent extends HTMLElement {
       } else {
         this.appendContentStreamed(block);
       }
+
+      completeBlock = this.extractCompleteBlock(this.buffer);
     }
+    // If no complete block is found, do not parse yet
   }
 
   /**
-   * Extracts a complete block from the buffer
+   * Extracts a complete Markdown block from the buffer
    * @param {string} buffer - The current buffer
    * @returns {Object|null} - Contains the complete block and remaining buffer or null
    */
   extractCompleteBlock(buffer) {
-    // Track markdown block state
-    const state = {
-      inCodeBlock: false,
-      codeBlockDelimiters: 0,
-      inHeader: false,
-      inList: false,
-      inParagraph: false,
-      listIndentation: 0,
-    };
+    // Define Markdown block delimiters
+    const markdownBlockDelimiters = [
+      /^#{1,6}\s/, // Headers
+      /^[-*+]\s/, // Unordered Lists
+      /^\d+\.\s/, // Ordered Lists
+      /^```/, // Code Blocks
+      /^> /, // Blockquotes
+      /^\n{2,}/, // Double Line Breaks
+    ];
 
     // Split buffer into lines for analysis
     const lines = buffer.split("\n");
     let completeBlock = [];
     let remainingLines = [];
     let foundComplete = false;
+    let inCodeBlock = false;
 
     for (let i = 0; i < lines.length; i++) {
       const line = lines[i];
@@ -88,12 +95,10 @@ export class MessageComponent extends HTMLElement {
 
       // Handle code blocks
       if (trimmedLine.startsWith("```")) {
-        state.codeBlockDelimiters++;
-        state.inCodeBlock = state.codeBlockDelimiters % 2 !== 0;
+        inCodeBlock = !inCodeBlock;
         completeBlock.push(line);
 
-        // If we're closing a code block, mark it as complete
-        if (!state.inCodeBlock) {
+        if (!inCodeBlock) {
           foundComplete = true;
           remainingLines = lines.slice(i + 1);
           break;
@@ -101,79 +106,33 @@ export class MessageComponent extends HTMLElement {
         continue;
       }
 
-      // Skip processing markdown inside code blocks
-      if (state.inCodeBlock) {
+      // If inside a code block, continue without checking other delimiters
+      if (inCodeBlock) {
         completeBlock.push(line);
         continue;
       }
 
-      // Check for headers
-      const headerMatch = trimmedLine.match(/^(#{1,6})\s/);
-      if (headerMatch) {
-        if (state.inHeader && completeBlock.length > 0) {
-          foundComplete = true;
-          remainingLines = lines.slice(i);
-          break;
-        }
-        state.inHeader = true;
-        state.inParagraph = false;
-        state.inList = false;
+      // Check for other Markdown block delimiters
+      const isDelimiter = markdownBlockDelimiters.some((regex) =>
+        regex.test(line)
+      );
+      if (isDelimiter && completeBlock.length > 0) {
+        foundComplete = true;
+        remainingLines = lines.slice(i);
+        break;
       }
 
-      // Check for list items
-      const listMatch = trimmedLine.match(/^([-*+]|\d+\.)\s/);
-      if (listMatch) {
-        const indentation = line.search(/\S/);
-
-        // If we're starting a new list or changing indentation
-        if (!state.inList || indentation !== state.listIndentation) {
-          if (completeBlock.length > 0) {
-            foundComplete = true;
-            remainingLines = lines.slice(i);
-            break;
-          }
-          state.listIndentation = indentation;
-        }
-
-        state.inList = true;
-        state.inParagraph = false;
-        state.inHeader = false;
-      }
-
-      // Handle paragraphs and text blocks
-      if (trimmedLine === "") {
-        if (completeBlock.length > 0) {
-          foundComplete = true;
-          remainingLines = lines.slice(i + 1);
-          break;
-        }
-        state.inParagraph = false;
-        state.inHeader = false;
-        state.inList = false;
-      } else if (!state.inHeader && !state.inList) {
-        state.inParagraph = true;
-      }
-
-      // Add line to current block
       completeBlock.push(line);
 
-      // Check for sentence endings in regular text
-      if (
-        state.inParagraph &&
-        trimmedLine.match(/[.!?](\s|$)/) &&
-        i < lines.length - 1 &&
-        !lines[i + 1].trim().match(/^[-*+]|\d+\.|#/)
-      ) {
+      // Detect double line breaks indicating end of a paragraph or block
+      if (trimmedLine === "" && completeBlock.length > 0) {
         foundComplete = true;
         remainingLines = lines.slice(i + 1);
         break;
       }
     }
 
-    if (
-      foundComplete ||
-      (state.codeBlockDelimiters % 2 === 0 && state.inCodeBlock)
-    ) {
+    if (foundComplete) {
       return {
         block: completeBlock.join("\n"),
         remaining: remainingLines.join("\n"),
@@ -187,48 +146,22 @@ export class MessageComponent extends HTMLElement {
    * Append content for streamed messages with markdown support
    * @param {string} newContent - The new content to append
    */
-  appendContentStreamed(newContent) {
+  async appendContentStreamed(newContent) {
     const messageContent = this.shadowRoot.querySelector(".message__content");
     if (!messageContent) return;
 
-    // Create a temporary container
+    // Parse the new content chunk using remark
+    const parsedHTML = await remark().use(gfm).use(html).process(newContent);
+    const sanitizedHTML = DOMPurify.sanitize(parsedHTML.toString());
+
+    // Create a temporary container to extract the parsed elements
     const tempDiv = document.createElement("div");
+    tempDiv.innerHTML = sanitizedHTML;
 
-    // Parse the markdown for this chunk
-    const parsedHTML = parseMarkdown(newContent);
-    tempDiv.innerHTML = parsedHTML;
-
-    // Merge with existing content if needed
-    const lastChild = messageContent.lastChild;
-    if (lastChild) {
-      const lastTag = lastChild.tagName?.toLowerCase();
-      const firstNewChild = tempDiv.firstChild;
-      const firstNewTag = firstNewChild?.tagName?.toLowerCase();
-
-      // If both are the same type of header or paragraph, merge them
-      if (
-        lastTag === firstNewTag &&
-        (lastTag?.startsWith("h") || lastTag === "p")
-      ) {
-        lastChild.innerHTML += " " + firstNewChild.innerHTML;
-        tempDiv.removeChild(firstNewChild);
-      }
-      // Handle list merging
-      else if (
-        (lastTag === "ul" && firstNewTag === "ul") ||
-        (lastTag === "ol" && firstNewTag === "ol")
-      ) {
-        while (firstNewChild.firstChild) {
-          lastChild.appendChild(firstNewChild.firstChild);
-        }
-        tempDiv.removeChild(firstNewChild);
-      }
-    }
-
-    // Append remaining new content
-    while (tempDiv.firstChild) {
-      messageContent.appendChild(tempDiv.firstChild);
-    }
+    // Append each child from the parsed HTML to the message content
+    Array.from(tempDiv.childNodes).forEach((node) => {
+      messageContent.appendChild(node.cloneNode(true));
+    });
 
     this.scrollToBottom();
   }
@@ -237,11 +170,16 @@ export class MessageComponent extends HTMLElement {
    * Update the entire message content and re-render with markdown
    * @param {string} newContent - The new content to set
    */
-  updateContent(newContent) {
+  async updateContent(newContent) {
     this.content = newContent;
     const messageContent = this.shadowRoot.querySelector(".message__content");
     if (messageContent) {
-      messageContent.innerHTML = parseMarkdown(newContent);
+      // Parse the new content using remark
+      const parsedHTML = await remark().use(gfm).use(html).process(newContent);
+      const sanitizedHTML = DOMPurify.sanitize(parsedHTML.toString());
+
+      // Directly set the parsed and sanitized HTML
+      messageContent.innerHTML = sanitizedHTML;
     }
   }
 
@@ -443,37 +381,22 @@ export class MessageComponent extends HTMLElement {
     const messageContent = this.shadowRoot.querySelector(".message__content");
     if (!messageContent) return;
 
-    const parsedHTML = parseMarkdown(content);
+    // Parse markdown using remark
+    const parsedHTML = await remark().use(gfm).use(html).process(content);
+    const sanitizedHTML = DOMPurify.sanitize(parsedHTML.toString());
+
+    // Create a temporary container to traverse the HTML elements
     const tempDiv = document.createElement("div");
-    tempDiv.innerHTML = parsedHTML;
+    tempDiv.innerHTML = sanitizedHTML;
 
-    await this.animateNodes(messageContent, Array.from(tempDiv.childNodes));
+    // Initialize animation queue
+    const nodes = Array.from(tempDiv.childNodes);
+
+    this.animateNodesSequentially(messageContent, nodes).then(() => {
+      // Animation complete
+    });
   }
 
-  /**
-   * Animate nodes recursively
-   * @param {HTMLElement} container - Container to append animated content
-   * @param {Array<Node>} nodes - Array of nodes to animate
-   */
-  async animateNodes(container, nodes) {
-    for (const node of nodes) {
-      if (node.nodeType === Node.TEXT_NODE) {
-        if (node.textContent.trim()) {
-          await this.animateText(container, node.textContent);
-        }
-      } else if (node.nodeType === Node.ELEMENT_NODE) {
-        const element = document.createElement(node.tagName);
-
-        // Copy attributes
-        for (const attr of node.attributes || []) {
-          element.setAttribute(attr.name, attr.value);
-        }
-
-        container.appendChild(element);
-        await this.animateNodes(element, Array.from(node.childNodes));
-      }
-    }
-  }
   /**
    * Recursively animates HTML nodes one after another
    * @param {HTMLElement} container - The container to append animated nodes
@@ -487,14 +410,14 @@ export class MessageComponent extends HTMLElement {
       "h1",
       "h2",
       "h3",
+      "h4",
+      "h5",
+      "h6",
       "ul",
       "ol",
       "li",
       "blockquote",
       "pre",
-      "h4",
-      "h5",
-      "h6",
     ]);
 
     for (const node of nodes) {
@@ -560,24 +483,52 @@ export class MessageComponent extends HTMLElement {
   }
 
   /**
-   * Update the message content for streamed messages without re-parsing the entire content
+   * Update the entire message content and re-render with markdown
    * @param {string} newContent - The new content to set
    */
-  updateContentStreamed(newContent) {
+  async updateContentStreamed(newContent) {
     const messageContent = this.shadowRoot.querySelector(".message__content");
     if (!messageContent) return;
 
-    // Parse the new content chunk
-    const parsedHTML = parseMarkdown(newContent);
+    // Parse the new content chunk using remark
+    const parsedHTML = await remark().use(gfm).use(html).process(newContent);
+    const sanitizedHTML = DOMPurify.sanitize(parsedHTML.toString());
 
     // Create a temporary container to extract the parsed elements
     const tempDiv = document.createElement("div");
-    tempDiv.innerHTML = parsedHTML;
+    tempDiv.innerHTML = sanitizedHTML;
 
-    // Append each child from the parsed HTML to the message content
-    Array.from(tempDiv.childNodes).forEach((node) => {
-      messageContent.appendChild(node.cloneNode(true));
-    });
+    // Merge with existing content if needed
+    const lastChild = messageContent.lastChild;
+    if (lastChild) {
+      const lastTag = lastChild.tagName?.toLowerCase();
+      const firstNewChild = tempDiv.firstChild;
+      const firstNewTag = firstNewChild?.tagName?.toLowerCase();
+
+      // If both are the same type of header or paragraph, merge them
+      if (
+        lastTag === firstNewTag &&
+        (lastTag?.startsWith("h") || lastTag === "p")
+      ) {
+        lastChild.innerHTML += " " + firstNewChild.innerHTML;
+        tempDiv.removeChild(firstNewChild);
+      }
+      // Handle list merging
+      else if (
+        (lastTag === "ul" && firstNewTag === "ul") ||
+        (lastTag === "ol" && firstNewTag === "ol")
+      ) {
+        while (firstNewChild.firstChild) {
+          lastChild.appendChild(firstNewChild.firstChild);
+        }
+        tempDiv.removeChild(firstNewChild);
+      }
+    }
+
+    // Append remaining new content
+    while (tempDiv.firstChild) {
+      messageContent.appendChild(tempDiv.firstChild);
+    }
 
     this.scrollToBottom();
   }

@@ -1,47 +1,42 @@
 {
-  "_marked.esm.DtrQ3Nt4.js": {
-    "file": "marked.esm.DtrQ3Nt4.js",
-    "name": "marked.esm"
-  },
-  "_vendor.DqvJXvYX.js": {
-    "file": "vendor.DqvJXvYX.js",
+  "_vendor.BcjL8Dbk.js": {
+    "file": "vendor.BcjL8Dbk.js",
     "name": "vendor"
   },
   "frontend/baseChatbot/base-chatbot-ui.js": {
-    "file": "base-chatbot-ui.BkflfxXU.js",
+    "file": "base-chatbot-ui.Dd6o3lmW.js",
     "name": "base-chatbot-ui",
     "src": "frontend/baseChatbot/base-chatbot-ui.js",
     "isEntry": true,
     "imports": [
-      "_vendor.DqvJXvYX.js",
-      "_marked.esm.DtrQ3Nt4.js"
+      "_vendor.BcjL8Dbk.js"
     ]
   },
   "frontend/baseChatbot/base-chatbot.js": {
-    "file": "base-chatbot.B56tRnnT.js",
+    "file": "base-chatbot.weSWSNX1.js",
     "name": "base-chatbot",
     "src": "frontend/baseChatbot/base-chatbot.js",
     "isEntry": true,
     "imports": [
-      "_vendor.DqvJXvYX.js"
+      "_vendor.BcjL8Dbk.js"
     ]
   },
   "frontend/components/ui/chatbot-components.js": {
-    "file": "chatbot-components.CgZ5OZ25.js",
+    "file": "chatbot-components.CmUJMThR.js",
     "name": "chatbot-components",
     "src": "frontend/components/ui/chatbot-components.js",
     "isEntry": true,
     "imports": [
-      "_marked.esm.DtrQ3Nt4.js"
+      "_vendor.BcjL8Dbk.js"
     ]
   },
   "frontend/entrypoints/chatbot-core-file.js": {
-    "file": "chatbot-core-file.BjM46aZ2.js",
+    "file": "chatbot-core-file.C0fzmx8Z.js",
     "name": "chatbot-core-file",
     "src": "frontend/entrypoints/chatbot-core-file.js",
     "isEntry": true,
     "imports": [
-      "_vendor.DqvJXvYX.js"
+      "_vendor.BcjL8Dbk.js"
     ]
   },
   "frontend/entrypoints/theme.js": {
@@ -51,51 +46,47 @@
     "isEntry": true
   },
   "frontend/mainChatbot/chatbot-main-ui.js": {
-    "file": "chatbot-main-ui.iUo29Gqc.js",
+    "file": "chatbot-main-ui.sJITRd4-.js",
     "name": "chatbot-main-ui",
     "src": "frontend/mainChatbot/chatbot-main-ui.js",
     "isEntry": true,
     "imports": [
       "frontend/baseChatbot/base-chatbot-ui.js",
-      "_vendor.DqvJXvYX.js",
-      "_marked.esm.DtrQ3Nt4.js"
+      "_vendor.BcjL8Dbk.js"
     ]
   },
   "frontend/mainChatbot/chatbot-main.js": {
-    "file": "chatbot-main.CQzsyYAO.js",
+    "file": "chatbot-main.CD6wdP_b.js",
     "name": "chatbot-main",
     "src": "frontend/mainChatbot/chatbot-main.js",
     "isEntry": true,
     "imports": [
       "frontend/baseChatbot/base-chatbot.js",
       "frontend/mainChatbot/chatbot-main-ui.js",
-      "_vendor.DqvJXvYX.js",
-      "frontend/baseChatbot/base-chatbot-ui.js",
-      "_marked.esm.DtrQ3Nt4.js"
+      "_vendor.BcjL8Dbk.js",
+      "frontend/baseChatbot/base-chatbot-ui.js"
     ]
   },
   "frontend/sectionChatbot/chatbot-section-ui.js": {
-    "file": "chatbot-section-ui.C0tVMvZe.js",
+    "file": "chatbot-section-ui.B1LRVcT4.js",
     "name": "chatbot-section-ui",
     "src": "frontend/sectionChatbot/chatbot-section-ui.js",
     "isEntry": true,
     "imports": [
       "frontend/baseChatbot/base-chatbot-ui.js",
-      "_vendor.DqvJXvYX.js",
-      "_marked.esm.DtrQ3Nt4.js"
+      "_vendor.BcjL8Dbk.js"
     ]
   },
   "frontend/sectionChatbot/chatbot-section.js": {
-    "file": "chatbot-section.CvBBDiHt.js",
+    "file": "chatbot-section.mQ6ga2js.js",
     "name": "chatbot-section",
     "src": "frontend/sectionChatbot/chatbot-section.js",
     "isEntry": true,
     "imports": [
       "frontend/baseChatbot/base-chatbot.js",
       "frontend/sectionChatbot/chatbot-section-ui.js",
-      "_vendor.DqvJXvYX.js",
-      "frontend/baseChatbot/base-chatbot-ui.js",
-      "_marked.esm.DtrQ3Nt4.js"
+      "_vendor.BcjL8Dbk.js",
+      "frontend/baseChatbot/base-chatbot-ui.js"
     ]
   }
 }
