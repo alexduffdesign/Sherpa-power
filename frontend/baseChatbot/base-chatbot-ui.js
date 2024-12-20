@@ -139,7 +139,7 @@ class ChatbotUI {
   handleAssistantMessage(content, metadata, isStreamed) {
     // Determine if the message is loaded from history
     const isFromHistory = metadata && metadata.fromHistory;
-    const animate = sender === "assistant" && !isStreamed && !isFromHistory;
+    const animate = !isStreamed && !isFromHistory;
     // Correction: 'sender' is not defined here. It should be 'assistant' by context.
 
     const shouldAnimate = !isStreamed && !isFromHistory;
@@ -158,7 +158,6 @@ class ChatbotUI {
       this.messageContainer.appendChild(message);
       this.scrollToBottom();
     }
-    // If streamed or from history, do not add here. Handled via partialMessage and finalMessage
   }
 
   /**
