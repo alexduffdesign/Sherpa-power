@@ -9,7 +9,7 @@ export class MessageComponent extends HTMLElement {
     this.attachShadow({ mode: "open" });
     this.isStreaming = false;
     this.animationFrameId = null; // For character-by-character animation
-    this.defaultAnimationSpeed = 15; // ms per character
+    this.defaultAnimationSpeed = 5; // ms per character
     this.currentAnimationSpeed = this.defaultAnimationSpeed;
     this.streamingParser = null;
   }
@@ -183,6 +183,7 @@ export class MessageComponent extends HTMLElement {
         h1, h2, h3, h4, h5, h6 {
           font-family: var(--heading-font-family);
           font-weight: var(--heading-font-weight);
+
         }
         :host {
           display: block;
