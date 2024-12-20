@@ -61,7 +61,7 @@ class MainChatbot {
     // Handle user messages
     this.core.eventBus.on("userMessage", (message) => {
       // Add the message to the UI as a user message
-      this.ui.addMessage("user", message);
+      this.ui.addMessage("user", message, null, false); // fromHistory=false
 
       // Save the message to history
       this.saveToHistory("user", message);
@@ -103,7 +103,7 @@ class MainChatbot {
       // Save the user's choice and display it in the UI
       const userMessage = payload.label || "Button clicked";
       this.saveToHistory("user", userMessage);
-      this.ui.addMessage("user", userMessage);
+      this.ui.addMessage("user", userMessage, null, false); // fromHistory=false
 
       // Remove previous interactive elements
       this.ui.removeInteractiveElements();
@@ -146,7 +146,7 @@ class MainChatbot {
       const userMessage = payload.label || "Button clicked";
 
       this.saveToHistory("user", userMessage);
-      this.ui.addMessage("user", userMessage);
+      this.ui.addMessage("user", userMessage, null, false); // fromHistory=false
 
       const { type, payload: actionData } = payload.action;
 
@@ -197,7 +197,7 @@ class MainChatbot {
       const userMessage = "Main menu";
       this.saveToHistory("user", userMessage);
       // Add message without animation and faster speed
-      this.ui.addMessage("user", userMessage, null, true);
+      this.ui.addMessage("user", userMessage, null, false); // fromHistory=false
       this.core.sendAction({
         action: {
           type: "event",

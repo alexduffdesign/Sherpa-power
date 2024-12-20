@@ -18,10 +18,23 @@ export class MessageComponent extends HTMLElement {
     const sender = this.getAttribute("sender");
     const content = this.getAttribute("content") || "";
     this.isStreaming = this.hasAttribute("streaming"); // Check if the 'streaming' attribute is present
+    const animate = this.getAttribute("data-animate") !== "false";
+
     this.render(sender, content);
 
     if (!this.isStreaming && content) {
-      this.animateNonStreamedContent(content);
+      if (animate) {
+        this.animateNonStreamedContent(content);
+      } else {
+        // Directly set the content without animation
+        const parsedHTML = parseMarkdown(content);
+        const messageContent =
+          this.shadowRoot.querySelector(".message__content");
+        if (messageContent) {
+          messageContent.innerHTML = parsedHTML;
+          this.scrollToBottom();
+        }
+      }
     } else if (this.isStreaming && content) {
       // Initialize the streaming parser
       this.streamingParser = new StreamingMarkdownParser((htmlSegment) => {
