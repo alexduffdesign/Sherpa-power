@@ -376,6 +376,29 @@ class ChatbotUI {
     }
     this.eventBus.removeAllListeners();
   }
+
+  /**
+   * Add a user message to the UI
+   * @public
+   * @param {string} sender - The sender ('user')
+   * @param {string} message - The message content
+   */
+  addMessage(sender, message, metadata = null, fromHistory = false) {
+    const animate = sender !== "user"; // Only animate assistant messages
+    const animationSpeed = fromHistory ? 10 : undefined;
+
+    const messageComponent = this.createMessage(
+      sender,
+      message,
+      metadata,
+      animate,
+      animationSpeed,
+      false // isStreamed
+    );
+
+    this.messageContainer.appendChild(messageComponent);
+    this.scrollToBottom();
+  }
 }
 
 export default ChatbotUI;

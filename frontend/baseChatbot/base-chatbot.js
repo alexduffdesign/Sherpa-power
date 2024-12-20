@@ -2,6 +2,7 @@
 
 import EventEmitter from "eventemitter3";
 import { StreamingMarkdownParser } from "../utils/streaming-markdown-parser.js"; // Ensure correct path
+import { parseMarkdown } from "../utils/markdown-util.js"; // Import parseMarkdown
 
 /**
  * ChatbotCore Class
@@ -262,7 +263,7 @@ class ChatbotCore {
         // Emit finalMessage with the full combined content (for history or fallback)
         // full parsed HTML can be re-assembled from the partialMessage events if needed,
         // or just store the raw markdown in currentCompletion and parse once more here for the final:
-        const finalHTML = window.marked(this.currentCompletion);
+        const finalHTML = parseMarkdown(this.currentCompletion); // Use parseMarkdown instead of window.marked
         this.eventBus.emit("finalMessage", {
           content: finalHTML,
           isStreamed: true,

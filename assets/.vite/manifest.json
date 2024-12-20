@@ -1,14 +1,14 @@
 {
-  "_streaming-markdown-parser.DIrdmlP7.js": {
-    "file": "streaming-markdown-parser.DIrdmlP7.js",
-    "name": "streaming-markdown-parser"
+  "_markdown-util.B3nWrKld.js": {
+    "file": "markdown-util.B3nWrKld.js",
+    "name": "markdown-util"
   },
   "_vendor.DqvJXvYX.js": {
     "file": "vendor.DqvJXvYX.js",
     "name": "vendor"
   },
   "frontend/baseChatbot/base-chatbot-ui.js": {
-    "file": "base-chatbot-ui.vaTv-FDm.js",
+    "file": "base-chatbot-ui.CkmkiYL3.js",
     "name": "base-chatbot-ui",
     "src": "frontend/baseChatbot/base-chatbot-ui.js",
     "isEntry": true,
@@ -17,22 +17,22 @@
     ]
   },
   "frontend/baseChatbot/base-chatbot.js": {
-    "file": "base-chatbot.LSQ8LDsB.js",
+    "file": "base-chatbot.CXOZih7K.js",
     "name": "base-chatbot",
     "src": "frontend/baseChatbot/base-chatbot.js",
     "isEntry": true,
     "imports": [
       "_vendor.DqvJXvYX.js",
-      "_streaming-markdown-parser.DIrdmlP7.js"
+      "_markdown-util.B3nWrKld.js"
     ]
   },
   "frontend/components/ui/chatbot-components.js": {
-    "file": "chatbot-components.CXMua56W.js",
+    "file": "chatbot-components.Cq3WD3Pv.js",
     "name": "chatbot-components",
     "src": "frontend/components/ui/chatbot-components.js",
     "isEntry": true,
     "imports": [
-      "_streaming-markdown-parser.DIrdmlP7.js"
+      "_markdown-util.B3nWrKld.js"
     ]
   },
   "frontend/entrypoints/chatbot-core-file.js": {
@@ -51,7 +51,7 @@
     "isEntry": true
   },
   "frontend/mainChatbot/chatbot-main-ui.js": {
-    "file": "chatbot-main-ui.CCsg8jPj.js",
+    "file": "chatbot-main-ui.C4YHz2qr.js",
     "name": "chatbot-main-ui",
     "src": "frontend/mainChatbot/chatbot-main-ui.js",
     "isEntry": true,
@@ -61,7 +61,7 @@
     ]
   },
   "frontend/mainChatbot/chatbot-main.js": {
-    "file": "chatbot-main.BnWmRGqh.js",
+    "file": "chatbot-main.Fz-mN-dM.js",
     "name": "chatbot-main",
     "src": "frontend/mainChatbot/chatbot-main.js",
     "isEntry": true,
@@ -69,12 +69,12 @@
       "frontend/baseChatbot/base-chatbot.js",
       "frontend/mainChatbot/chatbot-main-ui.js",
       "_vendor.DqvJXvYX.js",
-      "_streaming-markdown-parser.DIrdmlP7.js",
+      "_markdown-util.B3nWrKld.js",
       "frontend/baseChatbot/base-chatbot-ui.js"
     ]
   },
   "frontend/sectionChatbot/chatbot-section-ui.js": {
-    "file": "chatbot-section-ui.D2zikUoB.js",
+    "file": "chatbot-section-ui.BtPqo72D.js",
     "name": "chatbot-section-ui",
     "src": "frontend/sectionChatbot/chatbot-section-ui.js",
     "isEntry": true,
@@ -84,7 +84,7 @@
     ]
   },
   "frontend/sectionChatbot/chatbot-section.js": {
-    "file": "chatbot-section.Bt5s_TqC.js",
+    "file": "chatbot-section.D2gmaj6g.js",
     "name": "chatbot-section",
     "src": "frontend/sectionChatbot/chatbot-section.js",
     "isEntry": true,
@@ -92,7 +92,7 @@
       "frontend/baseChatbot/base-chatbot.js",
       "frontend/sectionChatbot/chatbot-section-ui.js",
       "_vendor.DqvJXvYX.js",
-      "_streaming-markdown-parser.DIrdmlP7.js",
+      "_markdown-util.B3nWrKld.js",
       "frontend/baseChatbot/base-chatbot-ui.js"
     ]
   }
