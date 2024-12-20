@@ -1,6 +1,7 @@
 // /assets/scripts/chatbot/core/base-chatbot-ui.js
 
 import EventEmitter from "eventemitter3";
+import { animateText } from "../utils/animation-util.js";
 
 /**
  * ChatbotUI Class
@@ -150,63 +151,9 @@ class ChatbotUI {
     const messageContentElement =
       message.shadowRoot.querySelector(".message__content");
     if (messageContentElement) {
-      this.animateText(messageContentElement, content);
-    }
-  }
-
-  animateText(element, text, animationSpeed = 15) {
-    return new Promise((resolve) => {
-      let index = 0;
-      element.textContent = ""; // Clear existing content
-      let lastTime = performance.now();
-
-      const animate = (currentTime) => {
-        const deltaTime = currentTime - lastTime;
-        if (deltaTime >= animationSpeed) {
-          element.textContent += text[index];
-          index++;
-          this.scrollToBottom();
-          lastTime = currentTime;
-        }
-        if (index < text.length) {
-          requestAnimationFrame(animate);
-        } else {
-          resolve();
-        }
-      };
-      requestAnimationFrame(animate);
-    });
-  }
-
-  /**
-   * Handle final assistant message (complete message)
-   * @private
-   * @param {string} fullContent - The complete message content (HTML)
-   * @param {boolean} isStreamed - Indicates if the message is streamed
-   */
-  handleFinalMessage(fullContent, isStreamed) {
-    console.log("handleFinalMessage called", { fullContent, isStreamed });
-    if (this.currentAssistantMessage) {
-      // Finalize the streaming parser
-      this.currentAssistantMessage.finalizeContentAndAnimate();
-      this.currentAssistantMessage = null;
-    } else {
-      // In case finalMessage is received without a partial message
-      console.warn(
-        "handleFinalMessage called but currentAssistantMessage is null",
-        { fullContent, isStreamed }
-      );
-      // Fallback: Create and add the message without animation
-      const message = this.createMessage(
-        "assistant",
-        fullContent,
-        null,
-        false, // No character animation for fallback
-        undefined,
-        isStreamed
-      );
-      this.messageContainer.appendChild(message);
-      this.scrollToBottom();
+      animateText(messageContentElement, content, 5).then(() => {
+        this.scrollToBottom();
+      });
     }
   }
 

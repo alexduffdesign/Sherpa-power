@@ -1,4 +1,4 @@
-// animation-util.js
+// frontend/utils/animation-util.js
 export function animateText(element, text, animationSpeed = 5) {
   return new Promise((resolve) => {
     let index = 0;
