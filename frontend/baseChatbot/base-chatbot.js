@@ -150,7 +150,7 @@ class ChatbotCore {
         },
       };
       return this.sendAction(actionPayload);
-    } else if (type === "button") {
+    } else if (payload.type === "button") {
       const requestPayload = {
         action: {
           type: "button",
