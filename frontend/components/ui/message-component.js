@@ -188,6 +188,10 @@ export class MessageComponent extends HTMLElement {
           margin-top: var(--spacing-1);
           margin-bottom: var(--spacing-1);
         }
+        ul {
+        display: flex;
+        flex-direction: column;
+        }
         .message-wrapper {
           display: flex;
           align-items: flex-start;
@@ -256,6 +260,8 @@ export class MessageComponent extends HTMLElement {
 
         .message__content {
           display: flex;
+          flex-direction: column;
+          grid-gap: 0.2rem;
           font-family: inherit;
           word-break: break-word;
         }
