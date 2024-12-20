@@ -1,6 +1,7 @@
 // /assets/scripts/chatbot/core/base-chatbot.js
 
 import EventEmitter from "eventemitter3";
+import { StreamingMarkdownParser } from "../utils/streaming-markdown-parser.js"; // Ensure correct path
 
 /**
  * ChatbotCore Class
@@ -30,6 +31,15 @@ class ChatbotCore {
     this.eventBus = new EventEmitter();
     this.abortController = null;
     this.currentCompletion = null; // For handling completion events
+
+    // Initialize Streaming Markdown Parser
+    this.markdownParser = new StreamingMarkdownParser((htmlSegment) => {
+      // Emit partialMessage with stable HTML segment
+      this.eventBus.emit("partialMessage", {
+        content: htmlSegment,
+        isStreamed: true,
+      });
+    });
   }
 
   /**

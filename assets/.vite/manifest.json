@@ -1,4 +1,8 @@
 {
+  "_streaming-markdown-parser.DIrdmlP7.js": {
+    "file": "streaming-markdown-parser.DIrdmlP7.js",
+    "name": "streaming-markdown-parser"
+  },
   "_vendor.DqvJXvYX.js": {
     "file": "vendor.DqvJXvYX.js",
     "name": "vendor"
@@ -13,19 +17,23 @@
     ]
   },
   "frontend/baseChatbot/base-chatbot.js": {
-    "file": "base-chatbot.BbL6ugeG.js",
+    "file": "base-chatbot.LSQ8LDsB.js",
     "name": "base-chatbot",
     "src": "frontend/baseChatbot/base-chatbot.js",
     "isEntry": true,
     "imports": [
-      "_vendor.DqvJXvYX.js"
+      "_vendor.DqvJXvYX.js",
+      "_streaming-markdown-parser.DIrdmlP7.js"
     ]
   },
   "frontend/components/ui/chatbot-components.js": {
-    "file": "chatbot-components.78jUWuef.js",
+    "file": "chatbot-components.CXMua56W.js",
     "name": "chatbot-components",
     "src": "frontend/components/ui/chatbot-components.js",
-    "isEntry": true
+    "isEntry": true,
+    "imports": [
+      "_streaming-markdown-parser.DIrdmlP7.js"
+    ]
   },
   "frontend/entrypoints/chatbot-core-file.js": {
     "file": "chatbot-core-file.BjM46aZ2.js",
@@ -53,7 +61,7 @@
     ]
   },
   "frontend/mainChatbot/chatbot-main.js": {
-    "file": "chatbot-main.C_BoIrED.js",
+    "file": "chatbot-main.BnWmRGqh.js",
     "name": "chatbot-main",
     "src": "frontend/mainChatbot/chatbot-main.js",
     "isEntry": true,
@@ -61,6 +69,7 @@
       "frontend/baseChatbot/base-chatbot.js",
       "frontend/mainChatbot/chatbot-main-ui.js",
       "_vendor.DqvJXvYX.js",
+      "_streaming-markdown-parser.DIrdmlP7.js",
       "frontend/baseChatbot/base-chatbot-ui.js"
     ]
   },
@@ -75,7 +84,7 @@
     ]
   },
   "frontend/sectionChatbot/chatbot-section.js": {
-    "file": "chatbot-section.BCAGf6VO.js",
+    "file": "chatbot-section.Bt5s_TqC.js",
     "name": "chatbot-section",
     "src": "frontend/sectionChatbot/chatbot-section.js",
     "isEntry": true,
@@ -83,6 +92,7 @@
       "frontend/baseChatbot/base-chatbot.js",
       "frontend/sectionChatbot/chatbot-section-ui.js",
       "_vendor.DqvJXvYX.js",
+      "_streaming-markdown-parser.DIrdmlP7.js",
       "frontend/baseChatbot/base-chatbot-ui.js"
     ]
   }
