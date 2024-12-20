@@ -1,8 +1,9 @@
 // /assets/scripts/chatbot/utils/markdown-util.js
 
-// /assets/scripts/chatbot/utils/markdown-util.js
 import { marked } from "marked";
+import DOMPurify from "dompurify";
 
 export function parseMarkdown(markdown) {
-  return marked.parse(markdown);
+  const html = marked(markdown);
+  return DOMPurify.sanitize(html);
 }

@@ -232,22 +232,30 @@ class ChatbotCore {
     switch (payload.state) {
       case "start":
         this.currentCompletion = "";
+        // Initialize parser state if needed
         break;
 
       case "content":
         if (payload.content) {
+          // Instead of accumulating raw text:
           this.currentCompletion += payload.content;
-          this.eventBus.emit("partialMessage", {
-            content: payload.content,
-            isStreamed: true, // Indicate that this is a streamed message
-          });
+          // Feed the content directly into the parser
+          this.markdownParser.appendText(payload.content);
         }
         break;
 
       case "end":
+        // Parser flush
+        this.markdownParser.end();
+
+        // Now we have streamed all segments. The UI got them as partialMessage events.
+        // Emit finalMessage with the full combined content (for history or fallback)
+        // full parsed HTML can be re-assembled from the partialMessage events if needed,
+        // or just store the raw markdown in currentCompletion and parse once more here for the final:
+        const finalHTML = window.marked(this.currentCompletion);
         this.eventBus.emit("finalMessage", {
-          content: this.currentCompletion,
-          isStreamed: true, // Indicate that this is a streamed message
+          content: finalHTML,
+          isStreamed: true,
         });
         this.currentCompletion = null;
         break;

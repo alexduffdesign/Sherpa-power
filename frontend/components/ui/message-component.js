@@ -1,17 +1,17 @@
 // /assets/scripts/chatbot/components/message-component.js
 
 import { parseMarkdown } from "../../utils/markdown-util.js";
+import { StreamingMarkdownParser } from "../../utils/streaming-markdown-parser.js";
 
 export class MessageComponent extends HTMLElement {
   constructor() {
     super();
     this.attachShadow({ mode: "open" });
     this.isStreaming = false;
-    this.rawChunks = []; // Store chunks with Markdown for streaming
-    this.interimText = ""; // Store cleaned text for interim display during streaming
     this.animationFrameId = null; // For character-by-character animation
-    this.defaultAnimationSpeed = 15;
+    this.defaultAnimationSpeed = 15; // ms per character
     this.currentAnimationSpeed = this.defaultAnimationSpeed;
+    this.streamingParser = null;
   }
 
   connectedCallback() {
@@ -22,6 +22,12 @@ export class MessageComponent extends HTMLElement {
 
     if (!this.isStreaming && content) {
       this.animateNonStreamedContent(content);
+    } else if (this.isStreaming && content) {
+      // Initialize the streaming parser
+      this.streamingParser = new StreamingMarkdownParser((htmlSegment) => {
+        this.appendHTMLContent(htmlSegment);
+      });
+      this.streamingParser.appendText(content);
     }
   }
 
@@ -31,72 +37,41 @@ export class MessageComponent extends HTMLElement {
    */
   appendContent(newChunk) {
     console.log("appendContent:", newChunk);
-    this.isStreaming = true;
-    this.rawChunks.push(newChunk);
-    this.interimText += newChunk; // Keep newlines and whitespace for interim display
-    this.updateInterimDisplay();
-  }
-
-  /**
-   * Removes basic markdown syntax for interim display.
-   * @param {string} text - The text to clean.
-   * @returns {string} - The cleaned text.
-   */
-  cleanMarkdown(text) {
-    return text
-      .replace(/^(#+)\s/gm, "") // Remove headings
-      .replace(/(\*\*|__)(.*?)\1/g, "$2") // Remove bold
-      .replace(/(\*|_)(.*?)\1/g, "$2") // Remove italics
-      .replace(/^([-+*])\s/gm, "") // Remove list markers
-      .replace(/`([^`]*)`/g, "$1") // Remove inline code
-      .trim();
-  }
-
-  /**
-   * Updates the displayed message content with the cleaned interim text for streaming.
-   */
-  updateInterimDisplay() {
-    const messageContent = this.shadowRoot.querySelector(".message__content");
-    if (messageContent) {
-      messageContent.textContent = this.cleanMarkdown(this.interimText);
+    if (this.streamingParser) {
+      this.streamingParser.appendText(newChunk);
+    } else {
+      // Fallback to simple markdown parsing if parser isn't initialized
+      const html = parseMarkdown(newChunk);
+      this.appendHTMLContent(html);
     }
   }
 
   /**
-   * Finalizes the content of a streamed message by parsing markdown and animating the transition.
+   * Append HTML content directly to the message.
+   * @param {string} htmlSegment - The HTML segment to append.
+   */
+  appendHTMLContent(htmlSegment) {
+    const messageContent = this.shadowRoot.querySelector(".message__content");
+    if (messageContent) {
+      const tempDiv = document.createElement("div");
+      tempDiv.innerHTML = htmlSegment;
+      // Append child nodes to messageContent
+      while (tempDiv.firstChild) {
+        messageContent.appendChild(tempDiv.firstChild);
+      }
+      this.scrollToBottom();
+    }
+  }
+
+  /**
+   * Finalizes the content of a streamed message by parsing remaining markdown and updating the UI.
    */
   finalizeContentAndAnimate() {
     console.log("finalizeContentAndAnimate called");
-    const messageContent = this.shadowRoot.querySelector(".message__content");
-    const messageElement = this.shadowRoot.querySelector(".message"); // Get the .message element
-    if (messageContent && messageElement) {
-      const fullMarkdown = this.rawChunks.join("");
-      console.log("Full Markdown:", fullMarkdown);
-      const finalHTML = parseMarkdown(fullMarkdown);
-      console.log("Final HTML:", finalHTML);
-
-      // Animate the transition
-      this.animateBlockTransition(messageElement, messageContent, finalHTML); // Pass both elements
+    if (this.streamingParser) {
+      this.streamingParser.end();
+      this.streamingParser = null;
     }
-  }
-
-  /**
-   * Animates the transition from interim text to final HTML content for streamed messages.
-   * @param {HTMLElement} messageElement - The .message element to fade.
-   * @param {HTMLElement} contentElement - The .message__content element to update.
-   * @param {string} finalHTML - The final HTML content to display.
-   */
-  animateBlockTransition(messageElement, contentElement, finalHTML) {
-    messageElement.classList.add("fade-out");
-    messageElement.addEventListener(
-      "transitionend",
-      () => {
-        contentElement.innerHTML = finalHTML; // Update the content
-        messageElement.classList.remove("fade-out");
-        messageElement.classList.add("fade-in");
-      },
-      { once: true }
-    );
   }
 
   /**
@@ -375,7 +350,9 @@ export class MessageComponent extends HTMLElement {
       <div class="message-wrapper message-wrapper--${sender}">
         ${isAssistant ? `<div class="assistant-icon">🤖</div>` : ""}
         <div class="message message--${sender}">
-          <div class="message__content"></div>
+          <div class="message__content">${
+            this.isStreaming ? "" : parseMarkdown(content)
+          }</div>
         </div>
       </div>
     `;
@@ -397,6 +374,10 @@ export class MessageComponent extends HTMLElement {
   disconnectedCallback() {
     if (this.animationFrameId) {
       cancelAnimationFrame(this.animationFrameId);
+    }
+    if (this.streamingParser) {
+      this.streamingParser.end();
+      this.streamingParser = null;
     }
   }
 }

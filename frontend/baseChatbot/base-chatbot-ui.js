@@ -1,7 +1,6 @@
 // /assets/scripts/chatbot/core/base-chatbot-ui.js
 
 import EventEmitter from "eventemitter3";
-import { parseMarkdown } from "../utils/markdown-util.js";
 
 /**
  * ChatbotUI Class
@@ -27,7 +26,6 @@ class ChatbotUI {
     this.type = config.type;
 
     this.currentAssistantMessage = null; // Track the current assistant message
-    this.accumulatedContent = ""; // For accumulating partial messages
 
     this.setupUIElements();
     this.setupEventListeners();
@@ -128,14 +126,13 @@ class ChatbotUI {
     // Reset current assistant message on end
     this.eventBus.on("end", () => {
       this.currentAssistantMessage = null;
-      this.accumulatedContent = "";
     });
   }
 
   /**
    * Handle assistant messages with markdown support
    * @private
-   * @param {string} content - The raw markdown message content
+   * @param {string} content - The raw markdown message content or HTML segments
    * @param {Object} metadata - Optional metadata
    * @param {boolean} isStreamed - Indicates if the message is streamed
    */
@@ -161,80 +158,59 @@ class ChatbotUI {
   /**
    * Handle partial assistant messages (streamed content)
    * @private
-   * @param {string} content - Partial message content
+   * @param {string} content - Partial HTML content
    * @param {boolean} isStreamed - Indicates if the message is streamed
    */
   handlePartialMessage(content, isStreamed) {
-    this.accumulatedContent += content;
-
-    // Check for sentence-ending punctuation
-    const sentenceEndRegex = /([.!?;]\s)|(\n)/;
-    const match = this.accumulatedContent.match(sentenceEndRegex);
-
-    if (match) {
-      const sentenceEndIndex = match.index + match[0].length;
-      const completeSentence = this.accumulatedContent
-        .slice(0, sentenceEndIndex)
-        .trim();
-      const remaining = this.accumulatedContent.slice(sentenceEndIndex).trim();
-
-      if (this.currentAssistantMessage) {
-        // Append complete sentence to the current message
-        this.currentAssistantMessage.appendContent(completeSentence);
-      } else {
-        // Create a new assistant message component with animation if not streamed
-        this.currentAssistantMessage = this.createMessage(
-          "assistant",
-          completeSentence,
-          null,
-          !isStreamed, // animate only if not streamed
-          undefined, // default animation speed
-          isStreamed
-        );
-        this.messageContainer.appendChild(this.currentAssistantMessage);
-      }
-
-      this.accumulatedContent = remaining;
-      this.scrollToBottom();
-    } else {
-      // No sentence boundary yet, append as is with animation if not streamed
-      if (this.currentAssistantMessage) {
-        this.currentAssistantMessage.appendContent(content);
-      } else {
-        this.currentAssistantMessage = this.createMessage(
-          "assistant",
-          content,
-          null,
-          !isStreamed, // animate only if not streamed
-          undefined, // default animation speed
-          isStreamed
-        );
-        this.messageContainer.appendChild(this.currentAssistantMessage);
-      }
-      this.scrollToBottom();
+    if (!this.currentAssistantMessage) {
+      // Create a message in streaming mode
+      this.currentAssistantMessage = this.createMessage(
+        "assistant",
+        "",
+        null,
+        false, // No character animation for streaming partial updates
+        undefined,
+        true // isStreamed
+      );
+      this.messageContainer.appendChild(this.currentAssistantMessage);
     }
+
+    // Append the stable HTML segment directly
+    this.currentAssistantMessage.appendHTMLContent(content);
+    this.scrollToBottom();
   }
 
   /**
    * Handle final assistant message (complete message)
    * @private
-   * @param {string} fullContent - The complete message content
+   * @param {string} fullContent - The complete message content (HTML)
    * @param {boolean} isStreamed - Indicates if the message is streamed
    */
   handleFinalMessage(fullContent, isStreamed) {
+    console.log("handleFinalMessage called", { fullContent, isStreamed });
     if (this.currentAssistantMessage) {
-      // Append the remaining content
-      this.currentAssistantMessage.appendContent(fullContent);
+      // Finalize the streaming parser
+      this.currentAssistantMessage.finalizeContentAndAnimate();
       this.currentAssistantMessage = null;
-      this.accumulatedContent = "";
-      this.scrollToBottom();
+
+      // Emit the final content for history
+      this.eventBus.emit("messageReceived", {
+        content: fullContent,
+        metadata: null,
+        isStreamed: true,
+      });
     } else {
       // In case finalMessage is received without a partial message
+      console.warn(
+        "handleFinalMessage called but currentAssistantMessage is null",
+        { fullContent, isStreamed }
+      );
+      // Fallback: Create and add the message without animation
       const message = this.createMessage(
         "assistant",
         fullContent,
         null,
-        !isStreamed, // animate only if not streamed
+        false, // No character animation for fallback
         undefined,
         isStreamed
       );
@@ -242,11 +218,12 @@ class ChatbotUI {
       this.scrollToBottom();
     }
   }
+
   /**
    * Create a message component
    * @private
    * @param {string} sender - The sender of the message ('user' or 'assistant')
-   * @param {string} content - The raw markdown message content
+   * @param {string} content - The raw markdown message content or HTML segments
    * @param {Object} metadata - Optional metadata for the message
    * @param {boolean} animate - Whether to animate the message
    * @param {number} [animationSpeed] - Optional animation speed in ms per character
@@ -284,121 +261,6 @@ class ChatbotUI {
     }
 
     return message;
-  }
-
-  /**
-   * Add a message to the chat using the message-component
-   * @public
-   * @param {string} sender - The sender of the message ('user' or 'assistant')
-   * @param {string} content - The raw markdown message content
-   * @param {Object} metadata - Optional metadata for the message
-   * @param {boolean} fromHistory - Indicates if the message is loaded from history
-   * @param {boolean} isStreamed - Indicates if the message is streamed via completion events
-   * @param {number} [animationSpeed] - Optional animation speed in ms per character
-   */
-  addMessage(
-    sender,
-    content,
-    metadata = null,
-    fromHistory = false,
-    isStreamed = false,
-    animationSpeed = undefined
-  ) {
-    console.log(
-      `addMessage called with sender=${sender}, content=${content}, metadata=`,
-      metadata,
-      `, fromHistory=${fromHistory}, isStreamed=${isStreamed}, animationSpeed=${animationSpeed}`
-    );
-
-    if (sender === "assistant") {
-      // Determine if the message is streamed
-      const animate = !isStreamed && !fromHistory;
-      const speed = isStreamed
-        ? undefined // No animation
-        : fromHistory
-        ? 10
-        : animationSpeed;
-
-      const message = this.createMessage(
-        "assistant",
-        content,
-        metadata,
-        animate,
-        speed,
-        isStreamed
-      );
-      this.messageContainer.appendChild(message);
-
-      if (isStreamed) {
-        // For streamed messages, append content directly
-        message.appendContent(content);
-      }
-
-      this.scrollToBottom();
-    } else if (sender === "user") {
-      // For user messages, determine if it's from history or a new message
-      const animate = !fromHistory;
-      const speed = animationSpeed || (fromHistory ? 10 : undefined);
-
-      const message = this.createMessage(
-        sender,
-        content,
-        metadata,
-        animate,
-        speed,
-        isStreamed
-      );
-      this.messageContainer.appendChild(message);
-      this.scrollToBottom();
-    }
-  }
-
-  handlePartialMessage(content, isStreamed) {
-    // If there is no current assistant message, create one
-    if (!this.currentAssistantMessage) {
-      this.currentAssistantMessage = this.createMessage(
-        "assistant",
-        "", // Start with empty content
-        null,
-        false, // Do not animate character by character
-        undefined,
-        true // isStreamed
-      );
-      this.messageContainer.appendChild(this.currentAssistantMessage);
-    }
-    this.currentAssistantMessage.appendContent(content);
-    this.scrollToBottom();
-  }
-
-  /**
-   * Handle final assistant message (complete message)
-   * @private
-   * @param {string} fullContent - The complete message content
-   * @param {boolean} isStreamed - Indicates if the message is streamed
-   */
-  handleFinalMessage(fullContent, isStreamed) {
-    console.log("handleFinalMessage called", { fullContent, isStreamed });
-    if (this.currentAssistantMessage) {
-      this.currentAssistantMessage.finalizeContentAndAnimate();
-      this.currentAssistantMessage = null;
-      this.accumulatedContent = "";
-    } else {
-      console.warn(
-        "handleFinalMessage called but currentAssistantMessage is null",
-        { fullContent, isStreamed }
-      );
-      // Fallback: Create and add the message without animation
-      const message = this.createMessage(
-        "assistant",
-        fullContent,
-        null,
-        false, // No character animation for fallback
-        undefined,
-        isStreamed
-      );
-      this.messageContainer.appendChild(message);
-    }
-    this.scrollToBottom();
   }
 
   /**
