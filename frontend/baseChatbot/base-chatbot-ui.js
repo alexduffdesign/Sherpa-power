@@ -220,43 +220,15 @@ class ChatbotUI {
   }
 
   /**
-   * Add a message to the UI
-   * @public
-   * @param {string} sender - The sender ('user' or 'assistant')
-   * @param {string} message - The message content (raw markdown)
-   * @param {Object} [metadata=null] - Optional metadata
-   * @param {boolean} [fromHistory=false] - Indicates if the message is loaded from history
-   * @param {boolean} [isStreamed=false] - Indicates if the message is streamed (assistant completion)
-   * @param {number} [animationSpeed] - Optional animation speed for character-by-character animation
-   */
-  addMessage(
-    sender,
-    message,
-    metadata = null,
-    fromHistory = false,
-    isStreamed = false,
-    animationSpeed = undefined
-  ) {
-    const animate = sender === "assistant" && !isStreamed && !fromHistory;
-    // Only assistant, non-streamed, non-history messages should animate
-
-    const messageComponent = this.createMessage(
-      sender,
-      message,
-      metadata,
-      animate,
-      animationSpeed,
-      isStreamed,
-      fromHistory
-    );
-
-    this.messageContainer.appendChild(messageComponent);
-    this.scrollToBottom();
-  }
-
-  /**
    * Create a message component
    * @private
+   * @param {string} sender - The sender of the message ('user' or 'assistant')
+   * @param {string} content - The raw markdown message content or HTML segments
+   * @param {Object} metadata - Optional metadata for the message
+   * @param {boolean} animate - Whether to animate the message
+   * @param {number} [animationSpeed] - Optional animation speed in ms per character
+   * @param {boolean} isStreamed - Indicates if the message is streamed
+   * @returns {MessageComponent} The created message component
    */
   createMessage(
     sender,
@@ -264,31 +236,27 @@ class ChatbotUI {
     metadata = null,
     animate = true,
     animationSpeed,
-    isStreamed = false,
-    fromHistory = false
+    isStreamed = false
   ) {
     const message = document.createElement("message-component");
     message.eventBus = this.eventBus;
     message.setAttribute("sender", sender);
-    message.setAttribute("content", content);
+    message.setAttribute("content", content); // Set initial content
 
     if (isStreamed) {
-      message.setAttribute("streaming", "");
-    }
-
-    if (fromHistory) {
-      message.setAttribute("fromhistory", "");
+      message.setAttribute("streaming", ""); // Add the streaming attribute
     }
 
     if (metadata) {
       message.setAttribute("metadata", JSON.stringify(metadata));
     }
 
+    // Set data attributes for animation
     if (!animate) {
       message.setAttribute("data-animate", "false");
     }
 
-    if (animationSpeed !== undefined) {
+    if (animationSpeed) {
       message.setAttribute("data-animation-speed", animationSpeed.toString());
     }
 
@@ -407,6 +375,29 @@ class ChatbotUI {
       this.abortController.abort();
     }
     this.eventBus.removeAllListeners();
+  }
+
+  /**
+   * Add a user message to the UI
+   * @public
+   * @param {string} sender - The sender ('user')
+   * @param {string} message - The message content
+   */
+  addMessage(sender, message, metadata = null, fromHistory = false) {
+    const animate = sender !== "user"; // Only animate assistant messages
+    const animationSpeed = fromHistory ? 10 : undefined;
+
+    const messageComponent = this.createMessage(
+      sender,
+      message,
+      metadata,
+      animate,
+      animationSpeed,
+      false // isStreamed
+    );
+
+    this.messageContainer.appendChild(messageComponent);
+    this.scrollToBottom();
   }
 }
 
