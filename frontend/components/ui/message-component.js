@@ -194,7 +194,7 @@ export class MessageComponent extends HTMLElement {
         }
         .message-wrapper {
           display: flex;
-          align-items: flex-start;
+          align-items: flex-end;
           width: 100%;
           margin-bottom: var(--spacing-6);
           gap: var(--spacing-2);
