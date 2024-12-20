@@ -121,7 +121,13 @@ class ChatbotCore {
 
   setupInteractiveElementHandling() {
     this.eventBus.on("interactiveElementClicked", (payload) => {
-      const userMessage = payload.label || "Button clicked";
+      // Check if payload has a label, if not, try to get it from the action payload (for choice buttons)
+      const userMessage =
+        payload.label ||
+        (payload.action &&
+          payload.action.payload &&
+          payload.action.payload.name) ||
+        "Button clicked";
       this.eventBus.emit("userMessage", userMessage); // Emit userMessage for UI update
       this.handleInteractiveElementAction(payload, userMessage);
     });
@@ -158,6 +164,9 @@ class ChatbotCore {
         },
       };
       this.core.sendAction(requestPayload);
+    } else if (payload.action) {
+      // Handle carousel button clicks
+      return this.sendAction({ action: payload.action });
     } else {
       // Fallback to just sending userMessage as text if unknown
       const requestPayload = {
