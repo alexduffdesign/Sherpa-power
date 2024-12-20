@@ -242,7 +242,6 @@ class ChatbotUI {
       this.scrollToBottom();
     }
   }
-
   /**
    * Create a message component
    * @private
@@ -265,7 +264,11 @@ class ChatbotUI {
     const message = document.createElement("message-component");
     message.eventBus = this.eventBus;
     message.setAttribute("sender", sender);
-    message.setAttribute("content", content);
+    message.setAttribute("content", content); // Set initial content
+
+    if (isStreamed) {
+      message.setAttribute("streaming", ""); // Add the streaming attribute
+    }
 
     if (metadata) {
       message.setAttribute("metadata", JSON.stringify(metadata));
@@ -316,29 +319,21 @@ class ChatbotUI {
         ? 10
         : animationSpeed;
 
+      const message = this.createMessage(
+        "assistant",
+        content,
+        metadata,
+        animate,
+        speed,
+        isStreamed
+      );
+      this.messageContainer.appendChild(message);
+
       if (isStreamed) {
-        // For streamed messages, set data-animate="false" to disable animation
-        const message = this.createMessage(
-          "assistant",
-          content,
-          metadata,
-          false, // animate
-          animationSpeed,
-          isStreamed
-        );
-        this.messageContainer.appendChild(message);
-      } else {
-        // For static messages, animate as before
-        const message = this.createMessage(
-          "assistant",
-          content,
-          metadata,
-          animate,
-          speed,
-          isStreamed
-        );
-        this.messageContainer.appendChild(message);
+        // For streamed messages, append content directly
+        message.appendContent(content);
       }
+
       this.scrollToBottom();
     } else if (sender === "user") {
       // For user messages, determine if it's from history or a new message

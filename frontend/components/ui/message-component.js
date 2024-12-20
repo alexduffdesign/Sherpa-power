@@ -58,7 +58,7 @@ export class MessageComponent extends HTMLElement {
   updateInterimDisplay() {
     const messageContent = this.shadowRoot.querySelector(".message__content");
     if (messageContent) {
-      messageContent.textContent = this.cleanMarkdown(this.interimText); // Clean just before display
+      messageContent.textContent = this.cleanMarkdown(this.interimText);
     }
   }
 
@@ -68,30 +68,32 @@ export class MessageComponent extends HTMLElement {
   finalizeContentAndAnimate() {
     console.log("finalizeContentAndAnimate called");
     const messageContent = this.shadowRoot.querySelector(".message__content");
-    if (messageContent) {
+    const messageElement = this.shadowRoot.querySelector(".message"); // Get the .message element
+    if (messageContent && messageElement) {
       const fullMarkdown = this.rawChunks.join("");
       console.log("Full Markdown:", fullMarkdown);
       const finalHTML = parseMarkdown(fullMarkdown);
       console.log("Final HTML:", finalHTML);
 
       // Animate the transition
-      this.animateBlockTransition(messageContent, finalHTML);
+      this.animateBlockTransition(messageElement, messageContent, finalHTML); // Pass both elements
     }
   }
 
   /**
    * Animates the transition from interim text to final HTML content for streamed messages.
-   * @param {HTMLElement} element - The element containing the text.
+   * @param {HTMLElement} messageElement - The .message element to fade.
+   * @param {HTMLElement} contentElement - The .message__content element to update.
    * @param {string} finalHTML - The final HTML content to display.
    */
-  animateBlockTransition(element, finalHTML) {
-    element.classList.add("fade-out");
-    element.addEventListener(
+  animateBlockTransition(messageElement, contentElement, finalHTML) {
+    messageElement.classList.add("fade-out");
+    messageElement.addEventListener(
       "transitionend",
       () => {
-        element.innerHTML = finalHTML;
-        element.classList.remove("fade-out");
-        element.classList.add("fade-in");
+        contentElement.innerHTML = finalHTML; // Update the content
+        messageElement.classList.remove("fade-out");
+        messageElement.classList.add("fade-in");
       },
       { once: true }
     );
