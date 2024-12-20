@@ -118,6 +118,7 @@ class ChatbotUI {
     // Reset current assistant message on end
     this.eventBus.on("end", () => {
       this.currentAssistantMessage = null;
+      this.hideTypingIndicator();
     });
   }
 
@@ -148,11 +149,13 @@ class ChatbotUI {
     );
     this.messageContainer.appendChild(message);
     this.scrollToBottom();
+    this.showTypingIndicator();
     const messageContentElement =
       message.shadowRoot.querySelector(".message__content");
     if (messageContentElement) {
       animateText(messageContentElement, content, 5).then(() => {
         this.scrollToBottom();
+        this.hideTypingIndicator();
       });
     }
   }
