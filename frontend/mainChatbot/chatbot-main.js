@@ -125,6 +125,15 @@ class MainChatbot {
       });
     });
 
+    this.core.eventBus.on("interactiveElementClicked", (payload) => {
+      const userMessage =
+        payload.label ||
+        payload.payload?.label ||
+        payload.payload?.text ||
+        "Button clicked";
+      this.saveToHistory("user", userMessage);
+    });
+
     // Handle main menu
     this.core.eventBus.on("mainMenu", () => {
       const userMessage = "Main menu";

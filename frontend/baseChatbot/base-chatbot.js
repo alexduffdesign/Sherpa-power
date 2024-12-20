@@ -150,8 +150,23 @@ class ChatbotCore {
         },
       };
       return this.sendAction(actionPayload);
+    } else if (type === "button") {
+      const requestPayload = {
+        action: {
+          type: "button",
+          payload: actionData,
+        },
+      };
+      this.core.sendAction(requestPayload);
     } else {
-      return this.sendMessage(userMessage);
+      // Fallback to just sending userMessage as text if unknown
+      const requestPayload = {
+        request: {
+          type: "text",
+          payload: userMessage,
+        },
+      };
+      this.core.sendAction(requestPayload);
     }
   }
 
