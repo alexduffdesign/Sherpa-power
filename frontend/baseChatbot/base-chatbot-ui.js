@@ -83,32 +83,23 @@ class ChatbotUI {
       }
     });
 
-    // Listen for chatbot events and update the UI accordingly
-    this.eventBus.on("messageReceived", ({ content, metadata, isStreamed }) => {
-      console.log(
-        "UI received messageReceived event:",
-        content,
-        metadata,
-        isStreamed
-      );
-      this.handleAssistantMessage(content, metadata, isStreamed);
+    // Handle button clicks
+    this.eventBus.on("buttonClicked", (payload) => {
+      this.eventBus.emit("userMessage", payload);
+      this.removeInteractiveElements();
     });
 
-    // Listen for partial and final messages
-    this.eventBus.on("partialMessage", ({ content, isStreamed }) => {
-      this.handlePartialMessage(content, isStreamed);
+    this.eventBus.on("carouselButtonClicked", (payload) => {
+      this.eventBus.emit("userMessage", payload);
+      this.removeInteractiveElements();
     });
 
-    this.eventBus.on("finalMessage", ({ content, isStreamed }) => {
-      this.handleFinalMessage(content, isStreamed);
+    this.eventBus.on("assistantMessageStreamed", ({ content }) => {
+      this.handleAssistantStreamedMessage(content);
     });
 
-    this.eventBus.on("typing", ({ isTyping }) => {
-      if (isTyping) {
-        this.showTypingIndicator();
-      } else {
-        this.hideTypingIndicator();
-      }
+    this.eventBus.on("assistantMessageNonStreamed", ({ content, metadata }) => {
+      this.handleAssistantNonStreamedMessage(content, metadata);
     });
 
     this.eventBus.on("error", ({ message }) => {
@@ -129,60 +120,62 @@ class ChatbotUI {
     });
   }
 
-  /**
-   * Handle assistant messages with markdown support
-   * @private
-   * @param {string} content - The raw markdown message content or HTML segments
-   * @param {Object} metadata - Optional metadata
-   * @param {boolean} isStreamed - Indicates if the message is streamed
-   */
-  handleAssistantMessage(content, metadata, isStreamed) {
-    // Determine if the message is loaded from history
-    const isFromHistory = metadata && metadata.fromHistory;
-    const animate = !isStreamed && !isFromHistory;
-    // Correction: 'sender' is not defined here. It should be 'assistant' by context.
-
-    const shouldAnimate = !isStreamed && !isFromHistory;
-
-    // Only add message if it's not streamed and not from history
-    if (shouldAnimate) {
-      // Create the message component with appropriate animation settings
-      const message = this.createMessage(
-        "assistant",
-        content,
-        metadata,
-        shouldAnimate,
-        undefined,
-        isStreamed
-      );
-      this.messageContainer.appendChild(message);
-      this.scrollToBottom();
-    }
-  }
-
-  /**
-   * Handle partial assistant messages (streamed content)
-   * @private
-   * @param {string} content - Partial HTML content
-   * @param {boolean} isStreamed - Indicates if the message is streamed
-   */
-  handlePartialMessage(content, isStreamed) {
+  handleAssistantStreamedMessage(content) {
     if (!this.currentAssistantMessage) {
-      // Create a message in streaming mode
       this.currentAssistantMessage = this.createMessage(
         "assistant",
         "",
         null,
-        false, // No animation for streamed messages
+        false,
         undefined,
-        true // isStreamed
+        true
       );
       this.messageContainer.appendChild(this.currentAssistantMessage);
     }
-
-    // Append the stable HTML segment directly
     this.currentAssistantMessage.appendHTMLContent(content);
     this.scrollToBottom();
+  }
+
+  handleAssistantNonStreamedMessage(content, metadata) {
+    const message = this.createMessage(
+      "assistant",
+      content,
+      metadata,
+      true,
+      undefined,
+      false
+    );
+    this.messageContainer.appendChild(message);
+    this.scrollToBottom();
+    const messageContentElement =
+      message.shadowRoot.querySelector(".message__content");
+    if (messageContentElement) {
+      this.animateText(messageContentElement, content);
+    }
+  }
+
+  animateText(element, text, animationSpeed = 15) {
+    return new Promise((resolve) => {
+      let index = 0;
+      element.textContent = ""; // Clear existing content
+      let lastTime = performance.now();
+
+      const animate = (currentTime) => {
+        const deltaTime = currentTime - lastTime;
+        if (deltaTime >= animationSpeed) {
+          element.textContent += text[index];
+          index++;
+          this.scrollToBottom();
+          lastTime = currentTime;
+        }
+        if (index < text.length) {
+          requestAnimationFrame(animate);
+        } else {
+          resolve();
+        }
+      };
+      requestAnimationFrame(animate);
+    });
   }
 
   /**

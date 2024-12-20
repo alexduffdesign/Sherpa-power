@@ -8,7 +8,7 @@
     "name": "vendor"
   },
   "frontend/baseChatbot/base-chatbot-ui.js": {
-    "file": "base-chatbot-ui.DjR9HEd9.js",
+    "file": "base-chatbot-ui.Cq6cmR_Q.js",
     "name": "base-chatbot-ui",
     "src": "frontend/baseChatbot/base-chatbot-ui.js",
     "isEntry": true,
@@ -17,7 +17,7 @@
     ]
   },
   "frontend/baseChatbot/base-chatbot.js": {
-    "file": "base-chatbot.Cqp4dz7_.js",
+    "file": "base-chatbot.BZ6WFaNy.js",
     "name": "base-chatbot",
     "src": "frontend/baseChatbot/base-chatbot.js",
     "isEntry": true,
@@ -51,7 +51,7 @@
     "isEntry": true
   },
   "frontend/mainChatbot/chatbot-main-ui.js": {
-    "file": "chatbot-main-ui.CSskLQwP.js",
+    "file": "chatbot-main-ui.BI0bjl2X.js",
     "name": "chatbot-main-ui",
     "src": "frontend/mainChatbot/chatbot-main-ui.js",
     "isEntry": true,
@@ -61,7 +61,7 @@
     ]
   },
   "frontend/mainChatbot/chatbot-main.js": {
-    "file": "chatbot-main.BX9IhYuv.js",
+    "file": "chatbot-main.jGaqdyOW.js",
     "name": "chatbot-main",
     "src": "frontend/mainChatbot/chatbot-main.js",
     "isEntry": true,
@@ -74,7 +74,7 @@
     ]
   },
   "frontend/sectionChatbot/chatbot-section-ui.js": {
-    "file": "chatbot-section-ui.BuQvpEgm.js",
+    "file": "chatbot-section-ui.CJrElr80.js",
     "name": "chatbot-section-ui",
     "src": "frontend/sectionChatbot/chatbot-section-ui.js",
     "isEntry": true,
@@ -84,7 +84,7 @@
     ]
   },
   "frontend/sectionChatbot/chatbot-section.js": {
-    "file": "chatbot-section.CfcH5bmu.js",
+    "file": "chatbot-section.FcrOM1ty.js",
     "name": "chatbot-section",
     "src": "frontend/sectionChatbot/chatbot-section.js",
     "isEntry": true,

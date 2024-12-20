@@ -70,18 +70,45 @@ class MainChatbot {
       this.core.sendMessage(message);
     });
 
-    // Handle bot messages (non-streamed)
-    this.core.eventBus.on("messageReceived", ({ content, metadata }) => {
-      this.saveToHistory("assistant", content, metadata);
-    });
-
-    // Handle assistant messages finalized (streamed)
     this.core.eventBus.on(
-      "assistantMessageFinalized",
+      "assistantMessageNonStreamed",
       ({ content, metadata }) => {
         this.saveToHistory("assistant", content, metadata);
       }
     );
+
+    this.core.eventBus.on(
+      "streamedMessageFinished",
+      ({ finalContent, metadata }) => {
+        this.saveToHistory("assistant", finalContent, metadata);
+      }
+    );
+
+    // Handle responses with potential text and animation
+    this.core.eventBus.on("messageReceived", ({ content, metadata }) => {
+      // Add the message to the UI, triggering animation if needed
+      this.ui.addMessage("assistant", content, metadata, false);
+    });
+
+    // Handle partial messages for streaming
+    this.core.eventBus.on("partialMessage", ({ content, isStreamed }) => {
+      this.ui.handlePartialMessage(content, isStreamed);
+    });
+
+    // Handle the final part of a streamed message
+    this.core.eventBus.on("finalMessage", ({ fullContent, isStreamed }) => {
+      this.ui.handleFinalMessage(fullContent, isStreamed);
+    });
+
+    // Handle typing indicator
+    this.core.eventBus.on("typing", ({ isTyping }) => {
+      this.ui.showTypingIndicator(isTyping);
+    });
+
+    // Handle errors
+    this.core.eventBus.on("error", ({ message }) => {
+      this.ui.displayError(message);
+    });
 
     // Handle choice presentation (saves them to history)
     this.core.eventBus.on("choicePresented", ({ buttons }) => {

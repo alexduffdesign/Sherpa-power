@@ -2,9 +2,8 @@
 *
 
 # Allow only these specific files
-!chatbot-core-file.js
+!frontend
 !chatbot-drawer.js
-!chatbot-main.js
 !chatbot-section.js
 !chatbot-template.js
 !applications.liquid

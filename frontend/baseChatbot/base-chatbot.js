@@ -34,12 +34,8 @@ class ChatbotCore {
     this.currentCompletion = null; // For handling completion events
 
     // Initialize Streaming Markdown Parser
-    this.markdownParser = new StreamingMarkdownParser((htmlSegment) => {
-      // Emit partialMessage with stable HTML segment
-      this.eventBus.emit("partialMessage", {
-        content: htmlSegment,
-        isStreamed: true,
-      });
+    this.streamingParser = new StreamingMarkdownParser((htmlSegment) => {
+      this.eventBus.emit("assistantMessageStreamed", { content: htmlSegment });
     });
   }
 
@@ -174,11 +170,16 @@ class ChatbotCore {
         ? JSON.parse(eventStr.substring(eventStr.indexOf("data:") + 5).trim())
         : null;
 
-      if (eventType === "trace") {
-        this.processTrace(data);
+      switch (eventType) {
+        case "trace":
+          this.processTrace(data);
+          break;
+        case "completion":
+          this.handleCompletion(data);
+          break;
       }
     } catch (error) {
-      console.error("Error processing SSE event:", error);
+      this.handleError(error);
     }
   }
 
@@ -197,33 +198,27 @@ class ChatbotCore {
 
     switch (trace.type) {
       case "text":
-        this.emitMessageReceived(trace.payload.message, trace.payload.metadata);
+        this.eventBus.emit("assistantMessageNonStreamed", {
+          content: trace.payload.message,
+          metadata: trace.payload.metadata,
+        });
         break;
-
-      case "completion":
-        this.handleCompletion(trace.payload);
-        break;
-
       case "choice":
         this.eventBus.emit("choicePresented", {
-          type: "choice",
           buttons: trace.payload.buttons,
         });
         break;
-
       case "carousel":
         this.eventBus.emit("carouselPresented", {
           type: "carousel",
           items: trace.payload.cards,
         });
         break;
-
       case "device_answer":
         if (this.type === "section") {
           this.eventBus.emit("deviceAnswer", trace.payload);
         }
         break;
-
       default:
         console.warn(`Unhandled trace type: ${trace.type}`, trace);
     }
