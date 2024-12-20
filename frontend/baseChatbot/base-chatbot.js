@@ -121,14 +121,9 @@ class ChatbotCore {
 
   setupInteractiveElementHandling() {
     this.eventBus.on("interactiveElementClicked", (payload) => {
-      // Check if payload has a label, if not, try to get it from the action payload (for choice buttons)
-      const userMessage =
-        payload.label ||
-        (payload.action &&
-          payload.action.payload &&
-          payload.action.payload.name) ||
-        "Button clicked";
-      this.eventBus.emit("userMessage", userMessage); // Emit userMessage for UI update
+      // Now both button types will have payload.label
+      const userMessage = payload.label || "Button clicked";
+      this.eventBus.emit("userMessage", userMessage);
       this.handleInteractiveElementAction(payload, userMessage);
     });
   }

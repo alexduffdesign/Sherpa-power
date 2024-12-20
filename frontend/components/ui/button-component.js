@@ -62,7 +62,10 @@ export class ButtonComponent extends HTMLElement {
 
       try {
         const parsedPayload = JSON.parse(payload);
-        this._eventBus.emit("buttonClicked", parsedPayload);
+        this._eventBus.emit("buttonClicked", {
+          action: parsedPayload,
+          label: label,
+        });
       } catch (error) {
         console.error("Error parsing button payload:", error);
       }
