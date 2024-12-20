@@ -180,6 +180,10 @@ export class MessageComponent extends HTMLElement {
     const isAssistant = sender === "assistant";
     this.shadowRoot.innerHTML = `
       <style>
+        h1, h2, h3, h4, h5, h6 {
+          font-family: var(--heading-font-family);
+          font-weight: var(--heading-font-weight);
+        }
         :host {
           display: block;
           width: 100%;
