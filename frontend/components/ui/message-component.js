@@ -216,7 +216,7 @@ export class MessageComponent extends HTMLElement {
         }
 
         .message {
-          display: inline-block;
+          display: flex;
           max-width: 80%;
           padding: var(--spacing-4);
           border-radius: 20px;
@@ -255,6 +255,7 @@ export class MessageComponent extends HTMLElement {
         }
 
         .message__content {
+          display: flex;
           font-family: inherit;
           word-break: break-word;
         }

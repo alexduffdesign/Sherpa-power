@@ -259,10 +259,6 @@ class ChatbotCore {
         // Parser flush
         this.markdownParser.end();
 
-        // Now we have streamed all segments. The UI got them as partialMessage events.
-        // Emit finalMessage with the full combined content (for history or fallback)
-        // full parsed HTML can be re-assembled from the partialMessage events if needed,
-        // or just store the raw markdown in currentCompletion and parse once more here for the final:
         const finalHTML = parseMarkdown(this.currentCompletion); // Use parseMarkdown instead of window.marked
         this.eventBus.emit("finalMessage", {
           content: finalHTML,

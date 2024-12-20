@@ -65,7 +65,7 @@ import{p as l,S as c}from"./markdown-util.B3nWrKld.js";class m extends HTMLEleme
         }
 
         .message {
-          display: inline-block;
+          display: flex;
           max-width: 80%;
           padding: var(--spacing-4);
           border-radius: 20px;
@@ -102,6 +102,7 @@ import{p as l,S as c}from"./markdown-util.B3nWrKld.js";class m extends HTMLEleme
         }
 
         .message__content {
+          display: flex;
           font-family: inherit;
           word-break: break-word;
         }
@@ -373,4 +374,4 @@ import{p as l,S as c}from"./markdown-util.B3nWrKld.js";class m extends HTMLEleme
         </button>
       </div>
     `,this.carouselContainer=this.shadowRoot.querySelector(".carousel__container"),this.leftButton=this.shadowRoot.querySelector(".carousel__button--left"),this.rightButton=this.shadowRoot.querySelector(".carousel__button--right"),this.carouselData.cards.forEach((t,s)=>{const n=document.createElement("div");n.classList.add("carousel__item");const o=document.createElement("div");o.classList.add("carousel__item-wrapper");const a=document.createElement("div");if(a.classList.add("carousel__item-content"),t.imageUrl){const i=document.createElement("img");i.src=t.imageUrl,i.alt=t.title||"",i.classList.add("carousel__item-image"),a.appendChild(i)}if(t.title){const i=document.createElement("h6");i.classList.add("carousel__item-title"),i.textContent=t.title,a.appendChild(i)}if(t.description&&t.description.text){const i=document.createElement("p");i.classList.add("carousel__item-description"),i.textContent=t.description.text,a.appendChild(i)}if(t.buttons&&t.buttons.length>0){const i=t.buttons[0],r=document.createElement("button");r.classList.add("button","carousel__item-button"),r.setAttribute("data-button-index",s),r.setAttribute("data-button-payload",JSON.stringify(i.request)),r.setAttribute("data-button-text",i.name),r.textContent=i.name||"Select",a.appendChild(r),r.addEventListener("click",this.handleButtonClick)}o.appendChild(a),n.appendChild(o),this.carouselContainer.appendChild(n),this.items.push(n)}),this.initCarousel(),this.leftButton.addEventListener("click",this.moveLeft),this.rightButton.addEventListener("click",this.moveRight),window.addEventListener("resize",this.handleResize),this.updateVisibility(),this.updatePosition()}initCarousel(){this.isDesktop=window.matchMedia("(min-width: 1000px)").matches,this.itemsPerSlide=this.isDesktop?2:1,this.currentIndex=0,this.updateVisibility(),this.updatePosition()}handleResize(){this.isDesktop=window.matchMedia("(min-width: 1000px)").matches,this.itemsPerSlide=this.isDesktop?2:1,this.currentIndex=0,this.updatePosition(),this.updateVisibility()}moveLeft(){const e=this.itemsPerSlide;this.currentIndex=Math.max(0,this.currentIndex-e),this.updatePosition(),this.updateVisibility()}moveRight(){const e=this.itemsPerSlide;this.currentIndex=Math.min(this.items.length-e,this.currentIndex+e),this.updatePosition(),this.updateVisibility()}updatePosition(){const e=-(this.currentIndex/this.itemsPerSlide)*100;this.carouselContainer.style.transform=`translateX(${e}%)`}updateVisibility(){this.leftButton.disabled=this.currentIndex===0,this.rightButton.disabled=this.currentIndex>=this.items.length-this.itemsPerSlide}handleButtonClick(e){if(!this._eventBus){console.error("No eventBus assigned to CarouselComponent");return}const t=e.target,s=parseInt(t.getAttribute("data-button-index"),10),n=this.carouselData.cards[s];if(!n||!n.buttons||n.buttons.length===0){console.warn("No button data found for this card.");return}const o=n.buttons[0];console.log("Original button data:",o);const a=o.request.payload.title,i=a?`Selected ${a}`:"Selected Power Station";this._eventBus.emit("carouselButtonClicked",{action:o.request,label:i}),this.remove()}}customElements.define("button-component",m);customElements.define("message-component",h);customElements.define("carousel-component",u);console.log("MessageComponent defined");console.log("ButtonComponent defined");console.log("CarouselComponent defined");
-//# sourceMappingURL=chatbot-components.D0GsbgeP.js.map
+//# sourceMappingURL=chatbot-components.BnpZklhT.js.map
