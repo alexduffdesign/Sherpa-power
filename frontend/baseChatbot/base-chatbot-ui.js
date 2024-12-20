@@ -86,12 +86,12 @@ class ChatbotUI {
 
     // Handle button clicks
     this.eventBus.on("buttonClicked", (payload) => {
-      this.eventBus.emit("userMessage", payload);
+      this.eventBus.emit("interactiveElementClicked", payload);
       this.removeInteractiveElements();
     });
 
     this.eventBus.on("carouselButtonClicked", (payload) => {
-      this.eventBus.emit("userMessage", payload);
+      this.eventBus.emit("interactiveElementClicked", payload);
       this.removeInteractiveElements();
     });
 

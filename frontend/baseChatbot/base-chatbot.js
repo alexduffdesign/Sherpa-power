@@ -32,6 +32,7 @@ class ChatbotCore {
     this.eventBus = new EventEmitter();
     this.abortController = null;
     this.currentCompletion = null; // For handling completion events
+    this.setupInteractiveElementHandling();
 
     // Initialize Streaming Markdown Parser
     this.streamingParser = new StreamingMarkdownParser((htmlSegment) => {
@@ -115,6 +116,42 @@ class ChatbotCore {
         return;
       }
       this.handleError(error);
+    }
+  }
+
+  setupInteractiveElementHandling() {
+    this.eventBus.on("interactiveElementClicked", (payload) => {
+      const userMessage = payload.label || "Button clicked";
+      this.eventBus.emit("userMessage", userMessage); // Emit userMessage for UI update
+      this.handleInteractiveElementAction(payload, userMessage);
+    });
+  }
+
+  async handleInteractiveElementAction(payload, userMessage) {
+    if (payload.type && payload.type.startsWith("path-")) {
+      const actionPayload = {
+        action: {
+          type: payload.type,
+          payload: {
+            label: userMessage,
+          },
+        },
+      };
+      return this.sendAction(actionPayload);
+    } else if (payload.type === "intent") {
+      const actionPayload = {
+        action: {
+          type: "intent",
+          payload: {
+            intent: payload.payload.intent,
+            query: payload.payload.query || "",
+            entities: payload.payload.entities || [],
+          },
+        },
+      };
+      return this.sendAction(actionPayload);
+    } else {
+      return this.sendMessage(userMessage);
     }
   }
 
