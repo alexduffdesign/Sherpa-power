@@ -268,6 +268,11 @@ class ChatbotCore {
           content: finalHTML,
           isStreamed: true,
         });
+        // Emit a new event specifically for history saving
+        this.eventBus.emit("assistantMessageFinalized", {
+          content: finalHTML,
+          metadata: null,
+        });
         this.currentCompletion = null;
         break;
 

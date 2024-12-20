@@ -70,10 +70,18 @@ class MainChatbot {
       this.core.sendMessage(message);
     });
 
-    // Handle bot messages
+    // Handle bot messages (non-streamed)
     this.core.eventBus.on("messageReceived", ({ content, metadata }) => {
       this.saveToHistory("assistant", content, metadata);
     });
+
+    // Handle assistant messages finalized (streamed)
+    this.core.eventBus.on(
+      "assistantMessageFinalized",
+      ({ content, metadata }) => {
+        this.saveToHistory("assistant", content, metadata);
+      }
+    );
 
     // Handle choice presentation (saves them to history)
     this.core.eventBus.on("choicePresented", ({ buttons }) => {
@@ -93,7 +101,7 @@ class MainChatbot {
     // Handle button clicks
     this.core.eventBus.on("buttonClicked", (payload) => {
       // Save the user's choice and display it in the UI
-      const userMessage = payload.payload.label || "Button clicked";
+      const userMessage = payload.label || "Button clicked";
       this.saveToHistory("user", userMessage);
       this.ui.addMessage("user", userMessage);
 
@@ -189,7 +197,7 @@ class MainChatbot {
       const userMessage = "Main menu";
       this.saveToHistory("user", userMessage);
       // Add message without animation and faster speed
-      this.ui.addMessage("user", userMessage, null, false, 10);
+      this.ui.addMessage("user", userMessage, null, true);
       this.core.sendAction({
         action: {
           type: "event",

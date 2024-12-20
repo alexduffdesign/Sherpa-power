@@ -350,9 +350,7 @@ export class MessageComponent extends HTMLElement {
       <div class="message-wrapper message-wrapper--${sender}">
         ${isAssistant ? `<div class="assistant-icon">🤖</div>` : ""}
         <div class="message message--${sender}">
-          <div class="message__content">${
-            this.isStreaming ? "" : parseMarkdown(content)
-          }</div>
+          <div class="message__content"></div>
         </div>
       </div>
     `;
