@@ -8,8 +8,8 @@ export class MessageComponent extends HTMLElement {
     super();
     this.attachShadow({ mode: "open" });
     this.isStreaming = false;
-    this.animationFrameId = null; // For character-by-character animation
-    this.defaultAnimationSpeed = 15; // ms per character
+    this.animationFrameId = null;
+    this.defaultAnimationSpeed = 15;
     this.currentAnimationSpeed = this.defaultAnimationSpeed;
     this.streamingParser = null;
   }
@@ -17,30 +17,64 @@ export class MessageComponent extends HTMLElement {
   connectedCallback() {
     const sender = this.getAttribute("sender");
     const content = this.getAttribute("content") || "";
-    this.isStreaming = this.hasAttribute("streaming"); // Check if the 'streaming' attribute is present
-    this.render(sender, content);
+    this.isStreaming = this.hasAttribute("streaming");
+    const isFromHistory = this.hasAttribute("fromhistory");
+    const dataAnimate = this.getAttribute("data-animate");
+    const shouldAnimate = dataAnimate !== "false"; // This was determined by ChatbotUI logic
 
-    if (!this.isStreaming && content) {
-      this.animateNonStreamedContent(content);
-    } else if (this.isStreaming && content) {
-      // Initialize the streaming parser
-      this.streamingParser = new StreamingMarkdownParser((htmlSegment) => {
-        this.appendHTMLContent(htmlSegment);
-      });
-      this.streamingParser.appendText(content);
+    this.render(sender);
+
+    // Decide how to handle content:
+    // Conditions:
+    // - User messages: never animate
+    // - Assistant messages:
+    //    - streamed (isStreaming=true): no animation, handled via streamingParser
+    //    - from history: no animation
+    //    - only non-streamed, non-history assistant messages animate
+
+    if (sender === "assistant") {
+      if (this.isStreaming) {
+        // Streamed assistant message:
+        // Use streaming parser as before
+        if (content) {
+          this.streamingParser = new StreamingMarkdownParser((htmlSegment) => {
+            this.appendHTMLContent(htmlSegment);
+          });
+          this.streamingParser.appendText(content);
+        }
+      } else {
+        // Non-streamed assistant message
+        if (!isFromHistory && shouldAnimate && content) {
+          // Animate non-streamed, non-history assistant messages
+          this.animateNonStreamedContent(content);
+        } else {
+          // No animation: parse and append directly
+          this.directAppendContent(content);
+        }
+      }
+    } else {
+      // User messages: never animate
+      // Just parse and append directly, no streaming, no animation
+      this.directAppendContent(content);
     }
   }
 
   /**
    * Append new content for streamed messages.
    * @param {string} newChunk - The new chunk of content.
-   */
+  directAppendContent(rawContent) {
+    const messageContent = this.shadowRoot.querySelector(".message__content");
+    if (!messageContent) return;
+    const html = parseMarkdown(rawContent);
+    messageContent.innerHTML = html;
+    this.scrollToBottom();
+  }
+
   appendContent(newChunk) {
-    console.log("appendContent:", newChunk);
     if (this.streamingParser) {
       this.streamingParser.appendText(newChunk);
     } else {
-      // Fallback to simple markdown parsing if parser isn't initialized
+      // If somehow appended after finalization:
       const html = parseMarkdown(newChunk);
       this.appendHTMLContent(html);
     }
@@ -55,7 +89,6 @@ export class MessageComponent extends HTMLElement {
     if (messageContent) {
       const tempDiv = document.createElement("div");
       tempDiv.innerHTML = htmlSegment;
-      // Append child nodes to messageContent
       while (tempDiv.firstChild) {
         messageContent.appendChild(tempDiv.firstChild);
       }
@@ -67,7 +100,6 @@ export class MessageComponent extends HTMLElement {
    * Finalizes the content of a streamed message by parsing remaining markdown and updating the UI.
    */
   finalizeContentAndAnimate() {
-    console.log("finalizeContentAndAnimate called");
     if (this.streamingParser) {
       this.streamingParser.end();
       this.streamingParser = null;
@@ -118,7 +150,6 @@ export class MessageComponent extends HTMLElement {
         await this.animateTextNode(container, node.textContent);
       } else if (node.nodeType === Node.ELEMENT_NODE) {
         const tagName = node.tagName.toLowerCase();
-        const isBlock = blockLevelElements.has(tagName);
         const element = document.createElement(tagName);
 
         Array.from(node.attributes).forEach((attr) => {
@@ -163,7 +194,7 @@ export class MessageComponent extends HTMLElement {
     });
   }
 
-  render(sender, content) {
+  render(sender) {
     const isAssistant = sender === "assistant";
     this.shadowRoot.innerHTML = `
       <style>
@@ -218,7 +249,7 @@ export class MessageComponent extends HTMLElement {
           position: relative;
           opacity: 1;
           transition: opacity 0.3s ease-in-out;
-          white-space: pre-wrap; /* Preserve newlines and spaces */
+          white-space: pre-wrap;
         }
 
         .message.fade-out {
