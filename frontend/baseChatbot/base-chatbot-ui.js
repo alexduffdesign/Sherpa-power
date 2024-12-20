@@ -198,12 +198,6 @@ class ChatbotUI {
       // Finalize the streaming parser
       this.currentAssistantMessage.finalizeContentAndAnimate();
       this.currentAssistantMessage = null;
-
-      // Emit a new event for history saving
-      this.eventBus.emit("assistantMessageFinalized", {
-        content: fullContent,
-        metadata: null,
-      });
     } else {
       // In case finalMessage is received without a partial message
       console.warn(
