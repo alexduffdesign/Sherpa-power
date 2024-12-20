@@ -358,6 +358,54 @@ class ChatbotUI {
     }
   }
 
+  handlePartialMessage(content, isStreamed) {
+    // If there is no current assistant message, create one
+    if (!this.currentAssistantMessage) {
+      this.currentAssistantMessage = this.createMessage(
+        "assistant",
+        "", // Start with empty content
+        null,
+        false, // Do not animate character by character
+        undefined,
+        true // isStreamed
+      );
+      this.messageContainer.appendChild(this.currentAssistantMessage);
+    }
+    this.currentAssistantMessage.appendContent(content);
+    this.scrollToBottom();
+  }
+
+  /**
+   * Handle final assistant message (complete message)
+   * @private
+   * @param {string} fullContent - The complete message content
+   * @param {boolean} isStreamed - Indicates if the message is streamed
+   */
+  handleFinalMessage(fullContent, isStreamed) {
+    console.log("handleFinalMessage called", { fullContent, isStreamed });
+    if (this.currentAssistantMessage) {
+      this.currentAssistantMessage.finalizeContentAndAnimate();
+      this.currentAssistantMessage = null;
+      this.accumulatedContent = "";
+    } else {
+      console.warn(
+        "handleFinalMessage called but currentAssistantMessage is null",
+        { fullContent, isStreamed }
+      );
+      // Fallback: Create and add the message without animation
+      const message = this.createMessage(
+        "assistant",
+        fullContent,
+        null,
+        false, // No character animation for fallback
+        undefined,
+        isStreamed
+      );
+      this.messageContainer.appendChild(message);
+    }
+    this.scrollToBottom();
+  }
+
   /**
    * Add interactive buttons to the chat using button-component
    * @public
