@@ -33,7 +33,7 @@ export class MessageComponent extends HTMLElement {
     console.log("appendContent:", newChunk);
     this.isStreaming = true;
     this.rawChunks.push(newChunk);
-    this.interimText += this.cleanMarkdown(newChunk);
+    this.interimText += newChunk; // Keep newlines and whitespace for interim display
     this.updateInterimDisplay();
   }
 
@@ -58,7 +58,7 @@ export class MessageComponent extends HTMLElement {
   updateInterimDisplay() {
     const messageContent = this.shadowRoot.querySelector(".message__content");
     if (messageContent) {
-      messageContent.textContent = this.interimText;
+      messageContent.textContent = this.cleanMarkdown(this.interimText); // Clean just before display
     }
   }
 
@@ -241,6 +241,7 @@ export class MessageComponent extends HTMLElement {
           position: relative;
           opacity: 1;
           transition: opacity 0.3s ease-in-out;
+          white-space: pre-wrap; /* Preserve newlines and spaces */
         }
 
         .message.fade-out {
