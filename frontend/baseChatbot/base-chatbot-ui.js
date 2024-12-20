@@ -142,17 +142,21 @@ class ChatbotUI {
     const animate = !isStreamed && !isFromHistory;
     const animationSpeed = isFromHistory ? 10 : undefined; // Faster for deterministic messages
 
-    // Create the message component with appropriate animation settings
-    const message = this.createMessage(
-      "assistant",
-      content,
-      metadata,
-      animate,
-      animationSpeed,
-      isStreamed
-    );
-    this.messageContainer.appendChild(message);
-    this.scrollToBottom();
+    // Only add message if it's not streamed
+    if (!isStreamed) {
+      // Create the message component with appropriate animation settings
+      const message = this.createMessage(
+        "assistant",
+        content,
+        metadata,
+        animate,
+        animationSpeed,
+        isStreamed
+      );
+      this.messageContainer.appendChild(message);
+      this.scrollToBottom();
+    }
+    // If streamed, do not add here. Handled via partialMessage and finalMessage
   }
 
   /**
@@ -193,12 +197,8 @@ class ChatbotUI {
       this.currentAssistantMessage.finalizeContentAndAnimate();
       this.currentAssistantMessage = null;
 
-      // Emit the final content for history
-      this.eventBus.emit("messageReceived", {
-        content: fullContent,
-        metadata: null,
-        isStreamed: true,
-      });
+      // Optionally, you can emit an event for history or other purposes
+      // But do NOT emit 'messageReceived' to prevent duplication
     } else {
       // In case finalMessage is received without a partial message
       console.warn(
