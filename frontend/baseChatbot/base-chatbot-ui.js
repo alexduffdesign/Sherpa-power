@@ -123,9 +123,7 @@ class ChatbotUI {
   }
 
   handleAssistantStreamedMessage(content) {
-    console.log("ChatbotUI handleAssistantStreamedMessage:", content); // ADDED LOG
     if (!this.currentAssistantMessage) {
-      console.log("Creating new assistant message for streaming"); // ADDED LOG
       this.currentAssistantMessage = this.createMessage(
         "assistant",
         "",

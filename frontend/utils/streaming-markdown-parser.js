@@ -8,13 +8,16 @@ export class StreamingMarkdownParser {
     this.currentLine = "";
     this.listType = null; // 'ul' or 'ol'
     this.listItems = [];
-    console.log("StreamingMarkdownParser initialized"); // ADDED LOG
   }
 
   appendText(text) {
-    console.log("StreamingMarkdownParser appendText:", text); // ADDED LOG
     this.buffer += text;
     this.processBuffer();
+  }
+
+  end() {
+    this.processBuffer(true);
+    this.flush();
   }
 
   processBuffer(isEnd = false) {
@@ -34,13 +37,13 @@ export class StreamingMarkdownParser {
       this.currentLine = "";
       this.handleLine(line);
     } else if (!isEnd && this.currentLine.trim() !== "") {
+      // Add this condition
       this.handleLine(this.currentLine.trim());
       this.currentLine = "";
     }
   }
 
   handleLine(line) {
-    console.log("StreamingMarkdownParser handleLine:", line); // ADDED LOG
     if (line.startsWith("#")) {
       const match = line.match(/^(#{1,6})\s+(.*)$/);
       if (match) {
