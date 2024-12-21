@@ -87,6 +87,10 @@ class MainChatbot {
     this.core.eventBus.on(
       "assistantMessageFinalized",
       ({ finalContent, metadata }) => {
+        console.log(
+          "assistantMessageFinalized received with finalContent:",
+          finalContent
+        ); // Add this line
         this.saveToHistory("assistant", finalContent, metadata);
       }
     );
