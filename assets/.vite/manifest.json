@@ -1,7 +1,7 @@
 {
-  "_purify.es.CZcZ8zuy.js": {
-    "file": "purify.es.CZcZ8zuy.js",
-    "name": "purify.es"
+  "_markdown-util.B3nWrKld.js": {
+    "file": "markdown-util.B3nWrKld.js",
+    "name": "markdown-util"
   },
   "_vendor.DqvJXvYX.js": {
     "file": "vendor.DqvJXvYX.js",
@@ -17,22 +17,22 @@
     ]
   },
   "frontend/baseChatbot/base-chatbot.js": {
-    "file": "base-chatbot.CvT3W4gQ.js",
+    "file": "base-chatbot.OzaxtAaF.js",
     "name": "base-chatbot",
     "src": "frontend/baseChatbot/base-chatbot.js",
     "isEntry": true,
     "imports": [
       "_vendor.DqvJXvYX.js",
-      "_purify.es.CZcZ8zuy.js"
+      "_markdown-util.B3nWrKld.js"
     ]
   },
   "frontend/components/ui/chatbot-components.js": {
-    "file": "chatbot-components.GeUXJXy-.js",
+    "file": "chatbot-components.SIiv5NkN.js",
     "name": "chatbot-components",
     "src": "frontend/components/ui/chatbot-components.js",
     "isEntry": true,
     "imports": [
-      "_purify.es.CZcZ8zuy.js"
+      "_markdown-util.B3nWrKld.js"
     ]
   },
   "frontend/entrypoints/chatbot-core-file.js": {
@@ -61,7 +61,7 @@
     ]
   },
   "frontend/mainChatbot/chatbot-main.js": {
-    "file": "chatbot-main.xZ-EpxoC.js",
+    "file": "chatbot-main.RR3rhnAg.js",
     "name": "chatbot-main",
     "src": "frontend/mainChatbot/chatbot-main.js",
     "isEntry": true,
@@ -69,7 +69,7 @@
       "frontend/baseChatbot/base-chatbot.js",
       "frontend/mainChatbot/chatbot-main-ui.js",
       "_vendor.DqvJXvYX.js",
-      "_purify.es.CZcZ8zuy.js",
+      "_markdown-util.B3nWrKld.js",
       "frontend/baseChatbot/base-chatbot-ui.js"
     ]
   },
@@ -84,7 +84,7 @@
     ]
   },
   "frontend/sectionChatbot/chatbot-section.js": {
-    "file": "chatbot-section.DCb025vH.js",
+    "file": "chatbot-section.CiIyh_WF.js",
     "name": "chatbot-section",
     "src": "frontend/sectionChatbot/chatbot-section.js",
     "isEntry": true,
@@ -92,7 +92,7 @@
       "frontend/baseChatbot/base-chatbot.js",
       "frontend/sectionChatbot/chatbot-section-ui.js",
       "_vendor.DqvJXvYX.js",
-      "_purify.es.CZcZ8zuy.js",
+      "_markdown-util.B3nWrKld.js",
       "frontend/baseChatbot/base-chatbot-ui.js"
     ]
   }
