@@ -97,6 +97,7 @@ class ChatbotUI {
 
     this.eventBus.on("assistantMessageStreamed", ({ content }) => {
       this.handleAssistantStreamedMessage(content);
+      console.log("assistnatmessageStreamed activated", content);
     });
 
     this.eventBus.on("assistantMessageNonStreamed", ({ content, metadata }) => {
