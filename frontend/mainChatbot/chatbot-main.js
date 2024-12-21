@@ -204,6 +204,7 @@ class MainChatbot {
    * @param {Object} metadata - Optional metadata
    */
   saveToHistory(sender, message, metadata = null) {
+    console.log("saveToHistory called with:", { sender, message, metadata }); // Add this line
     const history = JSON.parse(localStorage.getItem(this.historyKey)) || [];
 
     const historyEntry = {
