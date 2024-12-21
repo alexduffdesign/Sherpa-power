@@ -124,18 +124,19 @@ class ChatbotUI {
 
   handleAssistantStreamedMessage(content) {
     if (!this.currentAssistantMessage) {
+      // Create a message in streaming mode
       this.currentAssistantMessage = this.createMessage(
         "assistant",
         "",
         null,
         false,
-        undefined,
-        true
+        true,
+        isStreamed
       );
       this.messageContainer.appendChild(this.currentAssistantMessage);
+      this.currentAssistantMessage.appendHTMLContent(content);
+      this.scrollToBottom();
     }
-    this.currentAssistantMessage.appendHTMLContent(content);
-    this.scrollToBottom();
   }
 
   handleAssistantNonStreamedMessage(content, metadata) {
