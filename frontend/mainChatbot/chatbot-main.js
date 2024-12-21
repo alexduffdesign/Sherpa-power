@@ -91,10 +91,12 @@ class MainChatbot {
     });
 
     // Handle the final part of a streamed message
-    this.core.eventBus.on("finalMessage", ({ fullContent, isStreamed }) => {
-      this.ui.handleFinalMessage(fullContent, isStreamed);
-    });
-
+    this.core.eventBus.on(
+      "assistantMessageFinalized",
+      ({ finalContent, metadata }) => {
+        this.saveToHistory("assistant", finalContent, metadata);
+      }
+    );
     // Handle typing indicator
     this.core.eventBus.on("typing", ({ isTyping }) => {
       this.ui.showTypingIndicator(isTyping);
