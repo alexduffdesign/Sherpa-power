@@ -180,6 +180,7 @@ class ChatbotCore {
    * @param {Response} response - Fetch API response object
    */
   async handleSSEResponse(response) {
+    console.log("handleSSEResponse called"); // ADDED LOG
     const reader = response.body.getReader();
     const decoder = new TextDecoder("utf-8");
     let buffer = "";
@@ -193,10 +194,13 @@ class ChatbotCore {
         }
 
         buffer += decoder.decode(value, { stream: true });
+        console.log("SSE buffer:", buffer); // ADDED LOG - Inspect the raw buffer
         const events = buffer.split("\n\n");
+        console.log("SSE events:", events); // ADDED LOG - Inspect the split events
         buffer = events.pop();
 
         events.forEach((eventStr) => {
+          console.log("Processing event string:", eventStr); // ADDED LOG - Before processing
           if (eventStr.trim() === "") return;
           this.processEventString(eventStr);
         });
@@ -214,6 +218,7 @@ class ChatbotCore {
    * @param {string} eventStr - The event string to process
    */
   processEventString(eventStr) {
+    console.log("processEventString called with:", eventStr); // ADDED LOG
     try {
       const lines = eventStr.split("\n");
       const eventTypeLine = lines.find((line) => line.startsWith("event:"));
@@ -225,6 +230,9 @@ class ChatbotCore {
       const data = dataLine
         ? JSON.parse(eventStr.substring(eventStr.indexOf("data:") + 5).trim())
         : null;
+
+      console.log("Parsed eventType:", eventType); // ADDED LOG
+      console.log("Parsed data:", data); // ADDED LOG
 
       switch (eventType) {
         case "trace":
