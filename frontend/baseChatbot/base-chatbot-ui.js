@@ -135,8 +135,13 @@ class ChatbotUI {
         true
       );
       this.messageContainer.appendChild(this.currentAssistantMessage);
+      // Set the initial content attribute
+      this.currentAssistantMessage.setAttribute("content", content);
       this.currentAssistantMessage.appendHTMLContent(content);
       this.scrollToBottom();
+    } else {
+      // Append to the existing message
+      this.currentAssistantMessage.appendHTMLContent(content);
     }
   }
 
