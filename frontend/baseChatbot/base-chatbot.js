@@ -299,27 +299,12 @@ class ChatbotCore {
 
       case "content":
         if (payload.content) {
-          // Instead of accumulating raw text:
-          this.currentCompletion += payload.content;
-          // Feed the content directly into the parser
-          this.markdownParser.appendText(payload.content);
+          this.streamingParser.appendText(payload.content);
         }
         break;
 
       case "end":
-        // Parser flush
-        this.markdownParser.end();
-
-        const finalHTML = parseMarkdown(this.currentCompletion); // Use parseMarkdown instead of window.marked
-        this.eventBus.emit("finalMessage", {
-          content: finalHTML,
-          isStreamed: true,
-        });
-        // Emit a new event specifically for history saving
-        this.eventBus.emit("assistantMessageFinalized", {
-          content: finalHTML,
-          metadata: null,
-        });
+        this.streamingParser.flush(); // Ensure any remaining content is processed
         this.currentCompletion = null;
         break;
 
