@@ -77,13 +77,6 @@ class MainChatbot {
       }
     );
 
-    this.core.eventBus.on(
-      "assistantMessageFinalized",
-      ({ finalContent, metadata }) => {
-        this.saveToHistory("assistant", finalContent, metadata);
-      }
-    );
-
     // Handle responses with potential text and animation
     this.core.eventBus.on("messageReceived", ({ content, metadata }) => {
       // Add the message to the UI, triggering animation if needed
@@ -123,14 +116,14 @@ class MainChatbot {
       });
     });
 
-    this.core.eventBus.on("interactiveElementClicked", (payload) => {
-      const userMessage =
-        payload.label ||
-        payload.payload?.label ||
-        payload.payload?.text ||
-        "Button clicked";
-      this.saveToHistory("user", userMessage);
-    });
+    // this.core.eventBus.on("interactiveElementClicked", (payload) => {
+    //   const userMessage =
+    //     payload.label ||
+    //     payload.payload?.label ||
+    //     payload.payload?.text ||
+    //     "Button clicked";
+    //   this.saveToHistory("user", userMessage);
+    // });
 
     // Handle main menu
     this.core.eventBus.on("mainMenu", () => {
