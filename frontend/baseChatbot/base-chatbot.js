@@ -302,13 +302,13 @@ class ChatbotCore {
           // Instead of accumulating raw text:
           this.currentCompletion += payload.content;
           // Feed the content directly into the parser
-          this.markdownParser.appendText(payload.content);
+          this.streamingParser.appendText(payload.content);
         }
         break;
 
       case "end":
         // Parser flush
-        this.markdownParser.end();
+        this.streamingParser.end();
 
         const finalHTML = parseMarkdown(this.currentCompletion); // Use parseMarkdown instead of window.marked
         this.eventBus.emit("finalMessage", {
