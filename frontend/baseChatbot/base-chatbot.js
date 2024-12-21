@@ -294,28 +294,29 @@ class ChatbotCore {
     switch (payload.state) {
       case "start":
         this.currentCompletion = "";
-        // Initialize parser state if needed
+        console.log("Streaming started"); // ADDED LOG
         break;
 
       case "content":
         if (payload.content) {
-          // Instead of accumulating raw text:
+          console.log("Streaming content received:", payload.content); // ADDED LOG
           this.currentCompletion += payload.content;
-          // Feed the content directly into the parser
           this.streamingParser.appendText(payload.content);
         }
         break;
 
       case "end":
-        // Parser flush
         this.streamingParser.end();
+        console.log(
+          "Streaming ended, final completion:",
+          this.currentCompletion
+        ); // ADDED LOG
 
-        const finalHTML = parseMarkdown(this.currentCompletion); // Use parseMarkdown instead of window.marked
+        const finalHTML = parseMarkdown(this.currentCompletion);
         this.eventBus.emit("finalMessage", {
           content: finalHTML,
           isStreamed: true,
         });
-        // Emit a new event specifically for history saving
         this.eventBus.emit("assistantMessageFinalized", {
           content: finalHTML,
           metadata: null,

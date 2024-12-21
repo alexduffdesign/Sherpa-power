@@ -64,6 +64,7 @@ export class MessageComponent extends HTMLElement {
    * @param {string} htmlSegment - The HTML segment to append.
    */
   appendHTMLContent(htmlSegment) {
+    console.log("MessageComponent appendHTMLContent:", htmlSegment); // ADDED LOG
     const messageContent = this.shadowRoot.querySelector(".message__content");
     if (messageContent) {
       const tempDiv = document.createElement("div");
