@@ -86,12 +86,13 @@ class MainChatbot {
     // Handle the final part of a streamed message
     this.core.eventBus.on(
       "assistantMessageFinalized",
-      ({ finalContent, metadata }) => {
+      ({ content, metadata }) => {
+        // Changed finalContent to content
         console.log(
-          "assistantMessageFinalized received with finalContent:",
-          finalContent
-        ); // Add this line
-        this.saveToHistory("assistant", finalContent, metadata);
+          "assistantMessageFinalized received with content:",
+          content
+        );
+        this.saveToHistory("assistant", content, metadata); // Changed finalContent to content
       }
     );
 
