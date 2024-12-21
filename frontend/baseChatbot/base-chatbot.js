@@ -229,9 +229,11 @@ class ChatbotCore {
       switch (eventType) {
         case "trace":
           this.processTrace(data);
+          console.log("ProcessTrace", data);
           break;
         case "completion":
           this.handleCompletion(data);
+          console.log("Completion event received", data);
           break;
       }
     } catch (error) {
@@ -303,6 +305,7 @@ class ChatbotCore {
           this.currentCompletion += payload.content;
           // Feed the content directly into the parser
           this.streamingParser.appendText(payload.content);
+          console.log("appendText called with:", payload.content);
         }
         break;
 
