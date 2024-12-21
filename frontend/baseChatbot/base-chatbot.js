@@ -217,25 +217,32 @@ class ChatbotCore {
     try {
       const lines = eventStr.split("\n");
       const eventTypeLine = lines.find((line) => line.startsWith("event:"));
+      console.log("eventTypeLine:", eventTypeLine);
+
       const dataLine = lines.find((line) => line.startsWith("data:"));
-      console.log("eventTypeLine:", eventTypeLine); // Add this log
+      let data = null;
+      if (dataLine) {
+        try {
+          data = JSON.parse(
+            eventStr.substring(eventStr.indexOf("data:") + 5).trim()
+          );
+        } catch (e) {
+          console.error("Error parsing data:", e);
+          return; // Skip processing if data is invalid
+        }
+      }
 
-      const eventType = eventTypeLine
-        ? eventTypeLine.split(":")[1].trim()
-        : "trace";
-      const data = dataLine
-        ? JSON.parse(eventStr.substring(eventStr.indexOf("data:") + 5).trim())
-        : null;
+      let eventType = eventTypeLine ? eventTypeLine.split(":")[1].trim() : null;
 
-      switch (eventType) {
-        case "trace":
-          this.processTrace(data);
-          console.log("ProcessTrace", data);
-          break;
-        case "completion":
-          this.handleCompletion(data);
-          console.log("Completion event received", data);
-          break;
+      if (eventType === "trace" && data && data.type === "completion") {
+        this.handleCompletion(data.payload); // Pass the payload, not the entire data object
+      } else if (eventType === "trace" && data) {
+        this.processTrace(data);
+      } else if (eventType === "end") {
+        console.log("End event received");
+        this.eventBus.emit("end", {});
+      } else {
+        console.warn("Unknown event type:", eventType, data);
       }
     } catch (error) {
       this.handleError(error);
