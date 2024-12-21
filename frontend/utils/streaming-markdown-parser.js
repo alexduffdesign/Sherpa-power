@@ -31,12 +31,15 @@ export class StreamingMarkdownParser {
         this.currentLine = "";
         this.handleLine(line);
       }
-
-      if (isEnd && this.currentLine.trim() !== "") {
-        const line = this.currentLine.trim();
-        this.currentLine = "";
-        this.handleLine(line);
-      }
+    }
+    if (isEnd && this.currentLine.trim() !== "") {
+      const line = this.currentLine.trim();
+      this.currentLine = "";
+      this.handleLine(line);
+    } else if (!isEnd && this.currentLine.trim() !== "") {
+      // Add this condition
+      this.handleLine(this.currentLine.trim());
+      this.currentLine = "";
     }
   }
 
