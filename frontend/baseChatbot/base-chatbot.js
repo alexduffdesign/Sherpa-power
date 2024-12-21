@@ -218,6 +218,7 @@ class ChatbotCore {
       const lines = eventStr.split("\n");
       const eventTypeLine = lines.find((line) => line.startsWith("event:"));
       const dataLine = lines.find((line) => line.startsWith("data:"));
+      console.log("eventTypeLine:", eventTypeLine); // Add this log
 
       const eventType = eventTypeLine
         ? eventTypeLine.split(":")[1].trim()
