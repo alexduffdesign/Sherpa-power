@@ -131,8 +131,8 @@ class ChatbotUI {
         "",
         null,
         false,
-        true,
-        isStreamed
+        undefined,
+        true
       );
       this.messageContainer.appendChild(this.currentAssistantMessage);
       this.currentAssistantMessage.appendHTMLContent(content);

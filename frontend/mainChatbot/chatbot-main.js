@@ -78,7 +78,7 @@ class MainChatbot {
     );
 
     this.core.eventBus.on(
-      "streamedMessageFinished",
+      "assistantMessageFinalized",
       ({ finalContent, metadata }) => {
         this.saveToHistory("assistant", finalContent, metadata);
       }
@@ -88,11 +88,6 @@ class MainChatbot {
     this.core.eventBus.on("messageReceived", ({ content, metadata }) => {
       // Add the message to the UI, triggering animation if needed
       this.ui.addMessage("assistant", content, metadata, false);
-    });
-
-    // Handle partial messages for streaming
-    this.core.eventBus.on("partialMessage", ({ content, isStreamed }) => {
-      this.ui.handlePartialMessage(content, isStreamed);
     });
 
     // Handle the final part of a streamed message
