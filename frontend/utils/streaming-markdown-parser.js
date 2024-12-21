@@ -50,6 +50,7 @@ export class StreamingMarkdownParser {
           content
         )}</h${level}>`;
         this.onStableSegment(html);
+        console.log("Stable Segment:", html); // Add this line
         return;
       }
     }
@@ -95,6 +96,7 @@ export class StreamingMarkdownParser {
         this.listType
       }>`;
       this.onStableSegment(html);
+      console.log("Stable Segment (List):", html); // Add this line
       this.listItems = [];
       this.listType = null;
     }
@@ -107,6 +109,7 @@ export class StreamingMarkdownParser {
         this.currentLine.trim()
       )}</p>`;
       this.onStableSegment(html);
+      console.log("Stable Segment (Flush):", html); // Add this line
       this.currentLine = "";
     }
   }

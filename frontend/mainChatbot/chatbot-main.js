@@ -97,6 +97,7 @@ class MainChatbot {
         this.saveToHistory("assistant", finalContent, metadata);
       }
     );
+
     // Handle typing indicator
     this.core.eventBus.on("typing", ({ isTyping }) => {
       this.ui.showTypingIndicator(isTyping);
