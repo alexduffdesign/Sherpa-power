@@ -78,7 +78,6 @@ class ChatbotCore {
    * @param {Object} actionPayload - The action payload to send
    */
   async sendAction(actionPayload) {
-    this.eventBus.emit("typing", { isTyping: true });
     try {
       // Only abort if there's an existing connection
       if (this.abortController) {
@@ -88,6 +87,9 @@ class ChatbotCore {
 
       this.abortController = new AbortController();
       const { signal } = this.abortController;
+
+      // Show typing indicator
+      this.eventBus.emit("typing", { isTyping: true });
 
       const response = await fetch(this.endpoint, {
         method: "POST",
@@ -114,7 +116,6 @@ class ChatbotCore {
         return;
       }
       this.handleError(error);
-      this.eventBus.emit("typing", { isTyping: false }); // Ensure typing is hidden
     }
   }
 

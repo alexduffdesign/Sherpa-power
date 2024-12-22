@@ -93,9 +93,9 @@ class SectionChatbot {
       this.handleDeviceAnswer(payload);
     });
 
-    // this.core.eventBus.on("interactiveElementClicked", (payload) => {
-    //   this.core.sendAction(payload);
-    // });
+    this.core.eventBus.on("interactiveElementClicked", (payload) => {
+      this.core.sendAction(payload);
+    });
 
     // Handle input focus for launch
     const input = this.container.querySelector(".chatbot-input");

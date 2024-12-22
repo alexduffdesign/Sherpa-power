@@ -132,7 +132,6 @@ class ChatbotUI {
 
   handleAssistantStreamedMessage(content) {
     if (!this.currentAssistantMessage) {
-      this.hideTypingIndicator();
       // Create a message in streaming mode
       this.currentAssistantMessage = this.createMessage(
         "assistant",
@@ -164,7 +163,7 @@ class ChatbotUI {
     );
     this.messageContainer.appendChild(message);
     this.scrollToBottom();
-    this.hideTypingIndicator();
+    this.showTypingIndicator();
     const messageContentElement =
       message.shadowRoot.querySelector(".message__content");
     if (messageContentElement) {
