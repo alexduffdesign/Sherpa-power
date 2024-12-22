@@ -121,9 +121,7 @@ class ChatbotCore {
 
   setupInteractiveElementHandling() {
     this.eventBus.on("interactiveElementClicked", (payload) => {
-      // Now both button types will have payload.label
       const userMessage = payload.label || "Button clicked";
-      this.eventBus.emit("userMessage", userMessage);
       this.handleInteractiveElementAction(payload, userMessage);
     });
   }
