@@ -88,11 +88,13 @@ class ChatbotUI {
     this.eventBus.on("buttonClicked", (payload) => {
       this.eventBus.emit("interactiveElementClicked", payload);
       this.removeInteractiveElements();
+      e.preventDefault(); // Add this line to prevent form submission
     });
 
     this.eventBus.on("carouselButtonClicked", (payload) => {
       this.eventBus.emit("interactiveElementClicked", payload);
       this.removeInteractiveElements();
+      e.preventDefault(); // Add this line to prevent form submission
     });
 
     this.eventBus.on("assistantMessageStreamed", ({ content }) => {
