@@ -121,14 +121,11 @@ class MainChatbot {
       });
     });
 
-    // this.core.eventBus.on("interactiveElementClicked", (payload) => {
-    //   const userMessage =
-    //     payload.label ||
-    //     payload.payload?.label ||
-    //     payload.payload?.text ||
-    //     "Button clicked";
-    //   this.saveToHistory("user", userMessage);
-    // });
+    this.core.eventBus.on("interactiveElementClicked", (payload) => {
+      const userMessage = payload.label || "Button clicked";
+      this.saveToHistory("user", userMessage);
+      this.core.sendAction(payload);
+    });
 
     // Handle main menu
     this.core.eventBus.on("mainMenu", () => {
