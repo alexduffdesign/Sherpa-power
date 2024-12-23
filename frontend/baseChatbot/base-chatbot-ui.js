@@ -131,6 +131,7 @@ class ChatbotUI {
   }
 
   handleAssistantStreamedMessage(content) {
+    this.hideTypingIndicator();
     if (!this.currentAssistantMessage) {
       // Create a message in streaming mode
       this.currentAssistantMessage = this.createMessage(
@@ -153,6 +154,7 @@ class ChatbotUI {
   }
 
   handleAssistantNonStreamedMessage(content, metadata) {
+    this.hideTypingIndicator();
     const message = this.createMessage(
       "assistant",
       content,
@@ -163,13 +165,11 @@ class ChatbotUI {
     );
     this.messageContainer.appendChild(message);
     this.scrollToBottom();
-    this.showTypingIndicator();
     const messageContentElement =
       message.shadowRoot.querySelector(".message__content");
     if (messageContentElement) {
       animateText(messageContentElement, content, 5).then(() => {
         this.scrollToBottom();
-        this.hideTypingIndicator();
       });
     }
   }
