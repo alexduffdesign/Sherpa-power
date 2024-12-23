@@ -116,7 +116,6 @@ class ChatbotCore {
         return;
       }
       this.handleError(error);
-      this.eventBus.emit("typing", { isTyping: false });
     }
   }
 
