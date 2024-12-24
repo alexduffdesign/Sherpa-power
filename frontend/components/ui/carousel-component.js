@@ -355,7 +355,7 @@ export class CarouselComponent extends HTMLElement {
       ? `Selected ${productTitle}`
       : "Selected Power Station";
 
-    this._eventBus.emit("carouselButtonClicked", {
+    this._eventBus.emit("buttonClicked", {
       action: buttonData.request,
       label: displayLabel,
     });

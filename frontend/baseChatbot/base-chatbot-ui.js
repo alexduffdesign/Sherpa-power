@@ -86,21 +86,22 @@ class ChatbotUI {
 
     // Handle button clicks
     this.eventBus.on("buttonClicked", (payload) => {
-      this.eventBus.emit("interactiveElementClicked", payload);
+      this.ui.addMessage("user", userMessage, null, false);
+      this.core.sendAction(payload.action);
       this.removeInteractiveElements();
       e.preventDefault(); // Add this line to prevent form submission
     });
 
-    this.eventBus.on("carouselButtonClicked", (payload) => {
-      this.eventBus.emit("interactiveElementClicked", payload);
-      this.removeInteractiveElements();
-      e.preventDefault(); // Add this line to prevent form submission
-    });
+    // this.eventBus.on("carouselButtonClicked", (payload) => {
+    //   this.eventBus.emit("interactiveElementClicked", payload);
+    //   this.removeInteractiveElements();
+    //   e.preventDefault(); // Add this line to prevent form submission
+    // });
 
-    this.eventBus.on("interactiveElementClicked", (payload) => {
-      const userMessage = payload.label || "Button clicked";
-      this.addMessage("user", userMessage, null, false); // Add message to UI
-    });
+    // this.eventBus.on("interactiveElementClicked", (payload) => {
+    //   const userMessage = payload.label || "Button clicked";
+    //   this.addMessage("user", userMessage, null, false); // Add message to UI
+    // });
 
     this.eventBus.on("assistantMessageStreamed", ({ content }) => {
       this.handleAssistantStreamedMessage(content);

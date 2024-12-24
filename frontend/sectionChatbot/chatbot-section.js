@@ -83,18 +83,14 @@ class SectionChatbot {
    */
   setupEventListeners() {
     // Handle user messages
-    this.core.eventBus.on("userMessage", (message) => {
-      this.ui.addMessage("user", message);
-      this.core.sendMessage(message);
-    });
+    // this.core.eventBus.on("userMessage", (message) => {
+    //   this.ui.addMessage("user", message);
+    //   this.core.sendMessage(message);
+    // });
 
     // Handle device answers
     this.core.eventBus.on("deviceAnswer", (payload) => {
       this.handleDeviceAnswer(payload);
-    });
-
-    this.core.eventBus.on("interactiveElementClicked", (payload) => {
-      this.core.sendAction(payload);
     });
 
     // Handle input focus for launch

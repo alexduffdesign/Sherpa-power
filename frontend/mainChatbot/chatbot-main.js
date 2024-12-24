@@ -60,14 +60,14 @@ class MainChatbot {
   setupEventListeners() {
     // Handle user messages
     this.core.eventBus.on("userMessage", (message) => {
-      // Add the message to the UI as a user message
-      this.ui.addMessage("user", message, null, false); // fromHistory=false
+      // // Add the message to the UI as a user message
+      // this.ui.addMessage("user", message, null, false); // fromHistory=false
 
       // Save the message to history
       this.saveToHistory("user", message);
 
-      // Send the typed message to Voiceflow so it processes it
-      this.core.sendMessage(message);
+      // // Send the typed message to Voiceflow so it processes it
+      // this.core.sendMessage(message);
     });
 
     this.core.eventBus.on(
@@ -79,7 +79,6 @@ class MainChatbot {
 
     // Handle responses with potential text and animation
     this.core.eventBus.on("messageReceived", ({ content, metadata }) => {
-      // Add the message to the UI, triggering animation if needed
       this.ui.addMessage("assistant", content, metadata, false);
     });
 
@@ -96,10 +95,10 @@ class MainChatbot {
       }
     );
 
-    // Handle typing indicator
-    this.core.eventBus.on("typing", ({ isTyping }) => {
-      this.ui.showTypingIndicator(isTyping);
-    });
+    // // Handle typing indicator
+    // this.core.eventBus.on("typing", ({ isTyping }) => {
+    //   this.ui.showTypingIndicator(isTyping);
+    // });
 
     // Handle errors
     this.core.eventBus.on("error", ({ message }) => {
@@ -121,11 +120,17 @@ class MainChatbot {
       });
     });
 
-    this.core.eventBus.on("interactiveElementClicked", (payload) => {
+    // Handle button clicks (both carousel and choice buttons)
+    this.core.eventBus.on("buttonClicked", (payload) => {
       const userMessage = payload.label || "Button clicked";
       this.saveToHistory("user", userMessage);
-      this.core.sendAction(payload);
     });
+
+    // this.core.eventBus.on("interactiveElementClicked", (payload) => {
+    //   const userMessage = payload.label || "Button clicked";
+    //   this.saveToHistory("user", userMessage);
+    //   this.core.sendAction(payload);
+    // });
 
     // Handle main menu
     this.core.eventBus.on("mainMenu", () => {
