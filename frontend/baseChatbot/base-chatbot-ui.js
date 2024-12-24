@@ -2,6 +2,7 @@
 
 import EventEmitter from "eventemitter3";
 import { animateText } from "../utils/animation-util.js";
+import { parseMarkdown } from "../utils/markdown-util.js";
 
 /**
  * ChatbotUI Class
@@ -156,9 +157,11 @@ class ChatbotUI {
   }
 
   handleAssistantNonStreamedMessage(content, metadata) {
+    const parsedContent = parseMarkdown(content);
+
     const message = this.createMessage(
       "assistant",
-      content,
+      parsedContent,
       metadata,
       true,
       undefined,
@@ -346,16 +349,20 @@ class ChatbotUI {
    * @public
    * @param {string} sender - The sender ('user')
    * @param {string} message - The message content
+   * @param {Object} metadata - Optional metadata
+   * @param {boolean} fromHistory - Whether message is from history
+   * @param {boolean} isStreamed - Whether message is part of streaming response
    */
   addMessage(sender, message, metadata = null, fromHistory = false) {
-    const shouldAnimate = sender === "assistant" && !fromHistory;
-    // Only animate assistant messages that are not from history
+    const parsedMessage =
+      sender === "assistant" && !isStreamed ? parseMarkdown(message) : message;
 
-    const animationSpeed = fromHistory ? 10 : undefined; // Faster for deterministic messages
+    const shouldAnimate = sender === "assistant" && !fromHistory;
+    const animationSpeed = fromHistory ? 5 : undefined;
 
     const messageComponent = this.createMessage(
       sender,
-      message,
+      parsedMessage,
       metadata,
       shouldAnimate,
       animationSpeed,
