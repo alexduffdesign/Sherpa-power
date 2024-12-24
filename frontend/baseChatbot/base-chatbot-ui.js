@@ -78,7 +78,9 @@ class ChatbotUI {
       e.preventDefault();
       const message = this.input.value.trim();
       if (message) {
-        // Emit a 'userMessage' event. The ChatbotCore will handle the logic and respond.
+        // Add message to UI first
+        this.addMessage("user", message, null, false);
+        // Then emit event for core to handle
         this.eventBus.emit("userMessage", message);
         this.input.value = "";
       }
@@ -86,10 +88,10 @@ class ChatbotUI {
 
     // Handle button clicks
     this.eventBus.on("buttonClicked", (payload) => {
-      this.ui.addMessage("user", userMessage, null, false);
-      this.core.sendAction(payload.action);
+      const userMessage = payload.label || "Button clicked";
+      this.addMessage("user", userMessage, null, false); // Use this directly since we're in ChatbotUI
+      this.eventBus.emit("sendAction", payload.action); // Emit event for core to handle
       this.removeInteractiveElements();
-      e.preventDefault(); // Add this line to prevent form submission
     });
 
     // this.eventBus.on("carouselButtonClicked", (payload) => {

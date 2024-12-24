@@ -38,6 +38,14 @@ class ChatbotCore {
     this.streamingParser = new StreamingMarkdownParser((htmlSegment) => {
       this.eventBus.emit("assistantMessageStreamed", { content: htmlSegment });
     });
+
+    this.eventBus.on("userMessage", (message) => {
+      this.sendMessage(message);
+    });
+
+    this.eventBus.on("sendAction", (action) => {
+      this.sendAction({ action });
+    });
   }
 
   /**
@@ -184,7 +192,9 @@ class ChatbotCore {
       while (true) {
         const { done, value } = await reader.read();
 
-        this.eventBus.emit("typing", { isTyping: false }); // Hide typing on first response
+        if (events.length > 0) {
+          this.eventBus.emit("typing", { isTyping: false });
+        }
 
         if (done) {
           this.eventBus.emit("end", {});
