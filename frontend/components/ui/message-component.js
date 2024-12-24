@@ -21,7 +21,7 @@ export class MessageComponent extends HTMLElement {
     const animate = this.getAttribute("data-animate") !== "false";
     this.currentAnimationSpeed = parseInt(
       this.getAttribute("data-animation-speed") || this.defaultAnimationSpeed,
-      10
+      5
     );
 
     this.render(sender, content);
@@ -30,10 +30,11 @@ export class MessageComponent extends HTMLElement {
     if (!messageContent) return;
 
     if (!this.isStreaming && content) {
-      messageContent.innerHTML = content; // Content is already parsed HTML
       if (animate) {
-        // Add fade-in class here if animation is desired
-        messageContent.classList.add("fade-in");
+        // Use animateHTMLContent instead of just setting innerHTML
+        animateHTMLContent(messageContent, content, this.currentAnimationSpeed);
+      } else {
+        messageContent.innerHTML = content;
       }
       this.scrollToBottom();
     } else if (this.isStreaming) {

@@ -1,7 +1,7 @@
 // /assets/scripts/chatbot/core/base-chatbot-ui.js
 
 import EventEmitter from "eventemitter3";
-import { animateText } from "../utils/animation-util.js";
+import { animateText, animateHTMLContent } from "../utils/animation-util.js";
 import { parseMarkdown } from "../utils/markdown-util.js";
 
 /**
@@ -163,21 +163,13 @@ class ChatbotUI {
       "assistant",
       parsedContent,
       metadata,
-      true,
-      2,
+      true, // Set animate to true
+      2, // Animation speed
       false
     );
 
     this.messageContainer.appendChild(message);
-
-    const messageContentElement =
-      message.shadowRoot.querySelector(".message__content");
-    if (messageContentElement) {
-      // Animate the content
-      animateHTMLContent(messageContentElement, parsedContent, 2);
-      this.hideTypingIndicator();
-    }
-
+    this.hideTypingIndicator();
     this.scrollToBottom();
   }
 
