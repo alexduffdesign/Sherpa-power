@@ -319,5 +319,3 @@ export class MessageComponent extends HTMLElement {
     }
   }
 }
-
-customElements.define("message-component", MessageComponent);
