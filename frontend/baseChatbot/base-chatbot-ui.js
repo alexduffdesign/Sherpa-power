@@ -80,10 +80,9 @@ class ChatbotUI {
       const message = this.input.value.trim();
       if (message) {
         // Add message to UI first
-        this.showTypingIndicator();
+        this.showTypingIndicator("Sherpa Guide Thinking");
 
         this.addMessage("user", message, null, false);
-        // Then emit event for core to handle
         this.eventBus.emit("userMessage", message);
         this.input.value = "";
       }
@@ -163,8 +162,8 @@ class ChatbotUI {
       "assistant",
       parsedContent,
       metadata,
-      true, // Set animate to true
-      2, // Animation speed
+      true,
+      4,
       false
     );
 
@@ -269,7 +268,7 @@ class ChatbotUI {
    * Show the typing indicator
    * @public
    */
-  showTypingIndicator(message = null) {
+  showTypingIndicator(message = "Sherpa Guide Thinking") {
     if (this.typingIndicator) {
       this.typingIndicator.style.display = "flex";
 

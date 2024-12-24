@@ -92,7 +92,10 @@ class ChatbotCore {
    * @param {Object} actionPayload - The action payload to send
    */
   async sendAction(actionPayload) {
-    this.eventBus.emit("typing", { isTyping: true }); // Show when request starts
+    this.eventBus.emit("typing", {
+      isTyping: true,
+      message: "Sherpa Guide Thinking",
+    }); // Show when request starts
     try {
       // Only abort if there's an existing connection
       if (this.abortController) {
