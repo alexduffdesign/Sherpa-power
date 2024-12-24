@@ -164,7 +164,7 @@ class ChatbotUI {
       parsedContent,
       metadata,
       true,
-      2, // Animation speed
+      2,
       false
     );
 
@@ -173,20 +173,8 @@ class ChatbotUI {
     const messageContentElement =
       message.shadowRoot.querySelector(".message__content");
     if (messageContentElement) {
-      // Create a temporary container to parse the HTML
-      const tempDiv = document.createElement("div");
-      tempDiv.innerHTML = parsedContent;
-
-      // Clear existing content
-      messageContentElement.innerHTML = "";
-
-      // Append each child node to maintain HTML structure
-      while (tempDiv.firstChild) {
-        messageContentElement.appendChild(tempDiv.firstChild);
-      }
-
-      // Add fade-in class after content is properly added
-      messageContentElement.classList.add("fade-in");
+      // Animate the content
+      animateHTMLContent(messageContentElement, parsedContent, 2);
       this.hideTypingIndicator();
     }
 
