@@ -192,8 +192,6 @@ class ChatbotCore {
       while (true) {
         const { done, value } = await reader.read();
 
-        this.eventBus.emit("typing", { isTyping: false });
-
         if (done) {
           this.eventBus.emit("end", {});
           break;
@@ -210,7 +208,6 @@ class ChatbotCore {
       }
     } catch (error) {
       this.handleError(error);
-      this.eventBus.emit("typing", { isTyping: false });
     }
   }
 
@@ -270,6 +267,7 @@ class ChatbotCore {
 
     switch (trace.type) {
       case "text":
+        this.eventBus.emit("typing", { isTyping: false });
         this.eventBus.emit("assistantMessageNonStreamed", {
           content: trace.payload.message,
           metadata: trace.payload.metadata,
@@ -315,9 +313,12 @@ class ChatbotCore {
 
       case "content":
         if (payload.content) {
-          // Instead of accumulating raw text:
+          if (!this.hasStartedStreaming) {
+            this.eventBus.emit("typing", { isTyping: false });
+            this.hasStartedStreaming = true;
+          }
+
           this.currentCompletion += payload.content;
-          // Feed the content directly into the parser
           this.streamingParser.appendText(payload.content);
           console.log("appendText called with:", payload.content);
         }
@@ -342,6 +343,7 @@ class ChatbotCore {
           metadata: null,
         });
         this.currentCompletion = null;
+        this.hasStartedStreaming = false; // Reset for next stream
         break;
 
       default:

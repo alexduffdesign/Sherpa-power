@@ -94,17 +94,6 @@ class ChatbotUI {
       this.removeInteractiveElements();
     });
 
-    // this.eventBus.on("carouselButtonClicked", (payload) => {
-    //   this.eventBus.emit("interactiveElementClicked", payload);
-    //   this.removeInteractiveElements();
-    //   e.preventDefault(); // Add this line to prevent form submission
-    // });
-
-    // this.eventBus.on("interactiveElementClicked", (payload) => {
-    //   const userMessage = payload.label || "Button clicked";
-    //   this.addMessage("user", userMessage, null, false); // Add message to UI
-    // });
-
     this.eventBus.on("assistantMessageStreamed", ({ content }) => {
       this.handleAssistantStreamedMessage(content);
       console.log("assistnatmessageStreamed activated", content);
@@ -166,7 +155,7 @@ class ChatbotUI {
     );
     this.messageContainer.appendChild(message);
     this.scrollToBottom();
-    this.showTypingIndicator();
+
     const messageContentElement =
       message.shadowRoot.querySelector(".message__content");
     if (messageContentElement) {
