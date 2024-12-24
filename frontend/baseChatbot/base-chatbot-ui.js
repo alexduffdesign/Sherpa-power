@@ -79,6 +79,8 @@ class ChatbotUI {
       const message = this.input.value.trim();
       if (message) {
         // Add message to UI first
+        this.showTypingIndicator();
+
         this.addMessage("user", message, null, false);
         // Then emit event for core to handle
         this.eventBus.emit("userMessage", message);
@@ -89,6 +91,7 @@ class ChatbotUI {
     // Handle button clicks
     this.eventBus.on("buttonClicked", (payload) => {
       const userMessage = payload.label || "Button clicked";
+      this.showTypingIndicator();
       this.addMessage("user", userMessage, null, false); // Use this directly since we're in ChatbotUI
       this.eventBus.emit("sendAction", payload.action); // Emit event for core to handle
       this.removeInteractiveElements();
