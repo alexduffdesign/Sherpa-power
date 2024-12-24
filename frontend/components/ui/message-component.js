@@ -17,26 +17,26 @@ export class MessageComponent extends HTMLElement {
   connectedCallback() {
     const sender = this.getAttribute("sender");
     const content = this.getAttribute("content") || "";
-    this.isStreaming = this.hasAttribute("streaming"); // Check if the 'streaming' attribute is present
+    this.isStreaming = this.hasAttribute("streaming");
     const animate = this.getAttribute("data-animate") !== "false";
+    this.currentAnimationSpeed = parseInt(
+      this.getAttribute("data-animation-speed") || this.defaultAnimationSpeed,
+      10
+    );
 
     this.render(sender, content);
 
+    const messageContent = this.shadowRoot.querySelector(".message__content");
+    if (!messageContent) return;
+
     if (!this.isStreaming && content) {
+      messageContent.innerHTML = content; // Content is already parsed HTML
       if (animate) {
-        this.animateNonStreamedContent(content);
-      } else {
-        // Directly set the content without animation
-        const parsedHTML = parseMarkdown(content);
-        const messageContent =
-          this.shadowRoot.querySelector(".message__content");
-        if (messageContent) {
-          messageContent.innerHTML = parsedHTML;
-          this.scrollToBottom();
-        }
+        // Add fade-in class here if animation is desired
+        messageContent.classList.add("fade-in");
       }
-    } else if (this.isStreaming && content) {
-      // Initialize the streaming parser
+      this.scrollToBottom();
+    } else if (this.isStreaming) {
       this.streamingParser = new StreamingMarkdownParser((htmlSegment) => {
         this.appendHTMLContent(htmlSegment);
       });
@@ -87,95 +87,6 @@ export class MessageComponent extends HTMLElement {
     }
   }
 
-  /**
-   * Animates the message content for non-streamed messages by revealing it character by character.
-   * @param {string} content - The raw markdown content to animate.
-   */
-  animateNonStreamedContent(content) {
-    const messageContent = this.shadowRoot.querySelector(".message__content");
-    if (!messageContent) return;
-
-    const parsedHTML = parseMarkdown(content);
-    const tempDiv = document.createElement("div");
-    tempDiv.innerHTML = parsedHTML;
-
-    this.animateNodesSequentially(messageContent, tempDiv.childNodes);
-  }
-
-  /**
-   * Recursively animates HTML nodes one after another for non-streamed messages.
-   * @param {HTMLElement} container - The container to append animated nodes.
-   * @param {NodeList} nodes - The list of nodes to animate.
-   * @returns {Promise<void>} - Resolves when all nodes are animated.
-   */
-  async animateNodesSequentially(container, nodes) {
-    const blockLevelElements = new Set([
-      "p",
-      "div",
-      "h1",
-      "h2",
-      "h3",
-      "ul",
-      "ol",
-      "li",
-      "blockquote",
-      "pre",
-      "h4",
-      "h5",
-      "h6",
-    ]);
-
-    for (const node of nodes) {
-      if (node.nodeType === Node.TEXT_NODE) {
-        if (node.textContent.trim() === "") continue;
-        await this.animateTextNode(container, node.textContent);
-      } else if (node.nodeType === Node.ELEMENT_NODE) {
-        const tagName = node.tagName.toLowerCase();
-        const isBlock = blockLevelElements.has(tagName);
-        const element = document.createElement(tagName);
-
-        Array.from(node.attributes).forEach((attr) => {
-          element.setAttribute(attr.name, attr.value);
-        });
-
-        container.appendChild(element);
-
-        await this.animateNodesSequentially(element, node.childNodes);
-      }
-    }
-  }
-
-  /**
-   * Animates a text node by revealing it character by character using requestAnimationFrame.
-   * @param {HTMLElement} container - The container to append the text.
-   * @param {string} text - The text content to animate.
-   * @returns {Promise<void>} - Resolves when animation is complete.
-   */
-  animateTextNode(container, text) {
-    return new Promise((resolve) => {
-      let index = 0;
-      const span = document.createElement("span");
-      container.appendChild(span);
-      let lastTime = performance.now();
-
-      const animate = (currentTime) => {
-        const deltaTime = currentTime - lastTime;
-        if (deltaTime >= this.currentAnimationSpeed) {
-          span.textContent += text[index];
-          index++;
-          this.scrollToBottom();
-          lastTime = currentTime;
-        }
-        if (index < text.length) {
-          this.animationFrameId = requestAnimationFrame(animate);
-        } else {
-          resolve();
-        }
-      };
-      this.animationFrameId = requestAnimationFrame(animate);
-    });
-  }
-
   render(sender, content) {
     const isAssistant = sender === "assistant";
     this.shadowRoot.innerHTML = `
@@ -183,7 +94,6 @@ export class MessageComponent extends HTMLElement {
         h1, h2, h3, h4, h5, h6 {
           font-family: var(--heading-font-family);
           font-weight: var(--heading-font-weight);
-
         }
         :host {
           display: block;
@@ -194,8 +104,8 @@ export class MessageComponent extends HTMLElement {
           margin-bottom: var(--spacing-1);
         }
         ul {
-        display: flex;
-        flex-direction: column;
+          display: flex;
+          flex-direction: column;
         }
         .message-wrapper {
           display: flex;
@@ -247,8 +157,13 @@ export class MessageComponent extends HTMLElement {
           opacity: 0;
         }
 
-        .message.fade-in {
-          opacity: 1;
+        .message__content.fade-in {
+          animation: fadeIn 0.5s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+          from { opacity: 0; }
+          to { opacity: 1; }
         }
 
         .message--assistant {
@@ -404,3 +319,5 @@ export class MessageComponent extends HTMLElement {
     }
   }
 }
+
+customElements.define("message-component", MessageComponent);
