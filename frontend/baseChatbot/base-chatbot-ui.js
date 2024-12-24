@@ -173,7 +173,11 @@ class ChatbotUI {
     const messageContentElement =
       message.shadowRoot.querySelector(".message__content");
     if (messageContentElement) {
-      animateText(messageContentElement, parsedContent, 5).then(() => {
+      // Set innerHTML first to ensure proper HTML rendering
+      messageContentElement.innerHTML = parsedContent;
+
+      // Then animate with faster speed (lower number = faster)
+      animateText(messageContentElement, parsedContent, 2).then(() => {
         this.scrollToBottom();
         this.hideTypingIndicator();
       });
@@ -353,12 +357,18 @@ class ChatbotUI {
    * @param {boolean} fromHistory - Whether message is from history
    * @param {boolean} isStreamed - Whether message is part of streaming response
    */
-  addMessage(sender, message, metadata = null, fromHistory = false) {
+  addMessage(
+    sender,
+    message,
+    metadata = null,
+    fromHistory = false,
+    isStreamed = false
+  ) {
     const parsedMessage =
       sender === "assistant" && !isStreamed ? parseMarkdown(message) : message;
 
     const shouldAnimate = sender === "assistant" && !fromHistory;
-    const animationSpeed = fromHistory ? 5 : undefined;
+    const animationSpeed = fromHistory ? 2 : undefined; // Adjusted speed here too
 
     const messageComponent = this.createMessage(
       sender,
@@ -366,7 +376,7 @@ class ChatbotUI {
       metadata,
       shouldAnimate,
       animationSpeed,
-      false // isStreamed
+      isStreamed
     );
 
     this.messageContainer.appendChild(messageComponent);
