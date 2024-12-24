@@ -54,6 +54,12 @@ class ChatbotCore {
    */
   async sendLaunch(interactPayload = {}) {
     console.log("Constructing launch payload:", interactPayload);
+
+    this.eventBus.emit("typing", {
+      isTyping: true,
+      message: "Sherpa Guide Launching...",
+    });
+
     const payload = interactPayload.action
       ? interactPayload
       : {

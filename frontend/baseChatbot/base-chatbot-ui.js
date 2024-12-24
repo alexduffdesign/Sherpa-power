@@ -88,6 +88,14 @@ class ChatbotUI {
       }
     });
 
+    this.eventBus.on("typing", ({ isTyping, message }) => {
+      if (isTyping) {
+        this.showTypingIndicator(message);
+      } else {
+        this.hideTypingIndicator();
+      }
+    });
+
     // Handle button clicks
     this.eventBus.on("buttonClicked", (payload) => {
       const userMessage = payload.label || "Button clicked";
@@ -268,6 +276,11 @@ class ChatbotUI {
   showTypingIndicator() {
     if (this.typingIndicator) {
       this.typingIndicator.style.display = "flex";
+
+      if (message && this.typingText) {
+        this.typingText.textContent = message;
+      }
+
       this.scrollToBottom();
     }
   }
