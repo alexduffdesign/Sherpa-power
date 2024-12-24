@@ -173,7 +173,7 @@ class ChatbotUI {
     const messageContentElement =
       message.shadowRoot.querySelector(".message__content");
     if (messageContentElement) {
-      animateText(messageContentElement, content, 5).then(() => {
+      animateText(messageContentElement, parsedContent, 5).then(() => {
         this.scrollToBottom();
         this.hideTypingIndicator();
       });
