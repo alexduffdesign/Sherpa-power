@@ -1,6 +1,7 @@
 // /assets/scripts/chatbot/components/message-component.js
 
 import { parseMarkdown } from "../../utils/markdown-util.js";
+import { animateHTMLContent } from "../../utils/animation-util.js";
 import { StreamingMarkdownParser } from "../../utils/streaming-markdown-parser.js";
 
 export class MessageComponent extends HTMLElement {
