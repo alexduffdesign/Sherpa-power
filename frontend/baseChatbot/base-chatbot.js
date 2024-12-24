@@ -192,9 +192,7 @@ class ChatbotCore {
       while (true) {
         const { done, value } = await reader.read();
 
-        if (events.length > 0) {
-          this.eventBus.emit("typing", { isTyping: false });
-        }
+        this.eventBus.emit("typing", { isTyping: false });
 
         if (done) {
           this.eventBus.emit("end", {});
