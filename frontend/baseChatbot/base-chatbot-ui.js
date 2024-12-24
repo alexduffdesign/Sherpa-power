@@ -273,10 +273,11 @@ class ChatbotUI {
    * Show the typing indicator
    * @public
    */
-  showTypingIndicator() {
+  showTypingIndicator(message = null) {
     if (this.typingIndicator) {
       this.typingIndicator.style.display = "flex";
 
+      // Only update text content if message is provided and typingText exists
       if (message && this.typingText) {
         this.typingText.textContent = message;
       }
