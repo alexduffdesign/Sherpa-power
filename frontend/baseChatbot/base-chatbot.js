@@ -184,10 +184,7 @@ class ChatbotCore {
       while (true) {
         const { done, value } = await reader.read();
 
-        if (isFirstResponse) {
-          this.eventBus.emit("typing", { isTyping: false }); // Hide typing on first response
-          isFirstResponse = false;
-        }
+        this.eventBus.emit("typing", { isTyping: false }); // Hide typing on first response
 
         if (done) {
           this.eventBus.emit("end", {});
