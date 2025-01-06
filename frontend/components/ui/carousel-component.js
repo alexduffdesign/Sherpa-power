@@ -96,15 +96,17 @@ export class CarouselComponent extends HTMLElement {
         .carousel {
           position: relative;
           width: 100%;
-          overflow: hidden;
+          overflow: visible; /* Changed from hidden to visible */
           margin-bottom: var(--spacing-4);
           box-sizing: border-box;
+          padding: 0 50px; /* Added padding to make room for arrows */
         }
 
         .carousel__container {
           display: flex;
           transition: transform 0.3s ease-out;
           max-width: 100%;
+          overflow: hidden; /* Added overflow hidden here instead */
         }
 
         .carousel__item {
@@ -136,14 +138,21 @@ export class CarouselComponent extends HTMLElement {
           justify-content: center;
           cursor: pointer;
           z-index: 2;
+          opacity: 1;
+          transition: opacity 0.3s ease;
+        }
+
+        .carousel__button[disabled] {
+          opacity: 0;
+          pointer-events: none;
         }
 
         .carousel__button--left {
-          left: 10px;
+          left: 0;
         }
 
         .carousel__button--right {
-          right: 10px;
+          right: 0;
         }
 
         .carousel__item-button {
@@ -327,9 +336,19 @@ export class CarouselComponent extends HTMLElement {
   }
 
   updateVisibility() {
-    this.leftButton.disabled = this.currentIndex === 0;
-    this.rightButton.disabled =
-      this.currentIndex >= this.items.length - this.itemsPerSlide;
+    // Hide left button on first slide
+    if (this.currentIndex === 0) {
+      this.leftButton.setAttribute("disabled", "");
+    } else {
+      this.leftButton.removeAttribute("disabled");
+    }
+
+    // Hide right button on last slide
+    if (this.currentIndex >= this.items.length - this.itemsPerSlide) {
+      this.rightButton.setAttribute("disabled", "");
+    } else {
+      this.rightButton.removeAttribute("disabled");
+    }
   }
 
   handleButtonClick(e) {
