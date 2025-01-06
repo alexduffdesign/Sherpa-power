@@ -1,4 +1,4 @@
-import{p as c}from"./markdown-util.DadijVe3.js";import{S as h}from"./streaming-markdown-parser.Bd3zPGns.js";function m(r,t,e=5){return new Promise(n=>{let i=0;r.textContent="";let o=performance.now();const a=s=>{s-o>=e&&i<t.length&&(r.textContent+=t[i],i++,o=s),i<t.length?requestAnimationFrame(a):n()};requestAnimationFrame(a)})}async function l(r,t,e=2){const n=document.createElement("div");n.innerHTML=t,r.innerHTML="";for(const i of n.childNodes)if(i.nodeType===Node.TEXT_NODE){if(i.textContent.trim()){const o=document.createElement("span");r.appendChild(o),await m(o,i.textContent,e)}}else if(i.nodeType===Node.ELEMENT_NODE){const o=i.cloneNode(!1);r.appendChild(o),await l(o,i.innerHTML,e)}}class u extends HTMLElement{constructor(){super(),this.attachShadow({mode:"open"}),this._eventBus=null}set eventBus(t){this._eventBus=t}connectedCallback(){const t=this.getAttribute("label"),e=this.getAttribute("payload");this.render(t,e)}render(t,e){this.shadowRoot.innerHTML=`
+import{p as c}from"./markdown-util.DadijVe3.js";import{S as h}from"./streaming-markdown-parser.Bd3zPGns.js";function m(r,e,t=5){return new Promise(n=>{let i=0;r.textContent="";let o=performance.now();const a=s=>{s-o>=t&&i<e.length&&(r.textContent+=e[i],i++,o=s),i<e.length?requestAnimationFrame(a):n()};requestAnimationFrame(a)})}async function d(r,e,t=2){const n=document.createElement("div");n.innerHTML=e,r.innerHTML="";for(const i of n.childNodes)if(i.nodeType===Node.TEXT_NODE){if(i.textContent.trim()){const o=document.createElement("span");r.appendChild(o),await m(o,i.textContent,t)}}else if(i.nodeType===Node.ELEMENT_NODE){const o=i.cloneNode(!1);r.appendChild(o),await d(o,i.innerHTML,t)}}class u extends HTMLElement{constructor(){super(),this.attachShadow({mode:"open"}),this._eventBus=null}set eventBus(e){this._eventBus=e}connectedCallback(){const e=this.getAttribute("label"),t=this.getAttribute("payload");this.render(e,t)}render(e,t){this.shadowRoot.innerHTML=`
       <style>
         .button-container {
           display: flex;
@@ -25,9 +25,9 @@ import{p as c}from"./markdown-util.DadijVe3.js";import{S as h}from"./streaming-m
         }
       </style>
       <div class="button-container">
-        <button class="button" data-button-data='${e}' aria-label="${t}">${t}</button>
+        <button class="button" data-button-data='${t}' aria-label="${e}">${e}</button>
       </div>
-    `,this.shadowRoot.querySelector(".button").addEventListener("click",()=>{if(!this._eventBus){console.error("No eventBus assigned to ButtonComponent");return}try{const n=JSON.parse(e);this._eventBus.emit("buttonClicked",{action:n,label:t})}catch(n){console.error("Error parsing button payload:",n)}})}}class p extends HTMLElement{constructor(){super(),this.attachShadow({mode:"open"}),this.isStreaming=!1,this.animationFrameId=null,this.defaultAnimationSpeed=5,this.currentAnimationSpeed=this.defaultAnimationSpeed,this.streamingParser=null}connectedCallback(){const t=this.getAttribute("sender"),e=this.getAttribute("content")||"";this.isStreaming=this.hasAttribute("streaming");const n=this.getAttribute("data-animate")!=="false";this.currentAnimationSpeed=parseInt(this.getAttribute("data-animation-speed")||this.defaultAnimationSpeed,5),this.render(t,e);const i=this.shadowRoot.querySelector(".message__content");i&&(!this.isStreaming&&e?(n?l(i,e,this.currentAnimationSpeed):i.innerHTML=e,this.scrollToBottom()):this.isStreaming&&(this.streamingParser=new h(o=>{this.appendHTMLContent(o)}),this.streamingParser.appendText(e)))}appendContent(t){if(console.log("appendContent:",t),this.streamingParser)this.streamingParser.appendText(t);else{const e=c(t);this.appendHTMLContent(e)}}appendHTMLContent(t){const e=this.shadowRoot.querySelector(".message__content");if(e){const n=document.createElement("div");for(n.innerHTML=t;n.firstChild;)e.appendChild(n.firstChild);this.scrollToBottom()}}finalizeContentAndAnimate(){console.log("finalizeContentAndAnimate called"),this.streamingParser&&(this.streamingParser.end(),this.streamingParser=null)}render(t,e){const n=t==="assistant";this.shadowRoot.innerHTML=`
+    `,this.shadowRoot.querySelector(".button").addEventListener("click",()=>{if(!this._eventBus){console.error("No eventBus assigned to ButtonComponent");return}try{const n=JSON.parse(t);this._eventBus.emit("buttonClicked",{action:n,label:e})}catch(n){console.error("Error parsing button payload:",n)}})}}class p extends HTMLElement{constructor(){super(),this.attachShadow({mode:"open"}),this.isStreaming=!1,this.animationFrameId=null,this.defaultAnimationSpeed=5,this.currentAnimationSpeed=this.defaultAnimationSpeed,this.streamingParser=null}connectedCallback(){const e=this.getAttribute("sender"),t=this.getAttribute("content")||"";this.isStreaming=this.hasAttribute("streaming");const n=this.getAttribute("data-animate")!=="false";this.currentAnimationSpeed=parseInt(this.getAttribute("data-animation-speed")||this.defaultAnimationSpeed,5),this.render(e,t);const i=this.shadowRoot.querySelector(".message__content");i&&(!this.isStreaming&&t?(n?d(i,t,this.currentAnimationSpeed):i.innerHTML=t,this.scrollToBottom()):this.isStreaming&&(this.streamingParser=new h(o=>{this.appendHTMLContent(o)}),this.streamingParser.appendText(t)))}appendContent(e){if(console.log("appendContent:",e),this.streamingParser)this.streamingParser.appendText(e);else{const t=c(e);this.appendHTMLContent(t)}}appendHTMLContent(e){const t=this.shadowRoot.querySelector(".message__content");if(t){const n=document.createElement("div");for(n.innerHTML=e;n.firstChild;)t.appendChild(n.firstChild);this.scrollToBottom()}}finalizeContentAndAnimate(){console.log("finalizeContentAndAnimate called"),this.streamingParser&&(this.streamingParser.end(),this.streamingParser=null)}render(e,t){const n=e==="assistant";this.shadowRoot.innerHTML=`
       <style>
         h1, h2, h3, h4, h5, h6 {
           font-family: var(--heading-font-family);
@@ -222,13 +222,13 @@ import{p as c}from"./markdown-util.DadijVe3.js";import{S as h}from"./streaming-m
           background-color: rgba(0, 0, 0, 0.05);
         }
       </style>
-      <div class="message-wrapper message-wrapper--${t}">
+      <div class="message-wrapper message-wrapper--${e}">
         ${n?'<img class="assistant-icon" src="https://cdn.shopify.com/s/files/1/0641/4290/1439/files/sherpa-icon.svg?v=1736167714">':""}
-        <div class="message message--${t}">
+        <div class="message message--${e}">
           <div class="message__content"></div>
         </div>
       </div>
-    `}scrollToBottom(){this.parentElement&&(this.parentElement.scrollTop=this.parentElement.scrollHeight)}disconnectedCallback(){this.animationFrameId&&cancelAnimationFrame(this.animationFrameId),this.streamingParser&&(this.streamingParser.end(),this.streamingParser=null)}}class g extends HTMLElement{constructor(){super(),this.attachShadow({mode:"open"}),this._eventBus=null,this.items=[],this.currentIndex=0,this.isDesktop=window.matchMedia("(min-width: 1000px)").matches,this.itemsPerSlide=this.isDesktop?2:1,this.moveLeft=this.moveLeft.bind(this),this.moveRight=this.moveRight.bind(this),this.handleResize=this.handleResize.bind(this),this.handleButtonClick=this.handleButtonClick.bind(this)}set eventBus(t){this._eventBus=t}connectedCallback(){const t=this.getAttribute("data-carousel");if(!t){console.error("No data-carousel attribute found. Cannot render carousel.");return}let e;try{e=JSON.parse(t)}catch(n){console.error("Failed to parse carousel data:",n);return}if(!e||!Array.isArray(e.cards)){console.error("carouselData.cards is not defined or not an array");return}this.renderCarousel(e)}renderCarousel(t){this.carouselData=t,this.shadowRoot.innerHTML=`
+    `}scrollToBottom(){this.parentElement&&(this.parentElement.scrollTop=this.parentElement.scrollHeight)}disconnectedCallback(){this.animationFrameId&&cancelAnimationFrame(this.animationFrameId),this.streamingParser&&(this.streamingParser.end(),this.streamingParser=null)}}class g extends HTMLElement{constructor(){super(),this.attachShadow({mode:"open"}),this._eventBus=null,this.items=[],this.currentIndex=0,this.isDesktop=window.matchMedia("(min-width: 1000px)").matches,this.itemsPerSlide=this.isDesktop?2:1,this.moveLeft=this.moveLeft.bind(this),this.moveRight=this.moveRight.bind(this),this.handleResize=this.handleResize.bind(this),this.handleButtonClick=this.handleButtonClick.bind(this)}set eventBus(e){this._eventBus=e}connectedCallback(){const e=this.getAttribute("data-carousel");if(!e){console.error("No data-carousel attribute found. Cannot render carousel.");return}let t;try{t=JSON.parse(e)}catch(n){console.error("Failed to parse carousel data:",n);return}if(!t||!Array.isArray(t.cards)){console.error("carouselData.cards is not defined or not an array");return}this.renderCarousel(t)}renderCarousel(e){this.carouselData=e,this.shadowRoot.innerHTML=`
       <style>
         h6 {
           font-family: var(--heading-font-family);
@@ -269,20 +269,18 @@ import{p as c}from"./markdown-util.DadijVe3.js";import{S as h}from"./streaming-m
         .carousel {
           position: relative;
           width: 100%;
-          overflow: visible; /* Changed from hidden to visible */
+          overflow: hidden;
           margin-bottom: var(--spacing-4);
           box-sizing: border-box;
-          padding: 0 50px; /* Added padding to make room for arrows */
         }
 
         .carousel__container {
           display: flex;
           transition: transform 0.3s ease-out;
           max-width: 100%;
-          overflow: hidden; /* Added overflow hidden here instead */
         }
 
-        .carousel__item {
+         .carousel__item {
           flex: 0 0 100%;
           display: flex;
           gap: var(--spacing-4);
@@ -311,21 +309,20 @@ import{p as c}from"./markdown-util.DadijVe3.js";import{S as h}from"./streaming-m
           justify-content: center;
           cursor: pointer;
           z-index: 2;
-          opacity: 1;
-          transition: opacity 0.3s ease;
+          margin-block-start: var(--spacing-0) !important;
         }
 
-        .carousel__button[disabled] {
+         .carousel__button[disabled] {
           opacity: 0;
           pointer-events: none;
         }
 
         .carousel__button--left {
-          left: 0;
+          left: 10px;
         }
 
         .carousel__button--right {
-          right: 0;
+          right: 10px;
         }
 
         .carousel__item-button {
@@ -396,5 +393,5 @@ import{p as c}from"./markdown-util.DadijVe3.js";import{S as h}from"./streaming-m
           </svg>
         </button>
       </div>
-    `,this.carouselContainer=this.shadowRoot.querySelector(".carousel__container"),this.leftButton=this.shadowRoot.querySelector(".carousel__button--left"),this.rightButton=this.shadowRoot.querySelector(".carousel__button--right"),this.carouselData.cards.forEach((e,n)=>{const i=document.createElement("div");i.classList.add("carousel__item");const o=document.createElement("div");o.classList.add("carousel__item-wrapper");const a=document.createElement("div");if(a.classList.add("carousel__item-content"),e.imageUrl){const s=document.createElement("img");s.src=e.imageUrl,s.alt=e.title||"",s.classList.add("carousel__item-image"),a.appendChild(s)}if(e.title){const s=document.createElement("h6");s.classList.add("carousel__item-title"),s.textContent=e.title,a.appendChild(s)}if(e.description&&e.description.text){const s=document.createElement("p");s.classList.add("carousel__item-description"),s.textContent=e.description.text,a.appendChild(s)}if(e.buttons&&e.buttons.length>0){const s=e.buttons[0],d=document.createElement("button");d.classList.add("button","carousel__item-button"),d.setAttribute("data-button-index",n),d.setAttribute("data-button-payload",JSON.stringify(s.request)),d.setAttribute("data-button-text",s.name),d.textContent=s.name||"Select",a.appendChild(d),d.addEventListener("click",this.handleButtonClick)}o.appendChild(a),i.appendChild(o),this.carouselContainer.appendChild(i),this.items.push(i)}),this.initCarousel(),this.leftButton.addEventListener("click",this.moveLeft),this.rightButton.addEventListener("click",this.moveRight),window.addEventListener("resize",this.handleResize),this.updateVisibility(),this.updatePosition()}initCarousel(){this.isDesktop=window.matchMedia("(min-width: 1000px)").matches,this.itemsPerSlide=this.isDesktop?2:1,this.currentIndex=0,this.updateVisibility(),this.updatePosition()}handleResize(){this.isDesktop=window.matchMedia("(min-width: 1000px)").matches,this.itemsPerSlide=this.isDesktop?2:1,this.currentIndex=0,this.updatePosition(),this.updateVisibility()}moveLeft(){const t=this.itemsPerSlide;this.currentIndex=Math.max(0,this.currentIndex-t),this.updatePosition(),this.updateVisibility()}moveRight(){const t=this.itemsPerSlide;this.currentIndex=Math.min(this.items.length-t,this.currentIndex+t),this.updatePosition(),this.updateVisibility()}updatePosition(){const t=-(this.currentIndex/this.itemsPerSlide)*100;this.carouselContainer.style.transform=`translateX(${t}%)`}updateVisibility(){this.currentIndex===0?this.leftButton.setAttribute("disabled",""):this.leftButton.removeAttribute("disabled"),this.currentIndex>=this.items.length-this.itemsPerSlide?this.rightButton.setAttribute("disabled",""):this.rightButton.removeAttribute("disabled")}handleButtonClick(t){if(!this._eventBus){console.error("No eventBus assigned to CarouselComponent");return}const e=t.target,n=parseInt(e.getAttribute("data-button-index"),10),i=this.carouselData.cards[n];if(!i||!i.buttons||i.buttons.length===0){console.warn("No button data found for this card.");return}const o=i.buttons[0];console.log("Original button data:",o);const a=o.request.payload.title,s=a?`Selected ${a}`:"Selected Power Station";this._eventBus.emit("buttonClicked",{action:o.request,label:s}),this.remove()}}customElements.define("button-component",u);customElements.define("message-component",p);customElements.define("carousel-component",g);console.log("MessageComponent defined");console.log("ButtonComponent defined");console.log("CarouselComponent defined");
-//# sourceMappingURL=chatbot-components.DKlevnRB.js.map
+    `,this.carouselContainer=this.shadowRoot.querySelector(".carousel__container"),this.leftButton=this.shadowRoot.querySelector(".carousel__button--left"),this.rightButton=this.shadowRoot.querySelector(".carousel__button--right"),this.carouselData.cards.forEach((t,n)=>{const i=document.createElement("div");i.classList.add("carousel__item");const o=document.createElement("div");o.classList.add("carousel__item-wrapper");const a=document.createElement("div");if(a.classList.add("carousel__item-content"),t.imageUrl){const s=document.createElement("img");s.src=t.imageUrl,s.alt=t.title||"",s.classList.add("carousel__item-image"),a.appendChild(s)}if(t.title){const s=document.createElement("h6");s.classList.add("carousel__item-title"),s.textContent=t.title,a.appendChild(s)}if(t.description&&t.description.text){const s=document.createElement("p");s.classList.add("carousel__item-description"),s.textContent=t.description.text,a.appendChild(s)}if(t.buttons&&t.buttons.length>0){const s=t.buttons[0],l=document.createElement("button");l.classList.add("button","carousel__item-button"),l.setAttribute("data-button-index",n),l.setAttribute("data-button-payload",JSON.stringify(s.request)),l.setAttribute("data-button-text",s.name),l.textContent=s.name||"Select",a.appendChild(l),l.addEventListener("click",this.handleButtonClick)}o.appendChild(a),i.appendChild(o),this.carouselContainer.appendChild(i),this.items.push(i)}),this.initCarousel(),this.leftButton.addEventListener("click",this.moveLeft),this.rightButton.addEventListener("click",this.moveRight),window.addEventListener("resize",this.handleResize),this.updateVisibility(),this.updatePosition()}initCarousel(){this.isDesktop=window.matchMedia("(min-width: 1000px)").matches,this.itemsPerSlide=this.isDesktop?2:1,this.currentIndex=0,this.updateVisibility(),this.updatePosition()}handleResize(){const e=this.itemsPerSlide===2;this.isDesktop=window.matchMedia("(min-width: 1000px)").matches;const t=this.isDesktop;this.itemsPerSlide=this.isDesktop?2:1,e!==t&&(this.currentIndex=0,this.updatePosition()),this.updateVisibility()}moveLeft(){if(this.currentIndex<=0)return;const e=this.itemsPerSlide;this.currentIndex=Math.max(0,this.currentIndex-e),this.updatePosition(),this.updateVisibility()}moveRight(){const e=this.itemsPerSlide,t=this.items.length-e;this.currentIndex>=t||(this.currentIndex=Math.min(t,this.currentIndex+e),this.updatePosition(),this.updateVisibility())}updatePosition(){const e=100/this.itemsPerSlide,t=-(this.currentIndex*e);this.carouselContainer.style.transform=`translateX(${t}%)`}updateVisibility(){const e=this.items.length-this.itemsPerSlide;this.currentIndex===0?this.leftButton.setAttribute("disabled",""):this.leftButton.removeAttribute("disabled"),this.currentIndex>=e?this.rightButton.setAttribute("disabled",""):this.rightButton.removeAttribute("disabled")}handleButtonClick(e){if(!this._eventBus){console.error("No eventBus assigned to CarouselComponent");return}const t=e.target,n=parseInt(t.getAttribute("data-button-index"),10),i=this.carouselData.cards[n];if(!i||!i.buttons||i.buttons.length===0){console.warn("No button data found for this card.");return}const o=i.buttons[0];console.log("Original button data:",o);const a=o.request.payload.title,s=a?`Selected ${a}`:"Selected Power Station";this._eventBus.emit("buttonClicked",{action:o.request,label:s}),this.remove()}}customElements.define("button-component",u);customElements.define("message-component",p);customElements.define("carousel-component",g);console.log("MessageComponent defined");console.log("ButtonComponent defined");console.log("CarouselComponent defined");
+//# sourceMappingURL=chatbot-components.D_BhWmIP.js.map

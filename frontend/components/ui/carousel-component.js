@@ -96,20 +96,18 @@ export class CarouselComponent extends HTMLElement {
         .carousel {
           position: relative;
           width: 100%;
-          overflow: visible; /* Changed from hidden to visible */
+          overflow: hidden;
           margin-bottom: var(--spacing-4);
           box-sizing: border-box;
-          padding: 0 50px; /* Added padding to make room for arrows */
         }
 
         .carousel__container {
           display: flex;
           transition: transform 0.3s ease-out;
           max-width: 100%;
-          overflow: hidden; /* Added overflow hidden here instead */
         }
 
-        .carousel__item {
+         .carousel__item {
           flex: 0 0 100%;
           display: flex;
           gap: var(--spacing-4);
@@ -138,21 +136,20 @@ export class CarouselComponent extends HTMLElement {
           justify-content: center;
           cursor: pointer;
           z-index: 2;
-          opacity: 1;
-          transition: opacity 0.3s ease;
+          margin-block-start: var(--spacing-0) !important;
         }
 
-        .carousel__button[disabled] {
+         .carousel__button[disabled] {
           opacity: 0;
           pointer-events: none;
         }
 
         .carousel__button--left {
-          left: 0;
+          left: 10px;
         }
 
         .carousel__button--right {
-          right: 0;
+          right: 10px;
         }
 
         .carousel__item-button {
@@ -306,14 +303,24 @@ export class CarouselComponent extends HTMLElement {
   }
 
   handleResize() {
+    const wasDesktop = this.itemsPerSlide === 2;
     this.isDesktop = window.matchMedia("(min-width: 1000px)").matches;
+    const isDesktopNow = this.isDesktop;
+
+    // Update items per slide
     this.itemsPerSlide = this.isDesktop ? 2 : 1;
-    this.currentIndex = 0;
-    this.updatePosition();
+
+    // If there was a change in view mode, reset position
+    if (wasDesktop !== isDesktopNow) {
+      this.currentIndex = 0;
+      this.updatePosition();
+    }
+
     this.updateVisibility();
   }
 
   moveLeft() {
+    if (this.currentIndex <= 0) return;
     const itemsPerSlide = this.itemsPerSlide;
     this.currentIndex = Math.max(0, this.currentIndex - itemsPerSlide);
     this.updatePosition();
@@ -322,29 +329,31 @@ export class CarouselComponent extends HTMLElement {
 
   moveRight() {
     const itemsPerSlide = this.itemsPerSlide;
-    this.currentIndex = Math.min(
-      this.items.length - itemsPerSlide,
-      this.currentIndex + itemsPerSlide
-    );
+    const maxIndex = this.items.length - itemsPerSlide;
+    if (this.currentIndex >= maxIndex) return;
+    this.currentIndex = Math.min(maxIndex, this.currentIndex + itemsPerSlide);
     this.updatePosition();
     this.updateVisibility();
   }
 
   updatePosition() {
-    const offset = -(this.currentIndex / this.itemsPerSlide) * 100;
+    const slideWidth = 100 / this.itemsPerSlide;
+    const offset = -(this.currentIndex * slideWidth);
     this.carouselContainer.style.transform = `translateX(${offset}%)`;
   }
 
   updateVisibility() {
-    // Hide left button on first slide
+    const maxIndex = this.items.length - this.itemsPerSlide;
+
+    // Show/hide left button
     if (this.currentIndex === 0) {
       this.leftButton.setAttribute("disabled", "");
     } else {
       this.leftButton.removeAttribute("disabled");
     }
 
-    // Hide right button on last slide
-    if (this.currentIndex >= this.items.length - this.itemsPerSlide) {
+    // Show/hide right button
+    if (this.currentIndex >= maxIndex) {
       this.rightButton.setAttribute("disabled", "");
     } else {
       this.rightButton.removeAttribute("disabled");
