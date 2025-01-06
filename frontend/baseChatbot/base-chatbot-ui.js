@@ -79,8 +79,8 @@ class ChatbotUI {
       e.preventDefault();
       const message = this.input.value.trim();
       if (message) {
-        // Add message to UI first
-        this.showTypingIndicator("Sherpa Guide Thinking");
+        this.removeInteractiveElements();
+        this.showTypingIndicator("Sherpa Guide Thinking...");
 
         this.addMessage("user", message, null, false);
         this.eventBus.emit("userMessage", message);
