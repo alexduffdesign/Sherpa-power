@@ -131,7 +131,6 @@ export class MessageComponent extends HTMLElement {
           display: flex;
           align-items: center;
           justify-content: center;
-          margin-right: var(--spacing-2);
           font-size: 1.2em;
           line-height: 1;
         }
