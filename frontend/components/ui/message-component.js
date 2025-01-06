@@ -292,7 +292,7 @@ export class MessageComponent extends HTMLElement {
       <div class="message-wrapper message-wrapper--${sender}">
         ${
           isAssistant
-            ? `<img class="assistant-icon" srs="https://cdn.shopify.com/s/files/1/0641/4290/1439/files/sherpa-icon.svg?v=1736167714">`
+            ? `<img class="assistant-icon" src="https://cdn.shopify.com/s/files/1/0641/4290/1439/files/sherpa-icon.svg?v=1736167714">`
             : ""
         }
         <div class="message message--${sender}">
