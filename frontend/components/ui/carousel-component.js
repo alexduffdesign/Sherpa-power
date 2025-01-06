@@ -303,15 +303,14 @@ export class CarouselComponent extends HTMLElement {
   }
 
   handleResize() {
-    const wasDesktop = this.itemsPerSlide === 2;
+    const wasDesktop = this.isDesktop;
     this.isDesktop = window.matchMedia("(min-width: 1000px)").matches;
-    const isDesktopNow = this.isDesktop;
 
     // Update items per slide
     this.itemsPerSlide = this.isDesktop ? 2 : 1;
 
-    // If there was a change in view mode, reset position
-    if (wasDesktop !== isDesktopNow) {
+    // If view mode changed, reset position and recalculate
+    if (wasDesktop !== this.isDesktop) {
       this.currentIndex = 0;
       this.updatePosition();
     }
@@ -321,39 +320,45 @@ export class CarouselComponent extends HTMLElement {
 
   moveLeft() {
     if (this.currentIndex <= 0) return;
-    const itemsPerSlide = this.itemsPerSlide;
-    this.currentIndex = Math.max(0, this.currentIndex - itemsPerSlide);
+    this.currentIndex -= this.itemsPerSlide;
+    if (this.currentIndex < 0) this.currentIndex = 0;
     this.updatePosition();
     this.updateVisibility();
   }
 
   moveRight() {
-    const itemsPerSlide = this.itemsPerSlide;
-    const maxIndex = this.items.length - itemsPerSlide;
+    const maxIndex = this.items.length - this.itemsPerSlide;
     if (this.currentIndex >= maxIndex) return;
-    this.currentIndex = Math.min(maxIndex, this.currentIndex + itemsPerSlide);
+    this.currentIndex += this.itemsPerSlide;
+    if (this.currentIndex > maxIndex) this.currentIndex = maxIndex;
     this.updatePosition();
     this.updateVisibility();
   }
 
   updatePosition() {
-    const slideWidth = 100 / this.itemsPerSlide;
-    const offset = -(this.currentIndex * slideWidth);
-    this.carouselContainer.style.transform = `translateX(${offset}%)`;
+    // Calculate the slide width based on items per slide
+    const slideWidth = this.isDesktop ? 50 : 100;
+
+    // Calculate the total translation
+    const translation = -(this.currentIndex * slideWidth);
+
+    // Apply the transform
+    this.carouselContainer.style.transform = `translateX(${translation}%)`;
   }
 
   updateVisibility() {
-    const maxIndex = this.items.length - this.itemsPerSlide;
+    const totalSlides = Math.ceil(this.items.length / this.itemsPerSlide);
+    const currentSlide = Math.floor(this.currentIndex / this.itemsPerSlide);
 
-    // Show/hide left button
-    if (this.currentIndex === 0) {
+    // Update left button visibility
+    if (currentSlide === 0) {
       this.leftButton.setAttribute("disabled", "");
     } else {
       this.leftButton.removeAttribute("disabled");
     }
 
-    // Show/hide right button
-    if (this.currentIndex >= maxIndex) {
+    // Update right button visibility
+    if (currentSlide >= totalSlides - 1) {
       this.rightButton.setAttribute("disabled", "");
     } else {
       this.rightButton.removeAttribute("disabled");
