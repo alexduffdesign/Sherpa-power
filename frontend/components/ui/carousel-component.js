@@ -295,74 +295,83 @@ export class CarouselComponent extends HTMLElement {
   }
 
   initCarousel() {
+    // Set initial state
     this.isDesktop = window.matchMedia("(min-width: 1000px)").matches;
     this.itemsPerSlide = this.isDesktop ? 2 : 1;
     this.currentIndex = 0;
-    this.updateVisibility();
-    this.updatePosition();
-  }
 
-  handleResize() {
-    const wasDesktop = this.isDesktop;
-    this.isDesktop = window.matchMedia("(min-width: 1000px)").matches;
-
-    // Update items per slide
-    this.itemsPerSlide = this.isDesktop ? 2 : 1;
-
-    // If view mode changed, reset position and recalculate
-    if (wasDesktop !== this.isDesktop) {
-      this.currentIndex = 0;
-      this.updatePosition();
-    }
-
-    this.updateVisibility();
-  }
-
-  moveLeft() {
-    if (this.currentIndex <= 0) return;
-    this.currentIndex -= this.itemsPerSlide;
-    if (this.currentIndex < 0) this.currentIndex = 0;
-    this.updatePosition();
-    this.updateVisibility();
-  }
-
-  moveRight() {
-    const maxIndex = this.items.length - this.itemsPerSlide;
-    if (this.currentIndex >= maxIndex) return;
-    this.currentIndex += this.itemsPerSlide;
-    if (this.currentIndex > maxIndex) this.currentIndex = maxIndex;
+    // Important: Initial position and visibility update
     this.updatePosition();
     this.updateVisibility();
   }
 
   updatePosition() {
-    // Calculate the slide width based on items per slide
+    // Calculate individual slide width
     const slideWidth = this.isDesktop ? 50 : 100;
 
-    // Calculate the total translation
+    // Calculate translation based on current index
     const translation = -(this.currentIndex * slideWidth);
 
-    // Apply the transform
+    // Apply transform to container
     this.carouselContainer.style.transform = `translateX(${translation}%)`;
+
+    // Ensure all items are visible
+    this.items.forEach((item) => {
+      item.style.display = "flex";
+      // Update flex-basis based on view mode
+      item.style.flex = `0 0 ${slideWidth}%`;
+    });
   }
 
   updateVisibility() {
-    const totalSlides = Math.ceil(this.items.length / this.itemsPerSlide);
-    const currentSlide = Math.floor(this.currentIndex / this.itemsPerSlide);
+    const maxIndex = this.items.length - (this.isDesktop ? 2 : 1);
 
     // Update left button visibility
-    if (currentSlide === 0) {
+    if (this.currentIndex <= 0) {
       this.leftButton.setAttribute("disabled", "");
     } else {
       this.leftButton.removeAttribute("disabled");
     }
 
     // Update right button visibility
-    if (currentSlide >= totalSlides - 1) {
+    if (this.currentIndex >= maxIndex) {
       this.rightButton.setAttribute("disabled", "");
     } else {
       this.rightButton.removeAttribute("disabled");
     }
+  }
+
+  moveLeft() {
+    if (this.currentIndex <= 0) return;
+
+    // Move by one position
+    this.currentIndex--;
+    this.updatePosition();
+    this.updateVisibility();
+  }
+
+  moveRight() {
+    const maxIndex = this.items.length - (this.isDesktop ? 2 : 1);
+    if (this.currentIndex >= maxIndex) return;
+
+    // Move by one position
+    this.currentIndex++;
+    this.updatePosition();
+    this.updateVisibility();
+  }
+
+  handleResize() {
+    const wasDesktop = this.isDesktop;
+    this.isDesktop = window.matchMedia("(min-width: 1000px)").matches;
+
+    if (wasDesktop !== this.isDesktop) {
+      // Reset position when switching views
+      this.currentIndex = 0;
+      this.itemsPerSlide = this.isDesktop ? 2 : 1;
+      this.updatePosition();
+    }
+
+    this.updateVisibility();
   }
 
   handleButtonClick(e) {
