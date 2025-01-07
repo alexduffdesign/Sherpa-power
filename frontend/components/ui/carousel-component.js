@@ -110,12 +110,12 @@ export class CarouselComponent extends HTMLElement {
           transition: transform 0.3s ease-out;
           width: 100%;
           overflow: visible;
+          gap: var(--spacing-4);
         }
 
          .carousel__item {
-          flex: 0 0 100%;
-          display: flex;
-          gap: var(--spacing-4);
+          flex: 0 0 calc(50% - var(--spacing-2));
+          display: block;
           box-sizing: border-box;
           max-width: 100%;
           align-items: flex-start;
