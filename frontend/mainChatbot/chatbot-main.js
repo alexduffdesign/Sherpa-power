@@ -125,7 +125,7 @@ class MainChatbot {
           type: "event",
           payload: {
             event: {
-              name: "main_menu",
+              name: "menu",
             },
           },
         },

@@ -94,7 +94,7 @@ class ChatbotCore {
   async sendAction(actionPayload) {
     this.eventBus.emit("typing", {
       isTyping: true,
-      message: "Sherpa Guide Thinking",
+      message: "Sherpa Guide Thinking...",
     }); // Show when request starts
     try {
       // Only abort if there's an existing connection
