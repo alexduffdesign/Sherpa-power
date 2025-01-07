@@ -4,18 +4,18 @@ export class CarouselComponent extends HTMLElement {
   constructor() {
     super();
     this.attachShadow({ mode: "open" });
-    this._eventBus = null; // Will be set via setter
+    this._eventBus = null;
 
     // Initialize properties
-    this.items = []; // To store carousel items
-    this.currentIndex = 0; // Current slide index
-    this.isDesktop = window.matchMedia("(min-width: 1000px)").matches;
-    this.itemsPerSlide = this.isDesktop ? 2 : 1;
+    this.items = [];
+    this.currentIndex = 0;
+    this.mediaQuery = window.matchMedia("(min-width: 1000px)");
+    this.isDesktop = this.mediaQuery.matches;
 
     // Bind methods
     this.moveLeft = this.moveLeft.bind(this);
     this.moveRight = this.moveRight.bind(this);
-    this.handleResize = this.handleResize.bind(this);
+    this.handleMediaQueryChange = this.handleMediaQueryChange.bind(this);
     this.handleButtonClick = this.handleButtonClick.bind(this);
   }
 
@@ -40,15 +40,18 @@ export class CarouselComponent extends HTMLElement {
       return;
     }
 
-    // Ensure carouselData.cards is an array
     if (!carouselData || !Array.isArray(carouselData.cards)) {
       console.error("carouselData.cards is not defined or not an array");
       return;
     }
 
     this.renderCarousel(carouselData);
+    this.mediaQuery.addListener(this.handleMediaQueryChange);
   }
 
+  disconnectedCallback() {
+    this.mediaQuery.removeListener(this.handleMediaQueryChange);
+  }
   /**
    * Renders the carousel with embedded styles and initializes functionality.
    * @param {Object} carouselData - Data for the carousel containing a 'cards' array.
@@ -230,148 +233,92 @@ export class CarouselComponent extends HTMLElement {
       ".carousel__button--right"
     );
 
+    // Add items to carousel
     this.carouselData.cards.forEach((card, index) => {
       const item = document.createElement("div");
       item.classList.add("carousel__item");
 
-      const itemWrapper = document.createElement("div");
-      itemWrapper.classList.add("carousel__item-wrapper");
+      item.innerHTML = `
+        <div class="carousel__item-wrapper">
+          <div class="carousel__item-content">
+            ${
+              card.imageUrl
+                ? `<img src="${card.imageUrl}" alt="${
+                    card.title || ""
+                  }" class="carousel__item-image">`
+                : ""
+            }
+            ${
+              card.title
+                ? `<h6 class="carousel__item-title">${card.title}</h6>`
+                : ""
+            }
+            ${
+              card.description
+                ? `<p class="carousel__item-description">${card.description.text}</p>`
+                : ""
+            }
+            ${
+              card.buttons && card.buttons.length > 0
+                ? `<button class="button carousel__item-button" data-button-index="${index}">${card.buttons[0].name}</button>`
+                : ""
+            }
+          </div>
+        </div>
+      `;
 
-      const itemContent = document.createElement("div");
-      itemContent.classList.add("carousel__item-content");
-
-      if (card.imageUrl) {
-        const img = document.createElement("img");
-        img.src = card.imageUrl;
-        img.alt = card.title || "";
-        img.classList.add("carousel__item-image");
-        itemContent.appendChild(img);
-      }
-
-      if (card.title) {
-        const title = document.createElement("h6");
-        title.classList.add("carousel__item-title");
-        title.textContent = card.title;
-        itemContent.appendChild(title);
-      }
-
-      if (card.description && card.description.text) {
-        const description = document.createElement("p");
-        description.classList.add("carousel__item-description");
-        description.textContent = card.description.text;
-        itemContent.appendChild(description);
-      }
-
-      // If the card has buttons, create a button
       if (card.buttons && card.buttons.length > 0) {
-        const buttonData = card.buttons[0];
-        const button = document.createElement("button");
-        button.classList.add("button", "carousel__item-button");
-        button.setAttribute("data-button-index", index);
-        button.setAttribute(
-          "data-button-payload",
-          JSON.stringify(buttonData.request)
-        );
-        button.setAttribute("data-button-text", buttonData.name);
-        button.textContent = buttonData.name || "Select";
-        itemContent.appendChild(button);
+        const button = item.querySelector(".carousel__item-button");
         button.addEventListener("click", this.handleButtonClick);
       }
 
-      itemWrapper.appendChild(itemContent);
-      item.appendChild(itemWrapper);
       this.carouselContainer.appendChild(item);
       this.items.push(item);
     });
 
-    this.initCarousel();
-
+    // Set up event listeners
     this.leftButton.addEventListener("click", this.moveLeft);
     this.rightButton.addEventListener("click", this.moveRight);
-    window.addEventListener("resize", this.handleResize);
 
     this.updateVisibility();
     this.updatePosition();
   }
 
-  initCarousel() {
-    // Set initial state
-    this.isDesktop = window.matchMedia("(min-width: 1000px)").matches;
-    this.itemsPerSlide = this.isDesktop ? 2 : 1;
+  handleMediaQueryChange(e) {
+    this.isDesktop = e.matches;
     this.currentIndex = 0;
-
-    // Important: Initial position and visibility update
     this.updatePosition();
     this.updateVisibility();
-  }
-
-  updatePosition() {
-    // Calculate individual slide width
-    const slideWidth = this.isDesktop ? 50 : 100;
-
-    // Calculate translation based on current index
-    const translation = -(this.currentIndex * slideWidth);
-
-    // Apply transform to container
-    this.carouselContainer.style.transform = `translateX(${translation}%)`;
-
-    // Ensure all items are visible
-    this.items.forEach((item) => {
-      item.style.display = "flex";
-      // Update flex-basis based on view mode
-      item.style.flex = `0 0 ${slideWidth}%`;
-    });
-  }
-
-  updateVisibility() {
-    const maxIndex = this.items.length - (this.isDesktop ? 2 : 1);
-
-    // Update left button visibility
-    if (this.currentIndex <= 0) {
-      this.leftButton.setAttribute("disabled", "");
-    } else {
-      this.leftButton.removeAttribute("disabled");
-    }
-
-    // Update right button visibility
-    if (this.currentIndex >= maxIndex) {
-      this.rightButton.setAttribute("disabled", "");
-    } else {
-      this.rightButton.removeAttribute("disabled");
-    }
   }
 
   moveLeft() {
-    if (this.currentIndex <= 0) return;
-
-    // Move by one position
-    this.currentIndex--;
+    const itemsPerSlide = this.isDesktop ? 2 : 1;
+    this.currentIndex = Math.max(0, this.currentIndex - itemsPerSlide);
     this.updatePosition();
     this.updateVisibility();
   }
 
   moveRight() {
-    const maxIndex = this.items.length - (this.isDesktop ? 2 : 1);
-    if (this.currentIndex >= maxIndex) return;
-
-    // Move by one position
-    this.currentIndex++;
+    const itemsPerSlide = this.isDesktop ? 2 : 1;
+    this.currentIndex = Math.min(
+      this.items.length - itemsPerSlide,
+      this.currentIndex + itemsPerSlide
+    );
     this.updatePosition();
     this.updateVisibility();
   }
 
-  handleResize() {
-    const wasDesktop = this.isDesktop;
-    this.isDesktop = window.matchMedia("(min-width: 1000px)").matches;
+  updatePosition() {
+    const itemsPerSlide = this.isDesktop ? 2 : 1;
+    const offset = -(this.currentIndex / itemsPerSlide) * 100;
+    this.carouselContainer.style.transform = `translateX(${offset}%)`;
+  }
 
-    if (wasDesktop !== this.isDesktop) {
-      // Reset position when switching views
-      this.currentIndex = 0;
-      this.itemsPerSlide = this.isDesktop ? 2 : 1;
-      this.updatePosition();
-    }
-
-    this.updateVisibility();
+  updateVisibility() {
+    const itemsPerSlide = this.isDesktop ? 2 : 1;
+    this.leftButton.style.display = this.currentIndex === 0 ? "none" : "flex";
+    this.rightButton.style.display =
+      this.currentIndex >= this.items.length - itemsPerSlide ? "none" : "flex";
   }
 
   handleButtonClick(e) {
@@ -390,8 +337,6 @@ export class CarouselComponent extends HTMLElement {
     }
 
     const buttonData = card.buttons[0];
-    console.log("Original button data:", buttonData);
-
     const productTitle = buttonData.request.payload.title;
     const displayLabel = productTitle
       ? `Selected ${productTitle}`
@@ -402,7 +347,6 @@ export class CarouselComponent extends HTMLElement {
       label: displayLabel,
     });
 
-    // Remove the carousel after interaction
     this.remove();
   }
 }
