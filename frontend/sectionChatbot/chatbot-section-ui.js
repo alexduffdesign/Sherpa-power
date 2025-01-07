@@ -137,6 +137,10 @@ class SectionChatbotUI extends ChatbotUI {
     );
     const devicesPerPage = 2;
 
+    if (this.viewMoreButton) {
+      this.viewMoreButton.style.display = "none";
+    }
+
     if (allCards.length > devicesPerPage) {
       if (this.viewMoreButton) {
         this.viewMoreButton.style.display = "block";
