@@ -326,7 +326,18 @@ class ChatbotUI {
    * @private
    */
   scrollToBottom() {
-    this.messageContainer.scrollTop = this.messageContainer.scrollHeight;
+    if (this.type === "main") {
+      // For main chatbot, scroll the drawer body
+      const drawerBody = this.container
+        .closest("custom-drawer")
+        ?.shadowRoot?.querySelector('[part="body"]');
+      if (drawerBody) {
+        drawerBody.scrollTop = drawerBody.scrollHeight;
+      }
+    } else {
+      // For other chatbot types, scroll the message container
+      this.messageContainer.scrollTop = this.messageContainer.scrollHeight;
+    }
   }
 
   /**
