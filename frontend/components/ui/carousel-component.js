@@ -87,8 +87,6 @@ export class CarouselComponent extends HTMLElement {
           letter-spacing: var(--text-letter-spacing);
           padding-block-start: var(--spacing-2-5);
           padding-block-end: var(--spacing-2-5);
-          padding-inline-start: var(--spacing-5);
-          padding-inline-end: var(--spacing-5);
           font-weight: bold;
           line-height: 1.6;
           transition: background-color 0.15s ease-in-out, color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
@@ -110,7 +108,6 @@ export class CarouselComponent extends HTMLElement {
           transition: transform 0.3s ease-out;
           width: 100%;
           overflow: visible;
-          gap: var(--spacing-4);
         }
 
          .carousel__item {
