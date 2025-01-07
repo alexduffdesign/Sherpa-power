@@ -41,22 +41,19 @@ class ChatbotUI {
     const messageContainers =
       this.container.querySelectorAll(".message-container");
     this.messageContainer = messageContainers[0];
-    console.log("Message container found:", !!this.messageContainer);
 
     const forms = this.container.querySelectorAll(".chat-form");
     this.form = forms[0];
-    console.log("Chat form found:", !!this.form);
 
     const inputs = this.container.querySelectorAll(".chatbot-input");
     this.input = inputs[0];
-    console.log("Chat input found:", !!this.input);
 
     const typingIndicators = this.container.querySelectorAll(".chat-typing");
     this.typingIndicator = typingIndicators[0];
-    console.log("Typing indicator found:", !!this.typingIndicator);
 
     this.typingText = this.typingIndicator?.querySelector(".typing-text");
-    console.log("Typing text found:", !!this.typingText);
+
+    this.chatMessages = this.container.querySelector(".chat-messages");
 
     console.log("Container HTML:", this.container.innerHTML);
 
@@ -336,7 +333,7 @@ class ChatbotUI {
       }
     } else {
       // For other chatbot types, scroll the message container
-      this.messageContainer.scrollTop = this.messageContainer.scrollHeight;
+      this.chatMessages.scrollTop = this.chatMessages.scrollHeight;
     }
   }
 
