@@ -303,6 +303,11 @@ class ChatbotCore {
           productHandle: trace.payload?.body?.productHandle,
         });
         break;
+      case "waiting_text":
+        this.eventBus.emit("waitingText", {
+          text: trace.payload?.text || "Sherpa Guide Thinking...",
+        });
+        break;
       default:
         console.warn(`Unhandled trace type: ${trace.type}`, trace);
     }

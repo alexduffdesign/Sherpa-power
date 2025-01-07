@@ -96,6 +96,10 @@ class ChatbotUI {
       }
     });
 
+    this.eventBus.on("waitingText", ({ text }) => {
+      this.showTypingIndicator(text);
+    });
+
     // Handle button clicks
     this.eventBus.on("buttonClicked", (payload) => {
       const userMessage = payload.label || "Button clicked";
