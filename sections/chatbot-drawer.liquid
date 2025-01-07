@@ -30,7 +30,6 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    verflow: hidden;
   }
 
   #{{ drawer_id }}
@@ -50,7 +49,7 @@
 
   #{{ drawer_id }}
   .chat-messages {
-    overflow-y: auto;
+    overflow: hidden;
     height: 100%;
   }
 
@@ -89,10 +88,6 @@
   #{{ drawer_id }}::part(body) {
     background-color: #403545;
     padding: var(--spacing-0);
-    overflow-y: hidden; /* Change from auto to hidden */
-    display: flex; /* Add flex display */
-    flex-direction: column; /* Stack children vertically */
-    height: 100%; /* Ensure full height */
   }
 
   .footer-form {
