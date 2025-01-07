@@ -298,6 +298,11 @@ class ChatbotCore {
           this.eventBus.emit("deviceAnswer", trace.payload);
         }
         break;
+      case "RedirectToProduct":
+        this.eventBus.emit("productRedirect", {
+          productHandle: trace.payload?.body?.productHandle,
+        });
+        break;
       default:
         console.warn(`Unhandled trace type: ${trace.type}`, trace);
     }

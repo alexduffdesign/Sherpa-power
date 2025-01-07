@@ -60,14 +60,7 @@ class MainChatbot {
   setupEventListeners() {
     // Handle user messages
     this.core.eventBus.on("userMessage", (message) => {
-      // // Add the message to the UI as a user message
-      // this.ui.addMessage("user", message, null, false); // fromHistory=false
-
-      // Save the message to history
       this.saveToHistory("user", message);
-
-      // // Send the typed message to Voiceflow so it processes it
-      // this.core.sendMessage(message);
     });
 
     this.core.eventBus.on(
@@ -95,11 +88,6 @@ class MainChatbot {
       }
     );
 
-    // // Handle typing indicator
-    // this.core.eventBus.on("typing", ({ isTyping }) => {
-    //   this.ui.showTypingIndicator(isTyping);
-    // });
-
     // Handle errors
     this.core.eventBus.on("error", ({ message }) => {
       this.ui.displayError(message);
@@ -126,12 +114,6 @@ class MainChatbot {
       this.saveToHistory("user", userMessage);
     });
 
-    // this.core.eventBus.on("interactiveElementClicked", (payload) => {
-    //   const userMessage = payload.label || "Button clicked";
-    //   this.saveToHistory("user", userMessage);
-    //   this.core.sendAction(payload);
-    // });
-
     // Handle main menu
     this.core.eventBus.on("mainMenu", () => {
       const userMessage = "Main menu";
@@ -148,6 +130,11 @@ class MainChatbot {
           },
         },
       });
+    });
+
+    // Handle product redirects
+    this.core.eventBus.on("productRedirect", ({ productHandle }) => {
+      this.handleProductRedirect(productHandle);
     });
 
     // Handle clearing history
@@ -266,6 +253,23 @@ class MainChatbot {
         this.ui.addMessage(entry.sender, entry.message, null, true);
       }
     });
+  }
+
+  /**
+   * Handle redirecting to product pages
+   * @private
+   * @param {string} productHandle - The product handle to redirect to
+   */
+  handleProductRedirect(productHandle) {
+    if (!productHandle) {
+      console.error("Cannot redirect: Product handle is undefined or empty");
+      return;
+    }
+
+    const baseUrl = "https://www.sherpapower.co.uk/products/";
+    const productUrl = `${baseUrl}${encodeURIComponent(productHandle)}`;
+    console.log(`Redirecting to product page: ${productUrl}`);
+    window.location.href = productUrl;
   }
 
   /**
