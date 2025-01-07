@@ -109,6 +109,11 @@ export class MessageComponent extends HTMLElement {
           display: flex;
           flex-direction: column;
         }
+        li {
+        display: flex; 
+        flex-direction: column;
+        }
+        
         .message-wrapper {
           display: flex;
           align-items: flex-end;
