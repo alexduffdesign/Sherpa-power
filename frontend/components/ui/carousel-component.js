@@ -46,11 +46,11 @@ export class CarouselComponent extends HTMLElement {
     }
 
     this.renderCarousel(carouselData);
-    this.mediaQuery.addListener(this.handleMediaQueryChange);
+    this.mediaQuery.addEventListener("change", this.handleMediaQueryChange);
   }
 
   disconnectedCallback() {
-    this.mediaQuery.removeListener(this.handleMediaQueryChange);
+    this.mediaQuery.removeEventListener("change", this.handleMediaQueryChange);
   }
   /**
    * Renders the carousel with embedded styles and initializes functionality.
@@ -106,8 +106,10 @@ export class CarouselComponent extends HTMLElement {
 
         .carousel__container {
           display: flex;
+          flex-wrap: nowrap;
           transition: transform 0.3s ease-out;
-          max-width: 100%;
+          width: 100%;
+          overflow: visible;
         }
 
          .carousel__item {
