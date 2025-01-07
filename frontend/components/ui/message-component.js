@@ -105,14 +105,6 @@ export class MessageComponent extends HTMLElement {
           margin-top: var(--spacing-1);
           margin-bottom: var(--spacing-1);
         }
-        ul {
-          display: flex;
-          flex-direction: column;
-        }
-        li {
-        display: flex; 
-        flex-direction: column;
-        }
         
         .message-wrapper {
           display: flex;
