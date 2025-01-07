@@ -321,7 +321,7 @@ import{p as c}from"./markdown-util.DadijVe3.js";import{S as d}from"./streaming-m
         }
 
         .carousel__button--right {
-          right: 10px;
+          right: 20px;
         }
 
         .carousel__item-button {
@@ -402,4 +402,4 @@ import{p as c}from"./markdown-util.DadijVe3.js";import{S as d}from"./streaming-m
           </div>
         </div>
       `,e.buttons&&e.buttons.length>0&&n.querySelector(".carousel__item-button").addEventListener("click",this.handleButtonClick),this.carouselContainer.appendChild(n),this.items.push(n)}),this.leftButton.addEventListener("click",this.moveLeft),this.rightButton.addEventListener("click",this.moveRight),this.updateVisibility(),this.updatePosition()}handleMediaQueryChange(t){this.isDesktop=t.matches,this.currentIndex=0,this.updatePosition(),this.updateVisibility()}moveLeft(){const t=this.isDesktop?2:1;this.currentIndex=Math.max(0,this.currentIndex-t),this.updatePosition(),this.updateVisibility()}moveRight(){const t=this.isDesktop?2:1;this.currentIndex=Math.min(this.items.length-t,this.currentIndex+t),this.updatePosition(),this.updateVisibility()}updatePosition(){const t=this.isDesktop?2:1,e=-(this.currentIndex/t)*100;this.carouselContainer.style.transform=`translateX(${e}%)`}updateVisibility(){const t=this.isDesktop?2:1;this.leftButton.style.display=this.currentIndex===0?"none":"flex",this.rightButton.style.display=this.currentIndex>=this.items.length-t?"none":"flex"}handleButtonClick(t){if(!this._eventBus){console.error("No eventBus assigned to CarouselComponent");return}const e=t.target,s=parseInt(e.getAttribute("data-button-index"),10),n=this.carouselData.cards[s];if(!n||!n.buttons||n.buttons.length===0){console.warn("No button data found for this card.");return}const o=n.buttons[0],a=o.request.payload.title,r=a?`Selected ${a}`:"Selected Power Station";this._eventBus.emit("buttonClicked",{action:o.request,label:r}),this.remove()}}customElements.define("button-component",m);customElements.define("message-component",u);customElements.define("carousel-component",g);console.log("MessageComponent defined");console.log("ButtonComponent defined");console.log("CarouselComponent defined");
-//# sourceMappingURL=chatbot-components.UXbDMWfF.js.map
+//# sourceMappingURL=chatbot-components.CtCC8scq.js.map

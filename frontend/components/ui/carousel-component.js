@@ -151,7 +151,7 @@ export class CarouselComponent extends HTMLElement {
         }
 
         .carousel__button--right {
-          right: 10px;
+          right: 20px;
         }
 
         .carousel__item-button {
