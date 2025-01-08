@@ -25,13 +25,6 @@ export class ButtonComponent extends HTMLElement {
   render(label, payload) {
     this.shadowRoot.innerHTML = `
       <style>
-        .button-container {
-          display: flex;
-          flex-wrap: wrap;
-          gap: 10px;
-          margin-bottom: var(--spacing-4);
-        }
-
         .button {
           padding: var(--spacing-3);
           background-color: #FFFFFF;
@@ -49,9 +42,7 @@ export class ButtonComponent extends HTMLElement {
           background-color: #f0f0f0;
         }
       </style>
-      <div class="button-container">
-        <button class="button" data-button-data='${payload}' aria-label="${label}">${label}</button>
-      </div>
+      <button class="button" data-button-data='${payload}' aria-label="${label}">${label}</button>
     `;
 
     this.shadowRoot.querySelector(".button").addEventListener("click", () => {
