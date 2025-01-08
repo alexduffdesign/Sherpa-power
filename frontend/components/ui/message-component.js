@@ -31,12 +31,41 @@ export class MessageComponent extends HTMLElement {
     if (!messageContent) return;
 
     if (!this.isStreaming && content) {
-      if (animate) {
-        // Use animateHTMLContent instead of just setting innerHTML
-        animateHTMLContent(messageContent, content, this.currentAnimationSpeed);
+      // Check if content is already HTML (from history)
+      const isHTML = /<[a-z][\s\S]*>/i.test(content);
+
+      if (isHTML) {
+        // Content is HTML, insert directly
+        if (animate) {
+          animateHTMLContent(
+            messageContent,
+            content,
+            this.currentAnimationSpeed
+          );
+        } else {
+          messageContent.innerHTML = content;
+        }
       } else {
-        messageContent.innerHTML = content;
+        // Content is markdown, parse it
+        this.streamingParser = new StreamingMarkdownParser((htmlSegment) => {
+          if (!this.tempContent) this.tempContent = "";
+          this.tempContent += htmlSegment;
+        });
+
+        this.streamingParser.appendText(content);
+        this.streamingParser.end();
+
+        if (animate) {
+          animateHTMLContent(
+            messageContent,
+            this.tempContent,
+            this.currentAnimationSpeed
+          );
+        } else {
+          messageContent.innerHTML = this.tempContent;
+        }
       }
+
       this.scrollToBottom();
     } else if (this.isStreaming) {
       this.streamingParser = new StreamingMarkdownParser((htmlSegment) => {
