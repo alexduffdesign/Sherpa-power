@@ -13,7 +13,6 @@ export class MessageComponent extends HTMLElement {
     this.defaultAnimationSpeed = 5; // ms per character
     this.currentAnimationSpeed = this.defaultAnimationSpeed;
     this.streamingParser = null;
-    this.tempContent = "";
   }
 
   connectedCallback() {
@@ -31,34 +30,18 @@ export class MessageComponent extends HTMLElement {
     const messageContent = this.shadowRoot.querySelector(".message__content");
     if (!messageContent) return;
 
-    // Create a new StreamingMarkdownParser instance for both streaming and non-streaming cases
-    this.streamingParser = new StreamingMarkdownParser((htmlSegment) => {
-      if (this.isStreaming) {
-        this.appendHTMLContent(htmlSegment);
-      } else {
-        // For non-streaming, collect all segments
-        if (!this.tempContent) this.tempContent = "";
-        this.tempContent += htmlSegment;
-      }
-    });
-
     if (!this.isStreaming && content) {
-      // Process non-streaming content through the same parser
-      this.streamingParser.appendText(content);
-      this.streamingParser.end();
-
       if (animate) {
-        animateHTMLContent(
-          messageContent,
-          this.tempContent,
-          this.currentAnimationSpeed
-        );
+        // Use animateHTMLContent instead of just setting innerHTML
+        animateHTMLContent(messageContent, content, this.currentAnimationSpeed);
       } else {
-        messageContent.innerHTML = this.tempContent;
+        messageContent.innerHTML = content;
       }
-      this.tempContent = "";
       this.scrollToBottom();
     } else if (this.isStreaming) {
+      this.streamingParser = new StreamingMarkdownParser((htmlSegment) => {
+        this.appendHTMLContent(htmlSegment);
+      });
       this.streamingParser.appendText(content);
     }
   }
