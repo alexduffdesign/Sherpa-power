@@ -168,7 +168,7 @@ class ChatbotUI {
       parsedContent,
       metadata,
       true,
-      4,
+      2,
       false
     );
 

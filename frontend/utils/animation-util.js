@@ -1,4 +1,4 @@
-export function animateText(element, text, animationSpeed = 5) {
+export function animateText(element, text, animationSpeed = 2) {
   return new Promise((resolve) => {
     let index = 0;
     element.textContent = ""; // Clear existing content
