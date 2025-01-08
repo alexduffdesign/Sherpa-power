@@ -132,6 +132,10 @@ class ChatbotUI {
       this.currentAssistantMessage = null;
       this.hideTypingIndicator();
     });
+
+    this.eventBus.on("deviceSources", ({ sources }) => {
+      this.addDeviceSources(sources);
+    });
   }
 
   handleAssistantStreamedMessage(content) {
@@ -380,6 +384,46 @@ class ChatbotUI {
     );
 
     this.messageContainer.appendChild(messageComponent);
+    this.scrollToBottom();
+  }
+
+  addDeviceSources(sources) {
+    const sourcesContainer = document.createElement("div");
+    sourcesContainer.className = "device-sources";
+
+    const title = document.createElement("h4");
+    title.className = "device-sources__title";
+    title.textContent = "Reference Sources";
+    sourcesContainer.appendChild(title);
+
+    sources.forEach(({ device, references }) => {
+      const deviceSection = document.createElement("div");
+      deviceSection.className = "device-sources__section";
+
+      const deviceName = document.createElement("div");
+      deviceName.className = "device-sources__device";
+      deviceName.textContent = device.charAt(0).toUpperCase() + device.slice(1);
+      deviceSection.appendChild(deviceName);
+
+      const referencesList = document.createElement("ul");
+      referencesList.className = "device-sources__list";
+
+      references.forEach((ref) => {
+        const refItem = document.createElement("li");
+        const refLink = document.createElement("a");
+        refLink.href = ref;
+        refLink.target = "_blank";
+        refLink.rel = "noopener noreferrer";
+        refLink.textContent = new URL(ref).hostname;
+        refItem.appendChild(refLink);
+        referencesList.appendChild(refItem);
+      });
+
+      deviceSection.appendChild(referencesList);
+      sourcesContainer.appendChild(deviceSection);
+    });
+
+    this.messageContainer.appendChild(sourcesContainer);
     this.scrollToBottom();
   }
 }

@@ -308,6 +308,11 @@ class ChatbotCore {
           text: trace.payload?.text || "Sherpa Guide Thinking...",
         });
         break;
+      case "deviceSources":
+        this.eventBus.emit("deviceSources", {
+          sources: trace.payload,
+        });
+        break;
       default:
         console.warn(`Unhandled trace type: ${trace.type}`, trace);
     }
