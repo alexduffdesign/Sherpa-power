@@ -248,12 +248,14 @@ class MainChatbot {
     history.forEach((entry, index) => {
       console.log("Processing history entry:", entry);
 
-      if (
-        entry.isInteractive ||
-        (entry.metadata && entry.metadata.type === "deviceSources")
-      ) {
-        console.log("Entry is interactive or device sources:", entry);
+      if (entry.metadata && entry.metadata.type === "deviceSources") {
+        console.log("Restoring device sources from history:", entry);
+        this.ui.addDeviceSources(entry.metadata.sources, true);
+        return;
+      }
 
+      if (entry.isInteractive) {
+        console.log("Entry is interactive:", entry);
         if (index === history.length - 1) {
           console.log("Restoring interactive element from history");
           this.restoreInteractiveElement(entry);
