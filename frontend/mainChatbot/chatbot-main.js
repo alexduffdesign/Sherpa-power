@@ -214,17 +214,11 @@ class MainChatbot {
       message,
       timestamp: Date.now(),
       isInteractive: false,
-      metadata: metadata,
+      metadata: metadata, // Store the full metadata
     };
 
     if (sender === "assistant" && metadata) {
-      if (metadata.type === "deviceSources") {
-        console.log("Saving device sources:", metadata.sources);
-        historyEntry.isInteractive = true;
-        historyEntry.traceType = "deviceSources";
-        // Ensure we're storing the sources array directly
-        historyEntry.traceData = metadata.sources;
-      } else if (metadata.type === "choice") {
+      if (metadata.type === "choice") {
         historyEntry.isInteractive = true;
         historyEntry.traceType = "choice";
         historyEntry.traceData = { buttons: metadata.buttons };
@@ -232,10 +226,13 @@ class MainChatbot {
         historyEntry.isInteractive = true;
         historyEntry.traceType = "carousel";
         historyEntry.traceData = { cards: metadata.carouselItems };
+      } else if (metadata.type === "deviceSources") {
+        historyEntry.isInteractive = true;
+        historyEntry.traceType = "deviceSources";
+        historyEntry.traceData = { sources: metadata.sources };
       }
     }
 
-    console.log("Saving history entry:", historyEntry);
     history.push(historyEntry);
     localStorage.setItem(this.historyKey, JSON.stringify(history));
   }
@@ -246,19 +243,26 @@ class MainChatbot {
    */
   loadHistory() {
     const history = JSON.parse(localStorage.getItem(this.historyKey)) || [];
-    console.log("Loading complete history:", history);
+    console.log("Loading history:", history);
 
     history.forEach((entry, index) => {
-      console.log(`Processing history entry ${index}:`, entry);
+      console.log("Processing history entry:", entry);
 
       if (
         entry.isInteractive ||
         (entry.metadata && entry.metadata.type === "deviceSources")
       ) {
-        console.log("Found interactive or device sources entry:", entry);
-        this.restoreInteractiveElement(entry);
-      } else if (entry.message) {
-        console.log("Adding regular message from history:", entry);
+        console.log("Entry is interactive or device sources:", entry);
+
+        if (index === history.length - 1) {
+          console.log("Restoring interactive element from history");
+          this.restoreInteractiveElement(entry);
+        }
+        return;
+      }
+
+      if (entry.message) {
+        console.log("Adding message from history:", entry);
         this.ui.addMessage(entry.sender, entry.message, null, true);
       }
     });
@@ -287,16 +291,12 @@ class MainChatbot {
    * @param {Object} historyEntry - The history entry to restore
    */
   restoreInteractiveElement(historyEntry) {
-    console.log("Restoring interactive element:", historyEntry);
-
-    if (historyEntry.traceType === "deviceSources") {
-      console.log("Restoring device sources:", historyEntry.traceData);
-      // Pass the sources array directly
-      this.ui.addDeviceSources(historyEntry.traceData, true);
-    } else if (historyEntry.traceType === "choice") {
+    if (historyEntry.traceType === "choice") {
       this.ui.addButtons(historyEntry.traceData.buttons, true);
     } else if (historyEntry.traceType === "carousel") {
       this.ui.addCarousel(historyEntry.traceData.cards, true);
+    } else if (historyEntry.traceType === "deviceSources") {
+      this.ui.addDeviceSources(historyEntry.traceData.sources);
     }
   }
 
