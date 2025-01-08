@@ -393,7 +393,7 @@ class ChatbotUI {
 
     const title = document.createElement("h4");
     title.className = "device-sources__title";
-    title.textContent = "Sources used to find data for device for calculations";
+    title.textContent = "Sources Used For Device For Calculations";
     sourcesContainer.appendChild(title);
 
     sources.forEach((item) => {
