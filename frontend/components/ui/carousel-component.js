@@ -111,7 +111,7 @@ export class CarouselComponent extends HTMLElement {
         }
 
          .carousel__item {
-          flex: 0 0 calc(50% - var(--spacing-2));
+          flex: 0 0 100%;
           display: block;
           box-sizing: border-box;
           max-width: 100%;
