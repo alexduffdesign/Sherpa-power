@@ -391,10 +391,27 @@ class ChatbotUI {
     const sourcesContainer = document.createElement("div");
     sourcesContainer.className = "device-sources";
 
+    const headerContainer = document.createElement("div");
+    headerContainer.className = "device-sources__header";
+
     const title = document.createElement("h4");
     title.className = "device-sources__title";
     title.textContent = "Sources Used For Device Calculations";
-    sourcesContainer.appendChild(title);
+
+    const chevronIcon = document.createElement("span");
+    chevronIcon.className = "device-sources__chevron";
+    chevronIcon.innerHTML = `
+      <svg width="12" height="8" viewBox="0 0 12 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M1.41 0.589844L6 5.16984L10.59 0.589844L12 1.99984L6 7.99984L0 1.99984L1.41 0.589844Z" fill="white"/>
+      </svg>
+    `;
+
+    headerContainer.appendChild(title);
+    headerContainer.appendChild(chevronIcon);
+
+    const contentContainer = document.createElement("div");
+    contentContainer.className = "device-sources__content";
+    contentContainer.style.display = "none"; // Initially hidden
 
     sources.forEach((item) => {
       const deviceSection = document.createElement("div");
@@ -421,7 +438,17 @@ class ChatbotUI {
       });
 
       deviceSection.appendChild(referencesList);
-      sourcesContainer.appendChild(deviceSection);
+      contentContainer.appendChild(deviceSection);
+    });
+
+    sourcesContainer.appendChild(headerContainer);
+    sourcesContainer.appendChild(contentContainer);
+
+    // Add click handler for dropdown
+    headerContainer.addEventListener("click", () => {
+      const isExpanded = contentContainer.style.display !== "none";
+      contentContainer.style.display = isExpanded ? "none" : "block";
+      headerContainer.classList.toggle("expanded");
     });
 
     this.messageContainer.appendChild(sourcesContainer);
