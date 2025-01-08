@@ -206,7 +206,10 @@ class MainChatbot {
    * @param {Object} metadata - Optional metadata
    */
   saveToHistory(sender, message, metadata = null) {
-    console.log("saveToHistory called with:", { sender, message, metadata });
+    console.log("Saving HTML to history:", {
+      message,
+      prettyHTML: message.replace(/>/g, ">\n"), // For readable logging
+    });
     const history = JSON.parse(localStorage.getItem(this.historyKey)) || [];
 
     const historyEntry = {
@@ -264,6 +267,10 @@ class MainChatbot {
       }
 
       if (entry.message) {
+        console.log("Loading HTML from history:", {
+          message: entry.message,
+          prettyHTML: entry.message.replace(/>/g, ">\n"), // For readable logging
+        });
         console.log("Adding message from history:", entry);
         this.ui.addMessage(entry.sender, entry.message, null, true);
       }

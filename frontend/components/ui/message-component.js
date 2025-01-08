@@ -31,19 +31,23 @@ export class MessageComponent extends HTMLElement {
     if (!messageContent) return;
 
     if (!this.isStreaming && content) {
-      // Check if content is already HTML (from history)
       const isHTML = /<[a-z][\s\S]*>/i.test(content);
 
       if (isHTML) {
-        // Content is HTML, insert directly
+        // Normalize the HTML content
+        const normalizedContent = content
+          .replace(/>\s+</g, "><") // Remove whitespace between tags
+          .replace(/\n\s*/g, "") // Remove newlines and following spaces
+          .trim();
+
         if (animate) {
           animateHTMLContent(
             messageContent,
-            content,
+            normalizedContent,
             this.currentAnimationSpeed
           );
         } else {
-          messageContent.innerHTML = content;
+          messageContent.innerHTML = normalizedContent;
         }
       } else {
         // Content is markdown, parse it
@@ -69,7 +73,12 @@ export class MessageComponent extends HTMLElement {
       this.scrollToBottom();
     } else if (this.isStreaming) {
       this.streamingParser = new StreamingMarkdownParser((htmlSegment) => {
-        this.appendHTMLContent(htmlSegment);
+        // Normalize streaming segments too
+        const normalizedSegment = htmlSegment
+          .replace(/>\s+</g, "><")
+          .replace(/\n\s*/g, "")
+          .trim();
+        this.appendHTMLContent(normalizedSegment);
       });
       this.streamingParser.appendText(content);
     }
@@ -99,7 +108,18 @@ export class MessageComponent extends HTMLElement {
     if (messageContent) {
       const tempDiv = document.createElement("div");
       tempDiv.innerHTML = htmlSegment;
-      // Append child nodes to messageContent
+
+      // Normalize any text nodes to remove extra whitespace
+      const normalizeNode = (node) => {
+        if (node.nodeType === 3) {
+          // Text node
+          node.textContent = node.textContent.replace(/\s+/g, " ").trim();
+        }
+        node.childNodes.forEach(normalizeNode);
+      };
+
+      normalizeNode(tempDiv);
+
       while (tempDiv.firstChild) {
         messageContent.appendChild(tempDiv.firstChild);
       }
