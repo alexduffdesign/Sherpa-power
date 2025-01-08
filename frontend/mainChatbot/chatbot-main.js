@@ -149,6 +149,14 @@ class MainChatbot {
       // For example, hide the chatbot container or trigger a CSS class
       this.container.classList.toggle("minimized");
     });
+
+    // Add new event listener for device sources
+    this.core.eventBus.on("deviceSources", ({ sources }) => {
+      this.saveToHistory("assistant", "Device sources presented", {
+        type: "deviceSources",
+        sources: sources,
+      });
+    });
   }
 
   /**
@@ -198,7 +206,7 @@ class MainChatbot {
    * @param {Object} metadata - Optional metadata
    */
   saveToHistory(sender, message, metadata = null) {
-    console.log("saveToHistory called with:", { sender, message, metadata }); // Add this line
+    console.log("saveToHistory called with:", { sender, message, metadata });
     const history = JSON.parse(localStorage.getItem(this.historyKey)) || [];
 
     const historyEntry = {
@@ -206,6 +214,7 @@ class MainChatbot {
       message,
       timestamp: Date.now(),
       isInteractive: false,
+      metadata: metadata, // Store the full metadata
     };
 
     if (sender === "assistant" && metadata) {
@@ -217,6 +226,10 @@ class MainChatbot {
         historyEntry.isInteractive = true;
         historyEntry.traceType = "carousel";
         historyEntry.traceData = { cards: metadata.carouselItems };
+      } else if (metadata.type === "deviceSources") {
+        historyEntry.isInteractive = true;
+        historyEntry.traceType = "deviceSources";
+        historyEntry.traceData = { sources: metadata.sources };
       }
     }
 
@@ -230,17 +243,19 @@ class MainChatbot {
    */
   loadHistory() {
     const history = JSON.parse(localStorage.getItem(this.historyKey)) || [];
-    console.log("Loading history:", history); // Log the entire history array
+    console.log("Loading history:", history);
 
     history.forEach((entry, index) => {
       console.log("Processing history entry:", entry);
 
-      if (entry.isInteractive) {
-        console.log("Entry is interactive:", entry);
+      if (
+        entry.isInteractive ||
+        (entry.metadata && entry.metadata.type === "deviceSources")
+      ) {
+        console.log("Entry is interactive or device sources:", entry);
 
         if (index === history.length - 1) {
           console.log("Restoring interactive element from history");
-
           this.restoreInteractiveElement(entry);
         }
         return;
@@ -248,8 +263,6 @@ class MainChatbot {
 
       if (entry.message) {
         console.log("Adding message from history:", entry);
-
-        // Pass fromHistory=true to disable animation
         this.ui.addMessage(entry.sender, entry.message, null, true);
       }
     });
@@ -282,6 +295,8 @@ class MainChatbot {
       this.ui.addButtons(historyEntry.traceData.buttons, true);
     } else if (historyEntry.traceType === "carousel") {
       this.ui.addCarousel(historyEntry.traceData.cards, true);
+    } else if (historyEntry.traceType === "deviceSources") {
+      this.ui.addDeviceSources(historyEntry.traceData.sources);
     }
   }
 

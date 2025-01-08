@@ -86,6 +86,22 @@ class MainChatbotUI extends ChatbotUI {
       this.footer.style.display = visible ? "flex" : "none";
     }
   }
+
+  /**
+   * Add device sources
+   * @public
+   * @param {Array} sources - Array of device sources
+   * @param {boolean} fromHistory - Whether this is from history
+   */
+  addDeviceSources(sources, fromHistory = false) {
+    // Call the parent class method
+    super.addDeviceSources(sources);
+
+    // If this is from history, we might want to handle it differently
+    if (fromHistory) {
+      this.scrollToBottom();
+    }
+  }
 }
 
 export default MainChatbotUI;
