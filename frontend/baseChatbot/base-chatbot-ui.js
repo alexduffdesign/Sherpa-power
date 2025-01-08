@@ -396,19 +396,20 @@ class ChatbotUI {
     title.textContent = "Reference Sources";
     sourcesContainer.appendChild(title);
 
-    sources.forEach(({ device, references }) => {
+    sources.forEach((item) => {
       const deviceSection = document.createElement("div");
       deviceSection.className = "device-sources__section";
 
       const deviceName = document.createElement("div");
       deviceName.className = "device-sources__device";
-      deviceName.textContent = device.charAt(0).toUpperCase() + device.slice(1);
+      deviceName.textContent =
+        item.name.charAt(0).toUpperCase() + item.name.slice(1);
       deviceSection.appendChild(deviceName);
 
       const referencesList = document.createElement("ul");
       referencesList.className = "device-sources__list";
 
-      references.forEach((ref) => {
+      item.sources.forEach((ref) => {
         const refItem = document.createElement("li");
         const refLink = document.createElement("a");
         refLink.href = ref;
