@@ -233,6 +233,7 @@ export class MessageComponent extends HTMLElement {
 
         .message__content li {
           margin: 0.25em 0;
+          line-height: 1.4;
         }
 
         .message__content code {
@@ -283,6 +284,26 @@ export class MessageComponent extends HTMLElement {
 
         .message__content th {
           background-color: rgba(0, 0, 0, 0.05);
+        }
+
+        .message__content ul li:first-child,
+        .message__content ol li:first-child {
+          margin-top: 0;
+        }
+
+        .message__content ul li:last-child,
+        .message__content ol li:last-child {
+          margin-bottom: 0;
+        }
+
+        .message__content p + ul,
+        .message__content p + ol {
+          margin-top: 0.25em;
+        }
+
+        .message__content ul + p,
+        .message__content ol + p {
+          margin-top: 0.25em;
         }
       </style>
       <div class="message-wrapper message-wrapper--${sender}">

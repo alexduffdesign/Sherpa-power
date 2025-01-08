@@ -158,6 +158,7 @@ import{p as c}from"./markdown-util.DadijVe3.js";import{S as d}from"./streaming-m
 
         .message__content li {
           margin: 0.25em 0;
+          line-height: 1.4;
         }
 
         .message__content code {
@@ -208,6 +209,26 @@ import{p as c}from"./markdown-util.DadijVe3.js";import{S as d}from"./streaming-m
 
         .message__content th {
           background-color: rgba(0, 0, 0, 0.05);
+        }
+
+        .message__content ul li:first-child,
+        .message__content ol li:first-child {
+          margin-top: 0;
+        }
+
+        .message__content ul li:last-child,
+        .message__content ol li:last-child {
+          margin-bottom: 0;
+        }
+
+        .message__content p + ul,
+        .message__content p + ol {
+          margin-top: 0.25em;
+        }
+
+        .message__content ul + p,
+        .message__content ol + p {
+          margin-top: 0.25em;
         }
       </style>
       <div class="message-wrapper message-wrapper--${t}">
@@ -390,4 +411,4 @@ import{p as c}from"./markdown-util.DadijVe3.js";import{S as d}from"./streaming-m
           </div>
         </div>
       `,e.buttons&&e.buttons.length>0&&n.querySelector(".carousel__item-button").addEventListener("click",this.handleButtonClick),this.carouselContainer.appendChild(n),this.items.push(n)}),this.leftButton.addEventListener("click",this.moveLeft),this.rightButton.addEventListener("click",this.moveRight),this.updateVisibility(),this.updatePosition()}handleMediaQueryChange(t){this.isDesktop=t.matches,this.currentIndex=0,this.updatePosition(),this.updateVisibility()}moveLeft(){const t=this.isDesktop?2:1;this.currentIndex=Math.max(0,this.currentIndex-t),this.updatePosition(),this.updateVisibility()}moveRight(){const t=this.isDesktop?2:1;this.currentIndex=Math.min(this.items.length-t,this.currentIndex+t),this.updatePosition(),this.updateVisibility()}updatePosition(){const t=this.isDesktop?2:1,e=-(this.currentIndex/t)*100;this.carouselContainer.style.transform=`translateX(${e}%)`}updateVisibility(){const t=this.isDesktop?2:1;this.leftButton.style.display=this.currentIndex===0?"none":"flex",this.rightButton.style.display=this.currentIndex>=this.items.length-t?"none":"flex"}handleButtonClick(t){if(!this._eventBus){console.error("No eventBus assigned to CarouselComponent");return}const e=t.target,s=parseInt(e.getAttribute("data-button-index"),10),n=this.carouselData.cards[s];if(!n||!n.buttons||n.buttons.length===0){console.warn("No button data found for this card.");return}const o=n.buttons[0],a=o.request.payload.title,r=a?`Selected ${a}`:"Selected Power Station";this._eventBus.emit("buttonClicked",{action:o.request,label:r}),this.remove()}}customElements.define("button-component",m);customElements.define("message-component",u);customElements.define("carousel-component",g);console.log("MessageComponent defined");console.log("ButtonComponent defined");console.log("CarouselComponent defined");
-//# sourceMappingURL=chatbot-components.CsrT2LiK.js.map
+//# sourceMappingURL=chatbot-components.xbl-vazk.js.map
