@@ -82,12 +82,6 @@ class SectionChatbot {
    * @private
    */
   setupEventListeners() {
-    // Handle user messages
-    // this.core.eventBus.on("userMessage", (message) => {
-    //   this.ui.addMessage("user", message);
-    //   this.core.sendMessage(message);
-    // });
-
     // Handle device answers
     this.core.eventBus.on("deviceAnswer", (payload) => {
       this.handleDeviceAnswer(payload);
@@ -184,8 +178,26 @@ class SectionChatbot {
     const key = `sectionChatbot_${this.productDetails.title}_answers`;
     let answers = JSON.parse(localStorage.getItem(key) || "[]");
 
-    // Optionally, ensure no duplicates or manage ordering
-    answers.unshift(deviceAnswer); // Add to beginning
+    // Update existing devices or add new ones
+    deviceAnswer.devices.forEach((newDevice) => {
+      const existingDeviceIndex = answers.findIndex((answer) =>
+        answer.devices.some(
+          (device) => device.deviceName === newDevice.deviceName
+        )
+      );
+
+      if (existingDeviceIndex >= 0) {
+        // Update existing device
+        answers[existingDeviceIndex].devices = answers[
+          existingDeviceIndex
+        ].devices.map((device) =>
+          device.deviceName === newDevice.deviceName ? newDevice : device
+        );
+      } else {
+        // Add new device
+        answers.unshift({ devices: [newDevice] });
+      }
+    });
 
     localStorage.setItem(key, JSON.stringify(answers));
   }
@@ -198,9 +210,22 @@ class SectionChatbot {
     const key = `sectionChatbot_${this.productDetails.title}_answers`;
     const storedAnswers = JSON.parse(localStorage.getItem(key) || "[]");
 
+    // Create a unique set of devices based on deviceName
+    const uniqueDevices = [];
+    const seenDevices = new Set();
+
     storedAnswers.forEach((answer) => {
-      this.ui.updateDeviceAnswers(answer.devices); // Pass the devices array
+      answer.devices.forEach((device) => {
+        if (!seenDevices.has(device.deviceName)) {
+          seenDevices.add(device.deviceName);
+          uniqueDevices.push(device);
+        }
+      });
     });
+
+    if (uniqueDevices.length > 0) {
+      this.ui.updateDeviceAnswers(uniqueDevices);
+    }
   }
 
   /**
