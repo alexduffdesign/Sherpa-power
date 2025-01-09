@@ -222,11 +222,6 @@ class MainChatbot {
    * @param {Object} metadata - Optional metadata
    */
   saveToHistory(sender, message, metadata = null) {
-    console.log("[MainChatbot] Saving to history:", {
-      sender,
-      message,
-      metadata,
-    });
     console.log("Saving HTML to history:", {
       message,
       prettyHTML: message.replace(/>/g, ">\n"), // For readable logging
@@ -267,14 +262,10 @@ class MainChatbot {
    */
   loadHistory() {
     const history = JSON.parse(localStorage.getItem(this.historyKey)) || [];
-    console.log("[MainChatbot] Loading history:", history);
+    console.log("Loading history:", history);
 
     history.forEach((entry, index) => {
-      console.log("[MainChatbot] Processing history entry:", {
-        sender: entry.sender,
-        message: entry.message,
-        fromHistory: true,
-      });
+      console.log("Processing history entry:", entry);
 
       if (entry.metadata && entry.metadata.type === "deviceSources") {
         console.log("Restoring device sources from history:", entry);

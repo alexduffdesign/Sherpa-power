@@ -231,41 +231,21 @@
             this.hasLaunched = localStorage.getItem(DRAWER_LAUNCHED_KEY) === 'true';
             this.mainChatbot = null;
             this.drawerOpenedThisSession = false;
-            
-            // Add event listener for drawer close
-            this.addEventListener('dialog:after-hide', this.handleDrawerClose.bind(this));
           }
 
-          handleDrawerClose() {
-            console.log("[CustomDrawer] Drawer closed");
-            // Don't destroy the chatbot, just clear the UI
-            if (this.mainChatbot) {
-              this.mainChatbot.cleanupEventListeners();
-            }
+          connectedCallback() {
+            super.connectedCallback();
+            this.addEventListener('dialog:after-show', this.handleDrawerOpen.bind(this));
           }
 
           handleDrawerOpen() {
-            console.log("[CustomDrawer] Drawer opened", {
-              hasExistingChatbot: !!this.mainChatbot,
-              drawerOpenedThisSession: this.drawerOpenedThisSession
-            });
-            
             const container = this.querySelector('#main-chatbot-container');
             
             if (!this.mainChatbot) {
-              console.log("[CustomDrawer] Creating new MainChatbot instance");
               this.mainChatbot = new window.MainChatbot(container, {
                 loadHistory: !this.drawerOpenedThisSession
               });
               this.drawerOpenedThisSession = true;
-            } else {
-              console.log("[CustomDrawer] Reusing existing MainChatbot instance");
-              // Instead of just setting up event listeners, let's try clearing and reloading UI
-              this.mainChatbot.ui.clearChat();
-              if (!this.drawerOpenedThisSession) {
-                this.mainChatbot.loadHistory();
-                this.drawerOpenedThisSession = true;
-              }
             }
             
             if (!this.hasLaunched) {

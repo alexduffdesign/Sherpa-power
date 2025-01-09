@@ -18,13 +18,6 @@ export class MessageComponent extends HTMLElement {
   connectedCallback() {
     const sender = this.getAttribute("sender");
     const content = this.getAttribute("content") || "";
-    console.log("[MessageComponent] Connected:", {
-      sender,
-      content,
-      isStreaming: this.isStreaming,
-      id: this.id || "no-id",
-    });
-
     this.isStreaming = this.hasAttribute("streaming");
     const animate = this.getAttribute("data-animate") !== "false";
     this.currentAnimationSpeed = parseInt(
@@ -37,16 +30,8 @@ export class MessageComponent extends HTMLElement {
     const messageContent = this.shadowRoot.querySelector(".message__content");
     if (!messageContent) return;
 
-    // Clear existing content first
-    messageContent.innerHTML = "";
-
     if (!this.isStreaming && content) {
       const isHTML = /<[a-z][\s\S]*>/i.test(content);
-      console.log("[MessageComponent] Processing content:", {
-        isHTML,
-        content,
-        animate: animate,
-      });
 
       if (isHTML) {
         // Normalize the HTML content
@@ -119,12 +104,6 @@ export class MessageComponent extends HTMLElement {
    * @param {string} htmlSegment - The HTML segment to append.
    */
   appendHTMLContent(htmlSegment) {
-    console.log("[MessageComponent] Appending HTML:", {
-      htmlSegment,
-      currentContent:
-        this.shadowRoot?.querySelector(".message__content")?.innerHTML,
-    });
-
     const messageContent = this.shadowRoot.querySelector(".message__content");
     if (messageContent) {
       const tempDiv = document.createElement("div");
