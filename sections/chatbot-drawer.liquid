@@ -229,15 +229,14 @@
         class CustomDrawer extends Drawer {
           constructor() {
             super();
-            // Track both first launch ever and current session
             this.hasLaunched = localStorage.getItem(DRAWER_LAUNCHED_KEY) === 'true';
-            this.sessionKey = 'chatSessionActive';
-            this.isActiveSession = sessionStorage.getItem(this.sessionKey) === 'true';
+            this.mainChatbot = null;
           }
 
           connectedCallback() {
             super.connectedCallback();
             this.addEventListener('dialog:after-show', this.handleDrawerOpen.bind(this));
+            // Add cleanup on drawer close
             this.addEventListener('dialog:after-hide', this.handleDrawerClose.bind(this));
           }
 
@@ -250,28 +249,19 @@
 
           handleDrawerOpen() {
             const container = this.querySelector('#main-chatbot-container');
-            
+            // Remove the old instance if it exists
             if (this.mainChatbot) {
               this.mainChatbot.destroy();
               this.mainChatbot = null;
             }
             
-            // Create new instance with session info
-            this.mainChatbot = new window.MainChatbot(container, {
-              loadHistory: !this.isActiveSession
-            });
+            // Create new instance
+            this.mainChatbot = new window.MainChatbot(container);
             
-            // If this is the first time ever, launch the welcome flow
             if (!this.hasLaunched && container && window.MainChatbot) {
               this.mainChatbot.launch();
               localStorage.setItem(DRAWER_LAUNCHED_KEY, 'true');
               this.hasLaunched = true;
-            }
-
-            // Mark this session as active
-            if (!this.isActiveSession) {
-              sessionStorage.setItem(this.sessionKey, 'true');
-              this.isActiveSession = true;
             }
           }
         }

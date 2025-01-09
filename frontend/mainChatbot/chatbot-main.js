@@ -11,24 +11,22 @@ import { generateUserId } from "../utils/user-id-generator.js";
 class MainChatbot {
   /**
    * @param {HTMLElement} container - The container element for the chatbot
-   * @param {Object} options - Optional options
    */
-  constructor(container, options = {}) {
+  constructor(container) {
     this.container = container;
-    this.loadHistory = options.loadHistory ?? true;
     this.historyKey = "mainChatbotHistory";
     this.launchKey = "chatHasLaunched";
     this.isLaunched = this.hasLaunched();
 
-    // Initialize chatbot
-    this.init();
+    // Initialize core and UI
+    this.initialize();
   }
 
   /**
    * Initialize the chatbot components
    * @private
    */
-  init() {
+  initialize() {
     // Clear old history at the start
     localStorage.removeItem("chatConversation");
 
@@ -55,11 +53,7 @@ class MainChatbot {
     });
 
     this.setupEventListeners();
-
-    // Only load history if this is a new session
-    if (this.loadHistory) {
-      this.loadChatHistory();
-    }
+    this.loadHistory();
   }
 
   /**
@@ -260,7 +254,7 @@ class MainChatbot {
    * Load conversation history
    * @private
    */
-  loadChatHistory() {
+  loadHistory() {
     const history = JSON.parse(localStorage.getItem(this.historyKey)) || [];
     console.log("Loading history:", history);
 
