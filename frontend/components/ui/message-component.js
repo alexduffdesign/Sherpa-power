@@ -13,9 +13,15 @@ export class MessageComponent extends HTMLElement {
     this.defaultAnimationSpeed = 5; // ms per character
     this.currentAnimationSpeed = this.defaultAnimationSpeed;
     this.streamingParser = null;
+    this.contentInitialized = false; // Add this flag
   }
 
   connectedCallback() {
+    // Only initialize content once
+    if (this.contentInitialized) {
+      return;
+    }
+
     const sender = this.getAttribute("sender");
     const content = this.getAttribute("content") || "";
     this.isStreaming = this.hasAttribute("streaming");
@@ -82,6 +88,8 @@ export class MessageComponent extends HTMLElement {
       });
       this.streamingParser.appendText(content);
     }
+
+    this.contentInitialized = true; // Mark content as initialized
   }
 
   /**
