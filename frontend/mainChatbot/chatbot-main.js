@@ -27,6 +27,9 @@ class MainChatbot {
    * @private
    */
   initialize() {
+    // Clear old history at the start
+    localStorage.removeItem("chatConversation");
+
     // Set up user ID
     let userId = localStorage.getItem("mainChatbotUserId");
     if (!userId) {
