@@ -60,6 +60,11 @@ export class CarouselComponent extends HTMLElement {
     this.carouselData = carouselData;
     this.shadowRoot.innerHTML = `
       <style>
+
+       :host {
+          width: 100%;
+        }
+
         h6 {
           font-family: var(--heading-font-family);
           font-weight: var(--heading-font-weight);
