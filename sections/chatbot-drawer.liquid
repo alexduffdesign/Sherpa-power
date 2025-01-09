@@ -225,6 +225,7 @@
 
         const DRAWER_LAUNCHED_KEY = 'drawerHasLaunched';
 
+        
         class CustomDrawer extends Drawer {
           constructor() {
             super();
@@ -235,13 +236,27 @@
           connectedCallback() {
             super.connectedCallback();
             this.addEventListener('dialog:after-show', this.handleDrawerOpen.bind(this));
+            // Add cleanup on drawer close
+            this.addEventListener('dialog:after-hide', this.handleDrawerClose.bind(this));
+          }
+
+          handleDrawerClose() {
+            if (this.mainChatbot) {
+              this.mainChatbot.destroy();
+              this.mainChatbot = null;
+            }
           }
 
           handleDrawerOpen() {
             const container = this.querySelector('#main-chatbot-container');
-            if (!this.mainChatbot) { 
-              this.mainChatbot = new window.MainChatbot(container);
+            // Remove the old instance if it exists
+            if (this.mainChatbot) {
+              this.mainChatbot.destroy();
+              this.mainChatbot = null;
             }
+            
+            // Create new instance
+            this.mainChatbot = new window.MainChatbot(container);
             
             if (!this.hasLaunched && container && window.MainChatbot) {
               this.mainChatbot.launch();
