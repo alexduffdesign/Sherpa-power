@@ -11,12 +11,14 @@ import { generateUserId } from "../utils/user-id-generator.js";
 class MainChatbot {
   /**
    * @param {HTMLElement} container - The container element for the chatbot
+   * @param {Object} options - Optional options
    */
-  constructor(container) {
+  constructor(container, options = {}) {
     this.container = container;
     this.historyKey = "mainChatbotHistory";
     this.launchKey = "chatHasLaunched";
     this.isLaunched = this.hasLaunched();
+    this.shouldLoadHistory = options.loadHistory !== false; // Default to true if not specified
 
     // Initialize core and UI
     this.initialize();
@@ -53,7 +55,11 @@ class MainChatbot {
     });
 
     this.setupEventListeners();
-    this.loadHistory();
+
+    // Only load history if this is the first time opening the drawer this session
+    if (this.shouldLoadHistory) {
+      this.loadHistory();
+    }
   }
 
   /**

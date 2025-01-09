@@ -230,6 +230,7 @@
             super();
             this.hasLaunched = localStorage.getItem(DRAWER_LAUNCHED_KEY) === 'true';
             this.mainChatbot = null;
+            this.drawerOpenedThisSession = false;
           }
 
           connectedCallback() {
@@ -239,11 +240,15 @@
 
           handleDrawerOpen() {
             const container = this.querySelector('#main-chatbot-container');
-            if (!this.mainChatbot) { 
-              this.mainChatbot = new window.MainChatbot(container);
+            
+            if (!this.mainChatbot) {
+              this.mainChatbot = new window.MainChatbot(container, {
+                loadHistory: !this.drawerOpenedThisSession
+              });
+              this.drawerOpenedThisSession = true;
             }
             
-            if (!this.hasLaunched && container && window.MainChatbot) {
+            if (!this.hasLaunched) {
               this.mainChatbot.launch();
               localStorage.setItem(DRAWER_LAUNCHED_KEY, 'true');
               this.hasLaunched = true;
