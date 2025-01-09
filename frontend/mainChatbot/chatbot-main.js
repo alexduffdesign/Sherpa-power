@@ -114,22 +114,29 @@ class MainChatbot {
       this.saveToHistory("user", userMessage);
     });
 
-    // Handle main menu
+    // Handle main menu (events)
+    // this.core.eventBus.on("mainMenu", () => {
+    //   const userMessage = "Main menu";
+    //   this.saveToHistory("user", userMessage);
+    //   this.ui.addMessage("user", userMessage, null, false); // fromHistory=false
+    //   this.core.sendAction({
+    //     action: {
+    //       type: "event",
+    //       payload: {
+    //         event: {
+    //           name: "menu",
+    //         },
+    //       },
+    //     },
+    //   });
+    // });
+
+    // Handle main menu (message)
     this.core.eventBus.on("mainMenu", () => {
-      const userMessage = "Main menu";
+      const userMessage = "menu";
       this.saveToHistory("user", userMessage);
-      // Add message without animation and faster speed
       this.ui.addMessage("user", userMessage, null, false); // fromHistory=false
-      this.core.sendAction({
-        action: {
-          type: "event",
-          payload: {
-            event: {
-              name: "menu",
-            },
-          },
-        },
-      });
+      this.core.sendMessage(userMessage);
     });
 
     // Handle product redirects
