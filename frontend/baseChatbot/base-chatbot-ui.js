@@ -428,7 +428,8 @@ class ChatbotUI {
 
       item.sources.forEach((ref) => {
         const refItem = document.createElement("li");
-        refItem.textContent = ref; // Simply display the URL as text
+        refItem.textContent = ref;
+        refItem.style.color = "white";
         referencesList.appendChild(refItem);
       });
 
