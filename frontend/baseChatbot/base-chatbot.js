@@ -305,7 +305,10 @@ class ChatbotCore {
         break;
       case "waiting_text":
         this.eventBus.emit("waitingText", {
-          text: trace.payload?.text || "Sherpa Guide Thinking...",
+          text:
+            typeof trace.payload === "string"
+              ? trace.payload
+              : trace.payload?.text || "Sherpa Guide Thinking...",
         });
         break;
       case "deviceSources":
