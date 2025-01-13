@@ -428,12 +428,7 @@ class ChatbotUI {
 
       item.sources.forEach((ref) => {
         const refItem = document.createElement("li");
-        const refLink = document.createElement("a");
-        refLink.href = ref;
-        refLink.target = "_blank";
-        refLink.rel = "noopener noreferrer";
-        refLink.textContent = new URL(ref).hostname;
-        refItem.appendChild(refLink);
+        refItem.textContent = ref; // Simply display the URL as text
         referencesList.appendChild(refItem);
       });
 
