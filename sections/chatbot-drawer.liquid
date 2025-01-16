@@ -13,7 +13,7 @@
     max-width: 100%;
     box-sizing: border-box;
   }
-  
+
   /* Prevent content from overflowing */
   .message {
     word-wrap: break-word;
@@ -25,35 +25,39 @@
     width: auto !important;
   }
 
-  main-chatbot {
+  #main-chatbot-container {
     height: 100%;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
   }
 
-  #{{ drawer_id }} .chatbot-container {
+  #{{ drawer_id }}
+  .chatbot-container {
     height: 100%;
     color: rgb(var(--text-color, 255 255 255));
     position: relative;
     overflow: hidden;
     padding: var(--spacing-4);
   }
-  
-   #{{ drawer_id }} .chatbot-content {
+
+  #{{ drawer_id }}
+  .chatbot-content {
     height: 100%;
     padding-bottom: 2rem;
   }
-  
-  #{{ drawer_id }} .chat-messages {
+
+  #{{ drawer_id }}
+  .chat-messages {
     overflow: hidden;
     height: 100%;
   }
-  
-  #{{ drawer_id }} .chat-form {
-  margin-top: 0;
-  }  
-  
+
+  #{{ drawer_id }}
+  .chat-form {
+    margin-top: 0;
+  }
+
   #{{ drawer_id }}::part(content) {
     background-color: #403545;
     border: 2px solid #DB9BFB;
@@ -62,30 +66,30 @@
     z-index: 1;
     overflow: hidden;
   }
-  
+
   #{{ drawer_id }}::part(header) {
     background-color: #403545;
     padding: var(--spacing-4) var(--spacing-6);
     color: white;
-    border-bottom: solid 1px #da9bfb;;
+    border-bottom: solid 1px #da9bfb;
     display: flex;
     justify-content: flex-start;
     grid-gap: 0.5rem;
   }
-  
-   #{{ drawer_id }}:not([header-bordered])::part(header):after {
+
+  #{{ drawer_id }}:not([header-bordered])::part(header):after {
     height: var(--spacing-6);
     background: linear-gradient(to bottom, rgb(64 53 69), rgb(64 53 69 / 52%) 50%, rgb(64 53 69 / 0%));
     z-index: 3;
     pointer-events: none;
     display: none;
   }
-  
+
   #{{ drawer_id }}::part(body) {
     background-color: #403545;
     padding: var(--spacing-0);
   }
-  
+
   .footer-form {
     width: 100%;
     padding: var(--spacing-4);
@@ -94,24 +98,26 @@
     background: linear-gradient(to bottom, rgb(64 53 69 / 0%), rgb(64 53 70) 22%, rgb(64 53 69));
     z-index: 2;
   }
-  
+
   @media screen and (min-width: 700px) {
-  main-chatbot {
-    width: 500px;  }
+    #main-chatbot-container {
+      width: 500px;
+    }
   }
 
   @media screen and (max-width: 699px) {
-  main-chatbot {
-    width: 95dvw;  }
+    #main-chatbot-container {
+      width: 95dvw;
+    }
 
-  .button.sherpa-guide {
+    .button.sherpa-guide {
       padding: var(--spacing-2);
     }
 
-  .sherpa-icon {
-    width: 20px;
-    height: 20px;
-  }
+    .sherpa-icon {
+      width: 20px;
+      height: 20px;
+    }
   }
 
   .header-content {
@@ -127,23 +133,23 @@
     gap: 0.5rem;
   }
 
-  .button.back-to-start {
+  .button.main-menu {
     display: flex;
     align-items: center;
     gap: var(--spacing-2);
   }
 
-  .button.back-to-start svg {
+  .button.main-menu svg {
     width: 12px;
     height: 14px;
   }
-      
+
 </style>
 
 {% capture form %}
 
   <form id="chatForm" class="chat-form">
-      <input type="text" id="userInput" placeholder="Type your message here..." autocomplete="off" required>
+      <input type="text" class="chatbot-input" id="userInput" placeholder="Type your message here..." autocomplete="off" required>
       <button type="submit">
         <svg width="20" height="18" viewBox="0 0 20 18" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M1.4 17.3984L18.85 9.91844C19.0304 9.84159 19.1842 9.71341 19.2923 9.54984C19.4004 9.38626 19.4581 9.19451 19.4581 8.99844C19.4581 8.80236 19.4004 8.61061 19.2923 8.44704C19.1842 8.28346 19.0304 8.15528 18.85 8.07844L1.4 0.598438C1.2489 0.532533 1.08377 0.505281 0.919509 0.519141C0.755246 0.533002 0.597018 0.587538 0.459098 0.67783C0.321179 0.768123 0.207908 0.891331 0.129505 1.03634C0.0511009 1.18135 0.010031 1.34359 0.00999999 1.50844L0 6.11844C0 6.61844 0.37 7.04844 0.87 7.10844L15 8.99844L0.87 10.8784C0.37 10.9484 0 11.3784 0 11.8784L0.00999999 16.4884C0.00999999 17.1984 0.74 17.6884 1.4 17.3984Z" fill="#231F25"/>
@@ -152,12 +158,11 @@
     </form>
 
 {% endcapture %}
-            
-  <x-drawer id="{{ drawer_id }}" class="drawer sherpa-guide">
-    <div slot="header" class="header-content">
-      <div class="header-left">
-        <h2 class="h6">SHERPA GUIDE</h2>
-        <svg
+<custom-drawer id="{{ drawer_id }}" class="drawer sherpa-guide">
+  <div slot="header" class="header-content">
+    <div class="header-left">
+      <h2 class="h6">SHERPA GUIDE</h2>
+      <svg
         class="sherpa-icon"
         width="23"
         height="23"
@@ -189,42 +194,76 @@
           </linearGradient>
         </defs>
       </svg>
-      </div>
-      <button class="button back-to-start">
-        <svg width="12" height="14" viewBox="0 0 12 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M0 13.75V4.75L6 0.25L12 4.75V13.75H7.5V8.5H4.5V13.75H0Z" fill="white"/>
-        </svg>
-        Back to Menu
-      </button>
     </div>
-  
+    <button class="button main-menu">
+      <svg
+        width="12"
+        height="14"
+        viewBox="0 0 12 14"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg">
+        <path d="M0 13.75V4.75L6 0.25L12 4.75V13.75H7.5V8.5H4.5V13.75H0Z" fill="white" />
+      </svg>
+      Menu
+    </button>
+  </div>
+  <div id="main-chatbot-container">
+    {% render 'chatbot-template' %}
+    <footer class="footer-form">
+      {{ form }}
+    </footer>
+  </div></custom-drawer>
 
-       <main-chatbot api-endpoint="https://chatbottings--development.gadget.app/voiceflowAPI/voiceflow" class="main-chatbot" >
-        {% render 'chatbot-template' %}
-         <footer class="footer-form">
-           {{ form }}
-         </footer>
-      </main-chatbot>
-  </x-drawer>
+<!-- Include required scripts -->
+{% render 'vite-tag' with '/frontend/components/ui/chatbot-components.js' %}
+{% render 'vite-tag' with '/frontend/baseChatbot/base-chatbot.js' %}
+{% render 'vite-tag' with '/frontend/baseChatbot/base-chatbot-ui.js' %}
+{% render 'vite-tag' with '/frontend/mainChatbot/chatbot-main.js' %}
 
+<script type="module">
+        import { Drawer } from "{{ 'theme.js' | asset_url }}";
 
-  {% render 'vite-tag' with 'chatbot-drawer.js' %}
-  <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      if (typeof initChatbotDrawer === 'function') {
-        initChatbotDrawer('{{ drawer_id }}');
-      } else {
-        console.error('initChatbotDrawer function not found');
-      }
-    });
-  </script>
+        const DRAWER_LAUNCHED_KEY = 'drawerHasLaunched';
 
+        class CustomDrawer extends Drawer {
+          constructor() {
+            super();
+            this.hasLaunched = localStorage.getItem(DRAWER_LAUNCHED_KEY) === 'true';
+            this.mainChatbot = null;
+            this.drawerOpenedThisSession = false;
+          }
+
+          connectedCallback() {
+            super.connectedCallback();
+            this.addEventListener('dialog:after-show', this.handleDrawerOpen.bind(this));
+          }
+
+          handleDrawerOpen() {
+            const container = this.querySelector('#main-chatbot-container');
+            
+            if (!this.mainChatbot) {
+              this.mainChatbot = new window.MainChatbot(container, {
+                loadHistory: !this.drawerOpenedThisSession
+              });
+              this.drawerOpenedThisSession = true;
+            }
+            
+            if (!this.hasLaunched) {
+              this.mainChatbot.launch();
+              localStorage.setItem(DRAWER_LAUNCHED_KEY, 'true');
+              this.hasLaunched = true;
+            }
+          }
+        }
+
+        customElements.define('custom-drawer', CustomDrawer);
+</script>
 
 {% schema %}
-{
-  "name": "Chatbot Drawer",
-  "tag": "section",
-  "class": "chatbot-drawer-section",
-  "settings": []
-}
+  {
+    "name": "Chatbot Drawer",
+    "tag": "section",
+    "class": "chatbot-drawer-section",
+    "settings": []
+  }
 {% endschema %}

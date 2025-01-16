@@ -1,4 +1,5 @@
 <style>
+
   .chatbot-container {
     background-color: #403545;
     border-radius: var(--rounded-lg);
@@ -8,7 +9,7 @@
     overflow: hidden;
   }
 
-  section-chatbot .chatbot-container::before {
+  #section-chatbot-container .chatbot-container::before {
     content: '';
     position: absolute;
     top: 0;
@@ -25,8 +26,8 @@
     mask-composite: exclude;
   }
 
-  section-chatbot .chat-messages {
-    height: 35vh;
+  #section-chatbot-container .chat-messages {
+    height: 50vh;
     overflow-y: auto;
   }
 
@@ -186,6 +187,94 @@
     margin-block-start: 0 !important;
   }
 
+  .button-group {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    gap: 0.5rem;
+  }
+
+  .device-sources {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: var(--rounded);
+    padding: 0;
+    margin-top: -1rem;
+    margin-bottom: var(--spacing-4);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+  }
+
+  .device-sources__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--spacing-4);
+    cursor: pointer;
+    user-select: none;
+    gap: var(--spacing-2);
+  }
+
+  .device-sources__header:hover {
+    background: rgba(255, 255, 255, 0.05);
+  }
+
+  .device-sources__title {
+    color: white;
+    font-size: var(--text-sm);
+    margin: 0;
+    opacity: 0.8;
+  }
+
+  .device-sources__chevron {
+    display: flex;
+    align-items: center;
+    transition: transform 0.3s ease;
+  }
+
+  .device-sources__header.expanded .device-sources__chevron {
+    transform: rotate(180deg);
+  }
+
+  .device-sources__content {
+    padding: var(--spacing-4);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .device-sources__section {
+    margin-bottom: var(--spacing-3);
+  }
+
+  .device-sources__section:last-child {
+    margin-bottom: 0;
+  }
+
+  .device-sources__device {
+    color: white;
+    font-size: var(--text-sm);
+    font-weight: 500;
+    margin-bottom: var(--spacing-2);
+  }
+
+  .device-sources__list {
+    display: flex;
+    flex-direction: column;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    gap: var(--spacing-2);
+  }
+
+  .device-sources__list a {
+    color: var(--color-primary, #9F92FF);
+    font-size: var(--text-xs);
+    text-decoration: none;
+    opacity: 0.9;
+    transition: opacity 0.2s ease;
+  }
+
+  .device-sources__list a:hover {
+    opacity: 1;
+    text-decoration: underline;
+  }
 
 </style>
 
@@ -216,7 +305,7 @@
         <div class="logo-container">
           <div class="logo-background"></div>
         </div>
-        <p>Sherpa Guide Is Typing...</p>
+        <p class="typing-text">Sherpa Guide Is Typing...</p>
       </div>
 
       <svg
@@ -288,20 +377,16 @@
       </style>
 
     </div>
-
-
-    {% render 'carousel' %}
-
   </div>
 
 
   <!-- Form Element ✉️ -->
 
   {% if section.settings.is_section_chatbot %}
-
     <form id="chatForm" class="chat-form">
       <input
         type="text"
+        class="chatbot-input"
         id="userInput"
         placeholder="Type your message here..."
         autocomplete="off"
@@ -317,9 +402,7 @@
         </svg>
       </button>
     </form>
-
   {% endif %}
-
 <!-- Form Element ✉️ -->
 
 </div>

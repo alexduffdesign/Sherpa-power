@@ -1,0 +1,173 @@
+<rules>
+<architecture>
+  ## Core Architecture Rules
+  <coreLogic>
+    <!-- chatbot/baseChatbot/base-chatbot.js -->
+    - Handles all API communication through Gadget middleware
+    - Manages SSE response processing
+    - Handles state management and event emissions 
+    - No UI code or DOM manipulation
+    - Responsible for trace processing
+    - Manages user sessions and conversations
+  </coreLogic>
+  <coreUI>
+    <!-- chatbot/baseChatbot/base-chatbot-ui.js -->
+    - Base UI functionality shared by both chatbots
+    - Handles message rendering
+    - Manages interactive elements (buttons, carousels)
+    - DOM manipulation and UI updates
+    - No direct API calls
+    - Event handling for UI interactions
+  </coreUI>
+  <mainChatbot>
+    <!-- chatbot/mainChatbot/chatbot-main.js -->
+    - Extends core functionality for main chatbot
+    - Manages conversation history
+    - Handles localStorage persistence
+    - Controls launch behavior with drawer
+    - Global navigation functionality
+    - No direct API calls
+  </mainChatbot>
+  <mainChatbotUI>
+    <!-- chatbot/mainChatbot/chatbot-main-ui.js -->
+    - Extends core UI for main chatbot
+    - Implements main-specific UI elements
+    - Handles history restoration
+    - Manages drawer-specific UI
+    - Footer controls (clear/minimize)
+  </mainChatbotUI>
+  <sectionChatbot>
+    <!-- chatbot/sectionChatbot/chatbot-section.js -->
+    - Extends core functionality for section chatbot
+    - Handles product context
+    - Manages device_answer traces
+    - Focus-based launch behavior
+    - Stateless operation
+    - Product validation
+  </sectionChatbot>
+  <sectionChatbotUI>
+    <!-- chatbot/sectionChatbot/chatbot-section-ui.js -->
+    - Extends core UI for section chatbot
+    - Product-specific UI elements
+    - Device answer grid updates
+    - Product context display
+    - Focus handling
+  </sectionChatbotUI>
+  <components>
+    <!-- UI Components -->
+    - message-component: Display chat messages
+    - button-component: Interactive buttons
+    - carousel-component: Carousel displays
+    - Pure presentation components
+    - No business logic
+    - Event emission only
+  </components>
+  <utils>
+    <!-- Utility Modules -->
+    - event-bus: EventEmitter3 instance
+    - event-constants: Event type definitions
+    - user-id-generator: ID management
+    - Shared helper functions
+    - No business logic
+  </utils>
+</architecture>
+<templates>
+  <chatbotTemplate>
+    <!-- chatbot-template.liquid -->
+    - Shared HTML structure
+    - Used by both chatbot types
+    - Basic chat interface elements
+    - No type-specific elements
+  </chatbotTemplate>
+  <drawerTemplate>
+    <!-- chatbot-drawer.liquid -->
+    - Main chatbot container
+    - Drawer initialization
+    - Launch state management
+  </drawerTemplate>
+  <applicationTemplate>
+    <!-- application.liquid -->
+    - Section chatbot container
+    - Product attributes
+    - Context initialization
+  </applicationTemplate>
+</templates>
+<features>
+  <commonFeatures>
+    - Message sending/receiving
+    - Button interactions
+    - Carousel display
+    - Typing indicators
+    - Error handling
+    - Event-based communication
+  </commonFeatures>
+  <mainFeatures>
+    - Conversation history (localStorage)
+    - State persistence
+    - Interactive element restoration
+    - Global navigation
+    - Drawer-based launch
+    - Session management
+  </mainFeatures>
+  <sectionFeatures>
+    - Product context
+    - Device answers
+    - Focus-based launch
+    - Stateless operation
+    - Product validation
+    - Grid updates
+  </sectionFeatures>
+</features>
+<technicalRequirements>
+  <api>
+    - All Voiceflow communication via Gadget
+    - Environment-based configuration
+    - SSE handling
+    - Error management
+  </api>
+  <dependencies>
+    - eventemitter3 for events
+    - vite for bundling
+    - No direct API calls in UI
+  </dependencies>
+  <documentation>
+    <!-- JSDoc Requirements -->
+    <classDoc>
+      /**
+       * @class
+       * @description Purpose of the class
+       * @param {Object} config - Configuration object
+       */
+    </classDoc>
+Copy<methodDoc>
+  /**
+   * @method
+   * @description Purpose of the method
+   * @param {type} paramName - Parameter description
+   * @returns {type} Description of return value
+   */
+</methodDoc>
+  </documentation>
+</technicalRequirements>
+<qualityStandards>
+  <codeQuality>
+    - Clear separation of concerns
+    - No cross-boundary responsibilities
+    - Event-driven communication
+    - Proper error handling
+    - Clean code principles
+  </codeQuality>
+  <testing>
+    - Unit tests for core functionality
+    - Integration tests for chatbot flows
+    - Event handling tests
+    - UI interaction tests
+  </testing>
+  <maintenance>
+    - Regular progress reports
+    - Clear documentation updates
+    - Code review requirements
+    - Performance monitoring
+  </maintenance>
+</qualityStandards>
+</rules>

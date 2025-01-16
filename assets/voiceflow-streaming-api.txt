@@ -1,0 +1,286 @@
+Interact Stream
+post
+https://general-runtime.voiceflow.com/v2/project/{projectID}/user/{userID}/interact/stream
+Sends a request to advance the conversation session with your Voiceflow project, recieving a stream of events back.
+
+This endpoint initiates a streaming interaction session with a Voiceflow agent. Clients connect to this endpoint to receive server-side events (SSE) using the text/event-stream format. This allows for real time events during progression through the flow.
+
+Streaming events can be used to drastically improve latency and provide a more natural conversation by sending information to the user as soon as it's ready, instead of waiting for the entire Voiceflow turn to be finished.
+
+
+In the block above, events would be sent as goes:
+
+The API immediately sends an event for Message 1 ("give me a moment")
+Then a long API Call holds up the rest of the answer
+Once the API call is finished, the API sends an event for Message 2 "got it...".
+Streaming allows us to respond first with Message 1 before going into the long API Call (long-running-api-request).
+
+From the user's perspective, the agent will respond "give me a moment...", and after the API finishes in 10 seconds, then "got it, your flight is booked for...". This helps prevent an awkward silence while the API runs in the background and prepares the user to wait for an action to be finished.
+
+Streaming is great for breaking up long-running, blocking steps such as: AI Set/AI Response/Prompt, API, JavaScript, Function, KB Search.
+
+The response is a stream of trace events, which each roughly corresponds with a step on the canvas, sent as the step is invoked. Visit Trace Types to learn about the different types of traces.
+
+An Authorization header is required to validate the request. Learn more at: https://docs.voiceflow.com/reference/authentication
+
+Your projectID is also required as part of the URL, find this in the agent settings page:
+
+
+Note: this is not the same ID in the URL creator.voiceflow.com/project/.../
+
+Example Request
+cURL
+
+curl --request POST \
+     --url https://general-runtime.voiceflow.com/v2/project/$PROJECT_ID/user/$userID/interact/stream \
+     --header 'Accept: text/event-stream' \
+     --header 'Authorization: $VOICEFLOW_API_KEY' \
+     --header 'content-type: application/json' \
+     --data '
+{
+  "action": {
+    "type": "launch"
+  }
+}
+Example Response
+Response
+
+event: trace
+id: 1
+data: {
+  "type": "text",
+	"payload": {
+    "message": "give me a moment...",
+  },
+  "time": 1725899197143
+}
+
+event: trace
+id: 2
+data: {
+  "type": "debug",
+  "payload": {
+    "type": "api",
+    "message": "API call successfully triggered"
+  },
+  "time": 1725899197146
+}
+
+event: trace
+id: 3
+data: {
+  "type": "text",
+	"payload": {
+    "message": "got it, your flight is booked for June 2nd, from London to Sydney.",
+  },
+  "time": 1725899197143
+}
+
+event: end
+id: 4
+You can check out an example project here using the API: https://github.com/voiceflow/streaming-wizard
+
+For more details on advanced settings, reference dedicated documentation:
+
+completion_events to stream LLM responses as they are being generated, instead of waiting for the entire response
+Path Params
+projectID
+string
+required
+The ID of your Voiceflow project. You can find this in the settings for your agent. Note: this is not the same ID in the URL creator.voiceflow.com/project/.../
+
+userID
+string
+required
+A unique user ID specified by the caller.
+
+The Dialog Manager API creates an independent conversation session for each user ID, allowing your app to talk with different users simultaneously.
+
+Query Params
+environment
+string
+Defaults to development
+the environment of the project to run against, this was previously called versionID. aliases are supported, such as development and production.
+The development environment is only updated when "Run" is clicked on the Voiceflow canvas.
+
+development
+completion_events
+string
+Defaults to false
+[advanced] whether or not to break up LLM traces into streamed-in chunks - documentation
+
+
+false
+state
+string
+Defaults to false
+[advanced] send back the new user state as an event.
+
+
+false
+Body Params
+action
+object | null
+required
+The user's response, e.g, user requests starting a conversation or advances the conversation by providing some textual response.
+
+
+Launch Request
+
+Text Request
+
+Intent Request
+
+Event Request
+variables
+object
+The variables to update in the user's state. This object will be merged with the existing variables in the user's state.
+
+
+Merge Variables object
+Responses
+
+200
+A stream of events to display back to the user. The primary relevant event is trace. Other types of events include state and end
+
+Response body
+string
+400
+Bad Request.
+
+The environment query parameter is not a valid tag or objectID reference.
+
+401
+Unauthorized.
+HTTP request is missing a Dialog Manager API key in the Authorization header or the key is invalid.
+This can also occur because of an invalid projectID URL parameter that can not be accessed.
+
+404
+Not Found.
+
+The environment query parameter refers to an environment does not exist. For environment=production ensure you have published.
+
+429
+Too Many Requests.
+Rate limit hit for given project. This limit can vary depending on cloud.
+
+Stream Completion Events
+Break down AI responses into discrete chunks for faster response times.
+
+When conversing with LLMs such as ChatGPT or Claude, you notice that unlike human communications, where we send complete message by complete message, it "streams" in the text one piece at a time, and not even necessarily in complete words. LLMs work by generating their responses token by token.
+
+
+It can take quite long for an LLM to write a complete paragraph — even for the fastest models.
+
+With the Response AI / Prompt step, by default the API will wait for the entire response to be generated before sending the text back. This can often take a few seconds and mean users have to wait a long time and then suddenly get a very long message.
+
+By setting the ?completion_events=true query parameter in the Interact Stream API, Voiceflow will return output from the Response AI / Prompt steps as a text stream as it's generated, which can be shown to the user on an interface capable of handling partial responses.
+
+📘
+Only the Response AI / Prompt step produces completion events
+
+Example Response completion_events=false
+Response
+
+event: trace
+id: 1
+data: {
+  "type": "text",
+	"payload": {
+    "message": "Welcome to our service. How can I help you today? Perhaps you're interested in our latest offers or need assistance with an existing order? Let me know if you have any other questions!",
+  },
+  "time": 1725899197143
+}
+
+event: end
+id: 2
+This is what a response might look like normally. The user might have to wait a bit before seeing the message.
+
+Example Response completion_events=true
+Response
+
+event: trace
+id: 1
+data: {
+  "type": "completion",
+  "payload": {
+    "state": "start"
+  },
+  "time": 1725899197143
+}
+
+event: trace
+id: 2
+data: {
+  "type": "completion",
+  "payload": {
+    "state": "content",
+    "content": "Welcome to our service. How can I help you today? Perh",
+  },
+  "time": 1725899197144
+}
+
+event: trace
+id: 3
+data: {
+  "type": "completion",
+  "payload": {
+    "state": "content",
+    "content": "aps you're interested in our latest offers or need ",
+  },
+  "time": 1725899197145
+}
+
+event: trace
+id: 4
+data: {
+  "type": "completion",
+  "payload": {
+    "state": "content",
+    "content": "assistance with an existing order? Let",
+  },
+  "time": 1725899197146
+}
+
+event: trace
+id: 5
+data: {
+  "type": "completion",
+  "payload": {
+    "state": "content",
+    "content": " me know if you have any other questions!",
+  },
+  "time": 1725899197147
+}
+
+event: trace
+id: 6
+data: {
+  "type": "completion",
+  "payload": {
+    "state": "end",
+  },
+  "time": 1725899197148
+}
+
+event: end
+id: 7
+With completion_events turned on, it still takes the same total time to get the entire message, but the user will be able to see the first chunk of text within milliseconds: Welcome to our servi..."
+
+Enabling completion_events means the API will return a completion trace instead of a text (or speak) trace. There is a payload.state property which is one of three values:
+
+state: "start" to signal the start of a completion stream.
+state: "content" to stream in additional text to the same text block, under the content property
+state: "end" to signal that the completion is now finished, and the final LLM token usage
+These trace types facilitate the delivery of text streaming as the large language model (LLM) generates the response message. Note, the content data may not always be in complete sentences or words.
+
+It is the responsibility of the API caller to stitch the data together and have it reflect live on the conversation interface.
+
+Examples
+See our streaming-wizard demo (NodeJS). Note the use of the "end" state as a marker to start a new line in the conversation.
+
+Deterministic and Streamed Messages
+It may be jarring to pair this with existing deterministic messages that come out fully completed. Some messages stream in, while others are sent as whole. To mitigate this, you can either:
+
+create a fake streaming effect for deterministic messages that matches what messages streamed through completion events look like
+accumulate enough completion traces to form a complete sentence, and send group streamed responses into sentences before displaying them. Look for delimiters such as . ? ! ; \n (newline). You can then send the completion as a group of smaller complete messages.

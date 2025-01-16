@@ -1,0 +1,46 @@
+# 2024-12-12: Main Chatbot Architecture Update
+
+## Issue
+- Found mismatch between old ChatbotCore architecture and new Web Component based architecture
+- Manual initialization code conflicting with web component lifecycle
+- Reference error: ChatbotCore not defined
+
+## Changes Made
+- Removed manual initialization code in favor of web component lifecycle
+- Updated MainChatbot class to properly extend BaseChatbot
+- Moved user ID management into connectedCallback
+- Properly registered web component using customElements.define
+
+## Learnings
+- Web components should handle their own initialization through lifecycle methods
+- Need to fully commit to either manual initialization or web component architecture, mixing both causes conflicts
+- Importance of maintaining consistent architecture throughout the codebase
+
+## Next Steps
+- Test the new initialization flow
+- Verify history loading works correctly
+- Ensure proper event handling between components
+
+# 2024-12-12: SSE Connection Handling Improvements
+
+## Issue
+- AbortError occurring during SSE connections but traces still coming through
+- Unhandled trace types (flow, block, debug)
+- Poor cleanup of previous SSE connections
+
+## Changes Made
+- Added delay after aborting previous connections for proper cleanup
+- Added proper Accept header for SSE connections
+- Implemented handling for different trace types
+- Added better error handling for AbortError cases
+- Added debug logging for trace processing
+
+## Learnings
+- SSE connections need proper cleanup before new ones are established
+- Voiceflow sends various trace types that need handling
+- AbortController needs careful management to prevent race conditions
+
+## Next Steps
+- Monitor SSE connection stability
+- Add more sophisticated trace type handling
+- Consider implementing reconnection logic for failed connections

@@ -1,165 +1,130 @@
-// chatbot-core.js
-console.log("Recent changes check : 3");
+// chatbot-core-file.js
 
-export class ChatbotCore {
+import EventEmitter from "eventemitter3";
+
+export class ChatbotCore extends EventEmitter {
   constructor(config) {
+    super(); // Initialize EventEmitter
     console.log("ChatbotCore constructor called with config:", config);
-    this.apiEndpoint = config.apiEndpoint;
+    this.apiEndpoint = config.proxyEndpoint; // URL to Gadget's streaming endpoint
+    this.environment = config.environment || "development";
     this.userIDPrefix = config.userIDPrefix || "chatbot";
     this.userID = this.loadUserID();
     this.messageContainer = null;
     this.typingIndicator = null;
     this.drawerBody = null;
+    this.defaultTypingText = "Sherpa Guide Is Typing...";
+    this.conversationHistory = [];
+    this.eventListenersAttached = false;
+    this.useStreaming = true; // Enable streaming by default
 
     // Bind methods
     this.sendMessage = this.sendMessage.bind(this);
-    this.gadgetInteract = this.gadgetInteract.bind(this);
+    this.handleStreaming = this.handleStreaming.bind(this);
     this.addMessage = this.addMessage.bind(this);
+    this.updateLatestMessage = this.updateLatestMessage.bind(this);
+    this.parseSSE = this.parseSSE.bind(this);
+    this.handleTrace = this.handleTrace.bind(this);
 
     console.log("ChatbotCore instance created:", this);
   }
 
   loadUserID() {
-    const key = `${this.userIDPrefix}UserID`;
-    let userID = localStorage.getItem(key);
+    // Generate or retrieve a unique user ID
+    let userID = localStorage.getItem("chatbotUserID");
     if (!userID) {
-      userID = `${this.userIDPrefix}_${Math.floor(
-        Math.random() * 1000000000000000
-      )}`;
-      localStorage.setItem(key, userID);
+      userID = `user_${Math.random().toString(36).substr(2, 9)}`;
+      localStorage.setItem("chatbotUserID", userID);
     }
-    console.log(`${this.userIDPrefix} userID loaded:`, userID);
     return userID;
   }
 
   setDOMElements(messageContainer, typingIndicator, drawerBody) {
-    console.log("setDOMElements called:", {
-      messageContainer,
-      typingIndicator,
-      drawerBody,
-    });
     this.messageContainer = messageContainer;
     this.typingIndicator = typingIndicator;
     this.drawerBody = drawerBody;
-    console.log("DOM elements set:", this);
+
+    // Setup event listeners once DOM elements are set
+    this.setupEventListeners();
+  }
+
+  setupEventListeners() {
+    if (this.eventListenersAttached) return;
+
+    // Handle button clicks within messages
+    this.messageContainer.addEventListener("click", async (e) => {
+      const buttonElement = e.target.closest(".button");
+      if (buttonElement) {
+        const buttonData = JSON.parse(buttonElement.dataset.buttonData);
+        await this.handleButtonClick(buttonData);
+      }
+    });
+
+    this.eventListenersAttached = true;
+  }
+
+  addMessage(sender, content) {
+    if (!this.messageContainer) {
+      console.error("Message container not set");
+      return;
+    }
+
+    const messageWrapper = document.createElement("div");
+    messageWrapper.classList.add(
+      "message-wrapper",
+      `message-wrapper--${sender}`
+    );
+
+    // Optionally add an icon for the assistant
+    if (sender === "assistant") {
+      const iconSvg = document.createElement("div");
+      iconSvg.classList.add("assistant-icon");
+      iconSvg.innerHTML = `🚀`; // 🚀 Emoji as a placeholder for SVG
+      messageWrapper.appendChild(iconSvg);
+    }
+
+    const messageDiv = document.createElement("div");
+    messageDiv.classList.add("message", `message--${sender}`);
+    messageDiv.innerHTML = `<div class="message__content">${this.markdownToHtml(
+      content
+    )}</div>`;
+
+    messageWrapper.appendChild(messageDiv);
+    this.messageContainer.appendChild(messageWrapper);
+    this.scrollToBottom();
+  }
+
+  updateLatestMessage(content) {
+    const lastAssistantMessage = this.messageContainer.querySelector(
+      ".message-wrapper--assistant:last-child .message__content"
+    );
+    if (lastAssistantMessage) {
+      lastAssistantMessage.innerHTML += this.markdownToHtml(content);
+    } else {
+      // If no previous message, add a new one
+      this.addMessage("assistant", content);
+    }
   }
 
   scrollToBottom() {
-    if (this.drawerBody) {
-      setTimeout(() => {
-        this.drawerBody.scrollTop = this.drawerBody.scrollHeight;
-      }, 100); // Small delay to ensure content has rendered
-    } else {
-      console.error("Drawer body element not found for scrolling");
+    if (this.messageContainer) {
+      this.messageContainer.scrollTop = this.messageContainer.scrollHeight;
     }
   }
 
-  async sendMessage(message) {
-    console.log("sendMessage called with:", message);
-    console.log("this in sendMessage:", this);
-    try {
-      const res = await this.gadgetInteract({
-        userAction: {
-          type: "text",
-          payload: message,
-        },
-      });
-      console.log("gadgetInteract response:", res);
-      this.hideTypingIndicator();
-      return res;
-    } catch (error) {
-      console.error("Error sending message:", error);
-      this.hideTypingIndicator();
-      throw error;
-    }
-  }
-
-  async sendLaunch(payload = {}) {
-    console.log("ChatbotCore sendLaunch called with payload:", payload);
-    this.showTypingIndicator();
-
-    try {
-      const res = await this.gadgetInteract(payload);
-      console.log("Launch response:", res);
-      return res;
-    } catch (error) {
-      console.error("Error launching conversation:", error);
-      throw error;
-    } finally {
-      this.hideTypingIndicator();
-    }
-  }
-
-  async gadgetInteract(payload) {
-    console.log("Sending payload to Gadget:", payload);
-    const fullPayload = {
-      userID: this.userID,
-      userAction: payload.userAction || payload,
-    };
-    const response = await fetch(this.apiEndpoint, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(fullPayload),
-    });
-    if (!response.ok) {
-      throw new Error(`Gadget API error: ${response.status}`);
-    }
-    return await response.json();
-  }
-
-  showTypingIndicator() {
-    console.log("Showing typing indicator");
+  showTypingIndicator(text = this.defaultTypingText) {
     if (this.typingIndicator) {
-      this.typingIndicator.style.display = "flex";
-      this.typingIndicator.classList.add("active");
+      this.typingIndicator.innerText = text;
+      this.typingIndicator.style.display = "block";
       this.scrollToBottom();
     }
   }
 
   hideTypingIndicator() {
-    console.log("Hiding typing indicator");
     if (this.typingIndicator) {
       this.typingIndicator.style.display = "none";
-      this.typingIndicator.classList.remove("active");
     }
   }
-
-  addMessage(sender, content) {
-    console.log(`Adding message from ${sender}: ${content}`);
-    if (this.messageContainer) {
-      const messageWrapper = document.createElement("div");
-      messageWrapper.classList.add(
-        "message-wrapper",
-        `message-wrapper--${sender}`
-      );
-
-      if (sender === "assistant") {
-        const iconSvg = document.createElement("svg");
-        iconSvg.classList.add("message-icon");
-        iconSvg.innerHTML = `
-        <svg class="message-icon" width="30" height="20" viewBox="0 0 30 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M20.8566 0.0949741C20.5706 0.0327174 20.1796 -0.00878708 19.9985 0.00158904C19.8173 0.0119652 19.4741 0.0534703 19.2357 0.105351C18.9973 0.157232 18.5492 0.333624 18.2345 0.499642C17.8817 0.676036 15.6315 2.51261 12.4183 5.23115C10.1121 7.17766 8.14608 8.8729 7.4516 9.50931C7.26478 9.68051 7.23297 9.89295 7.36802 10.1074C7.56866 10.4259 7.91296 10.9361 8.2993 11.488C9.04301 12.5394 9.45301 13.0409 9.52929 12.9925C9.59603 12.951 11.9702 10.9588 14.802 8.57226C17.6338 6.18575 20.0461 4.18316 20.1606 4.13128C20.2845 4.0794 20.561 4.0379 20.7803 4.0379C21.0091 4.0379 21.3047 4.12091 21.4478 4.22467C21.5908 4.31805 22.7826 5.9056 24.0889 7.75255C26.0721 10.523 26.4821 11.1559 26.4821 11.4361C26.4916 11.6125 26.4154 11.8719 26.32 11.986C26.2247 12.1105 25.2044 13.0029 24.0507 13.9782C22.897 14.9432 21.8387 15.794 21.6861 15.8563C21.5145 15.9289 21.3429 15.9393 21.1617 15.8667C21.0091 15.8148 20.6754 15.4516 20.3512 14.9847C20.2856 14.8902 20.2209 14.7993 20.1594 14.715C19.8981 14.3568 19.5448 14.3315 19.2009 14.6114C19.0718 14.7164 18.9276 14.8362 18.778 14.964C18.2822 15.379 17.7959 15.7837 17.6815 15.8874C17.5638 15.9806 17.5395 16.1501 17.626 16.2729C18.6307 17.6989 19.1539 18.3732 19.4264 18.6994C19.722 19.0418 20.1606 19.4153 20.4275 19.5606C20.685 19.6955 21.1617 19.8615 21.4764 19.9134C21.8673 19.986 22.2296 19.9756 22.6205 19.903C22.9352 19.8407 23.4024 19.6747 23.6693 19.5294C23.9268 19.3842 25.2617 18.3154 26.6251 17.1637C28.4653 15.5969 29.1804 14.9224 29.3997 14.5489C29.5714 14.2791 29.7811 13.7707 29.867 13.4283C29.9814 12.9925 30.0195 12.5878 29.9909 12.0794C29.9623 11.6125 29.8669 11.1455 29.7144 10.7824C29.5714 10.44 28.2174 8.44775 26.3295 5.81222C24.6038 3.3842 23.021 1.2571 22.8112 1.07033C22.6015 0.883558 22.1915 0.61378 21.9054 0.468515C21.6194 0.323249 21.1426 0.157231 20.8566 0.0949741Z" fill="white"/>
-            <path d="M9.51022 0.47889C9.00487 0.219487 8.74743 0.146855 8.12767 0.126103C7.67 0.105351 7.21234 0.157231 6.9835 0.229863C6.77374 0.312872 6.44955 0.458139 6.26839 0.5619C6.08723 0.665661 4.81911 1.6929 3.45563 2.84465C2.09216 3.99639 0.890782 5.07551 0.776364 5.24153C0.661947 5.40755 0.490321 5.72921 0.385438 5.95748C0.271021 6.18576 0.137534 6.65268 0.0707907 6.99509C-0.0150223 7.44127 -0.0245558 7.79405 0.0517223 8.24023C0.0993962 8.58264 0.223347 9.07032 0.32823 9.32972C0.433112 9.58912 1.8824 11.7059 3.54145 14.0509C5.21003 16.3959 6.7642 18.5126 7.0121 18.7616C7.26001 19.0106 7.75582 19.3738 8.12767 19.5709C8.65209 19.8407 8.9572 19.9341 9.55789 19.986C10.006 20.0171 10.54 19.9964 10.8451 19.9237C11.1311 19.8615 11.5983 19.6747 11.8653 19.5191C12.1418 19.3634 14.7257 17.2571 17.6052 14.8291C20.4943 12.401 22.8494 10.357 22.8494 10.2947C22.8589 10.2221 22.3536 9.45423 21.7338 8.60339C21.4117 8.14881 21.1108 7.73759 20.8915 7.45214C20.6737 7.16862 20.3983 7.15354 20.1216 7.38003C19.3039 8.04956 17.3858 9.65415 15.1834 11.5087C11.5411 14.58 9.79626 15.9912 9.57696 16.0327C9.41487 16.0638 9.11929 16.0431 8.93813 15.9808C8.75697 15.9186 8.53767 15.8044 8.45185 15.7318C8.36604 15.6592 7.27908 14.1857 6.03956 12.4426C4.7905 10.6994 3.70354 9.14295 3.62726 8.96655C3.50331 8.71753 3.49377 8.59301 3.57959 8.34399C3.65587 8.11571 4.3233 7.49315 5.98235 6.09237C7.79396 4.54633 8.3279 4.14166 8.55674 4.14166C8.70929 4.14166 8.91906 4.18316 9.00487 4.23504C9.10022 4.28692 9.41487 4.66047 9.70091 5.06514C9.98695 5.48018 10.2825 5.79146 10.3397 5.78109C10.4065 5.76033 10.9118 5.37642 11.4553 4.91987C11.7575 4.67041 12.0283 4.42714 12.2134 4.24762C12.3954 4.0712 12.4181 3.84719 12.2814 3.63385C12.1117 3.3692 11.8416 2.97785 11.5411 2.56449C11.0358 1.85891 10.5114 1.18447 10.3683 1.04958C10.2349 0.914687 9.85347 0.66566 9.51022 0.47889Z" fill="white"/>
-          </svg>
-        `;
-        messageWrapper.appendChild(iconSvg);
-      }
-
-      const messageDiv = document.createElement("div");
-      messageDiv.classList.add("message", `message--${sender}`);
-      messageDiv.innerHTML = `<div class="message__content">${this.markdownToHtml(
-        content
-      )}</div>`;
-
-      messageWrapper.appendChild(messageDiv);
-      this.messageContainer.appendChild(messageWrapper);
-      this.scrollToBottom();
-    }
-  }
-
-  // chatbot-core.js (Refactored markdownToHtml)
 
   markdownToHtml(markdown) {
     // Escape HTML to prevent XSS
@@ -178,8 +143,8 @@ export class ChatbotCore {
     html = html.replace(/^##### (.*)$/gm, '<h6 class="h6">$1</h6>');
     html = html.replace(/^#### (.*)$/gm, '<h6 class="h6">$1</h6>');
     html = html.replace(/^### (.*)$/gm, '<h6 class="h6">$1</h6>');
-    html = html.replace(/^## (.*)$/gm, '<h6 class="h5">$1</h6>');
-    html = html.replace(/^# (.*)$/gm, '<h6 class="h4">$1</h6>');
+    html = html.replace(/^## (.*)$/gm, '<h5 class="h5">$1</h5>');
+    html = html.replace(/^# (.*)$/gm, '<h4 class="h4">$1</h4>');
 
     // Bold and Italic
     html = html.replace(/\*\*\*(.*?)\*\*\*/g, "<strong><em>$1</em></strong>"); // Bold Italic
@@ -264,6 +229,176 @@ export class ChatbotCore {
     return html;
   }
 
+  sendMessage(message) {
+    console.log("Constructing message payload:", message);
+
+    let payload;
+    if (typeof message === "object" && message.action) {
+      // If it's a structured action (like from a button click), use it directly
+      payload = {
+        action: message.action,
+      };
+    } else {
+      // If it's a regular text message
+      payload = {
+        action: {
+          type: "text",
+          payload: message,
+        },
+      };
+    }
+
+    console.log("Final payload being sent:", payload);
+    return this.sendAction(payload);
+  }
+
+  async sendLaunch() {
+    console.log("Sending chatbot launch request");
+
+    try {
+      await this.handleStreaming({
+        action: {
+          type: "launch",
+        },
+        config: {
+          completion_events: true,
+        },
+      });
+    } catch (error) {
+      console.error("Error during launch:", error);
+      this.addMessage(
+        "assistant",
+        "Failed to initialize the chatbot. Please try again later."
+      );
+    }
+  }
+
+  async handleStreaming(payload) {
+    console.log("Handling streaming interaction with payload:", payload);
+
+    try {
+      const response = await fetch(this.apiEndpoint, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          userID: this.userID,
+          action: payload.action,
+          config: payload.config,
+        }),
+      });
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error("Gadget Streaming API error:", errorText);
+        throw new Error(
+          `Gadget Streaming API error: ${response.status} - ${errorText}`
+        );
+      }
+
+      const reader = response.body.getReader();
+      const decoder = new TextDecoder("utf-8");
+      let buffer = "";
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+
+        buffer += decoder.decode(value, { stream: true });
+
+        let boundary = buffer.indexOf("\n\n");
+        while (boundary !== -1) {
+          const eventStr = buffer.substring(0, boundary);
+          buffer = buffer.substring(boundary + 2);
+          this.parseSSE(eventStr);
+          boundary = buffer.indexOf("\n\n");
+        }
+      }
+    } catch (streamError) {
+      console.error("Error during stream processing:", streamError);
+      this.addMessage(
+        "assistant",
+        "An error occurred while processing your request."
+      );
+      this.hideTypingIndicator();
+    }
+  }
+
+  parseSSE(eventStr) {
+    const lines = eventStr.split("\n");
+    let eventType = null;
+    let data = null;
+
+    lines.forEach((line) => {
+      if (line.startsWith("event:")) {
+        eventType = line.replace("event:", "").trim();
+      } else if (line.startsWith("data:")) {
+        data = line.replace("data:", "").trim();
+      }
+    });
+
+    if (eventType === "trace" && data) {
+      try {
+        const trace = JSON.parse(data);
+        this.handleTrace(trace);
+      } catch (error) {
+        console.error("Error parsing trace data:", error);
+      }
+    } else if (eventType === "end") {
+      console.log("Stream ended");
+      this.hideTypingIndicator();
+    }
+  }
+
+  handleTrace(trace) {
+    console.log("Handling trace:", trace);
+    if (trace.type === "text") {
+      this.addMessage("assistant", trace.payload.message);
+      this.conversationHistory.push({
+        type: "assistant",
+        message: trace.payload.message,
+      });
+    } else if (trace.type === "completion") {
+      if (trace.payload.state === "start") {
+        this.showTypingIndicator("Sherpa Guide is typing...");
+      } else if (trace.payload.state === "content") {
+        this.updateLatestMessage(trace.payload.content);
+        // Append to the last assistant message
+        const lastMessage =
+          this.conversationHistory[this.conversationHistory.length - 1];
+        if (lastMessage && lastMessage.type === "assistant") {
+          lastMessage.message += trace.payload.content;
+        }
+      } else if (trace.payload.state === "end") {
+        this.hideTypingIndicator();
+      }
+    } else if (trace.type === "choice") {
+      this.addButtons(trace.payload.buttons);
+      this.conversationHistory.push({
+        type: "choice",
+        buttons: trace.payload.buttons,
+      });
+    } else if (trace.type === "carousel") {
+      this.addCarousel(trace.payload);
+      this.conversationHistory.push({ type: "carousel", data: trace.payload });
+    } else if (
+      trace.type === "visual" &&
+      trace.payload.visualType === "image"
+    ) {
+      this.addVisualImage(trace.payload);
+      this.conversationHistory.push({ type: "visual", data: trace.payload });
+    } else if (trace.type === "error") {
+      this.addMessage(
+        "assistant",
+        "An error occurred: " + trace.payload.message
+      );
+    } else {
+      console.log("Unknown trace type:", trace.type);
+    }
+    this.saveConversationToStorage();
+  }
+
   addButtons(buttons) {
     console.log("Adding buttons:", buttons);
     const buttonContainer = document.createElement("div");
@@ -283,6 +418,9 @@ export class ChatbotCore {
     } else {
       console.error("Message container not found when adding buttons");
     }
+
+    this.conversationHistory.push({ type: "buttons", buttons });
+    this.saveConversationToStorage();
   }
 
   removeButtons() {
@@ -295,21 +433,205 @@ export class ChatbotCore {
     console.log("Button clicked:", button);
     this.removeButtons();
     this.addMessage("user", button.name);
+    this.conversationHistory.push({ type: "user", message: button.name });
+    this.saveConversationToStorage();
 
     this.showTypingIndicator();
     try {
-      const response = await this.gadgetInteract({
-        userID: this.userID,
-        userAction: button.request,
+      await this.handleStreaming({
+        action: {
+          type: "button_click",
+          payload: button.request,
+        },
+        config: {
+          completion_events: true,
+        },
       });
-      this.hideTypingIndicator();
-      return response; // Return the response instead of handling it here
     } catch (error) {
       console.error("Error handling button click:", error);
-      this.hideTypingIndicator();
-      throw error;
+      this.addMessage(
+        "assistant",
+        "Sorry, something went wrong. Please try again."
+      );
     }
   }
+
+  addVisualImage(payload) {
+    console.log("Adding visual image:", payload);
+    if (!this.messageContainer) {
+      console.error("Message container not set");
+      return;
+    }
+
+    const imageWrapper = document.createElement("div");
+    imageWrapper.classList.add("message-wrapper", "message-wrapper--assistant");
+
+    const imageElement = document.createElement("img");
+    imageElement.src = payload.image;
+    imageElement.alt = "Visual content";
+    imageElement.classList.add("chat-image");
+
+    // Set dimensions if available
+    if (payload.dimensions) {
+      imageElement.width = payload.dimensions.width;
+      imageElement.height = payload.dimensions.height;
+    }
+
+    // Add loading and error handling
+    imageElement.loading = "lazy";
+    imageElement.onerror = () => {
+      console.error("Failed to load image:", payload.image);
+      imageElement.alt = "Failed to load image";
+    };
+
+    imageWrapper.appendChild(imageElement);
+    this.messageContainer.appendChild(imageWrapper);
+    this.scrollToBottom();
+  }
+
+  addCarousel(carouselData) {
+    console.log("Adding carousel:", carouselData);
+    const carouselElement = document.createElement("div");
+    carouselElement.className = "carousel";
+    carouselElement.innerHTML = `
+      <div class="carousel__container">
+        <!-- Carousel items will be dynamically added here -->
+      </div>
+      <button class="carousel__button carousel__button--left" aria-label="Previous slide">
+        🚀 <!-- Left Arrow SVG Placeholder -->
+      </button>
+      <button class="carousel__button carousel__button--right" aria-label="Next slide">
+        🚀 <!-- Right Arrow SVG Placeholder -->
+      </button>
+    `;
+
+    const carousel = new Carousel(carouselElement);
+
+    carouselData.cards.forEach((card, index) => {
+      const itemContent = `
+        <div class="carousel__item-wrapper">
+          <div class="carousel__item-content">
+            <img src="${card.imageUrl}" alt="${card.title}" class="carousel__item-image">
+            <h6 class="carousel__item-title">${card.title}</h6>
+            <p class="carousel__item-description">${card.description.text}</p>
+            <button class="button carousel__item-button" data-button-index="${index}">${card.buttons[0].name}</button>
+          </div>
+        </div>
+      `;
+
+      carousel.addItem(itemContent);
+    });
+
+    const buttons = carouselElement.querySelectorAll(".carousel__item-button");
+    buttons.forEach((button, index) => {
+      button.addEventListener("click", async () => {
+        const cardIndex = Math.floor(
+          index / carouselData.cards[0].buttons.length
+        );
+        const buttonIndex = index % carouselData.cards[0].buttons.length;
+        const buttonData = carouselData.cards[cardIndex].buttons[buttonIndex];
+        try {
+          // Remove the carousel element
+          carouselElement.remove();
+
+          // Save button click as a message
+          this.addMessage("user", buttonData.name);
+          this.conversationHistory.push({
+            type: "user",
+            message: buttonData.name,
+          });
+          this.saveConversationToStorage();
+
+          await this.handleButtonClick(buttonData);
+        } catch (error) {
+          console.error("Error handling carousel button click:", error);
+        }
+      });
+    });
+
+    if (this.messageContainer) {
+      this.messageContainer.appendChild(carouselElement);
+      this.scrollToBottom();
+    } else {
+      console.error("Message container not found when adding carousel");
+    }
+  }
+
+  saveDeviceEstimate(device) {
+    const key = `${this.getAttribute("product-title")}_devices`;
+    let devices = JSON.parse(localStorage.getItem(key) || "[]");
+
+    const existingIndex = devices.findIndex((d) => d.name === device.name);
+    if (existingIndex !== -1) {
+      devices.splice(existingIndex, 1);
+    }
+    devices.unshift(device);
+
+    localStorage.setItem(key, JSON.stringify(devices));
+  }
+
+  // Additional helper methods can be added here
 }
 
-console.log("ChatbotCore module loaded");
+// Carousel Class
+class Carousel {
+  constructor(element) {
+    this.element = element;
+    this.container = element.querySelector(".carousel__container");
+    this.leftButton = element.querySelector(".carousel__button--left");
+    this.rightButton = element.querySelector(".carousel__button--right");
+    this.items = [];
+    this.currentIndex = 0;
+
+    this.mediaQuery = window.matchMedia("(min-width: 1000px)");
+    this.isDesktop = this.mediaQuery.matches;
+
+    this.leftButton.addEventListener("click", () => this.move("left"));
+    this.rightButton.addEventListener("click", () => this.move("right"));
+
+    this.mediaQuery.addListener(this.handleMediaQueryChange.bind(this));
+  }
+
+  handleMediaQueryChange(e) {
+    this.isDesktop = e.matches;
+    this.currentIndex = 0;
+    this.updatePosition();
+    this.updateVisibility();
+  }
+
+  addItem(content) {
+    const item = document.createElement("div");
+    item.className = "carousel__item";
+    item.innerHTML = content;
+    this.container.appendChild(item);
+    this.items.push(item);
+    this.updateVisibility();
+  }
+
+  move(direction) {
+    const itemsPerSlide = this.isDesktop ? 2 : 1;
+    if (direction === "left") {
+      this.currentIndex = Math.max(0, this.currentIndex - itemsPerSlide);
+    } else {
+      this.currentIndex = Math.min(
+        this.items.length - itemsPerSlide,
+        this.currentIndex + itemsPerSlide
+      );
+    }
+    this.updatePosition();
+    this.updateVisibility();
+  }
+
+  updatePosition() {
+    const itemsPerSlide = this.isDesktop ? 2 : 1;
+    const offset = -(this.currentIndex / itemsPerSlide) * 100;
+    this.container.style.transform = `translateX(${offset}%)`;
+  }
+
+  updateVisibility() {
+    const itemsPerSlide = this.isDesktop ? 2 : 1;
+    this.leftButton.style.display = this.currentIndex === 0 ? "none" : "flex";
+    this.rightButton.style.display =
+      this.currentIndex >= this.items.length - itemsPerSlide ? "none" : "flex";
+  }
+}
