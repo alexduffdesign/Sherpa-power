@@ -146,76 +146,102 @@
 
 
   <div {% render 'section-properties' %}>
-    <div class="applications-section {% unless section.settings.full_width %}container{% endunless %}" {% render 'section-properties' %}>
-      <div class="section-stack {% if text_position != 'center' %}section-stack--horizontal{% else %}section-stack--center{% endif %} {% if text_position == 'end' %}section-stack--reverse{% endif %}">
-        <div class="section-stack__intro">
-          <div class="v-stack gap-10">
-            <div class="prose {% if text_position == 'center' %}text-center{% endif %}">
-              {%- if section.settings.subheading != blank -%}
-                <p class="subheading">{{ section.settings.subheading | escape }}</p>
-              {%- endif -%}
+  <div class="applications-section {% unless section.settings.full_width %}container{% endunless %}" {% render 'section-properties' %}>
+    <div class="section-stack {% if text_position != 'center' %}section-stack--horizontal{% else %}section-stack--center{% endif %} {% if text_position == 'end' %}section-stack--reverse{% endif %}">
+      <div class="section-stack__intro">
+        <div class="v-stack gap-10">
+          <div class="prose {% if text_position == 'center' %}text-center{% endif %}">
+            {%- if section.settings.subheading != blank -%}
+              <p class="subheading">{{ section.settings.subheading | escape }}</p>
+            {%- endif -%}
 
-              {%- if section.settings.title != blank -%}
-                <h2 class="h2">
-                  {%- render 'styled-text'
-                    , content: section.settings.title
-                    , text_color: section.settings.heading_color
-                    , gradient: section.settings.heading_gradient -%}
-                </h2>
-              {%- endif -%}
+            {%- if section.settings.title != blank -%}
+              <h2 class="h2">
+                {%- render 'styled-text'
+                  , content: section.settings.title
+                  , text_color: section.settings.heading_color
+                  , gradient: section.settings.heading_gradient -%}
+              </h2>
+            {%- endif -%}
 
-              {%- if section.settings.content != blank -%}
-                {{ section.settings.content }}
-              {%- endif -%}
-            </div>
+            {%- if section.settings.content != blank -%}
+              {{ section.settings.content }}
+            {%- endif -%}
           </div>
         </div>
+      </div>
 
-        <div class="section-stack__main">
-          <div class="applications-wrapper">
-            {% if appliance_data.appliances %}
-              <div class="applications-grid">
-                {% for appliance in appliance_data.appliances %}
-                  <div class="application-card">
-                    {% if appliance.image %}
-                      <div class="appliance-card__circle">
-                        <img
-                          src="{{ appliance.image }}"
-                          alt="{{ appliance.name }}"
-                          class="application-card__image"
-                          loading="lazy">
-                      </div>
-                    {% endif %}
-                    <div class="application-card__content">
-                      <div class="application-card__title">{{ appliance.name }}</div>
-                      <div>{{ appliance.charge_value }}</div>
+      <div class="section-stack__main">
+        <div class="applications-wrapper">
+          {% if appliance_data.appliances %}
+            <div class="applications-grid">
+              {% for appliance in appliance_data.appliances %}
+                <div class="application-card">
+                  {% if appliance.image %}
+                    <div class="appliance-card__circle">
+                      <img
+                        src="{{ appliance.image }}"
+                        alt="{{ appliance.name }}"
+                        class="application-card__image"
+                        loading="lazy">
                     </div>
+                  {% endif %}
+                  <div class="application-card__content">
+                    <div class="application-card__title">{{ appliance.name }}</div>
+                    <div>{{ appliance.charge_value }}</div>
                   </div>
-                {% endfor %}
-              </div>
-              <button id="view-more-button" class="button view-more-button">View More</button>
-            {% else %}
-              <p>No application data available.</p>
-            {% endif %}
-          </div>
+                </div>
+              {% endfor %}
+            </div>
+            <button id="view-more-button" class="button view-more-button">View More</button>
+          {% else %}
+            <p>No application data available.</p>
+          {% endif %}
+        </div>
 
-          <section-chatbot
-            product-title="{{ product.title }}"
-            product-capacity="{{ product.metafields.custom.capacity | escape }}"
-            class="section-chatbot section-stack__sidebar">
-            {% render 'chatbot-template'
-              , is_section_chatbot: section.settings.is_section_chatbot
-              , calculator_title: section.settings.calculator_title
-              , calculator_subtitle: section.settings.calculator_subtitle
-            %}
-          </section-chatbot>
+        <div
+          id="section-chatbot-container"
+          class="section-chatbot section-stack__sidebar"
+          data-product-title="{{ product.title }}"
+          data-product-capacity="{{ product.metafields.custom.capacity | escape }}"
+          data-product-ac-output-continuous-power="{{ product.metafields.custom.ac_output_continuous_power }}"
+          data-product-ac-output-peak-power="{{ product.metafields.custom.ac_output_peak_power }}"
+          data-product-dc-output-power="{{ product.metafields.custom.dc_output_power }}">
+          {% render 'chatbot-template'
+            , is_section_chatbot: section.settings.is_section_chatbot
+            , calculator_title: section.settings.calculator_title
+            , calculator_subtitle: section.settings.calculator_subtitle
+          %}
+          <div class="device-answer-grid"></div>
 
         </div>
       </div>
     </div>
-  </div>
+</div>
 
-  {% render 'vite-tag' with 'chatbot-section.js' %}
+  {% comment %} {% render 'vite-tag' with '/frontend/components/ui/chatbot-components.js' %}
+              {% render 'vite-tag' with '/frontend/baseChatbot/base-chatbot.js' %}
+        {% render 'vite-tag' with '/frontend/baseChatbot/base-chatbot-ui.js' %} {% endcomment %}
+  {% render 'vite-tag' with '/frontend/sectionChatbot/chatbot-section.js' %}
+
+  <script type="module">
+    document.addEventListener('DOMContentLoaded', () => {
+      const container = document.getElementById('section-chatbot-container');
+      if (!container) return;
+      
+      // Get product details from data attributes
+      const productDetails = {
+        title: container.dataset.productTitle,
+        capacity: container.dataset.productCapacity,
+        ac_output_continuous_power: container.dataset.productAcOutputContinuousPower,
+        ac_output_peak_power: container.dataset.productAcOutputPeakPower,
+        dc_output_power: container.dataset.productDcOutputPower
+      };
+      
+      // Initialize section chatbot
+      new SectionChatbot(container, productDetails);
+    });
+  </script>
 
 {% endif %}
 
