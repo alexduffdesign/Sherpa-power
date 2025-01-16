@@ -22,9 +22,7 @@
           }
         }
       },
-      "block_order": [
-        "message"
-      ],
+      "block_order": ["message"],
       "settings": {
         "enable_sticky": false,
         "text_size": "text-xs",
@@ -63,8 +61,5 @@
       }
     }
   },
-  "order": [
-    "announcement-bar",
-    "header"
-  ]
+  "order": ["announcement-bar", "header"]
 }
