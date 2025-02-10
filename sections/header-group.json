@@ -17,12 +17,14 @@
         "message": {
           "type": "message",
           "settings": {
-            "text": "Our AI Guide has had an upgrade, why not give it a try?",
+            "text": "We have  a delay on the CHARGE-500 release until March - thank you for your patience",
             "url": ""
           }
         }
       },
-      "block_order": ["message"],
+      "block_order": [
+        "message"
+      ],
       "settings": {
         "enable_sticky": false,
         "text_size": "text-xs",
@@ -61,5 +63,8 @@
       }
     }
   },
-  "order": ["announcement-bar", "header"]
+  "order": [
+    "announcement-bar",
+    "header"
+  ]
 }
