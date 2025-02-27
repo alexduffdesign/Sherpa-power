@@ -576,7 +576,7 @@
         "richtext_byWz6r": {
           "type": "richtext",
           "settings": {
-            "content": "<p>Sherpa-Charge when the Sun goes down with input equivalent to a 5m square foldable solar panel area from your vehicle power.</p>"
+            "content": "<p>Sherpa-Charge when the Sun goes down. Generate power equivalent to a 5m square solar panel from your vehicle alternator.</p>"
           }
         },
         "button_kqCzbn": {
@@ -597,7 +597,6 @@
         "richtext_byWz6r",
         "button_kqCzbn"
       ],
-      "disabled": true,
       "custom_css": [
         ".place-self-end-center {margin-top: auto; margin-bottom: auto;}",
         ".prose {text-align: center; max-width: 28rem;}",
