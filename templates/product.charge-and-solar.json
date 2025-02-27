@@ -300,6 +300,7 @@
     },
     "applications_HCb8JU": {
       "type": "applications",
+      "disabled": true,
       "settings": {
         "full_width": true,
         "subheading": "",
@@ -361,6 +362,7 @@
       "blocks": {
         "headings_6faDY8": {
           "type": "headings",
+          "disabled": true,
           "settings": {
             "heading_1": "Battery",
             "heading_2": "Output (AC)",
@@ -415,6 +417,7 @@
         },
         "values_eqrHba": {
           "type": "values",
+          "disabled": true,
           "repeater": "{{ product.metafields.custom.compare_key_features.value }}",
           "settings": {
             "product": "{{ block.repeater.product_select.value }}",
@@ -448,6 +451,7 @@
         "values_gzBQxp",
         "values_eqrHba"
       ],
+      "disabled": true,
       "custom_css": [
         ".section-full {background-image: url(\"https://cdn.shopify.com/s/files/1/0641/4290/1439/files/Green_Pattern.jpg?v=1712336884\"); background-size: cover;}",
         ".feature-chart {border-color: #4848482e; border-width: 1px;}"
