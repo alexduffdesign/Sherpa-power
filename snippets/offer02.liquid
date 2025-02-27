@@ -55,7 +55,7 @@ Supported variables
     </div>
   {%- endif -%}
 
-  {%- assign key_features = product.metafields.custom.key_features.value -%}
+  {%- assign key_features = product.metafields.custom.key_features_chargers_and_solar.value -%}
 
   <style>
     .product-feature {
@@ -64,28 +64,21 @@ Supported variables
   </style>
   <div class="product-features">
     
-    {%- if key_features.battery != blank -%}
-      <div class="product-feature"><strong>🔋 Battery</strong><br> {{ key_features.battery | metafield_tag }} </div>
+
+    {%- if key_features.output_power != blank -%}
+      <div class="product-feature"><strong>⚡ Output Power</strong><br> {{ key_features.output_power | metafield_tag }}</div>
     {%- endif -%}
 
-    {%- if key_features.output_ac != blank -%}
-      <div class="product-feature"><strong>⚡ Output (AC)</strong><br> {{ key_features.output_ac | metafield_tag }}</div>
+    {%- if key_features.output_voltage != blank -%}
+      <div class="product-feature"><strong>💡 Output Voltage</strong><br> {{ key_features.output_voltage | metafield_tag }}</div>
     {%- endif -%}
 
-    {%- if key_features.output_dc != blank -%}
-      <div class="product-feature"><strong>💡 Output (DC)</strong><br> {{ key_features.output_dc | metafield_tag }}</div>
-    {%- endif -%}
-
-    {%- if key_features.input_ac != blank -%}
-      <div class="product-feature"><strong>🔌 Input (AC)</strong><br> {{ key_features.input_ac | metafield_tag }}</div>
+    {%- if key_features.input_voltage != blank -%}
+      <div class="product-feature"><strong>🔌 Input Voltage</strong><br> {{ key_features.input_voltage | metafield_tag }}</div>
     {%- endif -%}
 
     {%- if key_features.input_solar_dc != blank -%}
       <div class="product-feature"><strong> Input (🔆 Solar/ ⚡🔌 DC )</strong><br> {{ key_features.input_solar_dc | metafield_tag }}</div>
-    {%- endif -%}
-
-    {%- if key_features.charge_time != blank -%}
-      <div class="product-feature"><strong>⏳ Charge Time</strong><br> {{ key_features.charge_time | metafield_tag }}</div>
     {%- endif -%}
 
     {%- if key_features.warranty != blank -%}
@@ -96,13 +89,6 @@ Supported variables
       <div class="product-feature"><strong>⚖ Weight</strong> {{ key_features.weight | metafield_tag }}</div>
     {%- endif -%}
 
-    {%- if key_features.app_compatibility != blank -%}
-      <div class="product-feature"><strong><br>📱 App Compatibility</strong> {{ key_features.app_compatibility | metafield_tag }}</div>
-    {%- endif -%}
-
-    {%- if key_features.expandable_capacity != blank -%}
-      <div class="product-feature"><strong>🔗 Expandable Capacity</strong><br> {{ key_features.expandable_capacity | metafield_tag }}</div>
-    {%- endif -%}
   </div>
   
 </div>
