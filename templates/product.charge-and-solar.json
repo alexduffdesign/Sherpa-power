@@ -115,7 +115,7 @@
       ],
       "custom_css": [
         ".shopify-payment-button__button {height: 100%;}",
-        ".offer {background-colour: transparent; border-width: 1px; border-color: #25c293;}",
+        ".offer02 {background-colour: transparent; border-width: 1px; border-color: #25c293;}",
         "@media screen and (max-width: 767px) {.product-info__offer-list {grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); }}",
         "@media screen and (min-width: 1000px) {.product-gallery--desktop-carousel {position: sticky; top: 7rem; }}"
       ],
