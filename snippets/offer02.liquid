@@ -77,10 +77,6 @@ Supported variables
       <div class="product-feature"><strong>🔌 Input Voltage</strong><br> {{ key_features.input_voltage | metafield_tag }}</div>
     {%- endif -%}
 
-    {%- if key_features.input_solar_dc != blank -%}
-      <div class="product-feature"><strong> Input (🔆 Solar/ ⚡🔌 DC )</strong><br> {{ key_features.input_solar_dc | metafield_tag }}</div>
-    {%- endif -%}
-
     {%- if key_features.warranty != blank -%}
       <div class="product-feature"><strong>🛡️ Warranty</strong> {{ key_features.warranty | metafield_tag }}</div>
     {%- endif -%}
