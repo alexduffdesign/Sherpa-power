@@ -356,7 +356,7 @@
         "allow_transparent_header": false,
         "enable_parallax": false,
         "image_size": "auto",
-        "image": "shopify://shop_images/Base-range-usecase-image_1.jpg",
+        "image": "shopify://shop_images/BASE_5_homepage.png",
         "mobile_image": "shopify://shop_images/Base_Range_Mobile_653a1abd-f7be-4e72-a617-2ffa52fa4cd8.jpg",
         "mobile_text_position": "place-self-end-center text-center",
         "desktop_text_position": "sm:place-self-start-end sm:text-end",
