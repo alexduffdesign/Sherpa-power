@@ -5149,7 +5149,8 @@ tfoot td {
 .social-media {
   gap: var(--spacing-3) var(--spacing-6);
   flex-wrap: wrap;
-  display: flex;
+    display: flex;
+  flex-direction: row;
 }
 
 .social-media--sm svg {
