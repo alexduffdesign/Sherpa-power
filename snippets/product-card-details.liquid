@@ -50,7 +50,7 @@
   {% endcomment %}
 
   <!-- Replace 'namespace' and 'key' with actual metafield namespace and key -->
-  {% if product.metafields.custom.capacity != blank or product.metafields.custom.capacity == "-" %}
+  {% unless product.metafields.custom.capacity == blank %}
     <div class="power-rating">
       <img
         src="https://cdn.shopify.com/s/files/1/0641/4290/1439/files/Capacity.png?v=1714485042"
@@ -60,7 +60,7 @@
       <!-- Replace with your actual icon URL -->
       <span class="info-title">Capacity: {{ product.metafields.custom.capacity.value }}</span>
     </div>
-  {% endif %}
+  {% endunless %}
 
   {% if key_features.output_ac != null %}
     <div class="power-rating">
