@@ -62,7 +62,7 @@
     </div>
   {% endunless %}
 
-  {% if key_features.output_ac != null %}
+  {% unless key_features.output_ac == null or key_features.output_ac == '-' %}}
     <div class="power-rating">
       <img
         src="https://cdn.shopify.com/s/files/1/0641/4290/1439/files/AC_Output.png?v=1714485042"
@@ -71,9 +71,9 @@
         alt="Power Icon">
       <span class="info-title">Output (AC): {{ key_features.output_ac.value }}</span>
     </div>
-  {% endif %}
+  {% endunless %}
 
-  {% if key_features.input_ac != null %}
+  {% unless key_features.input_ac == null or key_features.input_ac == '-' %}
     <div class="power-rating">
       <img
         src="https://cdn.shopify.com/s/files/1/0641/4290/1439/files/AC_Input.png?v=1714485042"
@@ -82,9 +82,9 @@
         alt="Power Icon">
       <span class="info-title">Input (AC): {{ key_features.input_ac.value }}</span>
     </div>
-  {% endif %}
+  {% endunless %}
 
-  {% if key_features.charge_time != null %}
+  {% unless key_features.charge_time == null or key_features.charge_time == '-' %}}
     <div class="power-rating">
       <img
         src="https://cdn.shopify.com/s/files/1/0641/4290/1439/files/Charge_Time.png?v=1714485041"
@@ -93,7 +93,7 @@
         alt="Power Icon">
       <span class="info-title">Charge Time: {{ key_features.charge_time.value }}</span>
     </div>
-  {% endif %}</div>
+  {% endunless %}</div>
 
 
 {% comment %}
@@ -102,7 +102,7 @@
 
 {%- assign key_features_cs = product.metafields.custom.key_features_cs.value -%}
 
-{% if key_features_cs.output_power != null %}
+{% if key_features_cs.output_power != blank %}
   <div class="power-rating">
     <img
       src="https://cdn.shopify.com/s/files/1/0641/4290/1439/files/AC_Output.png?v=1714485042"
