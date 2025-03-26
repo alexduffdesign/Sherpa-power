@@ -362,16 +362,16 @@
         "headings_6faDY8": {
           "type": "headings",
           "settings": {
-            "heading_1": "Battery",
-            "heading_2": "Output (AC)",
-            "heading_3": "Output (DC)",
-            "heading_4": "Input (AC)",
-            "heading_5": "Input (Solar / DC)",
-            "heading_6": "Charge time",
-            "heading_7": "Warranty",
-            "heading_8": "Weight",
-            "heading_9": "App compatible",
-            "heading_10": "Expandable capacity",
+            "heading_1": "Output Power",
+            "heading_2": "Output Voltage",
+            "heading_3": "Input Voltage",
+            "heading_4": "Warranty",
+            "heading_5": " Weight",
+            "heading_6": "",
+            "heading_7": "",
+            "heading_8": "",
+            "heading_9": "",
+            "heading_10": "",
             "heading_11": "",
             "heading_12": "",
             "heading_13": "",
@@ -386,15 +386,15 @@
         },
         "values_gzBQxp": {
           "type": "values",
-          "source": "{{ product.metafields.custom.key_features.value }}",
+          "source": "{{ product.metafields.custom.key_features_cs.value }}",
           "settings": {
-            "product": "{{ product }}",
-            "value_1": "<p>{{ block.settings.product.metafields.custom.key_features.value.battery | metafield_tag }}</p>",
-            "value_2": "<p>{{ block.settings.product.metafields.custom.key_features.value.output_ac | metafield_tag }}</p>",
-            "value_3": "<p>{{ block.settings.product.metafields.custom.key_features.value.output_dc | metafield_tag }}</p>",
-            "value_4": "<p>{{ block.settings.product.metafields.custom.key_features.value.input_ac | metafield_tag }}</p>",
-            "value_5": "<p>{{ block.settings.product.metafields.custom.key_features.value.input_solar_dc | metafield_tag }}</p>",
-            "value_6": "<p>{{ block.settings.product.metafields.custom.key_features.value.charge_time | metafield_tag }}</p>",
+            "product": "",
+            "value_1": "<p>{{ product.metafields.custom.key_features_cs.value.output_voltage | metafield_tag }}</p>",
+            "value_2": "<p>{{ product.metafields.custom.key_features_cs.value.input_voltage | metafield_tag }}</p>",
+            "value_3": "<p>{{ product.metafields.custom.key_features_cs.value.output_power | metafield_tag }}</p>",
+            "value_4": "<p>{{ product.metafields.custom.key_features_cs.value.product_name.value }}</p>",
+            "value_5": "<p>{{ product.metafields.custom.key_features_cs.value.warranty | metafield_tag }}</p>",
+            "value_6": "<p>{{ product.metafields.custom.key_features_cs.value.weight | metafield_tag }}</p>",
             "value_7": "<p>{{ block.settings.product.metafields.custom.key_features.value.warranty | metafield_tag }}</p>",
             "value_8": "<p>{{ block.settings.product.metafields.custom.key_features.value.weight | metafield_tag }}</p>",
             "value_9": "<p>{{ block.settings.product.metafields.custom.key_features.value.app_compatible | metafield_tag }}</p>",
@@ -477,206 +477,6 @@
         "chart_text_color": "",
         "chart_true_false_color": ""
       }
-    },
-    "images_with_text_scrolling_JL4rre": {
-      "type": "images-with-text-scrolling",
-      "blocks": {
-        "item_Dj9pt9": {
-          "type": "item",
-          "repeater": "{{ product.metafields.custom.features.value }}",
-          "settings": {
-            "image": "{{ block.repeater.image_desktop.value }}",
-            "icon": "none",
-            "icon_width": 48,
-            "title": "{{ block.repeater.heading.value }}",
-            "content": "<p>{{ block.repeater.paragraph | metafield_tag }}</p>"
-          }
-        }
-      },
-      "block_order": [
-        "item_Dj9pt9"
-      ],
-      "disabled": true,
-      "custom_css": [
-        ".images-scrolling-desktop__media-wrapper > * {object-fit: contain;}",
-        ".images-scrolling-desktop__media-wrapper {min-height: 70dvh; display: flex;}",
-        ".images-scrolling__content {display: flex; flex-direction: column;}"
-      ],
-      "settings": {
-        "full_width": true,
-        "stack_on_mobile": true,
-        "show_counter": false,
-        "desktop_image_effect": "fade",
-        "image_position": "end",
-        "background": "#f7f7f7",
-        "background_gradient": "",
-        "text_color": "#231f25",
-        "heading_color": "",
-        "heading_gradient": "linear-gradient(180deg, rgba(35, 31, 37, 1) 55%, rgba(28, 160, 121, 1) 82%)"
-      }
-    },
-    "multi_column_GP6kWa": {
-      "type": "multi-column",
-      "blocks": {
-        "item_tc3KHF": {
-          "type": "item",
-          "settings": {
-            "image": "shopify://shop_images/Mobile.png",
-            "column_size": "4",
-            "title": "",
-            "heading_tag": "h5",
-            "content": "<p>Mobile Phone Charge:<br/><strong>13+ Full Charges</strong></p>",
-            "link_url": "",
-            "link_text": "",
-            "link_style": "link"
-          }
-        },
-        "item_e68tMY": {
-          "type": "item",
-          "settings": {
-            "image": "shopify://shop_images/Laptop.png",
-            "column_size": "4",
-            "title": "",
-            "heading_tag": "h5",
-            "content": "<p>Laptop Chargers:<strong> <br/>3+ full charges</strong></p>",
-            "link_url": "",
-            "link_text": "",
-            "link_style": "link"
-          }
-        },
-        "item_X8UqHW": {
-          "type": "item",
-          "settings": {
-            "image": "shopify://shop_images/Cordless_Charger.png",
-            "column_size": "4",
-            "title": "",
-            "heading_tag": "h5",
-            "content": "<p>Cordless Tool <br/>Charger: <strong>7 hours</strong></p>",
-            "link_url": "",
-            "link_text": "",
-            "link_style": "link"
-          }
-        },
-        "item_fqPrTV": {
-          "type": "item",
-          "settings": {
-            "image": "shopify://shop_images/LED.png",
-            "column_size": "4",
-            "title": "",
-            "heading_tag": "h5",
-            "content": "<p>Lights(LED):<strong> <br/>49 hours </strong></p>",
-            "link_url": "",
-            "link_text": "",
-            "link_style": "link"
-          }
-        },
-        "item_K8Et7j": {
-          "type": "item",
-          "settings": {
-            "image": "shopify://shop_images/Fridge.png",
-            "column_size": "4",
-            "title": "",
-            "heading_tag": "h5",
-            "content": "<p>Fridge: <br/><strong>1.5 hours</strong></p>",
-            "link_url": "",
-            "link_text": "",
-            "link_style": "link"
-          }
-        },
-        "item_YTT3RV": {
-          "type": "item",
-          "settings": {
-            "image": "shopify://shop_images/CNC_MACHINE.png",
-            "column_size": "4",
-            "title": "",
-            "heading_tag": "h5",
-            "content": "<p>CPAP Machine:<br/><strong>8 hours</strong></p>",
-            "link_url": "",
-            "link_text": "",
-            "link_style": "link"
-          }
-        }
-      },
-      "block_order": [
-        "item_tc3KHF",
-        "item_e68tMY",
-        "item_X8UqHW",
-        "item_fqPrTV",
-        "item_K8Et7j",
-        "item_YTT3RV"
-      ],
-      "disabled": true,
-      "custom_css": [
-        ".multi-column.scroll-area {display: flex !important; flex-wrap: wrap !important; justify-content: space-between;}"
-      ],
-      "settings": {
-        "full_width": true,
-        "stack_on_mobile": true,
-        "gap": "medium",
-        "text_alignment": "start",
-        "subheading": "",
-        "title": "",
-        "content": "",
-        "background": "rgba(0,0,0,0)",
-        "background_gradient": "",
-        "text_color": "#1e8570"
-      }
-    },
-    "faq_jb7QW4": {
-      "type": "faq",
-      "blocks": {
-        "item_MDL97b": {
-          "type": "item",
-          "settings": {
-            "title": "Do you ship overseas?",
-            "content": "<p>Yes, we ship all over the world. Shipping costs will apply, and will be added at checkout. We run discounts and promotions all year, so stay tuned for exclusive deals.</p>"
-          }
-        },
-        "item_4LwYtR": {
-          "type": "item",
-          "settings": {
-            "title": "How long will it take to get my orders?",
-            "content": "<p>It depends on where you are. Orders processed here will take 5-7 business days to arrive. Overseas deliveries can take anywhere from 7-16 days. Delivery details will be provided in your confirmation email.</p>"
-          }
-        },
-        "item_qrYHTi": {
-          "type": "item",
-          "settings": {
-            "title": "Any question?",
-            "content": "<p>You can contact us through our contact page! We will be happy to assist you.</p>"
-          }
-        }
-      },
-      "block_order": [
-        "item_MDL97b",
-        "item_4LwYtR",
-        "item_qrYHTi"
-      ],
-      "disabled": true,
-      "custom_css": [
-        ".section-full {background-image: url(\"https://cdn.shopify.com/s/files/1/0641/4290/1439/files/Peak_a00281de-5293-4b66-8424-9366c979ed4a.jpg?v=1712336128\"); background-position: 50% 100%; background-size: 100% 60%; background-repeat: no-repeat;}"
-      ],
-      "settings": {
-        "full_width": true,
-        "subheading": "",
-        "title": "FAQ",
-        "content": "<p>Use this text to share information about your product or shipping policies.</p>",
-        "team_avatar_width": 160,
-        "support_hours": "Didn’t get the answer you needed?",
-        "answer_time": "Let our Sherpa Guide help you!",
-        "button_text": "Ask Sherpa Guide",
-        "button_url": "",
-        "text_position": "center",
-        "background": "#231f25",
-        "background_gradient": "",
-        "text_color": "#f7f7f7",
-        "heading_color": "",
-        "heading_gradient": "",
-        "button_background": "#403545",
-        "button_text_color": "",
-        "accordion_background": "#f7f7f7",
-        "accordion_text_color": "#231f25"
-      }
     }
   },
   "order": [
@@ -686,9 +486,6 @@
     "slideshow_YPY7JE",
     "applications_HCb8JU",
     "media_with_text_DRJHR3",
-    "feature_chart_yKTc8E",
-    "images_with_text_scrolling_JL4rre",
-    "multi_column_GP6kWa",
-    "faq_jb7QW4"
+    "feature_chart_yKTc8E"
   ]
 }
