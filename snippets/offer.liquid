@@ -131,7 +131,7 @@
 
   {%- assign key_features_cs = product.metafields.custom.key_features_cs.value -%}
 
-
+  {% if key_features_cs != blank %}
     <div class="product-features">
 
       {%- if key_features_cs.output_power != blank -%}
@@ -160,8 +160,10 @@
 
       {%- if key_features_cs.weight != blank -%}
         <div class="product-feature">
-          <strong>⚖ Weight</strong><br> {{ key_features.weight | metafield_tag }}
+          <strong>⚖ Weight</strong><br> {{ key_features_cs.weight | metafield_tag }}
         </div>
       {% endif %}
+      
     </div>
+    {% endif %}
 </div>
