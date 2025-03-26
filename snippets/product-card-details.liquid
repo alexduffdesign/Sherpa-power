@@ -62,7 +62,7 @@
     </div>
   {% endunless %}
 
-  {% unless key_features.output_ac == null or key_features.output_ac == '-' %}
+  {% unless key_features.output_ac == blank or key_features.output_ac == '-' %}
     <div class="power-rating">
       <img
         src="https://cdn.shopify.com/s/files/1/0641/4290/1439/files/AC_Output.png?v=1714485042"
@@ -73,7 +73,7 @@
     </div>
   {% endunless %}
 
-  {% unless key_features.input_ac == null or key_features.input_ac == '-' %}
+  {% unless key_features.input_ac == blank or key_features.input_ac == '-' %}
     <div class="power-rating">
       <img
         src="https://cdn.shopify.com/s/files/1/0641/4290/1439/files/AC_Input.png?v=1714485042"
@@ -84,7 +84,7 @@
     </div>
   {% endunless %}
 
-  {% unless key_features.charge_time == null or key_features.charge_time == '-' %}
+  {% unless key_features.charge_time == blank or key_features.charge_time == '-' %}
     <div class="power-rating">
       <img
         src="https://cdn.shopify.com/s/files/1/0641/4290/1439/files/Charge_Time.png?v=1714485041"
