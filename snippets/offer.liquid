@@ -1,28 +1,27 @@
 {%- comment -%}
-----------------------------------------------------------------------------------------------------------------------
-OFFER COMPONENT
-----------------------------------------------------------------------------------------------------------------------
+  ----------------------------------------------------------------------------------------------------------------------
+  OFFER COMPONENT
+  ----------------------------------------------------------------------------------------------------------------------
 
-This component is used to create banner (for instance to showing an error, an info, or to show promotion content). Because
-there are a lot of parameters, you simply need to pass the "block" object and everything will be extracted from it.
+  This component is used to create banner (for instance to showing an error, an info, or to show promotion content). Because
+  there are a lot of parameters, you simply need to pass the "block" object and everything will be extracted from it.
 
-********************************************
-Supported variables
-********************************************
+  ********************************************
+  Supported variables
+  ********************************************
 
-* title: an optional title for the banner
-* content: the textual content to use
-* icon: the name of an icon that is optionally added along the text
-* icon_width: the width of the icon
-* custom_icon: an image of an optional icon (if any)
-* icon_position: the position of the icon. Accept the values "aligned" or "stacked".
-* text_alignment: alignment of the text
-* background: an optional background that would override existing color
-* text_color: an optional text color that would override existing color
+  * title: an optional title for the banner
+  * content: the textual content to use
+  * icon: the name of an icon that is optionally added along the text
+  * icon_width: the width of the icon
+  * custom_icon: an image of an optional icon (if any)
+  * icon_position: the position of the icon. Accept the values "aligned" or "stacked".
+  * text_alignment: alignment of the text
+  * background: an optional background that would override existing color
+  * text_color: an optional text color that would override existing color
 {%- endcomment -%}
 
 {%- capture offer_class -%}offer {% if block.settings.text_alignment == 'center' %}offer--center{% endif %}{%- endcapture -%}
-
 <div {% render 'surface', class: offer_class, background: block.settings.background, text_color: block.settings.text_color, background_fallback: 'bg-secondary' %} {{ block.shopify_attributes }}>
   {%- capture icon_with_title -%}
     {%- if block.settings.custom_icon != blank -%}
@@ -38,7 +37,6 @@ Supported variables
       <h3 class="bold text-lg">{{ block.settings.title | escape }}</h3>
     {%- endif -%}
   {%- endcapture -%}
-
   {%- if icon_with_title != blank -%}
     {%- if block.settings.icon_position == 'aligned' -%}
       <div class="text-with-icon">
@@ -56,53 +54,114 @@ Supported variables
   {%- endif -%}
 
   {%- assign key_features = product.metafields.custom.key_features.value -%}
+  {%- assign key_features_cs = product.metafields.custom.key_features_cs.value -%}
 
   <style>
     .product-feature {
       margin-bottom: 1.4rem;
     }
   </style>
-  <div class="product-features">
-    
-    {%- if key_features.battery != blank -%}
-      <div class="product-feature"><strong>🔋 Battery</strong><br> {{ key_features.battery | metafield_tag }} </div>
-    {%- endif -%}
 
-    {%- if key_features.output_ac != blank -%}
-      <div class="product-feature"><strong>⚡ Output (AC)</strong><br> {{ key_features.output_ac | metafield_tag }}</div>
-    {%- endif -%}
+  {% commment %}
+  Key features for power stations and EBs
+  {% endcomment %}
 
-    {%- if key_features.output_dc != blank -%}
-      <div class="product-feature"><strong>💡 Output (DC)</strong><br> {{ key_features.output_dc | metafield_tag }}</div>
-    {%- endif -%}
+  {% if key_features != blank %}
+    <div class="product-features">
 
-    {%- if key_features.input_ac != blank -%}
-      <div class="product-feature"><strong>🔌 Input (AC)</strong><br> {{ key_features.input_ac | metafield_tag }}</div>
-    {%- endif -%}
+      {%- if key_features.battery != blank -%}
+        <div class="product-feature">
+          <strong>🔋 Battery</strong><br> {{ key_features.battery | metafield_tag }}
+        </div>
+      {%- endif -%}
 
-    {%- if key_features.input_solar_dc != blank -%}
-      <div class="product-feature"><strong> Input (🔆 Solar/ ⚡🔌 DC )</strong><br> {{ key_features.input_solar_dc | metafield_tag }}</div>
-    {%- endif -%}
+      {%- if key_features.output_ac != blank -%}
+        <div class="product-feature">
+          <strong>⚡ Output (AC)</strong><br> {{ key_features.output_ac | metafield_tag }}</div>
+      {%- endif -%}
 
-    {%- if key_features.charge_time != blank -%}
-      <div class="product-feature"><strong>⏳ Charge Time</strong><br> {{ key_features.charge_time | metafield_tag }}</div>
-    {%- endif -%}
+      {%- if key_features.output_dc != blank -%}
+        <div class="product-feature">
+          <strong>💡 Output (DC)</strong><br> {{ key_features.output_dc | metafield_tag }}</div>
+      {%- endif -%}
 
-    {%- if key_features.warranty != blank -%}
-      <div class="product-feature"><strong>🛡️ Warranty</strong> {{ key_features.warranty | metafield_tag }}</div>
-    {%- endif -%}
+      {%- if key_features.input_ac != blank -%}
+        <div class="product-feature">
+          <strong>🔌 Input (AC)</strong><br> {{ key_features.input_ac | metafield_tag }}</div>
+      {%- endif -%}
 
-    {%- if key_features.weight != blank -%}
-      <div class="product-feature"><strong>⚖ Weight</strong> {{ key_features.weight | metafield_tag }}</div>
-    {%- endif -%}
+      {%- if key_features.input_solar_dc != blank -%}
+        <div class="product-feature">
+          <strong>
+            Input (🔆 Solar/ ⚡🔌 DC )</strong><br> {{ key_features.input_solar_dc | metafield_tag }}</div>
+      {%- endif -%}
 
-    {%- if key_features.app_compatibility != blank -%}
-      <div class="product-feature"><strong><br>📱 App Compatibility</strong> {{ key_features.app_compatibility | metafield_tag }}</div>
-    {%- endif -%}
+      {%- if key_features.charge_time != blank -%}
+        <div class="product-feature">
+          <strong>⏳ Charge Time</strong><br> {{ key_features.charge_time | metafield_tag }}</div>
+      {%- endif -%}
 
-    {%- if key_features.expandable_capacity != blank -%}
-      <div class="product-feature"><strong>🔗 Expandable Capacity</strong><br> {{ key_features.expandable_capacity | metafield_tag }}</div>
-    {%- endif -%}
-  </div>
-  
+      {%- if key_features.warranty != blank -%}
+        <div class="product-feature">
+          <strong>🛡️ Warranty</strong>
+          {{ key_features.warranty | metafield_tag }}</div>
+      {%- endif -%}
+
+      {%- if key_features.weight != blank -%}
+        <div class="product-feature">
+          <strong>⚖ Weight</strong>
+          {{ key_features.weight | metafield_tag }}</div>
+      {%- endif -%}
+
+      {%- if key_features.app_compatibility != blank -%}
+        <div class="product-feature">
+          <strong><br>📱 App Compatibility</strong>
+          {{ key_features.app_compatibility | metafield_tag }}</div>
+      {%- endif -%}
+
+      {%- if key_features.expandable_capacity != blank -%}
+        <div class="product-feature">
+          <strong>🔗 Expandable Capacity</strong><br> {{ key_features.expandable_capacity | metafield_tag }}</div>
+      {%- endif -%}
+    </div>
+  {% endif %}
+
+  {% commment %}
+  Key features for battery and solar chargers
+  {% endcomment %}
+
+  {%- if key_features_cs != blank -%}
+    <div class="product-features">
+
+      {%- if key_features_cs.output_power != blank -%}
+        <div class="product-feature">
+          <strong>⚡️ Output Power</strong><br> {{ key_features.output_power | metafield_tag }}
+        </div>
+      {%- endif -%}
+
+      {%- if key_features_cs.output_voltage != blank -%}
+        <div class="product-feature">
+          <strong>⚡️ Output Voltage</strong><br> {{ key_features.output_voltage | metafield_tag }}
+        </div>
+      {%- endif -%}
+
+      {%- if key_features_cs.input_voltage != blank -%}
+        <div class="product-feature">
+          <strong>⚡️ Input Voltage</strong><br> {{ key_features.input_voltage | metafield_tag }}
+        </div>
+      {%- endif -%}
+
+      {%- if key_features_cs.warranty != blank -%}
+        <div class="product-feature">
+          <strong>🛡️ Warranty</strong><br> {{ key_features.warranty | metafield_tag }}
+        </div>
+      {%- endif -%}
+
+      {%- if key_features_cs.weight != blank -%}
+        <div class="product-feature">
+          <strong>⚖ Weight</strong><br> {{ key_features.weight | metafield_tag }}
+        </div>
+      {% endif %}
+    </div>
+  {% endif %}
 </div>
