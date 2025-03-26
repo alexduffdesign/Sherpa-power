@@ -125,6 +125,10 @@ summary,
   cursor: pointer;
 }
 
+.accelerated-checkout-button {
+  padding: var(--spacing-4);
+}
+
 :-moz-focusring {
   outline: auto;
 }
@@ -1040,7 +1044,8 @@ scroll-carousel {
 }
 
 .content-over-media {
-  grid-template: 0 minmax(0, 1fr) 0 / minmax(0, 1fr) minmax(
+  grid-template:
+    0 minmax(0, 1fr) 0 / minmax(0, 1fr) minmax(
       0,
       min(
         var(--container-max-width),
@@ -1050,7 +1055,8 @@ scroll-carousel {
             var(--content-over-media-column-gap, var(--container-gutter))
           ) * 2
       )
-    ) minmax(0, 1fr);
+    )
+    minmax(0, 1fr);
   gap: var(
       --content-over-media-row-gap,
       var(--content-over-media-gap, var(--container-gutter))
@@ -5149,7 +5155,7 @@ tfoot td {
 .social-media {
   gap: var(--spacing-3) var(--spacing-6);
   flex-wrap: wrap;
-    display: flex;
+  display: flex;
   flex-direction: row;
 }
 

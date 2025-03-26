@@ -1,0 +1,491 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-product",
+      "blocks": {
+        "title": {
+          "type": "title",
+          "settings": {
+            "heading_tag": "h2"
+          }
+        },
+        "price": {
+          "type": "price",
+          "settings": {
+            "show_taxes_notice": false
+          }
+        },
+        "rating": {
+          "type": "rating",
+          "settings": {
+            "show_empty": false
+          }
+        },
+        "payment_terms": {
+          "type": "payment_terms",
+          "settings": {}
+        },
+        "variant_picker": {
+          "type": "variant_picker",
+          "settings": {
+            "hide_sold_out_variants": true,
+            "stack_blocks": true,
+            "selector_style": "block",
+            "swatch_selector_style": "swatch",
+            "variant_image_options": "",
+            "size_chart_page": ""
+          }
+        },
+        "quantity_selector": {
+          "type": "quantity_selector",
+          "settings": {}
+        },
+        "liquid_rHbpPH": {
+          "type": "liquid",
+          "settings": {
+            "liquid": "{% if product.tags contains 'pre-order' %}\n<div>\n<div class=\"pre-order-container\" > \nPre order yours now. Estimated shipping: {{ product.metafields.custom.pre_order_estimated_date.value }}\n</div>\n</div>\n\n<style> \n.pre-order-container {\npadding: 1rem;\nbackground: #E1F0EC;\nborder-radius: var(--rounded);\nborder-colour: #26C293;\nborder-width: 1px;\n}\n</style> \n{% endif %}"
+          }
+        },
+        "buy_buttons": {
+          "type": "buy_buttons",
+          "settings": {
+            "show_payment_button": true,
+            "show_gift_card_recipient": true,
+            "atc_button_background": "",
+            "atc_button_text_color": "",
+            "payment_button_background": "",
+            "payment_button_text_color": ""
+          }
+        },
+        "liquid_HVMrxB": {
+          "type": "liquid",
+          "settings": {
+            "liquid": "<div class=\"offer bg-custom text-custom\" style=\"--background: 225 241 236; --text-color: 35 31 37;\"><div class=\"text-with-icon\">\n\n<img src=\"//www.sherpapower.co.uk/cdn/shop/files/5-year-warranty.png?v=1711030786&amp;width=305\" alt=\"\" srcset=\"//www.sherpapower.co.uk/cdn/shop/files/5-year-warranty.png?v=1711030786&amp;width=56 56w, //www.sherpapower.co.uk/cdn/shop/files/5-year-warranty.png?v=1711030786&amp;width=112 112w\" width=\"305\" height=\"380\" loading=\"lazy\" style=\"max-width: 56px\" sizes=\"56px\">\n\n<div>\n<span class=\"bold text-sm\">5 Year Warranty Included!</span><div class=\"prose text-sm\">\n\n<p>Your purchase is completely protected by our 5 year warranty.</p>\n</div>\n\n</div></div></div>"
+          }
+        },
+        "estimated_shipping_pbbJYc": {
+          "type": "estimated_shipping",
+          "settings": {
+            "shipping_min_days": 2,
+            "shipping_max_days": 3
+          }
+        },
+        "liquid_KQWMtz": {
+          "type": "liquid",
+          "settings": {
+            "liquid": "<div class=\"payment-wrap\"> \n<p> Use any of these payment methods:</p>\n<img class=\"payment-method-icons\" src=\"https://cdn.shopify.com/s/files/1/0641/4290/1439/files/Payment_Images.png?v=1712333344\"\n</div>\n\n<style>\n.payment-wrap {\ndisplay: flex;\nflex-direction: row;\njustify-content: flex-start;\nflex-wrap: wrap;\ngrid-gap: 0.5rem 0.5rem;\nmargin-bottom: 2rem;\n}\n\n.payment-method-icons {\nwidth: 50%;\nobject-fit: contain;\n}\n\n@media screen and (max-width: 767px) {\n.payment-method-icons {\nwidth: 100%;\n}\n}\n</style>"
+          }
+        },
+        "offer_Xg7N4t": {
+          "type": "offer",
+          "settings": {
+            "text_alignment": "start",
+            "icon_position": "aligned",
+            "icon": "none",
+            "icon_width": 24,
+            "title": "Key Features",
+            "content": "",
+            "background": "#e1f1ec",
+            "text_color": "#3f4345"
+          }
+        }
+      },
+      "block_order": [
+        "title",
+        "price",
+        "rating",
+        "payment_terms",
+        "variant_picker",
+        "quantity_selector",
+        "liquid_rHbpPH",
+        "buy_buttons",
+        "liquid_HVMrxB",
+        "estimated_shipping_pbbJYc",
+        "liquid_KQWMtz",
+        "offer_Xg7N4t"
+      ],
+      "custom_css": [
+        ".shopify-payment-button__button {height: 100%;}",
+        ".offer {background-colour: transparent; border-width: 1px; border-color: #25c293;}",
+        "@media screen and (max-width: 767px) {.product-info__offer-list {grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); }}",
+        "@media screen and (min-width: 1000px) {.product-gallery--desktop-carousel {position: sticky; top: 7rem; }}"
+      ],
+      "settings": {
+        "full_width": true,
+        "show_fixed_add_to_cart": true,
+        "desktop_media_width": 50,
+        "desktop_media_layout": "carousel_thumbnails_bottom",
+        "mobile_media_size": "expanded",
+        "mobile_carousel_control": "floating_dots",
+        "enable_video_autoplay": false,
+        "enable_video_looping": true,
+        "enable_image_zoom": true,
+        "max_image_zoom_level": 3,
+        "background": "",
+        "background_gradient": "",
+        "text_color": "",
+        "input_background": "rgba(0,0,0,0)",
+        "input_text_color": ""
+      }
+    },
+    "tabs_PEEk4b": {
+      "type": "tabs",
+      "blocks": {
+        "tab_YXFLrw": {
+          "type": "tab",
+          "settings": {
+            "title": "Description",
+            "content": "{{ product.metafields.custom.overview | metafield_tag }}{{ product.metafields.custom.battery_information | metafield_tag }}{{ product.metafields.custom.output_description | metafield_tag }}{{ product.metafields.custom.charging | metafield_tag }}<p>{{ product.metafields.custom.what_s_in_the_box | metafield_tag }}</p><p></p>",
+            "page": ""
+          }
+        },
+        "tab_7VGK8h": {
+          "type": "tab",
+          "settings": {
+            "title": "FAQs",
+            "content": "<p>{{ product.metafields.custom.faq | metafield_tag }}</p>",
+            "page": ""
+          }
+        },
+        "html_NpxwkY": {
+          "type": "html",
+          "settings": {
+            "techspec_title": "Tech Spec"
+          }
+        },
+        "manual_download_CMgEa8": {
+          "type": "manual_download",
+          "settings": {
+            "manual_title": "Download Manual",
+            "manual_url": "{{ product.metafields.custom.manual.value }}"
+          }
+        },
+        "yotpo_product_reviews_ugc_reviews_hXY66T": {
+          "type": "shopify://apps/yotpo-product-reviews/blocks/reviews/eb7dfd7d-db44-4334-bc49-c893b51b36cf",
+          "settings": {
+            "product": "{{product}}"
+          }
+        }
+      },
+      "block_order": [
+        "tab_YXFLrw",
+        "tab_7VGK8h",
+        "html_NpxwkY",
+        "manual_download_CMgEa8",
+        "yotpo_product_reviews_ugc_reviews_hXY66T"
+      ],
+      "custom_css": [
+        ".section-full {padding-top: 5rem; background-image: url(\"https://cdn.shopify.com/s/files/1/0641/4290/1439/files/Waves.jpg?v=1712335051\"); background-size: cover;}",
+        "@media screen and (max-width: 767px) {.section-full {padding-top: 0rem; }}"
+      ],
+      "settings": {
+        "full_width": true,
+        "content_size": "medium",
+        "subheading": "",
+        "title": "",
+        "first_tab_open": false,
+        "background": "",
+        "background_gradient": "",
+        "text_color": "",
+        "heading_color": "",
+        "heading_gradient": ""
+      }
+    },
+    "multi_column_rmUzKh": {
+      "type": "multi-column",
+      "blocks": {
+        "item_T87eYy": {
+          "type": "item",
+          "repeater": "{{ product.metafields.custom.product_application_image.value }}",
+          "settings": {
+            "image": "{{ block.repeater.image.value }}",
+            "column_size": "3",
+            "title": "{{ block.repeater.text.value }}",
+            "heading_tag": "h4",
+            "content": "<p>{{ block.repeater.paragraph | metafield_tag }}</p>",
+            "link_url": "",
+            "link_text": "",
+            "link_style": "link"
+          }
+        }
+      },
+      "block_order": [
+        "item_T87eYy"
+      ],
+      "settings": {
+        "full_width": true,
+        "stack_on_mobile": true,
+        "gap": "medium",
+        "text_alignment": "center",
+        "subheading": "",
+        "title": "",
+        "content": "",
+        "background": "",
+        "background_gradient": "",
+        "text_color": ""
+      }
+    },
+    "slideshow_YPY7JE": {
+      "type": "slideshow",
+      "blocks": {
+        "image_AhCA9d": {
+          "type": "image",
+          "repeater": "{{ product.metafields.custom.product_application_image.value }}",
+          "settings": {
+            "image": "{{ block.repeater.image.value }}",
+            "content_max_width": 880,
+            "mobile_text_position": "place-self-center text-center",
+            "desktop_text_position": "sm:place-self-center sm:text-center",
+            "subheading": "",
+            "title": "",
+            "heading_tag": "h0",
+            "button_text": "",
+            "button_link": "",
+            "text_color": "#ffffff",
+            "button_background": "#ffffff",
+            "button_text_color": "#000000",
+            "overlay_color": "#000000",
+            "overlay_opacity": 0,
+            "background": "",
+            "background_gradient": ""
+          }
+        },
+        "video_PFFh8j": {
+          "type": "video",
+          "settings": {
+            "content_max_width": 780,
+            "mobile_text_position": "place-self-center text-center",
+            "desktop_text_position": "sm:place-self-center sm:text-center",
+            "subheading": "Tell your story",
+            "title": "Slide title",
+            "heading_tag": "h0",
+            "button_text": "",
+            "button_link": "",
+            "text_color": "#ffffff",
+            "button_background": "#ffffff",
+            "button_text_color": "#000000",
+            "overlay_color": "#000000",
+            "overlay_opacity": 30,
+            "background": "",
+            "background_gradient": ""
+          }
+        }
+      },
+      "block_order": [
+        "image_AhCA9d",
+        "video_PFFh8j"
+      ],
+      "disabled": true,
+      "settings": {
+        "full_width": true,
+        "allow_transparent_header": true,
+        "show_initial_transition": false,
+        "image_size": "auto",
+        "controls_type": "dots",
+        "transition_type": "fade_with_text",
+        "autoplay": false,
+        "cycle_speed": 6,
+        "background": "#f2f2f2",
+        "background_gradient": ""
+      }
+    },
+    "applications_HCb8JU": {
+      "type": "applications",
+      "settings": {
+        "full_width": true,
+        "subheading": "",
+        "title": "Endless Applications",
+        "content": "",
+        "text_position": "center",
+        "background": "#231f25",
+        "background_gradient": "",
+        "heading_color": "#f7f7f7",
+        "heading_gradient": "",
+        "calculator_title": "Find Out How Long You Can Power Your Appliance",
+        "calculator_subtitle": "For best results be specific on your item e.g Macbook 15inch 2023",
+        "is_section_chatbot": true
+      }
+    },
+    "media_with_text_DRJHR3": {
+      "type": "media-with-text",
+      "blocks": {
+        "image_iRBGcB": {
+          "type": "image",
+          "repeater": "{{ product.metafields.custom.features.value }}",
+          "settings": {
+            "image": "{{ block.repeater.image_desktop.value }}",
+            "media_width": 45,
+            "media_position": "end",
+            "text_position": "place-self-center-start text-start",
+            "icon": "none",
+            "icon_width": 48,
+            "subheading": "",
+            "title": "{{ block.repeater.heading.value }}",
+            "content": "<p>{{ block.repeater.paragraph | metafield_tag }}</p>",
+            "link_text": "",
+            "link_url": "",
+            "background": "#f7f7f7",
+            "background_gradient": "",
+            "text_color": "#3f4345",
+            "text_gradient": "",
+            "button_background": "",
+            "button_text_color": ""
+          }
+        }
+      },
+      "block_order": [
+        "image_iRBGcB"
+      ],
+      "custom_css": [
+        ".media-with-text__media > * {object-fit: contain;}",
+        "@media screen and (max 767px) {.prose {text-align: center; }}",
+        ".media-with-text {grid-gap: 4rem;}",
+        "@media screen and (min-width: 767px) {.media-with-text__item {padding: 4.5rem; } .media-with-text__content {padding-left: 0rem; padding-right: 4rem; }}"
+      ],
+      "settings": {
+        "full_width": false,
+        "spacing": "large"
+      }
+    },
+    "feature_chart_yKTc8E": {
+      "type": "feature-chart",
+      "blocks": {
+        "headings_6faDY8": {
+          "type": "headings",
+          "settings": {
+            "heading_1": "Output Power",
+            "heading_2": "Output Voltage",
+            "heading_3": "Input Voltage",
+            "heading_4": "Warranty",
+            "heading_5": " Weight",
+            "heading_6": "",
+            "heading_7": "",
+            "heading_8": "",
+            "heading_9": "",
+            "heading_10": "",
+            "heading_11": "",
+            "heading_12": "",
+            "heading_13": "",
+            "heading_14": "",
+            "heading_15": "",
+            "heading_16": "",
+            "heading_17": "",
+            "heading_18": "",
+            "heading_19": "",
+            "heading_20": ""
+          }
+        },
+        "values_gzBQxp": {
+          "type": "values",
+          "source": "{{ product.metafields.custom.key_features_cs.value }}",
+          "settings": {
+            "product": "{{ product.metafields.custom.key_features_cs.value.product_select.value }}",
+            "value_1": "<p>{{ block.settings.product.metafields.custom.key_features_cs.value.output_power | metafield_tag }}</p>",
+            "value_2": "<p>{{ product.metafields.custom.key_features_cs.value.output_voltage | metafield_tag }}</p>",
+            "value_3": "<p>{{ product.metafields.custom.key_features_cs.value.input_voltage | metafield_tag }}</p>",
+            "value_4": "<p>{{ product.metafields.custom.key_features_cs.value.warranty | metafield_tag }}</p>",
+            "value_5": "<p>{{ product.metafields.custom.key_features_cs.value.weight | metafield_tag }}</p>",
+            "value_6": "",
+            "value_7": "",
+            "value_8": "",
+            "value_9": "",
+            "value_10": "",
+            "value_11": "",
+            "value_12": "",
+            "value_13": "",
+            "value_14": "",
+            "value_15": "",
+            "value_16": "",
+            "value_17": "",
+            "value_18": "",
+            "value_19": "",
+            "value_20": "",
+            "view_button_background": "",
+            "view_button_text_color": ""
+          }
+        },
+        "values_eqrHba": {
+          "type": "values",
+          "repeater": "{{ product.metafields.custom.compare_key_features_cs.value }}",
+          "settings": {
+            "product": "{{ block.repeater.product_select.value }}",
+            "value_1": "{{ block.repeater.output_voltage | metafield_tag }}",
+            "value_2": "{{ block.repeater.input_voltage | metafield_tag }}",
+            "value_3": "{{ block.repeater.output_power | metafield_tag }}",
+            "value_4": "<p>{{ block.repeater.product_name.value }}</p>",
+            "value_5": "{{ block.repeater.warranty | metafield_tag }}",
+            "value_6": "{{ block.repeater.weight | metafield_tag }}",
+            "value_7": "",
+            "value_8": "",
+            "value_9": "",
+            "value_10": "",
+            "value_11": "",
+            "value_12": "",
+            "value_13": "",
+            "value_14": "",
+            "value_15": "",
+            "value_16": "",
+            "value_17": "",
+            "value_18": "",
+            "value_19": "",
+            "value_20": "",
+            "view_button_background": "",
+            "view_button_text_color": ""
+          }
+        }
+      },
+      "block_order": [
+        "headings_6faDY8",
+        "values_gzBQxp",
+        "values_eqrHba"
+      ],
+      "custom_css": [
+        ".section-full {background-image: url(\"https://cdn.shopify.com/s/files/1/0641/4290/1439/files/Green_Pattern.jpg?v=1712336884\"); background-size: cover;}",
+        ".feature-chart {border-color: #4848482e; border-width: 1px;}"
+      ],
+      "settings": {
+        "full_width": true,
+        "subheading": "",
+        "title": "Product Comparison",
+        "content": "",
+        "button_text": "",
+        "button_url": "",
+        "text_position": "start",
+        "max_rows": 5,
+        "view_all_text": "View all",
+        "view_less_text": "View less",
+        "view_product": "View",
+        "viewing_product": "",
+        "show_product_swatch": true,
+        "background": "#e1f1ec",
+        "background_gradient": "",
+        "text_color": "#231f25",
+        "heading_color": "",
+        "heading_gradient": "linear-gradient(180deg, rgba(35, 31, 37, 1) 55%, rgba(28, 160, 121, 1) 82%)",
+        "button_background": "",
+        "button_text_color": "",
+        "chart_background": "#ffffff",
+        "chart_text_color": "",
+        "chart_true_false_color": ""
+      }
+    }
+  },
+  "order": [
+    "main",
+    "tabs_PEEk4b",
+    "multi_column_rmUzKh",
+    "slideshow_YPY7JE",
+    "applications_HCb8JU",
+    "media_with_text_DRJHR3",
+    "feature_chart_yKTc8E"
+  ]
+}

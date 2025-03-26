@@ -2,7 +2,6 @@
   ----------------------------------------------------------------------------------------------------------------------
   DYNAMIC PRODUCT FEATURE COMPONENT
   ----------------------------------------------------------------------------------------------------------------------
-  
   This component is designed to create dynamic product feature sections based on product metafields metaobjects. It uses
   the existing design and structure of the offer component and integrates conditional logic to display product features
   only when available.
@@ -14,49 +13,116 @@
 {%- endcomment -%}
 
 
+{% comment %}
+  Key Features for Power Stations and EBs
+{% endcomment %}
+
 <div class="{{ block.settings.text_alignment | append: ' text' }}">
   {%- assign key_features = product.metafields.custom.key_features.value -%}
 
   <div class="product-features">
-    
+
     {%- if key_features.output_ac != blank -%}
-      <div class="product-feature"><strong>Battery:</strong> {{ key_features.battery | metafield_tag }} </div>
+      <div class="product-feature">
+        <strong>Battery:</strong>
+        {{ key_features.battery | metafield_tag }}
+      </div>
     {%- endif -%}
 
     {%- if key_features.output_ac != blank -%}
-      <div class="product-feature"><strong>Output (AC):</strong> {{ key_features.output_ac | metafield_tag }}</div>
+      <div class="product-feature">
+        <strong>Output (AC):</strong>
+        {{ key_features.output_ac | metafield_tag }}</div>
     {%- endif -%}
 
     {%- if key_features.output_dc != blank -%}
-      <div class="product-feature"><strong>Output (DC):</strong> {{ key_features.output_dc | metafield_tag }}</div>
+      <div class="product-feature">
+        <strong>Output (DC):</strong>
+        {{ key_features.output_dc | metafield_tag }}</div>
     {%- endif -%}
 
     {%- if key_features.input_ac != blank -%}
-      <div class="product-feature"><strong>Input (AC):</strong> {{ key_features.input_ac | metafield_tag }}</div>
+      <div class="product-feature">
+        <strong>Input (AC):</strong>
+        {{ key_features.input_ac | metafield_tag }}</div>
     {%- endif -%}
 
     {%- if key_features.input_solar_dc != blank -%}
-      <div class="product-feature"><strong>Input (Solar/DC):</strong> {{ key_features.input_solar_dc | metafield_tag }}</div>
+      <div class="product-feature">
+        <strong>Input (Solar/DC):</strong>
+        {{ key_features.input_solar_dc | metafield_tag }}</div>
     {%- endif -%}
 
     {%- if key_features.charge_time != blank -%}
-      <div class="product-feature"><strong>Charge Time:</strong> {{ key_features.charge_time | metafield_tag }}</div>
+      <div class="product-feature">
+        <strong>Charge Time:</strong>
+        {{ key_features.charge_time | metafield_tag }}</div>
     {%- endif -%}
 
     {%- if key_features.warranty != blank -%}
-      <div class="product-feature"><strong>Warranty:</strong> {{ key_features.warranty | metafield_tag }}</div>
+      <div class="product-feature">
+        <strong>Warranty:</strong>
+        {{ key_features.warranty | metafield_tag }}</div>
     {%- endif -%}
 
     {%- if key_features.weight != blank -%}
-      <div class="product-feature"><strong>Weight:</strong> {{ key_features.weight | metafield_tag }}</div>
+      <div class="product-feature">
+        <strong>Weight:</strong>
+        {{ key_features.weight | metafield_tag }}</div>
     {%- endif -%}
 
     {%- if key_features.app_compatibility != blank -%}
-      <div class="product-feature"><strong>App Compatibility:</strong> {{ key_features.app_compatibility | metafield_tag }}</div>
+      <div class="product-feature">
+        <strong>App Compatibility:</strong>
+        {{ key_features.app_compatibility | metafield_tag }}</div>
     {%- endif -%}
 
     {%- if key_features.expandable_capacity != blank -%}
-      <div class="product-feature"><strong>Expandable Capacity:</strong> {{ key_features.expandable_capacity | metafield_tag }}</div>
+      <div class="product-feature">
+        <strong>Expandable Capacity:</strong>
+        {{ key_features.expandable_capacity | metafield_tag }}</div>
     {%- endif -%}
+  </div></div>
+
+
+{% comment %}
+  Key Features for chargers and solarr panels
+{% endcomment %}
+
+{%- assign key_features_cs = product.metafields.custom.key_features_cs.value -%}
+
+{% if key_features_cs != blank %}
+  <div class="product-features">
+
+    {%- if key_features_cs.output_power != blank -%}
+      <div class="product-feature">
+        <strong>⚡️ Output Power</strong><br> {{ key_features_cs.output_power | metafield_tag }}
+      </div>
+    {%- endif -%}
+
+    {%- if key_features_cs.output_voltage != blank -%}
+      <div class="product-feature">
+        <strong>⚡️ Output Voltage</strong><br> {{ key_features_cs.output_voltage | metafield_tag }}
+      </div>
+    {%- endif -%}
+
+    {%- if key_features_cs.input_voltage != blank -%}
+      <div class="product-feature">
+        <strong>⚡️ Input Voltage</strong><br> {{ key_features_cs.input_voltage | metafield_tag }}
+      </div>
+    {%- endif -%}
+
+    {%- if key_features_cs.warranty != blank -%}
+      <div class="product-feature">
+        <strong>🛡️ Warranty</strong><br> {{ key_features_cs.warranty | metafield_tag }}
+      </div>
+    {%- endif -%}
+
+    {%- if key_features_cs.weight != blank -%}
+      <div class="product-feature">
+        <strong>⚖ Weight</strong><br> {{ key_features_cs.weight | metafield_tag }}
+      </div>
+    {% endif %}
+
   </div>
-</div>
+{% endif %}
