@@ -1,3 +1,5 @@
+{% unless product.metafields.custom.compare_key_features == blank or product.metafields.custom.compare_key_features_cs == blank %}
+
 {%- render 'section-spacing-collapsing' -%}
 
 {%- assign text_position = section.settings.text_position -%}
@@ -231,6 +233,7 @@ LIQUID
     </div>
   </div>
 </div>
+  {% endunless %}
 
 {% schema %}
 {
