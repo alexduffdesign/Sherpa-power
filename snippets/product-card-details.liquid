@@ -50,7 +50,7 @@
   {% endcomment %}
 
   <!-- Replace 'namespace' and 'key' with actual metafield namespace and key -->
-  {% if product.metafields.custom.capacity != null %}
+  {% if product.metafields.custom.capacity != blank or product.metafields.custom.capacity == "-" %}
     <div class="power-rating">
       <img
         src="https://cdn.shopify.com/s/files/1/0641/4290/1439/files/Capacity.png?v=1714485042"
