@@ -125,6 +125,10 @@ summary,
   cursor: pointer;
 }
 
+.accelerated-checkout-button {
+  padding: var(--spacing-4);
+}
+
 :-moz-focusring {
   outline: auto;
 }
