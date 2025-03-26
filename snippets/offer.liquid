@@ -59,11 +59,12 @@
     }
   </style>
 
-<h1>TESTING</h1>
+  <h1>TESTING
+</h1>
 
 
-  {% commment %}
-  Key features for power stations and EBs
+  {% comment %}
+    Key features for power stations and EBs
   {% endcomment %}
 
   {%- assign key_features = product.metafields.custom.key_features.value -%}
@@ -126,15 +127,17 @@
           <strong>🔗 Expandable Capacity</strong><br> {{ key_features.expandable_capacity | metafield_tag }}</div>
       {%- endif -%}
     </div>
-  {% endif %}
+{% endif %}
 
   {% comment %}
-  Key features for battery and solar chargers
+    Key features for battery and solar chargers
   {% endcomment %}
 
   {%- assign key_features_cs = product.metafields.custom.key_features_cs.value -%}
 
-  <p> TESTING </p>
+  <p>
+    TESTING
+  </p>
   {% if key_features_cs != blank %}
     <div class="product-features">
 
@@ -169,5 +172,5 @@
       {% endif %}
 
     </div>
-    {% endif %}
+  {% endif %}
 </div>
