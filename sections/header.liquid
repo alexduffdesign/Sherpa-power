@@ -339,7 +339,7 @@ button.sherpa-guide::before {
         {%- endif -%}
       {%- endcapture -%}
       {%- if request.page_type == 'index' -%}
-        <div class="header__logo">
+        <h1 class="header__logo">
           <a href="{{ routes.root_url }}">{{ logo_content }}</a>
         </h1>
       {% else %}
