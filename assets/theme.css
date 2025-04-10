@@ -12638,7 +12638,7 @@ split-lines {
 
 .h1,
 .prose h1:not(.h0, .h1, .h2, .h3, .h4, .h5, .h6) {
-  font-size: var(--text-h2);
+  font-size: var(2em);
   line-height: 1.1;
   white-space: nowrap;
   display: inline;
