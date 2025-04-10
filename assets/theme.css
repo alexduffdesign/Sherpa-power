@@ -12761,9 +12761,6 @@ split-lines {
   overflow: hidden;
 }
 
-.hero-heading {
+.split-lines {
   white-space: nowrap;
-  font-size: clamp(1.5rem, 5vw, 3rem); /* Responsive font size */
-  overflow: hidden;
-  text-overflow: ellipsis; /* Optional: hides overflow text */
 }
