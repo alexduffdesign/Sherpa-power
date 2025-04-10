@@ -142,6 +142,32 @@ quick buy information in a template, that will be extracted in JS, but ensure it
   </div>
 </template>
 
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org/",
+  "@type": "Product",
+  "name": "{{ product.title | escape }}",
+  "image": [
+    {% for image in product.images %}
+      "{{ image | image_url: width: 1000 }}"{% unless forloop.last %},{% endunless %}
+    {% endfor %}
+  ],
+  "description": "{{ product.description | strip_html | escape }}",
+  "sku": "{{ product.sku }}",
+  "brand": {
+    "@type": "Brand",
+    "name": "Sherpa Power"
+  },
+  "offers": {
+    "@type": "Offer",
+    "priceCurrency": "GBP",
+    "price": "{{ product.price | money_without_currency }}",
+    "availability": "https://schema.org/{% if product.available %}InStock{% else %}OutOfStock{% endif %}",
+    "url": "{{ product.url | absolute_url }}"
+  }
+}
+</script>
+
 {% schema %}
 {
   "name": "Product page",
@@ -1316,29 +1342,3 @@ quick buy information in a template, that will be extracted in JS, but ensure it
   ]
 }
 {% endschema %}
-
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org/",
-  "@type": "Product",
-  "name": "{{ product.title | escape }}",
-  "image": [
-    {% for image in product.images %}
-      "{{ image | image_url: width: 1000 }}"{% unless forloop.last %},{% endunless %}
-    {% endfor %}
-  ],
-  "description": "{{ product.description | strip_html | escape }}",
-  "sku": "{{ product.sku }}",
-  "brand": {
-    "@type": "Brand",
-    "name": "Sherpa Power"
-  },
-  "offers": {
-    "@type": "Offer",
-    "priceCurrency": "GBP",
-    "price": "{{ product.price | money_without_currency }}",
-    "availability": "https://schema.org/{% if product.available %}InStock{% else %}OutOfStock{% endif %}",
-    "url": "{{ product.url | absolute_url }}"
-  }
-}
-</script>
