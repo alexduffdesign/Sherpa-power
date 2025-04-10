@@ -86,8 +86,7 @@
       "blocks": {
         "play_JTRgNH": {
           "type": "play",
-          "settings": {
-          }
+          "settings": {}
         },
         "heading_peKHdx": {
           "type": "heading",
@@ -448,7 +447,7 @@
         "collection_xmakkF": {
           "type": "collection",
           "settings": {
-            "collection": "peak",
+            "collection": "peak-portable-power-station",
             "subheading": "",
             "title": "",
             "url": "",
