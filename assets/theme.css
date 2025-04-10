@@ -12760,7 +12760,3 @@ split-lines {
   display: -webkit-box;
   overflow: hidden;
 }
-
-.split-lines {
-  white-space: nowrap;
-}
