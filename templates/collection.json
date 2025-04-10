@@ -1,1 +1,525 @@
-{"sections":{"banner":{"type":"collection-banner","settings":{"full_width":true,"allow_transparent_header":true,"enable_parallax":false,"show_collection_title":true,"show_collection_description":true,"show_collection_image":true,"collection_title_size":"h0","image_size":"md","image":"{{ collection.image }}","mobile_text_position":"place-self-center text-center","desktop_text_position":"sm:place-self-center sm:text-center","featured_product":"","featured_product_heading":"","text_color":"#ffffff","overlay_color":"#231f25","overlay_opacity":69}},"text_with_icons_MjeRC4":{"type":"text-with-icons","blocks":{"item_PNCCd4":{"type":"item","repeater":"{{ collection.metafields.custom.range_benefits.value }}","settings":{"icon":"picto-money","custom_icon":"{{ block.repeater.icon.value }}","mobile_icon_width":24,"icon_width":32,"icon_background_type":"none","icon_background":"","icon_color":"#25c293","title":"{{ block.repeater.heading.value }}","content":"<p>{{ block.repeater.paragraph | metafield_tag }}<\/p>"}}},"block_order":["item_PNCCd4"],"custom_css":[".section-full {padding-top: 2rem; padding-bottom: 2rem;}"],"settings":{"full_width":true,"stack_on_mobile":false,"title":"","heading_tag":"h6","text_alignment":"center","icon_spacing":"small","background":"","background_gradient":"","text_color":""}},"main":{"type":"main-collection","settings":{"products_per_page":24,"products_per_row_mobile":"1","products_per_row_desktop":3,"filter_layout":"sidebar","show_sort_by":false,"show_filters":false,"show_filter_group_name":false,"show_filter_values_count":true,"open_first_filter_group":false}},"video_WPjTrq":{"type":"video","blocks":{"play_JTRgNH":{"type":"play","settings":{}},"heading_peKHdx":{"type":"heading","settings":{"text":"Video","heading_tag":"h1"}}},"block_order":["play_JTRgNH","heading_peKHdx"],"settings":{"full_width":false,"allow_transparent_header":false,"autoplay":false,"video_size":"md","external_video_url":"https:\/\/youtu.be\/0zs57QyDA9s","text_color":"#ffffff","overlay_color":"#000000","overlay_opacity":30}},"multi_column_XVBM7T":{"type":"multi-column","blocks":{"item_Jxtfkj":{"type":"item","repeater":"{{ collection.metafields.custom.range_usecases.value }}","settings":{"image":"{{ block.repeater.image.value }}","column_size":"3","title":"{{ block.repeater.text.value }}","heading_tag":"h4","content":"<p>{{ block.repeater.paragraph | metafield_tag }}<\/p>","link_url":"","link_text":"","link_style":"link"}}},"block_order":["item_Jxtfkj"],"custom_css":["img {width: 100%; margin-right: auto;}",".section-header {width: 100%; grid-template-columns: none;}"],"settings":{"full_width":true,"stack_on_mobile":true,"gap":"medium","text_alignment":"start","subheading":"","title":"The power you need, where you need it.","content":"","background":"rgba(0,0,0,0)","background_gradient":"","text_color":"#231f25"}},"media_with_text_NwjEJn":{"type":"media-with-text","blocks":{"image_D6kCN4":{"type":"image","settings":{"image":"shopify:\/\/shop_images\/Battery.png","media_width":40,"media_position":"end","text_position":"place-self-center-start text-start","icon":"none","icon_width":48,"subheading":"","title":"Mindful of our Planet","content":"<h4>Our products use a specific cell chemistry that is less harmful to the environment and safer during use.<\/h4><p>Lithium Iron Phosphate (LFP) batteries are often viewed positively for being environmental and safer compared to other lithium-ion batteries. Unlike other types, these do not contain heavy metals such as cobalt, which is commonly mined using environmentally harmful methods. Furthermore, the raw materials used in LFP batteries are more abundant and cause less harmful emissions when manufactured.<\/p>","link_text":"","link_url":"","background":"rgba(0,0,0,0)","background_gradient":"","text_color":"#231f25","text_gradient":"linear-gradient(180deg, rgba(35, 31, 37, 1) 55%, rgba(28, 160, 121, 1) 82%)","button_background":"","button_text_color":""}}},"block_order":["image_D6kCN4"],"custom_css":[".media-with-text__media > * {object-fit: contain;}","@media screen and (min-width: 767px) {.media-with-text__content {padding-left: 0rem; padding-right: 8rem; padding-bottom: 0rem; }}","@media screen and (max-width: 767px) {.media-with-text__content {padding-left: 0rem; padding-right: 0rem; padding-bottom: 0rem; padding-top: 2rem; }}",".section-full {padding-bottom: 1rem; padding-top: 2rem;}",".section-full {background-color: #efefef;}"],"settings":{"full_width":false,"spacing":"none"}},"text_with_icons_JHid8z":{"type":"text-with-icons","blocks":{"item_VFTmnQ":{"type":"item","settings":{"icon":"picto-coupon","mobile_icon_width":24,"icon_width":32,"icon_background_type":"none","icon_background":"","icon_color":"#25c293","title":"","content":"<p>🦶The carbon footprint of manufacturing these batteries is estimated to be<strong>18% lower than that of other lithium-ion batteries.<\/strong><\/p>"}},"item_HWYWtg":{"type":"item","settings":{"icon":"picto-coupon","mobile_icon_width":24,"icon_width":32,"icon_background_type":"none","icon_background":"","icon_color":"#25c293","title":"","content":"<p>🔋 The cells have <strong>a longer lifespan <\/strong>compared to other lithium-ion chemistries. This means they need to be replaced less frequently, <strong>reducing overall waste. <\/strong><\/p>"}},"item_gFjV7C":{"type":"item","settings":{"icon":"picto-coupon","mobile_icon_width":24,"icon_width":32,"icon_background_type":"none","icon_background":"","icon_color":"#25c293","title":"","content":"<p>🪫 LFP batteries are <strong>more stable <\/strong>under extreme conditions such as overcharging, short-circuiting, or physical damage. <\/p>"}},"item_VibhXh":{"type":"item","settings":{"icon":"picto-coupon","mobile_icon_width":24,"icon_width":32,"icon_background_type":"none","icon_background":"","icon_color":"#25c293","title":"","content":"<p>♻️ <strong>Relatively easy to recycle <\/strong>compared to other lithium-ion chemistries due to their simpler chemical composition.<\/p>"}}},"block_order":["item_VFTmnQ","item_HWYWtg","item_gFjV7C","item_VibhXh"],"custom_css":[".section-full {padding-top: 0rem;}",".icon {display: none;}",".text-with-icons {text-align: left;}","@media screen and (min-width: 797px) {.text-with-icons__list {row-gap: 0rem; }}"],"settings":{"full_width":true,"stack_on_mobile":true,"title":"","heading_tag":"h5","text_alignment":"start","icon_spacing":"medium","background":"#efefef","background_gradient":"","text_color":"#3f4345"}},"multi_column_gcJana":{"type":"multi-column","blocks":{"item_9Ra6Aj":{"type":"item","settings":{"image":"shopify:\/\/shop_images\/Honest.png","column_size":"3","title":"","heading_tag":"h4","content":"<p>We believe in being honest with people and we will always seek to share useful knowledge with our customers, allowing them to make informed decisions before purchasing  our products and to use them to the best of their capabilities.<\/p>","link_url":"","link_text":"","link_style":"link"}},"item_t4VHLc":{"type":"item","settings":{"image":"shopify:\/\/shop_images\/5-year-warranty.png","column_size":"3","title":"","heading_tag":"h4","content":"<p>We understand the importance of quality in our products. We test our products thoroughly before we market them and offer a 5 year warranty for your peace of mind.<\/p><p>Our products are all <strong>fully UK compliant and built with safety in mind. <\/strong><\/p>","link_url":"","link_text":"","link_style":"link"}},"item_XeX4hB":{"type":"item","settings":{"image":"shopify:\/\/shop_images\/Customer_Service.png","column_size":"3","title":"","heading_tag":"h4","content":"<p>Our UK-based customer service is not just a support line; it's a gateway to reliable, and helpful assistance, ensuring that you always have the guidance you need, when you need it. <\/p>","link_url":"","link_text":"","link_style":"link"}}},"block_order":["item_9Ra6Aj","item_t4VHLc","item_XeX4hB"],"custom_css":[".section-full {background-image: url(https:\/\/cdn.shopify.com\/s\/files\/1\/0641\/4290\/1439\/files\/Peak.png?v=1711023363); background-position: 100% 120%; background-size: 100% 60%; background-repeat: no-repeat; background-color: #394042;}","@media screen and (max-width: 767px) {.section-full {background-position: 100% 100%; background-size: 100%; background-repeat: no-repeat; }}",".rounded {width: 50%; margin-left: auto; margin-right: auto;}",".multi-column__item {gap: 0rem;}"],"settings":{"full_width":true,"stack_on_mobile":true,"gap":"medium","text_alignment":"center","subheading":"","title":"Why Choose Sherpa?","content":"","background":"","background_gradient":"linear-gradient(180deg, rgba(57, 64, 66, 1), rgba(79, 89, 89, 1) 100%)","text_color":"#f7f7f7"}},"press_mcg9zr":{"type":"press","blocks":{"quote_9q4bPw":{"type":"quote","settings":{"logo_width":100,"author":"","content":"Leave a review","show_rating":true,"rating":4}},"quote_ijUTbq":{"type":"quote","settings":{"logo_width":100,"author":"","content":"Leave a review","show_rating":true,"rating":4}},"quote_FWJrTV":{"type":"quote","settings":{"logo_width":100,"author":"","content":"Leave a review","show_rating":true,"rating":4}}},"block_order":["quote_9q4bPw","quote_ijUTbq","quote_FWJrTV"],"settings":{"full_width":true,"content_size":"medium","background":"","background_gradient":"","text_color":"","heading_color":"","heading_gradient":"linear-gradient(180deg, rgba(35, 31, 37, 1) 55%, rgba(28, 160, 121, 1) 82%)","logo_item_background":"","logo_item_border":""}},"faq_bMQA3m":{"type":"faq","blocks":{"item_KMmeMN":{"type":"item","settings":{"title":"Do you ship overseas?","content":"<p>Yes, please make an enquiry via our contact page for a quote.<\/p>"}},"item_LYQELD":{"type":"item","settings":{"title":"How long will it take to get my order?","content":"<p>Orders usually take 3-5 business days to arrive UK-wide depending on the size of the unit. Please see our full shipping terms on the link at the bottom of the page.<\/p>"}},"item_Na9Hgm":{"type":"item","settings":{"title":"Any questions?","content":"<p>You can contact us through our contact page! We will be happy to assist you.<\/p>"}}},"block_order":["item_KMmeMN","item_LYQELD","item_Na9Hgm"],"settings":{"full_width":true,"subheading":"","title":"Further Support","content":"<p>Orders received before 12pm will be dispatched the same day.<\/p>","team_avatar_width":160,"support_hours":"Our customer support is available Monday to Friday: 8.30am-5pm. Or ask our Guide 24h a day.","answer_time":"Average answer time: 10h","button_text":"","button_url":"","text_position":"end","background":"#231f25","background_gradient":"","text_color":"#f7f7f7","heading_color":"","heading_gradient":"","button_background":"#f7f7f7","button_text_color":"","accordion_background":"#f7f7f7","accordion_text_color":"#231f25"}},"collection_list_XqMjr4":{"type":"collection-list","blocks":{"collection_xmakkF":{"type":"collection","settings":{"collection":"peak","subheading":"","title":"","url":"","heading_tag":"h2","text_position":"place-self-center text-center","text_color":"#ffffff","overlay_color":"#000000","overlay_opacity":30}},"collection_ENxbYx":{"type":"collection","settings":{"collection":"base","subheading":"","title":"","url":"","heading_tag":"h2","text_position":"place-self-center text-center","text_color":"#ffffff","overlay_color":"#000000","overlay_opacity":30}},"collection_WTCmnq":{"type":"collection","settings":{"collection":"pro","subheading":"","title":"","url":"","heading_tag":"h2","text_position":"place-self-center text-center","text_color":"#ffffff","overlay_color":"#000000","overlay_opacity":30}}},"block_order":["collection_xmakkF","collection_ENxbYx","collection_WTCmnq"],"settings":{"full_width":true,"stack_collections":true,"collections_per_row":3,"show_progress_bar":false,"subheading":"","title":"Explore Our Ranges","content":"","link_url":"","link_text":"View all","background":"","background_gradient":"","text_color":"","heading_color":"","heading_gradient":"linear-gradient(180deg, rgba(35, 31, 37, 1) 55%, rgba(28, 160, 121, 1) 82%)"}}},"order":["banner","text_with_icons_MjeRC4","main","video_WPjTrq","multi_column_XVBM7T","media_with_text_NwjEJn","text_with_icons_JHid8z","multi_column_gcJana","press_mcg9zr","faq_bMQA3m","collection_list_XqMjr4"]}
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "banner": {
+      "type": "collection-banner",
+      "settings": {
+        "full_width": true,
+        "allow_transparent_header": true,
+        "enable_parallax": false,
+        "show_collection_title": true,
+        "show_collection_description": true,
+        "show_collection_image": true,
+        "collection_title_size": "h0",
+        "image_size": "md",
+        "image": "{{ collection.image }}",
+        "mobile_text_position": "place-self-center text-center",
+        "desktop_text_position": "sm:place-self-center sm:text-center",
+        "featured_product": "",
+        "featured_product_heading": "",
+        "text_color": "#ffffff",
+        "overlay_color": "#231f25",
+        "overlay_opacity": 69
+      }
+    },
+    "text_with_icons_MjeRC4": {
+      "type": "text-with-icons",
+      "blocks": {
+        "item_PNCCd4": {
+          "type": "item",
+          "repeater": "{{ collection.metafields.custom.range_benefits.value }}",
+          "settings": {
+            "icon": "picto-money",
+            "custom_icon": "{{ block.repeater.icon.value }}",
+            "mobile_icon_width": 24,
+            "icon_width": 32,
+            "icon_background_type": "none",
+            "icon_background": "",
+            "icon_color": "#25c293",
+            "title": "{{ block.repeater.heading.value }}",
+            "content": "<p>{{ block.repeater.paragraph | metafield_tag }}</p>"
+          }
+        }
+      },
+      "block_order": [
+        "item_PNCCd4"
+      ],
+      "custom_css": [
+        ".section-full {padding-top: 2rem; padding-bottom: 2rem;}"
+      ],
+      "settings": {
+        "full_width": true,
+        "stack_on_mobile": false,
+        "title": "",
+        "heading_tag": "h6",
+        "text_alignment": "center",
+        "icon_spacing": "small",
+        "background": "",
+        "background_gradient": "",
+        "text_color": ""
+      }
+    },
+    "main": {
+      "type": "main-collection",
+      "settings": {
+        "products_per_page": 24,
+        "products_per_row_mobile": "1",
+        "products_per_row_desktop": 3,
+        "filter_layout": "sidebar",
+        "show_sort_by": false,
+        "show_filters": false,
+        "show_filter_group_name": false,
+        "show_filter_values_count": true,
+        "open_first_filter_group": false
+      }
+    },
+    "video_WPjTrq": {
+      "type": "video",
+      "blocks": {
+        "play_JTRgNH": {
+          "type": "play",
+          "settings": {}
+        },
+        "heading_peKHdx": {
+          "type": "heading",
+          "settings": {
+            "text": "Video",
+            "heading_tag": "h1"
+          }
+        }
+      },
+      "block_order": [
+        "play_JTRgNH",
+        "heading_peKHdx"
+      ],
+      "settings": {
+        "full_width": false,
+        "allow_transparent_header": false,
+        "autoplay": false,
+        "video_size": "md",
+        "external_video_url": "https://youtu.be/0zs57QyDA9s",
+        "text_color": "#ffffff",
+        "overlay_color": "#000000",
+        "overlay_opacity": 30
+      }
+    },
+    "multi_column_XVBM7T": {
+      "type": "multi-column",
+      "blocks": {
+        "item_Jxtfkj": {
+          "type": "item",
+          "repeater": "{{ collection.metafields.custom.range_usecases.value }}",
+          "settings": {
+            "image": "{{ block.repeater.image.value }}",
+            "column_size": "3",
+            "title": "{{ block.repeater.text.value }}",
+            "heading_tag": "h4",
+            "content": "<p>{{ block.repeater.paragraph | metafield_tag }}</p>",
+            "link_url": "",
+            "link_text": "",
+            "link_style": "link"
+          }
+        }
+      },
+      "block_order": [
+        "item_Jxtfkj"
+      ],
+      "custom_css": [
+        "img {width: 100%; margin-right: auto;}",
+        ".section-header {width: 100%; grid-template-columns: none;}"
+      ],
+      "settings": {
+        "full_width": true,
+        "stack_on_mobile": true,
+        "gap": "medium",
+        "text_alignment": "start",
+        "subheading": "",
+        "title": "The power you need, where you need it.",
+        "content": "",
+        "background": "rgba(0,0,0,0)",
+        "background_gradient": "",
+        "text_color": "#231f25"
+      }
+    },
+    "media_with_text_NwjEJn": {
+      "type": "media-with-text",
+      "blocks": {
+        "image_D6kCN4": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/Battery.png",
+            "media_width": 40,
+            "media_position": "end",
+            "text_position": "place-self-center-start text-start",
+            "icon": "none",
+            "icon_width": 48,
+            "subheading": "",
+            "title": "Mindful of our Planet",
+            "content": "<h4>Our products use a specific cell chemistry that is less harmful to the environment and safer during use.</h4><p>Lithium Iron Phosphate (LFP) batteries are often viewed positively for being environmental and safer compared to other lithium-ion batteries. Unlike other types, these do not contain heavy metals such as cobalt, which is commonly mined using environmentally harmful methods. Furthermore, the raw materials used in LFP batteries are more abundant and cause less harmful emissions when manufactured.</p>",
+            "link_text": "",
+            "link_url": "",
+            "background": "rgba(0,0,0,0)",
+            "background_gradient": "",
+            "text_color": "#231f25",
+            "text_gradient": "linear-gradient(180deg, rgba(35, 31, 37, 1) 55%, rgba(28, 160, 121, 1) 82%)",
+            "button_background": "",
+            "button_text_color": ""
+          }
+        }
+      },
+      "block_order": [
+        "image_D6kCN4"
+      ],
+      "custom_css": [
+        ".media-with-text__media > * {object-fit: contain;}",
+        "@media screen and (min-width: 767px) {.media-with-text__content {padding-left: 0rem; padding-right: 8rem; padding-bottom: 0rem; }}",
+        "@media screen and (max-width: 767px) {.media-with-text__content {padding-left: 0rem; padding-right: 0rem; padding-bottom: 0rem; padding-top: 2rem; }}",
+        ".section-full {padding-bottom: 1rem; padding-top: 2rem;}",
+        ".section-full {background-color: #efefef;}"
+      ],
+      "settings": {
+        "full_width": false,
+        "spacing": "none"
+      }
+    },
+    "text_with_icons_JHid8z": {
+      "type": "text-with-icons",
+      "blocks": {
+        "item_VFTmnQ": {
+          "type": "item",
+          "settings": {
+            "icon": "picto-coupon",
+            "mobile_icon_width": 24,
+            "icon_width": 32,
+            "icon_background_type": "none",
+            "icon_background": "",
+            "icon_color": "#25c293",
+            "title": "",
+            "content": "<p>🦶The carbon footprint of manufacturing these batteries is estimated to be<strong>18% lower than that of other lithium-ion batteries.</strong></p>"
+          }
+        },
+        "item_HWYWtg": {
+          "type": "item",
+          "settings": {
+            "icon": "picto-coupon",
+            "mobile_icon_width": 24,
+            "icon_width": 32,
+            "icon_background_type": "none",
+            "icon_background": "",
+            "icon_color": "#25c293",
+            "title": "",
+            "content": "<p>🔋 The cells have <strong>a longer lifespan </strong>compared to other lithium-ion chemistries. This means they need to be replaced less frequently, <strong>reducing overall waste. </strong></p>"
+          }
+        },
+        "item_gFjV7C": {
+          "type": "item",
+          "settings": {
+            "icon": "picto-coupon",
+            "mobile_icon_width": 24,
+            "icon_width": 32,
+            "icon_background_type": "none",
+            "icon_background": "",
+            "icon_color": "#25c293",
+            "title": "",
+            "content": "<p>🪫 LFP batteries are <strong>more stable </strong>under extreme conditions such as overcharging, short-circuiting, or physical damage. </p>"
+          }
+        },
+        "item_VibhXh": {
+          "type": "item",
+          "settings": {
+            "icon": "picto-coupon",
+            "mobile_icon_width": 24,
+            "icon_width": 32,
+            "icon_background_type": "none",
+            "icon_background": "",
+            "icon_color": "#25c293",
+            "title": "",
+            "content": "<p>♻️ <strong>Relatively easy to recycle </strong>compared to other lithium-ion chemistries due to their simpler chemical composition.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "item_VFTmnQ",
+        "item_HWYWtg",
+        "item_gFjV7C",
+        "item_VibhXh"
+      ],
+      "custom_css": [
+        ".section-full {padding-top: 0rem;}",
+        ".icon {display: none;}",
+        ".text-with-icons {text-align: left;}",
+        "@media screen and (min-width: 797px) {.text-with-icons__list {row-gap: 0rem; }}"
+      ],
+      "settings": {
+        "full_width": true,
+        "stack_on_mobile": true,
+        "title": "",
+        "heading_tag": "h5",
+        "text_alignment": "start",
+        "icon_spacing": "medium",
+        "background": "#efefef",
+        "background_gradient": "",
+        "text_color": "#3f4345"
+      }
+    },
+    "multi_column_gcJana": {
+      "type": "multi-column",
+      "blocks": {
+        "item_9Ra6Aj": {
+          "type": "item",
+          "settings": {
+            "image": "shopify://shop_images/Honest.png",
+            "column_size": "3",
+            "title": "",
+            "heading_tag": "h4",
+            "content": "<p>We believe in being honest with people and we will always seek to share useful knowledge with our customers, allowing them to make informed decisions before purchasing  our products and to use them to the best of their capabilities.</p>",
+            "link_url": "",
+            "link_text": "",
+            "link_style": "link"
+          }
+        },
+        "item_t4VHLc": {
+          "type": "item",
+          "settings": {
+            "image": "shopify://shop_images/5-year-warranty.png",
+            "column_size": "3",
+            "title": "",
+            "heading_tag": "h4",
+            "content": "<p>We understand the importance of quality in our products. We test our products thoroughly before we market them and offer a 5 year warranty for your peace of mind.</p><p>Our products are all <strong>fully UK compliant and built with safety in mind. </strong></p>",
+            "link_url": "",
+            "link_text": "",
+            "link_style": "link"
+          }
+        },
+        "item_XeX4hB": {
+          "type": "item",
+          "settings": {
+            "image": "shopify://shop_images/Customer_Service.png",
+            "column_size": "3",
+            "title": "",
+            "heading_tag": "h4",
+            "content": "<p>Our UK-based customer service is not just a support line; it's a gateway to reliable, and helpful assistance, ensuring that you always have the guidance you need, when you need it. </p>",
+            "link_url": "",
+            "link_text": "",
+            "link_style": "link"
+          }
+        }
+      },
+      "block_order": [
+        "item_9Ra6Aj",
+        "item_t4VHLc",
+        "item_XeX4hB"
+      ],
+      "custom_css": [
+        ".section-full {background-image: url(https://cdn.shopify.com/s/files/1/0641/4290/1439/files/Peak.png?v=1711023363); background-position: 100% 120%; background-size: 100% 60%; background-repeat: no-repeat; background-color: #394042;}",
+        "@media screen and (max-width: 767px) {.section-full {background-position: 100% 100%; background-size: 100%; background-repeat: no-repeat; }}",
+        ".rounded {width: 50%; margin-left: auto; margin-right: auto;}",
+        ".multi-column__item {gap: 0rem;}"
+      ],
+      "settings": {
+        "full_width": true,
+        "stack_on_mobile": true,
+        "gap": "medium",
+        "text_alignment": "center",
+        "subheading": "",
+        "title": "Why Choose Sherpa?",
+        "content": "",
+        "background": "",
+        "background_gradient": "linear-gradient(180deg, rgba(57, 64, 66, 1), rgba(79, 89, 89, 1) 100%)",
+        "text_color": "#f7f7f7"
+      }
+    },
+    "press_mcg9zr": {
+      "type": "press",
+      "blocks": {
+        "quote_9q4bPw": {
+          "type": "quote",
+          "settings": {
+            "logo_width": 100,
+            "author": "",
+            "content": "Leave a review",
+            "show_rating": true,
+            "rating": 4
+          }
+        },
+        "quote_ijUTbq": {
+          "type": "quote",
+          "settings": {
+            "logo_width": 100,
+            "author": "",
+            "content": "Leave a review",
+            "show_rating": true,
+            "rating": 4
+          }
+        },
+        "quote_FWJrTV": {
+          "type": "quote",
+          "settings": {
+            "logo_width": 100,
+            "author": "",
+            "content": "Leave a review",
+            "show_rating": true,
+            "rating": 4
+          }
+        }
+      },
+      "block_order": [
+        "quote_9q4bPw",
+        "quote_ijUTbq",
+        "quote_FWJrTV"
+      ],
+      "settings": {
+        "full_width": true,
+        "content_size": "medium",
+        "background": "",
+        "background_gradient": "",
+        "text_color": "",
+        "heading_color": "",
+        "heading_gradient": "linear-gradient(180deg, rgba(35, 31, 37, 1) 55%, rgba(28, 160, 121, 1) 82%)",
+        "logo_item_background": "",
+        "logo_item_border": ""
+      }
+    },
+    "faq_bMQA3m": {
+      "type": "faq",
+      "blocks": {
+        "item_KMmeMN": {
+          "type": "item",
+          "settings": {
+            "title": "Do you ship overseas?",
+            "content": "<p>Yes, please make an enquiry via our contact page for a quote.</p>"
+          }
+        },
+        "item_LYQELD": {
+          "type": "item",
+          "settings": {
+            "title": "How long will it take to get my order?",
+            "content": "<p>Orders usually take 3-5 business days to arrive UK-wide depending on the size of the unit. Please see our full shipping terms on the link at the bottom of the page.</p>"
+          }
+        },
+        "item_Na9Hgm": {
+          "type": "item",
+          "settings": {
+            "title": "Any questions?",
+            "content": "<p>You can contact us through our contact page! We will be happy to assist you.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "item_KMmeMN",
+        "item_LYQELD",
+        "item_Na9Hgm"
+      ],
+      "settings": {
+        "full_width": true,
+        "subheading": "",
+        "title": "Further Support",
+        "content": "<p>Orders received before 12pm will be dispatched the same day.</p>",
+        "team_avatar_width": 160,
+        "support_hours": "Our customer support is available Monday to Friday: 8.30am-5pm. Or ask our Guide 24h a day.",
+        "answer_time": "Average answer time: 10h",
+        "button_text": "",
+        "button_url": "",
+        "text_position": "end",
+        "background": "#231f25",
+        "background_gradient": "",
+        "text_color": "#f7f7f7",
+        "heading_color": "",
+        "heading_gradient": "",
+        "button_background": "#f7f7f7",
+        "button_text_color": "",
+        "accordion_background": "#f7f7f7",
+        "accordion_text_color": "#231f25"
+      }
+    },
+    "collection_list_XqMjr4": {
+      "type": "collection-list",
+      "blocks": {
+        "collection_xmakkF": {
+          "type": "collection",
+          "settings": {
+            "collection": "peak-portable-power-station",
+            "subheading": "",
+            "title": "",
+            "url": "",
+            "heading_tag": "h2",
+            "text_position": "place-self-center text-center",
+            "text_color": "#ffffff",
+            "overlay_color": "#000000",
+            "overlay_opacity": 30
+          }
+        },
+        "collection_ENxbYx": {
+          "type": "collection",
+          "settings": {
+            "collection": "base",
+            "subheading": "",
+            "title": "",
+            "url": "",
+            "heading_tag": "h2",
+            "text_position": "place-self-center text-center",
+            "text_color": "#ffffff",
+            "overlay_color": "#000000",
+            "overlay_opacity": 30
+          }
+        },
+        "collection_WTCmnq": {
+          "type": "collection",
+          "settings": {
+            "collection": "pro",
+            "subheading": "",
+            "title": "",
+            "url": "",
+            "heading_tag": "h2",
+            "text_position": "place-self-center text-center",
+            "text_color": "#ffffff",
+            "overlay_color": "#000000",
+            "overlay_opacity": 30
+          }
+        }
+      },
+      "block_order": [
+        "collection_xmakkF",
+        "collection_ENxbYx",
+        "collection_WTCmnq"
+      ],
+      "settings": {
+        "full_width": true,
+        "stack_collections": true,
+        "collections_per_row": 3,
+        "show_progress_bar": false,
+        "subheading": "",
+        "title": "Explore Our Ranges",
+        "content": "",
+        "link_url": "",
+        "link_text": "View all",
+        "background": "",
+        "background_gradient": "",
+        "text_color": "",
+        "heading_color": "",
+        "heading_gradient": "linear-gradient(180deg, rgba(35, 31, 37, 1) 55%, rgba(28, 160, 121, 1) 82%)"
+      }
+    }
+  },
+  "order": [
+    "banner",
+    "text_with_icons_MjeRC4",
+    "main",
+    "video_WPjTrq",
+    "multi_column_XVBM7T",
+    "media_with_text_NwjEJn",
+    "text_with_icons_JHid8z",
+    "multi_column_gcJana",
+    "press_mcg9zr",
+    "faq_bMQA3m",
+    "collection_list_XqMjr4"
+  ]
+}
