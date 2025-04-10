@@ -1,1 +1,477 @@
-{"sections":{"main":{"type":"main-page","disabled":true,"settings":{"content_width":"80ch"}},"image_with_text_overlay_gT6QRA":{"type":"image-with-text-overlay","blocks":{"heading_kgHwRj":{"type":"heading","settings":{"range_text":"About us and our mission.","text":"","heading_tag":"h1","heading_gradient":"linear-gradient(180deg, rgba(37, 194, 147, 1), rgba(247, 247, 247, 1) 100%)"}}},"block_order":["heading_kgHwRj"],"settings":{"full_width":true,"allow_transparent_header":true,"enable_parallax":false,"image_size":"sm","image":"shopify:\/\/shop_images\/Peak_a00281de-5293-4b66-8424-9366c979ed4a.jpg","mobile_text_position":"place-self-center-start text-start","desktop_text_position":"sm:place-self-center-start sm:text-start","text_color":"#ffffff","overlay_color":"#000000","overlay_opacity":30}},"text_with_icons_Y6jGHC":{"type":"text-with-icons","blocks":{"item_3rbwRH":{"type":"item","settings":{"icon":"picto-coupon","custom_icon":"shopify:\/\/shop_images\/Signature_graphic_AS.png","mobile_icon_width":84,"icon_width":112,"icon_background_type":"none","icon_background":"","icon_color":"","title":"Alin | Managing Director","content":"<p>17 years' experience in business, management and operational roles with a degree in  Finance and Accountancy. A keen eye for detail and a highly organised mind.<\/p>"}},"item_LgDdPa":{"type":"item","settings":{"icon":"picto-coupon","custom_icon":"shopify:\/\/shop_images\/Gavin.png","mobile_icon_width":84,"icon_width":112,"icon_background_type":"none","icon_background":"","icon_color":"","title":"Gavin | Technical Director","content":"<p>19 years of technical experience and a deep understanding of the characteristics of LFP battery technology. Has a keen interest in renewable energy and holds a BSc in Environmental Science and IEMA in Environment Management.<\/p>"}}},"block_order":["item_3rbwRH","item_LgDdPa"],"settings":{"full_width":true,"stack_on_mobile":true,"title":"","heading_tag":"h5","text_alignment":"start","icon_spacing":"small","background":"","background_gradient":"","text_color":""}},"rich_text_nKVh7z":{"type":"rich-text","blocks":{"heading_wd3Fep":{"type":"heading","settings":{"text":"We aspire to be a leading force in energy ownership","heading_tag":"h3","text_color":"","gradient":""}},"richtext_ym3B7i":{"type":"richtext","settings":{"content":"<p>Setting high standards for product performance and compatibility to offer a wider application and freedom to work and play while respecting our environment. Be free from grid reliance and start building the way of life you want. <br\/><br\/><strong>Sherpa was founded with people in mind<\/strong>, aiming to empower individuals through the delivery of high-quality, innovative power solutions. <br\/><br\/>We have observed the way the portable power market has evolved in recent years. With a growing demand for power and <strong>energy costs remaining high<\/strong>, there is a widespread desire for many to adopt a more energy efficient lifestyle, we have witnessed a substantial surge in the utilisation of portable power products in residential and commercial markets.<\/p><p>Aside from being a leisure solution, battery storage is gaining popularity as a practical means for individuals and businesses to <strong>save money<\/strong> and embrace energy ownership. <\/p><p>We believe in the value of versatile power solutions that<strong> eliminate the need for costly professional installations<\/strong>, and we are committed to reducing environmental impacts.<\/p><p><strong>We offer reliable customer service and expertise, along with affordable, sustainable solutions which are accessible to everyone.<\/strong><\/p>"}},"richtext_6GPUAz":{"type":"richtext","settings":{"content":"<p>Sherpa Power are proud to be partnered with<\/p>"}},"liquid_qdqAqM":{"type":"liquid","settings":{"liquid":"<a href=\"https:\/\/sunvault.co.uk\/\">Sunvault Energy Solutions<\/a>"}}},"block_order":["heading_wd3Fep","richtext_ym3B7i","richtext_6GPUAz","liquid_qdqAqM"],"settings":{"full_width":true,"content_width":"small","text_position":"start","background":"","background_gradient":"","text_color":""}},"text_with_icons_zNdwDf":{"type":"text-with-icons","blocks":{"item_YVjGfk":{"type":"item","settings":{"icon":"picto-coupon","custom_icon":"shopify:\/\/shop_images\/Quality_7c81c206-5a80-46f5-b43c-538e890c754d.png","mobile_icon_width":40,"icon_width":52,"icon_background_type":"none","icon_background":"","icon_color":"","title":"Quality","content":"<p>We understand the importance of quality in our products. We test our products thoroughly before we market them and offer a 5 year warranty for your peace of mind.<\/p><p>Our products are all fully UK compliant and built with safety in mind. <\/p>"}},"item_K9NzkX":{"type":"item","settings":{"icon":"picto-coupon","custom_icon":"shopify:\/\/shop_images\/Expertise_be9a741d-56a8-4835-b71e-6e8b1b966a4f.png","mobile_icon_width":40,"icon_width":52,"icon_background_type":"none","icon_background":"","icon_color":"","title":"Expertise","content":"<p>Our collective knowledge and experience allows us to offer clear and unbiased guidance to our customers. We work to expand our knowledge so we can provide our customers with the best reliable support, be it pre-sale, after sale or technical advice. <\/p>"}},"item_myFNTL":{"type":"item","settings":{"icon":"picto-coupon","custom_icon":"shopify:\/\/shop_images\/Innovation_3f2cb9ec-e4c9-415e-83ac-a47f6d070e0d.png","mobile_icon_width":40,"icon_width":52,"icon_background_type":"none","icon_background":"","icon_color":"","title":"Innovation","content":"<p>We are always looking to offer a more tailored solution to our customers and have the resources to get products designed to their specific applications.  Whatever your business might need, we can work on the solution with you.<\/p>"}}},"block_order":["item_YVjGfk","item_K9NzkX","item_myFNTL"],"settings":{"full_width":true,"stack_on_mobile":false,"title":"Our Values","heading_tag":"h5","text_alignment":"start","icon_spacing":"small","background":"#231f25","background_gradient":"","text_color":"#f7f7f7"}},"text_with_icons_pX6WBM":{"type":"text-with-icons","blocks":{"item_VWMgDD":{"type":"item","settings":{"icon":"picto-coupon","custom_icon":"shopify:\/\/shop_images\/Affordability_96008aba-77b9-4bd8-b22b-f27179581117.png","mobile_icon_width":40,"icon_width":52,"icon_background_type":"none","icon_background":"","icon_color":"","title":"Affordability","content":"<p>Our collective knowledge and experience allows us to offer clear and unbiased guidance to our customers. We work to expand our knowledge so we can provide our customers with the best reliable support, be it pre-sale, after sale or technical advice. <\/p>"}},"item_r4jkgJ":{"type":"item","settings":{"icon":"picto-coupon","custom_icon":"shopify:\/\/shop_images\/Honesty_68d511e1-a921-4a6c-8300-9898c8c32529.png","mobile_icon_width":40,"icon_width":52,"icon_background_type":"none","icon_background":"","icon_color":"","title":"Honesty","content":"<p>We believe in being honest with people and we will always seek to share useful knowledge with our customers, allowing them to make informed decisions before purchasing  our products and to use them to the best of their capabilities.<\/p>"}},"item_NbMjzj":{"type":"item","settings":{"icon":"picto-coupon","custom_icon":"shopify:\/\/shop_images\/Empowering_People_5552c45a-4278-4d8f-91c3-cc1828a375fe.png","mobile_icon_width":40,"icon_width":52,"icon_background_type":"none","icon_background":"","icon_color":"","title":"Empowering People","content":"<p>We want to provide our customers with the necessary resources to own their energy…<\/p>"}}},"block_order":["item_VWMgDD","item_r4jkgJ","item_NbMjzj"],"custom_css":[".section-full {padding-top: 0rem;}"],"settings":{"full_width":true,"stack_on_mobile":false,"title":"","heading_tag":"h5","text_alignment":"start","icon_spacing":"small","background":"#231f25","background_gradient":"linear-gradient(180deg, rgba(35, 31, 37, 1) 19%, rgba(37, 194, 147, 1) 100%)","text_color":"#f7f7f7"}},"images_with_text_scrolling_Py9qMT":{"type":"images-with-text-scrolling","blocks":{"item_gk8Pjp":{"type":"item","settings":{"image":"shopify:\/\/shop_images\/Camping_1.jpg","icon":"none","icon_width":48,"title":"Experties","content":"<p>Explain how you ended up creating sherpa - <\/p>"}},"item_gLDFA7":{"type":"item","settings":{"icon":"none","icon_width":48,"title":"Talk about the products, the quality of them etc compared to competition","content":"<p>Big up your product range and how they are designed to service different applications perfectly. Specs suited for each use case. <\/p>"}}},"block_order":["item_gk8Pjp","item_gLDFA7"],"disabled":true,"settings":{"full_width":true,"stack_on_mobile":false,"show_counter":true,"desktop_image_effect":"reveal","image_position":"end","background":"","background_gradient":"","text_color":"","heading_color":"","heading_gradient":""}},"revealed_image_on_scroll_R86NKc":{"type":"revealed-image-on-scroll","settings":{"image":"shopify:\/\/shop_images\/Hero_Image_Showing_The_Range.jpg","mobile_image":"shopify:\/\/shop_images\/Hero_Image_Mobile_1_1.jpg","subheading":"","title":"Meet The Sherpa Range","background":"","text_color_inside":"#ffffff","text_color_outside":"#000000"}},"collection_list_GNtmzh":{"type":"collection-list","blocks":{"collection_7JY66t":{"type":"collection","settings":{"collection":"pro","subheading":"","title":"","url":"","heading_tag":"h2","text_position":"place-self-center text-center","text_color":"#ffffff","overlay_color":"#000000","overlay_opacity":30}},"collection_eqrywR":{"type":"collection","settings":{"collection":"base","subheading":"","title":"","url":"","heading_tag":"h2","text_position":"place-self-center text-center","text_color":"#ffffff","overlay_color":"#000000","overlay_opacity":30}},"collection_9rXQjE":{"type":"collection","settings":{"collection":"peak","subheading":"","title":"","url":"","heading_tag":"h2","text_position":"place-self-center text-center","text_color":"#ffffff","overlay_color":"#000000","overlay_opacity":30}}},"block_order":["collection_7JY66t","collection_eqrywR","collection_9rXQjE"],"settings":{"full_width":true,"stack_collections":true,"collections_per_row":3,"show_progress_bar":false,"subheading":"","title":"","content":"","link_url":"","link_text":"","background":"","background_gradient":"","text_color":"","heading_color":"","heading_gradient":""}},"testimonials_ReBWKB":{"type":"testimonials","blocks":{"testimonial_bicGDy":{"type":"testimonial","settings":{"round_avatar":true,"show_rating":true,"rating":4,"author":"","title":"Testimonial","content":"<p>Share what your customers are saying about your products, customer service or shipping rates.<\/p>"}},"testimonial_QmQTpK":{"type":"testimonial","settings":{"round_avatar":true,"show_rating":true,"rating":4,"author":"John S.","title":"Testimonial 1","content":"<p>Share what your customers are saying about your products, customer service or shipping rates.<\/p>"}},"testimonial_X84H4G":{"type":"testimonial","settings":{"round_avatar":true,"show_rating":true,"rating":5,"author":"Mary U.","title":"Testimonial 2","content":"<p>Share what your customers are saying about your products, customer service or shipping rates.<\/p>"}},"testimonial_FEbtbf":{"type":"testimonial","settings":{"round_avatar":true,"show_rating":true,"rating":4,"author":"Joshua A.","title":"Testimonial 3","content":"<p>Share what your customers are saying about your products, customer service or shipping rates.<\/p>"}}},"block_order":["testimonial_bicGDy","testimonial_QmQTpK","testimonial_X84H4G","testimonial_FEbtbf"],"disabled":true,"settings":{"full_width":true,"stack_testimonials":false,"subheading":"","title":"We love to hear from customers","content":"","link_url":"","link_text":"","background":"","background_gradient":"","text_color":"","heading_color":"","heading_gradient":"","testimonial_card_background":"","testimonial_card_text_color":""}}},"order":["main","image_with_text_overlay_gT6QRA","text_with_icons_Y6jGHC","rich_text_nKVh7z","text_with_icons_zNdwDf","text_with_icons_pX6WBM","images_with_text_scrolling_Py9qMT","revealed_image_on_scroll_R86NKc","collection_list_GNtmzh","testimonials_ReBWKB"]}
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-page",
+      "disabled": true,
+      "settings": {
+        "content_width": "80ch"
+      }
+    },
+    "image_with_text_overlay_gT6QRA": {
+      "type": "image-with-text-overlay",
+      "blocks": {
+        "heading_kgHwRj": {
+          "type": "heading",
+          "settings": {
+            "range_text": "About us and our mission.",
+            "text": "",
+            "heading_tag": "h1",
+            "heading_gradient": "linear-gradient(180deg, rgba(37, 194, 147, 1), rgba(247, 247, 247, 1) 100%)"
+          }
+        }
+      },
+      "block_order": [
+        "heading_kgHwRj"
+      ],
+      "settings": {
+        "full_width": true,
+        "allow_transparent_header": true,
+        "enable_parallax": false,
+        "image_size": "sm",
+        "image": "shopify://shop_images/Peak_a00281de-5293-4b66-8424-9366c979ed4a.jpg",
+        "mobile_text_position": "place-self-center-start text-start",
+        "desktop_text_position": "sm:place-self-center-start sm:text-start",
+        "text_color": "#ffffff",
+        "overlay_color": "#000000",
+        "overlay_opacity": 30
+      }
+    },
+    "text_with_icons_Y6jGHC": {
+      "type": "text-with-icons",
+      "blocks": {
+        "item_3rbwRH": {
+          "type": "item",
+          "settings": {
+            "icon": "picto-coupon",
+            "custom_icon": "shopify://shop_images/Signature_graphic_AS.png",
+            "mobile_icon_width": 84,
+            "icon_width": 112,
+            "icon_background_type": "none",
+            "icon_background": "",
+            "icon_color": "",
+            "title": "Alin | Managing Director",
+            "content": "<p>17 years' experience in business, management and operational roles with a degree in  Finance and Accountancy. A keen eye for detail and a highly organised mind.</p>"
+          }
+        },
+        "item_LgDdPa": {
+          "type": "item",
+          "settings": {
+            "icon": "picto-coupon",
+            "custom_icon": "shopify://shop_images/Gavin.png",
+            "mobile_icon_width": 84,
+            "icon_width": 112,
+            "icon_background_type": "none",
+            "icon_background": "",
+            "icon_color": "",
+            "title": "Gavin | Technical Director",
+            "content": "<p>19 years of technical experience and a deep understanding of the characteristics of LFP battery technology. Has a keen interest in renewable energy and holds a BSc in Environmental Science and IEMA in Environment Management.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "item_3rbwRH",
+        "item_LgDdPa"
+      ],
+      "settings": {
+        "full_width": true,
+        "stack_on_mobile": true,
+        "title": "",
+        "heading_tag": "h5",
+        "text_alignment": "start",
+        "icon_spacing": "small",
+        "background": "",
+        "background_gradient": "",
+        "text_color": ""
+      }
+    },
+    "rich_text_nKVh7z": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_wd3Fep": {
+          "type": "heading",
+          "settings": {
+            "text": "We aspire to be a leading force in energy ownership",
+            "heading_tag": "h3",
+            "text_color": "",
+            "gradient": ""
+          }
+        },
+        "richtext_ym3B7i": {
+          "type": "richtext",
+          "settings": {
+            "content": "<p>Setting high standards for product performance and compatibility to offer a wider application and freedom to work and play while respecting our environment. Be free from grid reliance and start building the way of life you want. <br/><br/><strong>Sherpa was founded with people in mind</strong>, aiming to empower individuals through the delivery of high-quality, innovative power solutions. <br/><br/>We have observed the way the portable power market has evolved in recent years. With a growing demand for power and <strong>energy costs remaining high</strong>, there is a widespread desire for many to adopt a more energy efficient lifestyle, we have witnessed a substantial surge in the utilisation of portable power products in residential and commercial markets.</p><p>Aside from being a leisure solution, battery storage is gaining popularity as a practical means for individuals and businesses to <strong>save money</strong> and embrace energy ownership. </p><p>We believe in the value of versatile power solutions that<strong> eliminate the need for costly professional installations</strong>, and we are committed to reducing environmental impacts.</p><p><strong>We offer reliable customer service and expertise, along with affordable, sustainable solutions which are accessible to everyone.</strong></p>"
+          }
+        },
+        "richtext_6GPUAz": {
+          "type": "richtext",
+          "settings": {
+            "content": "<p>Sherpa Power are proud to be partnered with</p>"
+          }
+        },
+        "liquid_qdqAqM": {
+          "type": "liquid",
+          "settings": {
+            "liquid": "<a href=\"https://sunvault.co.uk/\">Sunvault Energy Solutions</a>"
+          }
+        }
+      },
+      "block_order": [
+        "heading_wd3Fep",
+        "richtext_ym3B7i",
+        "richtext_6GPUAz",
+        "liquid_qdqAqM"
+      ],
+      "settings": {
+        "full_width": true,
+        "content_width": "small",
+        "text_position": "start",
+        "background": "",
+        "background_gradient": "",
+        "text_color": ""
+      }
+    },
+    "text_with_icons_zNdwDf": {
+      "type": "text-with-icons",
+      "blocks": {
+        "item_YVjGfk": {
+          "type": "item",
+          "settings": {
+            "icon": "picto-coupon",
+            "custom_icon": "shopify://shop_images/Quality_7c81c206-5a80-46f5-b43c-538e890c754d.png",
+            "mobile_icon_width": 40,
+            "icon_width": 52,
+            "icon_background_type": "none",
+            "icon_background": "",
+            "icon_color": "",
+            "title": "Quality",
+            "content": "<p>We understand the importance of quality in our products. We test our products thoroughly before we market them and offer a 5 year warranty for your peace of mind.</p><p>Our products are all fully UK compliant and built with safety in mind. </p>"
+          }
+        },
+        "item_K9NzkX": {
+          "type": "item",
+          "settings": {
+            "icon": "picto-coupon",
+            "custom_icon": "shopify://shop_images/Expertise_be9a741d-56a8-4835-b71e-6e8b1b966a4f.png",
+            "mobile_icon_width": 40,
+            "icon_width": 52,
+            "icon_background_type": "none",
+            "icon_background": "",
+            "icon_color": "",
+            "title": "Expertise",
+            "content": "<p>Our collective knowledge and experience allows us to offer clear and unbiased guidance to our customers. We work to expand our knowledge so we can provide our customers with the best reliable support, be it pre-sale, after sale or technical advice. </p>"
+          }
+        },
+        "item_myFNTL": {
+          "type": "item",
+          "settings": {
+            "icon": "picto-coupon",
+            "custom_icon": "shopify://shop_images/Innovation_3f2cb9ec-e4c9-415e-83ac-a47f6d070e0d.png",
+            "mobile_icon_width": 40,
+            "icon_width": 52,
+            "icon_background_type": "none",
+            "icon_background": "",
+            "icon_color": "",
+            "title": "Innovation",
+            "content": "<p>We are always looking to offer a more tailored solution to our customers and have the resources to get products designed to their specific applications.  Whatever your business might need, we can work on the solution with you.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "item_YVjGfk",
+        "item_K9NzkX",
+        "item_myFNTL"
+      ],
+      "settings": {
+        "full_width": true,
+        "stack_on_mobile": false,
+        "title": "Our Values",
+        "heading_tag": "h5",
+        "text_alignment": "start",
+        "icon_spacing": "small",
+        "background": "#231f25",
+        "background_gradient": "",
+        "text_color": "#f7f7f7"
+      }
+    },
+    "text_with_icons_pX6WBM": {
+      "type": "text-with-icons",
+      "blocks": {
+        "item_VWMgDD": {
+          "type": "item",
+          "settings": {
+            "icon": "picto-coupon",
+            "custom_icon": "shopify://shop_images/Affordability_96008aba-77b9-4bd8-b22b-f27179581117.png",
+            "mobile_icon_width": 40,
+            "icon_width": 52,
+            "icon_background_type": "none",
+            "icon_background": "",
+            "icon_color": "",
+            "title": "Affordability",
+            "content": "<p>Our collective knowledge and experience allows us to offer clear and unbiased guidance to our customers. We work to expand our knowledge so we can provide our customers with the best reliable support, be it pre-sale, after sale or technical advice. </p>"
+          }
+        },
+        "item_r4jkgJ": {
+          "type": "item",
+          "settings": {
+            "icon": "picto-coupon",
+            "custom_icon": "shopify://shop_images/Honesty_68d511e1-a921-4a6c-8300-9898c8c32529.png",
+            "mobile_icon_width": 40,
+            "icon_width": 52,
+            "icon_background_type": "none",
+            "icon_background": "",
+            "icon_color": "",
+            "title": "Honesty",
+            "content": "<p>We believe in being honest with people and we will always seek to share useful knowledge with our customers, allowing them to make informed decisions before purchasing  our products and to use them to the best of their capabilities.</p>"
+          }
+        },
+        "item_NbMjzj": {
+          "type": "item",
+          "settings": {
+            "icon": "picto-coupon",
+            "custom_icon": "shopify://shop_images/Empowering_People_5552c45a-4278-4d8f-91c3-cc1828a375fe.png",
+            "mobile_icon_width": 40,
+            "icon_width": 52,
+            "icon_background_type": "none",
+            "icon_background": "",
+            "icon_color": "",
+            "title": "Empowering People",
+            "content": "<p>We want to provide our customers with the necessary resources to own their energy…</p>"
+          }
+        }
+      },
+      "block_order": [
+        "item_VWMgDD",
+        "item_r4jkgJ",
+        "item_NbMjzj"
+      ],
+      "custom_css": [
+        ".section-full {padding-top: 0rem;}"
+      ],
+      "settings": {
+        "full_width": true,
+        "stack_on_mobile": false,
+        "title": "",
+        "heading_tag": "h5",
+        "text_alignment": "start",
+        "icon_spacing": "small",
+        "background": "#231f25",
+        "background_gradient": "linear-gradient(180deg, rgba(35, 31, 37, 1) 19%, rgba(37, 194, 147, 1) 100%)",
+        "text_color": "#f7f7f7"
+      }
+    },
+    "images_with_text_scrolling_Py9qMT": {
+      "type": "images-with-text-scrolling",
+      "blocks": {
+        "item_gk8Pjp": {
+          "type": "item",
+          "settings": {
+            "image": "shopify://shop_images/Camping_1.jpg",
+            "icon": "none",
+            "icon_width": 48,
+            "title": "Experties",
+            "content": "<p>Explain how you ended up creating sherpa - </p>"
+          }
+        },
+        "item_gLDFA7": {
+          "type": "item",
+          "settings": {
+            "icon": "none",
+            "icon_width": 48,
+            "title": "Talk about the products, the quality of them etc compared to competition",
+            "content": "<p>Big up your product range and how they are designed to service different applications perfectly. Specs suited for each use case. </p>"
+          }
+        }
+      },
+      "block_order": [
+        "item_gk8Pjp",
+        "item_gLDFA7"
+      ],
+      "disabled": true,
+      "settings": {
+        "full_width": true,
+        "stack_on_mobile": false,
+        "show_counter": true,
+        "desktop_image_effect": "reveal",
+        "image_position": "end",
+        "background": "",
+        "background_gradient": "",
+        "text_color": "",
+        "heading_color": "",
+        "heading_gradient": ""
+      }
+    },
+    "revealed_image_on_scroll_R86NKc": {
+      "type": "revealed-image-on-scroll",
+      "settings": {
+        "image": "shopify://shop_images/Hero_Image_Showing_The_Range.jpg",
+        "mobile_image": "shopify://shop_images/Hero_Image_Mobile_1_1.jpg",
+        "subheading": "",
+        "title": "Meet The Sherpa Range",
+        "background": "",
+        "text_color_inside": "#ffffff",
+        "text_color_outside": "#000000"
+      }
+    },
+    "collection_list_GNtmzh": {
+      "type": "collection-list",
+      "blocks": {
+        "collection_7JY66t": {
+          "type": "collection",
+          "settings": {
+            "collection": "pro",
+            "subheading": "",
+            "title": "",
+            "url": "",
+            "heading_tag": "h2",
+            "text_position": "place-self-center text-center",
+            "text_color": "#ffffff",
+            "overlay_color": "#000000",
+            "overlay_opacity": 30
+          }
+        },
+        "collection_eqrywR": {
+          "type": "collection",
+          "settings": {
+            "collection": "base",
+            "subheading": "",
+            "title": "",
+            "url": "",
+            "heading_tag": "h2",
+            "text_position": "place-self-center text-center",
+            "text_color": "#ffffff",
+            "overlay_color": "#000000",
+            "overlay_opacity": 30
+          }
+        },
+        "collection_9rXQjE": {
+          "type": "collection",
+          "settings": {
+            "collection": "peak-portable-power-station",
+            "subheading": "",
+            "title": "",
+            "url": "",
+            "heading_tag": "h2",
+            "text_position": "place-self-center text-center",
+            "text_color": "#ffffff",
+            "overlay_color": "#000000",
+            "overlay_opacity": 30
+          }
+        }
+      },
+      "block_order": [
+        "collection_7JY66t",
+        "collection_eqrywR",
+        "collection_9rXQjE"
+      ],
+      "settings": {
+        "full_width": true,
+        "stack_collections": true,
+        "collections_per_row": 3,
+        "show_progress_bar": false,
+        "subheading": "",
+        "title": "",
+        "content": "",
+        "link_url": "",
+        "link_text": "",
+        "background": "",
+        "background_gradient": "",
+        "text_color": "",
+        "heading_color": "",
+        "heading_gradient": ""
+      }
+    },
+    "testimonials_ReBWKB": {
+      "type": "testimonials",
+      "blocks": {
+        "testimonial_bicGDy": {
+          "type": "testimonial",
+          "settings": {
+            "round_avatar": true,
+            "show_rating": true,
+            "rating": 4,
+            "author": "",
+            "title": "Testimonial",
+            "content": "<p>Share what your customers are saying about your products, customer service or shipping rates.</p>"
+          }
+        },
+        "testimonial_QmQTpK": {
+          "type": "testimonial",
+          "settings": {
+            "round_avatar": true,
+            "show_rating": true,
+            "rating": 4,
+            "author": "John S.",
+            "title": "Testimonial 1",
+            "content": "<p>Share what your customers are saying about your products, customer service or shipping rates.</p>"
+          }
+        },
+        "testimonial_X84H4G": {
+          "type": "testimonial",
+          "settings": {
+            "round_avatar": true,
+            "show_rating": true,
+            "rating": 5,
+            "author": "Mary U.",
+            "title": "Testimonial 2",
+            "content": "<p>Share what your customers are saying about your products, customer service or shipping rates.</p>"
+          }
+        },
+        "testimonial_FEbtbf": {
+          "type": "testimonial",
+          "settings": {
+            "round_avatar": true,
+            "show_rating": true,
+            "rating": 4,
+            "author": "Joshua A.",
+            "title": "Testimonial 3",
+            "content": "<p>Share what your customers are saying about your products, customer service or shipping rates.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "testimonial_bicGDy",
+        "testimonial_QmQTpK",
+        "testimonial_X84H4G",
+        "testimonial_FEbtbf"
+      ],
+      "disabled": true,
+      "settings": {
+        "full_width": true,
+        "stack_testimonials": false,
+        "subheading": "",
+        "title": "We love to hear from customers",
+        "content": "",
+        "link_url": "",
+        "link_text": "",
+        "background": "",
+        "background_gradient": "",
+        "text_color": "",
+        "heading_color": "",
+        "heading_gradient": "",
+        "testimonial_card_background": "",
+        "testimonial_card_text_color": ""
+      }
+    }
+  },
+  "order": [
+    "main",
+    "image_with_text_overlay_gT6QRA",
+    "text_with_icons_Y6jGHC",
+    "rich_text_nKVh7z",
+    "text_with_icons_zNdwDf",
+    "text_with_icons_pX6WBM",
+    "images_with_text_scrolling_Py9qMT",
+    "revealed_image_on_scroll_R86NKc",
+    "collection_list_GNtmzh",
+    "testimonials_ReBWKB"
+  ]
+}
