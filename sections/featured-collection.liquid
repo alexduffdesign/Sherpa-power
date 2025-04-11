@@ -35,26 +35,7 @@
 <div {% render 'section-properties' %}>
   <div class="section-stack">
     {%- assign link_url = section.settings.link_url | default: section.settings.collection.url -%}
-    {%- assign collection_heading = section.settings.title -%}
-
-{%- if section.settings.collection.handle == 'peak-portable-power-stations' -%}
-  {%- assign collection_heading = 'PEAK' -%}
-{%- elsif section.settings.collection.handle == 'base-portable-power-stations' -%}
-  {%- assign collection_heading = 'BASE' -%}
-{%- elsif section.settings.collection.handle == 'pro-portable-power-stations' -%}
-  {%- assign collection_heading = 'PRO' -%}
-{%- endif -%}
-
-{%- render 'section-header',
-  subheading: section.settings.subheading,
-  heading: collection_heading,
-  heading_color: section.settings.heading_color,
-  heading_gradient: section.settings.heading_gradient,
-  content: section.settings.content,
-  link_text: section.settings.link_text,
-  link_url: link_url
--%}
-
+    {%- render 'section-header', subheading: section.settings.subheading, heading: section.settings.title, heading_color: section.settings.heading_color, heading_gradient: section.settings.heading_gradient, content: section.settings.content, link_text: section.settings.link_text, link_url: link_url -%}
 
     <div class="{% if section.settings.show_progress_bar %}scrollable-with-controls{% else %}floating-controls-container{% endif %}">
       {%- assign scroll_area_id = 'scroll-area-' | append: section.id -%}
