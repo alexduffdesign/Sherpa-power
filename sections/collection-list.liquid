@@ -70,7 +70,15 @@ LIQUID
                         <p class="subheading">{{ block.settings.subheading | escape }}</p>
                       {%- endif -%}
 
-                      <p class="{{ block.settings.heading_tag }}">{{ block.settings.title | default: collection.title | escape }}</p>
+                      <p class="{{ block.settings.heading_tag }}">
+                        {% case collection.handle %}
+                          {% when 'peak-portable-power-stations' %} PEAK
+                          {% when 'base-portable-power-stations' %} BASE
+                          {% when 'pro-portable-power-stations' %} PRO
+                          {% else %}
+                            {{ block.settings.title | default: collection.title | escape }}
+                        {% endcase %}
+                      </p>
                     </div>
 
                     {%- unless block.settings.text_position contains 'place-self-end' -%}
