@@ -159,11 +159,11 @@ quick buy information in a template, that will be extracted in JS, but ensure it
     "name": "Sherpa Power"
   },
   "offers": {
-    "@type": "Offer",
-    "priceCurrency": "GBP",
-    "price": "{{ product.price | money_without_currency | replace: ',', '' | append: '.00' }}",
-    "availability": "https://schema.org/{% if product.available %}InStock{% else %}OutOfStock{% endif %}",
-    "url": "{{ product.url | absolute_url }}"
+  "@type": "Offer",
+  "priceCurrency": "GBP",
+  "price": "{{ product.price | money_without_currency | replace: ',', '' }}",
+  "availability": "https://schema.org/{% if product.available %}InStock{% else %}OutOfStock{% endif %}",
+  "url": "{{ product.url | absolute_url }}"
   }
 }
 </script>
