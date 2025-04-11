@@ -27,7 +27,7 @@
             "range_text": "",
             "text": "Portable solar and battery storage systems, delivering reliable power",
             "heading_tag": "h6",
-            "heading_gradient": ""
+            "heading_gradient": "radial-gradient(rgba(255, 154, 98, 1), rgba(255, 204, 75, 1) 100%)"
           }
         },
         "richtext_hTRQ9J": {
@@ -57,6 +57,7 @@
       "custom_css": [
         ".prose {max-width: 490px;}",
         ".h3 {margin-top: 0em;}",
+        ".xx-small {color: red;}",
         "@media screen and (max-width: 767px) {.prose {margin-bottom: 2rem; }}"
       ],
       "settings": {
