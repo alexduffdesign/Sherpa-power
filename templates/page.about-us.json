@@ -341,7 +341,7 @@
         "collection_eqrywR": {
           "type": "collection",
           "settings": {
-            "collection": "base-portable-power-station",
+            "collection": "base-portable-power-stations",
             "subheading": "",
             "title": "",
             "url": "",
@@ -355,7 +355,7 @@
         "collection_9rXQjE": {
           "type": "collection",
           "settings": {
-            "collection": "peak-portable-power-station",
+            "collection": "peak-portable-power-stations",
             "subheading": "",
             "title": "",
             "url": "",
