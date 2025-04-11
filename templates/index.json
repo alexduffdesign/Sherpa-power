@@ -334,7 +334,7 @@
             "style": "fill",
             "size": "lg",
             "text": "SHOP THE BASE RANGE",
-            "url": "shopify://collections/base-portable-power-station",
+            "url": "shopify://collections/base-portable-power-stations",
             "background": "",
             "text_color": ""
           }
@@ -459,7 +459,7 @@
             "style": "fill",
             "size": "lg",
             "text": "SHOP THE PRO RANGE",
-            "url": "shopify://collections/pro-portable-power-station",
+            "url": "shopify://collections/pro-portable-power-stations",
             "background": "",
             "text_color": ""
           }

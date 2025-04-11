@@ -460,7 +460,7 @@
         "collection_ENxbYx": {
           "type": "collection",
           "settings": {
-            "collection": "base-portable-power-station",
+            "collection": "base-portable-power-stations",
             "subheading": "",
             "title": "",
             "url": "",
@@ -474,7 +474,7 @@
         "collection_WTCmnq": {
           "type": "collection",
           "settings": {
-            "collection": "pro-portable-power-station",
+            "collection": "pro-portable-power-stations",
             "subheading": "",
             "title": "",
             "url": "",
