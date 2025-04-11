@@ -7,17 +7,18 @@
 {%- capture collection_header -%}
   {%- if section.settings.show_collection_title -%}
     <h1 class="{{ section.settings.collection_title_size }}" {% if settings.heading_apparition != 'none' and show_image %}reveal-on-scroll="true"{% endif %}>
-  {% if collection.handle == 'peak-portable-power-station' %}
+      {%- case collection.handle -%}
+  {%- when 'peak-portable-power-station' -%}
     PEAK
-  {% elsif collection.handle == 'base-portable-power-station' %}
+  {%- when 'base-portable-power-station' -%}
     BASE
-  {% elsif collection.handle == 'pro-portable-power-station' %}
+  {%- when 'pro-portable-power-station' -%}
     PRO
-  {% else %}
+  {%- else -%}
     {{ collection.title }}
-  {% endif %}
-</h1>
+{%- endcase -%}
 
+    </h1>
   {%- endif -%}
 
   {%- if section.settings.show_collection_description and collection.description != blank -%}
