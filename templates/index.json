@@ -586,7 +586,7 @@
             "style": "fill",
             "size": "lg",
             "text": "SHOP THE CHARGE-500",
-            "url": "shopify://collections/smart_charge_module",
+            "url": "shopify://collections/smart-charge-module",
             "background": "",
             "text_color": ""
           }
