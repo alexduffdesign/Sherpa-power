@@ -50,9 +50,9 @@
             {%- endif -%}
 
             {%- if block.settings.title != blank -%}
-              <p class="h1" {% if settings.heading_apparition != 'none' %}reveal-on-scroll="true"{% endif %}>
+              <h1 class="h1" {% if settings.heading_apparition != 'none' %}reveal-on-scroll="true"{% endif %}>
                 {%- render 'styled-text', content: block.settings.title, text_color: section.settings.heading_color, gradient: section.settings.heading_gradient, apparition_effect: true -%}
-              </p>
+              </h1>
             {%- endif -%}
 
             {{- block.settings.content -}}
