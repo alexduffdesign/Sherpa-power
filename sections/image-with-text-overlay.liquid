@@ -52,9 +52,9 @@
                 {%- endif -%}
               
                 {%- if block.settings.text != blank -%}
-                  <p no-margin class="{{ block.settings.heading_tag }}" {% if settings.heading_apparition != 'none' %}reveal-on-scroll="false"{% endif %} {{ block.shopify_attributes }}>
+                  <h1 no-margin class="{{ block.settings.heading_tag }}" {% if settings.heading_apparition != 'none' %}reveal-on-scroll="false"{% endif %} {{ block.shopify_attributes }}>
                     {%- render 'styled-text', content: block.settings.text, apparition_effect: true -%}
-                  </p>
+                  </h1>
                 {%- endif -%}
               </div>
 
