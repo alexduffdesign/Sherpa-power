@@ -30,12 +30,6 @@
             "heading_gradient": "radial-gradient(rgba(255, 154, 98, 1), rgba(255, 204, 75, 1) 100%)"
           }
         },
-        "richtext_hTRQ9J": {
-          "type": "richtext",
-          "settings": {
-            "content": ""
-          }
-        },
         "button_f8WBiH": {
           "type": "button",
           "settings": {
@@ -51,7 +45,6 @@
       "block_order": [
         "heading_R7fDer",
         "heading_zyek6n",
-        "richtext_hTRQ9J",
         "button_f8WBiH"
       ],
       "custom_css": [
