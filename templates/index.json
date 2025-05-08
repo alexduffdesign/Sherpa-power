@@ -17,17 +17,14 @@
           "settings": {
             "range_text": "",
             "text": "Own Your Energy",
-            "heading_tag": "h1",
+            "heading_tag": "h0",
             "heading_gradient": ""
           }
         },
-        "heading_zyek6n": {
-          "type": "heading",
+        "richtext_dRRMM3": {
+          "type": "richtext",
           "settings": {
-            "range_text": "",
-            "text": "Portable solar and battery storage systems, delivering reliable power",
-            "heading_tag": "h6",
-            "heading_gradient": "radial-gradient(rgba(255, 154, 98, 1), rgba(255, 204, 75, 1) 100%)"
+            "content": "<h6>Sherpa Power offers a comprehensive range of portable power stations with extra battery options, including solar input capabilities for larger energy needs. Built for home backup, off-grid setups, and mobile use, our systems provide reliable power where you need it most.</h6>"
           }
         },
         "button_f8WBiH": {
@@ -44,7 +41,7 @@
       },
       "block_order": [
         "heading_R7fDer",
-        "heading_zyek6n",
+        "richtext_dRRMM3",
         "button_f8WBiH"
       ],
       "custom_css": [
