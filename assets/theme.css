@@ -12583,6 +12583,7 @@ split-lines {
 
 .bold {
   font-weight: bold;
+  width: 600px; /* Increase this value to make it wider */
 }
 
 .text-xxs {
