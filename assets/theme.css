@@ -12584,6 +12584,10 @@ split-lines {
 .bold {
   font-weight: bold;
   width: 600px;
+  height: 60px;              /* or whatever height you need */
+  display: flex;
+  justify-content: center;   /* horizontal centering */
+  align-items: center;       /* vertical centering */
 }
 
 .text-xxs {
