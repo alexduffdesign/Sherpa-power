@@ -12583,7 +12583,6 @@ split-lines {
 
 .bold {
   font-weight: bold;
-  box-sizing: border-box;
   width: 600px;
 }
 
