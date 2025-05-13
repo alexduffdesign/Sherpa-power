@@ -12762,3 +12762,17 @@ split-lines {
   display: -webkit-box;
   overflow: hidden;
 }
+
+/* Increase padding for subheading on desktop */
+.subheading {
+    padding-top: 20px; /* Adjust value */
+    padding-bottom: 20px; /* Adjust value */
+}
+
+/* Responsive padding for mobile */
+@media (max-width: 768px) {
+    .subheading {
+        padding-top: 15px; /* Adjust value */
+        padding-bottom: 15px; /* Adjust value */
+    }
+}
