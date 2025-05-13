@@ -12612,6 +12612,8 @@ split-lines {
 
 .subheading {
   font-weight: bold;
+  padding-top: 20px; /* Adjust value */
+  padding-bottom: 20px; /* Adjust value */
 }
 
 .heading,
