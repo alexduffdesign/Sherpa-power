@@ -12583,8 +12583,6 @@ split-lines {
 
 .bold {
   font-weight: bold;
-  padding-left: 20px; /* Adjust value */
-  padding-right: 20px; /* Adjust value */
 }
 
 .text-xxs {
