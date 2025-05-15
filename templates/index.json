@@ -21,10 +21,13 @@
             "heading_gradient": ""
           }
         },
-        "subheading_LGwkhm": {
-          "type": "subheading",
+        "heading_zgLJhG": {
+          "type": "heading",
           "settings": {
-            "text": "Portable solar and battery storage systems,                      delivering reliable power"
+            "range_text": "",
+            "text": "Portable solar and battery storage systems,                      delivering reliable power.",
+            "heading_tag": "h5",
+            "heading_gradient": ""
           }
         },
         "button_f8WBiH": {
@@ -41,7 +44,7 @@
       },
       "block_order": [
         "heading_R7fDer",
-        "subheading_LGwkhm",
+        "heading_zgLJhG",
         "button_f8WBiH"
       ],
       "custom_css": [
