@@ -803,7 +803,6 @@
         "item_gjkmCH",
         "item_iHkWnQ"
       ],
-      "disabled": true,
       "custom_css": [
         ".text-with-icons__item {justify-items: left; text-align: left;}"
       ],
