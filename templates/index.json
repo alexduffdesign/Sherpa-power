@@ -465,6 +465,7 @@
         "richtext_wehxUF",
         "button_XKYhGq"
       ],
+      "disabled": true,
       "custom_css": [
         ".prose {text-align: center; max-width: 32em;}",
         ".h3 {margin-block: 0em;}",
@@ -530,6 +531,7 @@
         "item_wdPQXq",
         "item_eGmbf4"
       ],
+      "disabled": true,
       "settings": {
         "full_width": true,
         "stack_mobile": true,
