@@ -829,8 +829,8 @@
             "show_rating": true,
             "rating": 4,
             "author": "Sherpa P",
-            "title": "Leave a review",
-            "content": "<p>Share your experience to help others</p>"
+            "title": "Please leave a review",
+            "content": "<p>Share your experience to help us and others</p>"
           }
         },
         "testimonial_8VCB9d": {
@@ -885,10 +885,10 @@
         "stack_testimonials": false,
         "subheading": "",
         "title": "REVIEWS",
-        "content": "<p>Real Power, Real Feedback. Don't just take our word for it...</p>",
+        "content": "<p><strong>Real Power deserves real feedback. Don't just take our word for it...</strong><br/><br/></p>",
         "link_url": "https://uk.trustpilot.com/review/sherpapower.co.uk",
         "link_text": "Rated 4.0 on Trustpilot",
-        "background": "#ebebeb",
+        "background": "#f7f7f7",
         "background_gradient": "",
         "text_color": "",
         "heading_color": "",
