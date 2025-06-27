@@ -835,6 +835,7 @@
         },
         "testimonial_8VCB9d": {
           "type": "testimonial",
+          "disabled": true,
           "settings": {
             "round_avatar": true,
             "show_rating": true,
@@ -846,17 +847,19 @@
         },
         "testimonial_N6KKd6": {
           "type": "testimonial",
+          "disabled": true,
           "settings": {
             "round_avatar": true,
             "show_rating": true,
             "rating": 4,
             "author": "",
             "title": "Testimonial",
-            "content": "<p>Share what your customers are saying about your products, customer service or shipping rates.</p>"
+            "content": "<p>Share what your experience for others to see</p>"
           }
         },
         "testimonial_WTByeL": {
           "type": "testimonial",
+          "disabled": true,
           "settings": {
             "round_avatar": true,
             "show_rating": true,
@@ -873,7 +876,6 @@
         "testimonial_N6KKd6",
         "testimonial_WTByeL"
       ],
-      "disabled": true,
       "custom_css": [
         ".testimonial {background-image: linear-gradient(transparent 90%, #25c293 100%); border-width: 1px; border-color: #231f25; background-color: transparent;}",
         ".section-full {padding-bottom: 0rem;}"
@@ -884,8 +886,8 @@
         "subheading": "",
         "title": "REVIEWS",
         "content": "<p>Real Power, Real Feedback. Don't just take our word for it...</p>",
-        "link_url": "",
-        "link_text": "",
+        "link_url": "https://uk.trustpilot.com/review/sherpapower.co.uk",
+        "link_text": "Rated 4.0 on Trustpilot",
         "background": "#ebebeb",
         "background_gradient": "",
         "text_color": "",
