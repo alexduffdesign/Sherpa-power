@@ -890,10 +890,10 @@
         "link_text": "Rated 4.0 on Trustpilot",
         "background": "#f7f7f7",
         "background_gradient": "",
-        "text_color": "",
-        "heading_color": "",
+        "text_color": "#1a1a1a",
+        "heading_color": "rgba(0,0,0,0)",
         "heading_gradient": "linear-gradient(180deg, rgba(35, 31, 37, 1) 55%, rgba(28, 160, 121, 1) 82%)",
-        "testimonial_card_background": "",
+        "testimonial_card_background": "#ffffff",
         "testimonial_card_text_color": ""
       }
     },
