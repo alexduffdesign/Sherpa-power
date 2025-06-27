@@ -885,7 +885,7 @@
         "stack_testimonials": false,
         "subheading": "",
         "title": "REVIEWS",
-        "content": "<p><strong>Real Power deserves real feedback. Don't just take our word for it...</strong><br/><br/></p>",
+        "content": "<h5><strong>Real Power deserves real feedback. </strong></h5><h5><strong>Don't just take our word for it...</strong><br/><br/></h5>",
         "link_url": "https://uk.trustpilot.com/review/sherpapower.co.uk",
         "link_text": "Rated 4.0 on Trustpilot",
         "background": "#f7f7f7",
