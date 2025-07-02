@@ -122,13 +122,20 @@
           "settings": {
             "liquid": "<a href=\"https://sunvault.co.uk/\">Sunvault Energy Solutions</a>"
           }
+        },
+        "liquid_qcGNP7": {
+          "type": "liquid",
+          "settings": {
+            "liquid": "<a href=\"https://www.batteriesandsolar.co.uk/blog/blog-1/the-secret-to-endless-summer-adventures-17\">Batteries & Solar Ltd</a>"
+          }
         }
       },
       "block_order": [
         "heading_wd3Fep",
         "richtext_ym3B7i",
         "richtext_6GPUAz",
-        "liquid_qdqAqM"
+        "liquid_qdqAqM",
+        "liquid_qcGNP7"
       ],
       "settings": {
         "full_width": true,
