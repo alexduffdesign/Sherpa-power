@@ -256,47 +256,6 @@
         "button_text_color": ""
       }
     },
-    "rich_text_NHqDQA": {
-      "type": "rich-text",
-      "blocks": {
-        "heading_DLN4Qa": {
-          "type": "heading",
-          "settings": {
-            "text": "Applications",
-            "heading_tag": "h3",
-            "text_color": "",
-            "gradient": ""
-          }
-        },
-        "subheading_nN8XAp": {
-          "type": "subheading",
-          "disabled": true,
-          "settings": {
-            "text": "Lighter use"
-          }
-        },
-        "richtext_BJVU8T": {
-          "type": "richtext",
-          "settings": {
-            "content": "<p>Camping and leisure | Drone and surveying equipment | Professional photography | E-biking | Smart devices, router and laptop | Cordless power tools - <strong>PEAK 0.6 </strong>or<strong> 2.2</strong></p><p>Mains power tools | Travel kettle, toaster, hair straighteners | DJ equipment | Fridge freezer | Coffee machine | Microwave - <strong>PEAK 2.2</strong></p><p></p>"
-          }
-        }
-      },
-      "block_order": [
-        "heading_DLN4Qa",
-        "subheading_nN8XAp",
-        "richtext_BJVU8T"
-      ],
-      "disabled": true,
-      "settings": {
-        "full_width": true,
-        "content_width": "small",
-        "text_position": "start",
-        "background": "",
-        "background_gradient": "",
-        "text_color": ""
-      }
-    },
     "image_with_text_overlay_zzgdjL": {
       "type": "image-with-text-overlay",
       "blocks": {
@@ -485,6 +444,47 @@
         "text_color": "#ffffff",
         "overlay_color": "#000000",
         "overlay_opacity": 0
+      }
+    },
+    "rich_text_NHqDQA": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_DLN4Qa": {
+          "type": "heading",
+          "settings": {
+            "text": "Applications",
+            "heading_tag": "h3",
+            "text_color": "",
+            "gradient": ""
+          }
+        },
+        "subheading_nN8XAp": {
+          "type": "subheading",
+          "disabled": true,
+          "settings": {
+            "text": "Lighter use"
+          }
+        },
+        "richtext_BJVU8T": {
+          "type": "richtext",
+          "settings": {
+            "content": "<p>Camping and leisure | Drone and surveying equipment | Professional photography | E-biking | Smart devices, router and laptop | Cordless power tools - <strong>PEAK 0.6 </strong>or<strong> 2.2</strong></p><p>Mains power tools | Travel kettle, toaster, hair straighteners | DJ equipment | Fridge freezer | Coffee machine | Microwave - <strong>PEAK 2.2</strong></p><p></p>"
+          }
+        }
+      },
+      "block_order": [
+        "heading_DLN4Qa",
+        "subheading_nN8XAp",
+        "richtext_BJVU8T"
+      ],
+      "disabled": true,
+      "settings": {
+        "full_width": true,
+        "content_width": "small",
+        "text_position": "start",
+        "background": "",
+        "background_gradient": "",
+        "text_color": ""
       }
     },
     "impact_text_LycQGm": {
@@ -1003,10 +1003,10 @@
     "impact-text",
     "image_with_text_overlay_RwjfPp",
     "impact_text_e3niPJ",
-    "rich_text_NHqDQA",
     "image_with_text_overlay_zzgdjL",
     "impact_text_Pefk6J",
     "image_with_text_overlay_DzeKnT",
+    "rich_text_NHqDQA",
     "impact_text_LycQGm",
     "image_with_text_overlay_4qMqtQ",
     "media_with_text_kKAhjw",
