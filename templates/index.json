@@ -368,15 +368,15 @@
         ".prose {text-align: center; max-width: 32em;}",
         ".h3 {margin-block: 0em;}",
         "@media screen and (min-width: 767px) {.prose {margin-left: 5em; }}",
-        "@media screen and (max-width: 767px) {.prose {margin-bottom: 1.3rem; }}"
+        "@media screen and (max-width: 767px) {.prose {margin-bottom: 1.6rem; }}"
       ],
       "settings": {
         "full_width": true,
         "allow_transparent_header": false,
         "enable_parallax": false,
-        "image_size": "auto",
+        "image_size": "fill",
         "image": "shopify://shop_images/Peak_3.6_Featured.jpg",
-        "mobile_image": "shopify://shop_images/Peak_Mobile_New.png",
+        "mobile_image": "shopify://shop_images/Peak_3.6_Mobile_90288ffe-edb9-4472-b6a8-53b89ce486e2.jpg",
         "mobile_text_position": "place-self-end-center text-center",
         "desktop_text_position": "sm:place-self-start sm:text-start",
         "text_color": "#ffffff",
