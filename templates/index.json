@@ -174,6 +174,7 @@
         "richtext_EGhb3b",
         "button_hDGq89"
       ],
+      "disabled": true,
       "custom_css": [
         ".h3 {margin-block: 0em;}",
         ".prose {text-align: center; max-width: 38rem;}",
@@ -238,6 +239,7 @@
         "item_WBaGKJ",
         "item_Ejyqm3"
       ],
+      "disabled": true,
       "settings": {
         "full_width": true,
         "stack_mobile": true,
@@ -426,10 +428,10 @@
         "heading_NDCdic": {
           "type": "heading",
           "settings": {
-            "range_text": "PRO",
+            "range_text": "PEAK",
             "text": "Range",
             "heading_tag": "h1",
-            "heading_gradient": "linear-gradient(180deg, rgba(199, 199, 199, 1) 33%, rgba(242, 242, 242, 1) 76%)"
+            "heading_gradient": "linear-gradient(180deg, rgba(218, 198, 31, 1) 33%, rgba(240, 244, 46, 1) 76%)"
           }
         },
         "heading_n7HiC8": {
@@ -465,7 +467,6 @@
         "richtext_wehxUF",
         "button_XKYhGq"
       ],
-      "disabled": true,
       "custom_css": [
         ".prose {text-align: center; max-width: 32em;}",
         ".h3 {margin-block: 0em;}",
@@ -477,7 +478,7 @@
         "allow_transparent_header": false,
         "enable_parallax": false,
         "image_size": "auto",
-        "image": "shopify://shop_images/Drilling_PRO.jpg",
+        "image": "shopify://shop_images/Peak_3.6_Featured.jpg",
         "mobile_image": "shopify://shop_images/Peak_Mobile_New.png",
         "mobile_text_position": "place-self-end-center text-center",
         "desktop_text_position": "sm:place-self-start sm:text-start",
@@ -531,7 +532,6 @@
         "item_wdPQXq",
         "item_eGmbf4"
       ],
-      "disabled": true,
       "settings": {
         "full_width": true,
         "stack_mobile": true,
