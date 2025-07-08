@@ -194,68 +194,6 @@
         "overlay_opacity": 0
       }
     },
-    "impact_text_e3niPJ": {
-      "type": "impact-text",
-      "blocks": {
-        "item_jBbJRr": {
-          "type": "item",
-          "settings": {
-            "title": "",
-            "subheading": "Applications",
-            "content": "",
-            "button_text": "",
-            "button_url": "",
-            "animate_impact_text": false,
-            "animate_impact_text_duration": 2
-          }
-        },
-        "item_WBaGKJ": {
-          "type": "item",
-          "settings": {
-            "title": "",
-            "subheading": "",
-            "content": "<p>Camping and leisure | Drone and Surveying equipment | Professional photography | E-biking | Smart devices, Router and Laptop | Cordless power tools - <a href=\"https://www.sherpapower.co.uk/products/sherpa-peak-0-6-portable-power-pack\" title=\"https://www.sherpapower.co.uk/products/sherpa-peak-0-6-portable-power-pack\"><strong>PEAK 0.6</strong></a><strong> </strong>or<strong> </strong><a href=\"https://www.sherpapower.co.uk/products/peak-2-2-portable-power-station\" title=\"https://www.sherpapower.co.uk/products/peak-2-2-portable-power-station\"><strong>PEAK 2.2</strong></a></p>",
-            "button_text": "",
-            "button_url": "",
-            "animate_impact_text": false,
-            "animate_impact_text_duration": 2
-          }
-        },
-        "item_Ejyqm3": {
-          "type": "item",
-          "settings": {
-            "title": "",
-            "subheading": "",
-            "content": "<p>Mains Power Tools | Travel | Kettle, Toaster, Hair straighteners | DJ equipment | Fridge freezer | Vacuum cleaner | Diesel heater | Campervanning - <a href=\"https://www.sherpapower.co.uk/products/peak-2-2-portable-power-station\" title=\"https://www.sherpapower.co.uk/products/peak-2-2-portable-power-station\"><strong>PEAK 2.2</strong></a><strong> </strong>(Extra Batteries optional)</p>",
-            "button_text": "",
-            "button_url": "",
-            "animate_impact_text": true,
-            "animate_impact_text_duration": 2
-          }
-        }
-      },
-      "block_order": [
-        "item_jBbJRr",
-        "item_WBaGKJ",
-        "item_Ejyqm3"
-      ],
-      "disabled": true,
-      "settings": {
-        "full_width": true,
-        "stack_mobile": true,
-        "text_alignment": "center",
-        "impact_text_style": "fill",
-        "text_divider": "line",
-        "impact_text_size_ratio": 0.8,
-        "background": "",
-        "background_gradient": "",
-        "heading_text_color": "",
-        "heading_gradient": "linear-gradient(180deg, rgba(35, 31, 37, 1) 44%, rgba(37, 194, 147, 1) 100%)",
-        "text_color": "",
-        "button_background": "",
-        "button_text_color": ""
-      }
-    },
     "image_with_text_overlay_zzgdjL": {
       "type": "image-with-text-overlay",
       "blocks": {
@@ -531,6 +469,68 @@
         "item_f3TgKJ",
         "item_wdPQXq",
         "item_eGmbf4"
+      ],
+      "disabled": true,
+      "settings": {
+        "full_width": true,
+        "stack_mobile": true,
+        "text_alignment": "center",
+        "impact_text_style": "fill",
+        "text_divider": "line",
+        "impact_text_size_ratio": 0.8,
+        "background": "",
+        "background_gradient": "",
+        "heading_text_color": "",
+        "heading_gradient": "linear-gradient(180deg, rgba(35, 31, 37, 1) 44%, rgba(37, 194, 147, 1) 100%)",
+        "text_color": "",
+        "button_background": "",
+        "button_text_color": ""
+      }
+    },
+    "impact_text_e3niPJ": {
+      "type": "impact-text",
+      "blocks": {
+        "item_jBbJRr": {
+          "type": "item",
+          "settings": {
+            "title": "",
+            "subheading": "Applications",
+            "content": "",
+            "button_text": "",
+            "button_url": "",
+            "animate_impact_text": false,
+            "animate_impact_text_duration": 2
+          }
+        },
+        "item_WBaGKJ": {
+          "type": "item",
+          "settings": {
+            "title": "",
+            "subheading": "",
+            "content": "<p>Camping and leisure | Drone and Surveying equipment | Professional photography | E-biking | Smart devices, Router and Laptop | Cordless power tools - <a href=\"https://www.sherpapower.co.uk/products/sherpa-peak-0-6-portable-power-pack\" title=\"https://www.sherpapower.co.uk/products/sherpa-peak-0-6-portable-power-pack\"><strong>PEAK 0.6</strong></a><strong> </strong>or<strong> </strong><a href=\"https://www.sherpapower.co.uk/products/peak-2-2-portable-power-station\" title=\"https://www.sherpapower.co.uk/products/peak-2-2-portable-power-station\"><strong>PEAK 2.2</strong></a></p>",
+            "button_text": "",
+            "button_url": "",
+            "animate_impact_text": false,
+            "animate_impact_text_duration": 2
+          }
+        },
+        "item_Ejyqm3": {
+          "type": "item",
+          "settings": {
+            "title": "",
+            "subheading": "",
+            "content": "<p>Mains Power Tools | Travel | Kettle, Toaster, Hair straighteners | DJ equipment | Fridge freezer | Vacuum cleaner | Diesel heater | Campervanning - <a href=\"https://www.sherpapower.co.uk/products/peak-2-2-portable-power-station\" title=\"https://www.sherpapower.co.uk/products/peak-2-2-portable-power-station\"><strong>PEAK 2.2</strong></a><strong> </strong>(Extra Batteries optional)</p>",
+            "button_text": "",
+            "button_url": "",
+            "animate_impact_text": true,
+            "animate_impact_text_duration": 2
+          }
+        }
+      },
+      "block_order": [
+        "item_jBbJRr",
+        "item_WBaGKJ",
+        "item_Ejyqm3"
       ],
       "settings": {
         "full_width": true,
@@ -1002,12 +1002,12 @@
     "image_with_text_overlay_7zWHBP",
     "impact-text",
     "image_with_text_overlay_RwjfPp",
-    "impact_text_e3niPJ",
     "image_with_text_overlay_zzgdjL",
     "impact_text_Pefk6J",
     "image_with_text_overlay_DzeKnT",
     "rich_text_NHqDQA",
     "impact_text_LycQGm",
+    "impact_text_e3niPJ",
     "image_with_text_overlay_4qMqtQ",
     "media_with_text_kKAhjw",
     "media_with_text_9aYmQG",
