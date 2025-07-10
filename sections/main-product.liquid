@@ -1122,6 +1122,116 @@ quick buy information in a template, that will be extracted in JS, but ensure it
       ]
     },
     {
+      "type": "bundle_key_features",
+      "name": "Bundle Key Features",
+      "settings": [
+        {
+          "type": "select",
+          "id": "text_alignment",
+          "label": "Text alignment",
+          "options": [
+            {
+              "value": "start",
+              "label": "Left"
+            },
+            {
+              "value": "center",
+              "label": "Center"
+            }
+          ],
+          "default": "start"
+        },
+        {
+          "type": "select",
+          "id": "icon_position",
+          "label": "Icon position",
+          "options": [
+            {
+              "value": "aligned",
+              "label": "Aligned horizontally"
+            },
+            {
+              "value": "stacked",
+              "label": "Stacked"
+            }
+          ],
+          "default": "aligned"
+        },
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icon",
+          "options": [
+            {
+              "value": "none",
+              "label": "None"
+            },
+            {
+              "value": "picto-coupon",
+              "label": "Coupon"
+            },
+            {
+              "value": "picto-percent",
+              "label": "Percent"
+            },
+            {
+              "value": "picto-gift",
+              "label": "Gift"
+            },
+            {
+              "value": "picto-star",
+              "label": "Star"
+            },
+            {
+              "value": "picto-like",
+              "label": "Like"
+            }
+          ],
+          "default": "none"
+        },
+        {
+          "type": "image_picker",
+          "id": "custom_icon",
+          "label": "Custom icon",
+          "info": "240 x 240px .png recommended"
+        },
+        {
+          "type": "range",
+          "id": "icon_width",
+          "min": 20,
+          "max": 100,
+          "step": 4,
+          "unit": "px",
+          "label": "Icon width",
+          "default": 24
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Heading",
+          "default": "Key Features"
+        },
+        {
+          "type": "richtext",
+          "id": "content",
+          "label": "Content",
+          "default": "<p>Bundle product key features will be displayed automatically.</p>"
+        },
+        {
+          "type": "color",
+          "id": "background",
+          "label": "Background",
+          "default": "#e1f1ec"
+        },
+        {
+          "type": "color",
+          "id": "text_color",
+          "label": "Text",
+          "default": "#3f4345"
+        }
+      ]
+    },
+    {
       "type": "share_buttons",
       "name": "Share buttons",
       "settings": [
