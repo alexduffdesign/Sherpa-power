@@ -79,126 +79,109 @@
 
   {% if bundle_key_features != blank %}
     <div class="bundle-key-features">
-      <!-- Debug: Show raw metafield structure -->
-      <div style="background: #f0f0f0; padding: 1rem; margin: 1rem 0; font-size: 12px;">
-        <strong>Debug Info:</strong><br>
-        Bundle Key Features Type: {{ bundle_key_features | json }}<br>
-        Count: {{ bundle_key_features.size }}<br>
-      </div>
-      
       {% for feature_reference in bundle_key_features %}
         
-        <!-- Debug: Show each reference structure -->
-        <div style="background: #e0e0e0; padding: 0.5rem; margin: 0.5rem 0; font-size: 12px;">
-          <strong>Reference {{ forloop.index }}:</strong><br>
-          Type: {{ feature_reference.type }}<br>
-          Data: {{ feature_reference | json }}<br>
-        </div>
-        
-        {% comment %} Check if this is a key_features_chargers_and_solar reference {% endcomment %}
-        {%- assign cs_features = feature_reference.key_features_chargers_and_solar.value -%}
-        {%- assign standard_features = feature_reference.key_features.value -%}
-        
-        {% if cs_features != blank %}
+        {% comment %} Check if this is a key_features_chargers_and_solar reference by checking for specific fields {% endcomment %}
+        {% if feature_reference.product_name != blank and feature_reference.output_power != blank %}
           <div class="bundle-product-features">
-            {%- if cs_features.product_name != blank -%}
-              <h4 class="bundle-product-title">{{ cs_features.product_name | metafield_tag }}</h4>
+            {%- if feature_reference.product_name != blank -%}
+              <h4 class="bundle-product-title">{{ feature_reference.product_name }}</h4>
             {%- endif -%}
 
-            {%- if cs_features.output_power != blank -%}
+            {%- if feature_reference.output_power != blank -%}
               <div class="product-feature">
-                <strong>⚡️ Output Power</strong><br> {{ cs_features.output_power | metafield_tag }}
+                <strong>⚡️ Output Power</strong><br> {{ feature_reference.output_power }}
               </div>
             {%- endif -%}
 
-            {%- if cs_features.output_voltage != blank -%}
+            {%- if feature_reference.output_voltage != blank -%}
               <div class="product-feature">
-                <strong>⚡️ Output Voltage</strong><br> {{ cs_features.output_voltage | metafield_tag }}
+                <strong>⚡️ Output Voltage</strong><br> {{ feature_reference.output_voltage }}
               </div>
             {%- endif -%}
 
-            {%- if cs_features.input_voltage != blank -%}
+            {%- if feature_reference.input_voltage != blank -%}
               <div class="product-feature">
-                <strong>⚡️ Input Voltage</strong><br> {{ cs_features.input_voltage | metafield_tag }}
+                <strong>⚡️ Input Voltage</strong><br> {{ feature_reference.input_voltage }}
               </div>
             {%- endif -%}
 
-            {%- if cs_features.warranty != blank -%}
+            {%- if feature_reference.warranty != blank -%}
               <div class="product-feature">
-                <strong>🛡️ Warranty</strong><br> {{ cs_features.warranty | metafield_tag }}
+                <strong>🛡️ Warranty</strong><br> {{ feature_reference.warranty }}
               </div>
             {%- endif -%}
 
-            {%- if cs_features.weight != blank -%}
+            {%- if feature_reference.weight != blank -%}
               <div class="product-feature">
-                <strong>⚖ Weight</strong><br> {{ cs_features.weight | metafield_tag }}
+                <strong>⚖ Weight</strong><br> {{ feature_reference.weight }}
               </div>
             {%- endif -%}
           </div>
 
-        {% elsif standard_features != blank %}
+        {% elsif feature_reference.product != blank %}
           <div class="bundle-product-features">
-            {%- if standard_features.product != blank -%}
-              <h4 class="bundle-product-title">{{ standard_features.product | metafield_tag }}</h4>
+            {%- if feature_reference.product != blank -%}
+              <h4 class="bundle-product-title">{{ feature_reference.product }}</h4>
             {%- endif -%}
 
-            {%- if standard_features.battery != blank -%}
+            {%- if feature_reference.battery != blank -%}
               <div class="product-feature">
-                <strong>🔋 Battery</strong><br> {{ standard_features.battery | metafield_tag }}
+                <strong>🔋 Battery</strong><br> {{ feature_reference.battery }}
               </div>
             {%- endif -%}
 
-            {%- if standard_features.output_ac != blank -%}
+            {%- if feature_reference.output_ac != blank -%}
               <div class="product-feature">
-                <strong>⚡ Output (AC)</strong><br> {{ standard_features.output_ac | metafield_tag }}
+                <strong>⚡ Output (AC)</strong><br> {{ feature_reference.output_ac }}
               </div>
             {%- endif -%}
 
-            {%- if standard_features.output_dc != blank -%}
+            {%- if feature_reference.output_dc != blank -%}
               <div class="product-feature">
-                <strong>💡 Output (DC)</strong><br> {{ standard_features.output_dc | metafield_tag }}
+                <strong>💡 Output (DC)</strong><br> {{ feature_reference.output_dc }}
               </div>
             {%- endif -%}
 
-            {%- if standard_features.input_ac != blank -%}
+            {%- if feature_reference.input_ac != blank -%}
               <div class="product-feature">
-                <strong>🔌 Input (AC)</strong><br> {{ standard_features.input_ac | metafield_tag }}
+                <strong>🔌 Input (AC)</strong><br> {{ feature_reference.input_ac }}
               </div>
             {%- endif -%}
 
-            {%- if standard_features.input_solar_dc != blank -%}
+            {%- if feature_reference.input_solar_dc != blank -%}
               <div class="product-feature">
-                <strong>Input (🔆 Solar/ ⚡🔌 DC )</strong><br> {{ standard_features.input_solar_dc | metafield_tag }}
+                <strong>Input (🔆 Solar/ ⚡🔌 DC )</strong><br> {{ feature_reference.input_solar_dc }}
               </div>
             {%- endif -%}
 
-            {%- if standard_features.charge_time != blank -%}
+            {%- if feature_reference.charge_time != blank -%}
               <div class="product-feature">
-                <strong>⏳ Charge Time</strong><br> {{ standard_features.charge_time | metafield_tag }}
+                <strong>⏳ Charge Time</strong><br> {{ feature_reference.charge_time }}
               </div>
             {%- endif -%}
 
-            {%- if standard_features.warranty != blank -%}
+            {%- if feature_reference.warranty != blank -%}
               <div class="product-feature">
-                <strong>🛡️ Warranty</strong><br> {{ standard_features.warranty | metafield_tag }}
+                <strong>🛡️ Warranty</strong><br> {{ feature_reference.warranty }}
               </div>
             {%- endif -%}
 
-            {%- if standard_features.weight != blank -%}
+            {%- if feature_reference.weight != blank -%}
               <div class="product-feature">
-                <strong>⚖ Weight</strong><br> {{ standard_features.weight | metafield_tag }}
+                <strong>⚖ Weight</strong><br> {{ feature_reference.weight }}
               </div>
             {%- endif -%}
 
-            {%- if standard_features.app_compatible != blank -%}
+            {%- if feature_reference.app_compatible != blank -%}
               <div class="product-feature">
-                <strong>📱 App Compatible</strong><br> {{ standard_features.app_compatible | metafield_tag }}
+                <strong>📱 App Compatible</strong><br> {{ feature_reference.app_compatible }}
               </div>
             {%- endif -%}
 
-            {%- if standard_features.expandable_capacity != blank -%}
+            {%- if feature_reference.expandable_capacity != blank -%}
               <div class="product-feature">
-                <strong>🔗 Expandable Capacity</strong><br> {{ standard_features.expandable_capacity | metafield_tag }}
+                <strong>🔗 Expandable Capacity</strong><br> {{ feature_reference.expandable_capacity }}
               </div>
             {%- endif -%}
           </div>
