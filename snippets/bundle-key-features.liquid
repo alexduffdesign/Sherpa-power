@@ -79,11 +79,25 @@
 
   {% if bundle_key_features != blank %}
     <div class="bundle-key-features">
+      <!-- Debug: Show raw metafield structure -->
+      <div style="background: #f0f0f0; padding: 1rem; margin: 1rem 0; font-size: 12px;">
+        <strong>Debug Info:</strong><br>
+        Bundle Key Features Type: {{ bundle_key_features | json }}<br>
+        Count: {{ bundle_key_features.size }}<br>
+      </div>
+      
       {% for feature_reference in bundle_key_features %}
         
+        <!-- Debug: Show each reference structure -->
+        <div style="background: #e0e0e0; padding: 0.5rem; margin: 0.5rem 0; font-size: 12px;">
+          <strong>Reference {{ forloop.index }}:</strong><br>
+          Type: {{ feature_reference.type }}<br>
+          Data: {{ feature_reference | json }}<br>
+        </div>
+        
         {% comment %} Check if this is a key_features_chargers_and_solar reference {% endcomment %}
-        {%- assign cs_features = feature_reference.key_features_chargers_and_solar -%}
-        {%- assign standard_features = feature_reference.key_features -%}
+        {%- assign cs_features = feature_reference.key_features_chargers_and_solar.value -%}
+        {%- assign standard_features = feature_reference.key_features.value -%}
         
         {% if cs_features != blank %}
           <div class="bundle-product-features">
