@@ -1,0 +1,195 @@
+{%- comment -%}
+  ----------------------------------------------------------------------------------------------------------------------
+  BUNDLE KEY FEATURES COMPONENT
+  ----------------------------------------------------------------------------------------------------------------------
+
+  This component displays key features for bundle products using mixed reference metafields.
+  It handles both key_features_chargers_and_solar and key_features metafield types.
+  Uses the same styling and structure as the offer component.
+
+  ********************************************
+  Supported variables
+  ********************************************
+
+  * title: an optional title for the banner
+  * content: the textual content to use
+  * icon: the name of an icon that is optionally added along the text
+  * icon_width: the width of the icon
+  * custom_icon: an image of an optional icon (if any)
+  * icon_position: the position of the icon. Accept the values "aligned" or "stacked".
+  * text_alignment: alignment of the text
+  * background: an optional background that would override existing color
+  * text_color: an optional text color that would override existing color
+{%- endcomment -%}
+
+{%- capture offer_class -%}offer {% if block.settings.text_alignment == 'center' %}offer--center{% endif %}{%- endcapture -%}
+<div {% render 'surface', class: offer_class, background: block.settings.background, text_color: block.settings.text_color, background_fallback: 'bg-secondary' %} {{ block.shopify_attributes }}>
+  {%- capture icon_with_title -%}
+    {%- if block.settings.custom_icon != blank -%}
+      {%- capture sizes -%}{{ block.settings.icon_width }}px{%- endcapture -%}
+      {%- capture widths -%}{{ block.settings.icon_width }}, {{ block.settings.icon_width | times: 2 | at_most: block.settings.custom_icon.width }}{%- endcapture -%}
+      {%- capture style -%}max-width: {{ block.settings.icon_width }}px{%- endcapture -%}
+      {{- block.settings.custom_icon | image_url: width: block.settings.custom_icon.width | image_tag: loading: 'lazy', style: style, sizes: sizes, widths: widths -}}
+    {%- elsif block.settings.icon != 'none' -%}
+      {%- render 'icon' with block.settings.icon, width: block.settings.icon_width, height: block.settings.icon_width -%}
+    {%- endif -%}
+
+    {%- if block.settings.title != blank -%}
+      <h3 class="bold text-lg">{{ block.settings.title | escape }}</h3>
+    {%- endif -%}
+  {%- endcapture -%}
+  
+  {%- if icon_with_title != blank -%}
+    {%- if block.settings.icon_position == 'aligned' -%}
+      <div class="text-with-icon">
+        {{- icon_with_title -}}
+      </div>
+    {%- else -%}
+      {{- icon_with_title -}}
+    {%- endif -%}
+  {%- endif -%}
+
+  {%- if block.settings.content != blank -%}
+    <div class="prose text-sm">
+      {{- block.settings.content -}}
+    </div>
+  {%- endif -%}
+
+  <style>
+    .product-feature {
+      margin-bottom: 1.4rem;
+    }
+    .bundle-product-features {
+      margin-bottom: 2rem;
+    }
+    .bundle-product-title {
+      margin-bottom: 1rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid rgba(0,0,0,0.1);
+      font-weight: bold;
+      color: var(--heading-color, #333);
+    }
+  </style>
+
+  {% comment %}
+    Bundle key features for mixed reference metafields
+  {% endcomment %}
+
+  {%- assign bundle_key_features = product.metafields.custom.bundle_key_features.value -%}
+
+  {% if bundle_key_features != blank %}
+    <div class="bundle-key-features">
+      {% for feature_reference in bundle_key_features %}
+        
+        {% comment %} Check if this is a key_features_chargers_and_solar reference {% endcomment %}
+        {%- assign cs_features = feature_reference.key_features_chargers_and_solar -%}
+        {%- assign standard_features = feature_reference.key_features -%}
+        
+        {% if cs_features != blank %}
+          <div class="bundle-product-features">
+            {%- if cs_features.product_name != blank -%}
+              <h4 class="bundle-product-title">{{ cs_features.product_name | metafield_tag }}</h4>
+            {%- endif -%}
+
+            {%- if cs_features.output_power != blank -%}
+              <div class="product-feature">
+                <strong>⚡️ Output Power</strong><br> {{ cs_features.output_power | metafield_tag }}
+              </div>
+            {%- endif -%}
+
+            {%- if cs_features.output_voltage != blank -%}
+              <div class="product-feature">
+                <strong>⚡️ Output Voltage</strong><br> {{ cs_features.output_voltage | metafield_tag }}
+              </div>
+            {%- endif -%}
+
+            {%- if cs_features.input_voltage != blank -%}
+              <div class="product-feature">
+                <strong>⚡️ Input Voltage</strong><br> {{ cs_features.input_voltage | metafield_tag }}
+              </div>
+            {%- endif -%}
+
+            {%- if cs_features.warranty != blank -%}
+              <div class="product-feature">
+                <strong>🛡️ Warranty</strong><br> {{ cs_features.warranty | metafield_tag }}
+              </div>
+            {%- endif -%}
+
+            {%- if cs_features.weight != blank -%}
+              <div class="product-feature">
+                <strong>⚖ Weight</strong><br> {{ cs_features.weight | metafield_tag }}
+              </div>
+            {%- endif -%}
+          </div>
+
+        {% elsif standard_features != blank %}
+          <div class="bundle-product-features">
+            {%- if standard_features.product != blank -%}
+              <h4 class="bundle-product-title">{{ standard_features.product | metafield_tag }}</h4>
+            {%- endif -%}
+
+            {%- if standard_features.battery != blank -%}
+              <div class="product-feature">
+                <strong>🔋 Battery</strong><br> {{ standard_features.battery | metafield_tag }}
+              </div>
+            {%- endif -%}
+
+            {%- if standard_features.output_ac != blank -%}
+              <div class="product-feature">
+                <strong>⚡ Output (AC)</strong><br> {{ standard_features.output_ac | metafield_tag }}
+              </div>
+            {%- endif -%}
+
+            {%- if standard_features.output_dc != blank -%}
+              <div class="product-feature">
+                <strong>💡 Output (DC)</strong><br> {{ standard_features.output_dc | metafield_tag }}
+              </div>
+            {%- endif -%}
+
+            {%- if standard_features.input_ac != blank -%}
+              <div class="product-feature">
+                <strong>🔌 Input (AC)</strong><br> {{ standard_features.input_ac | metafield_tag }}
+              </div>
+            {%- endif -%}
+
+            {%- if standard_features.input_solar_dc != blank -%}
+              <div class="product-feature">
+                <strong>Input (🔆 Solar/ ⚡🔌 DC )</strong><br> {{ standard_features.input_solar_dc | metafield_tag }}
+              </div>
+            {%- endif -%}
+
+            {%- if standard_features.charge_time != blank -%}
+              <div class="product-feature">
+                <strong>⏳ Charge Time</strong><br> {{ standard_features.charge_time | metafield_tag }}
+              </div>
+            {%- endif -%}
+
+            {%- if standard_features.warranty != blank -%}
+              <div class="product-feature">
+                <strong>🛡️ Warranty</strong><br> {{ standard_features.warranty | metafield_tag }}
+              </div>
+            {%- endif -%}
+
+            {%- if standard_features.weight != blank -%}
+              <div class="product-feature">
+                <strong>⚖ Weight</strong><br> {{ standard_features.weight | metafield_tag }}
+              </div>
+            {%- endif -%}
+
+            {%- if standard_features.app_compatible != blank -%}
+              <div class="product-feature">
+                <strong>📱 App Compatible</strong><br> {{ standard_features.app_compatible | metafield_tag }}
+              </div>
+            {%- endif -%}
+
+            {%- if standard_features.expandable_capacity != blank -%}
+              <div class="product-feature">
+                <strong>🔗 Expandable Capacity</strong><br> {{ standard_features.expandable_capacity | metafield_tag }}
+              </div>
+            {%- endif -%}
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+  {% endif %}
+</div>
