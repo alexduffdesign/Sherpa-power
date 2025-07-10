@@ -93,7 +93,7 @@
             "icon": "none",
             "icon_width": 24,
             "title": "Key Features",
-            "content": "<p>Bundle product key features will be displayed automatically.</p>",
+            "content": "",
             "background": "#e1f1ec",
             "text_color": "#3f4345"
           }
