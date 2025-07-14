@@ -134,6 +134,12 @@
 
   {% if key_features_cs != blank %}
     <div class="product-features">
+      
+      <!-- Debug: Show key_features_cs structure -->
+      <div style="background: #f0f0f0; padding: 1rem; margin: 1rem 0; font-size: 12px;">
+        <strong>Debug key_features_cs:</strong><br>
+        {{ key_features_cs | json }}
+      </div>
 
       {%- if key_features_cs.output_power != blank -%}
         <div class="product-feature">
