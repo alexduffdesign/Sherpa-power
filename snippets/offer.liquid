@@ -157,9 +157,8 @@
       <div style="background: #ffff00; padding: 0.5rem; margin: 0.5rem 0; font-size: 12px;">
         <strong>Debug output_current:</strong><br>
         Value: "{{ key_features_cs.output_current }}"<br>
-        Is blank: {{ key_features_cs.output_current == blank }}<br>
-        Is empty: {{ key_features_cs.output_current == empty }}<br>
         Length: {{ key_features_cs.output_current | size }}<br>
+        {% if key_features_cs.output_current == blank %}Is blank: true{% else %}Is blank: false{% endif %}<br>
       </div>
       
       {%- if key_features_cs.output_current != blank -%}
