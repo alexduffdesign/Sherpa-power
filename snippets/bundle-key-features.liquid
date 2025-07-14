@@ -100,6 +100,12 @@
               </div>
             {%- endif -%}
 
+            {%- if feature_reference.output_current != blank -%}
+              <div class="product-feature">
+                <strong>⚡️ Output Current</strong><br> {{ feature_reference.output_current }}
+              </div>
+            {%- endif -%}
+
             {%- if feature_reference.input_voltage != blank -%}
               <div class="product-feature">
                 <strong>⚡️ Input Voltage</strong><br> {{ feature_reference.input_voltage }}
