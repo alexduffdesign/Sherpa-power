@@ -100,6 +100,17 @@
     </div>
   {% endunless %}
 
+  {% unless key_features.bundle_key_feature == blank or key_features.bundle_key_feature == '-' %}
+    <div class="power-rating">
+      <img
+        src="https://cdn.shopify.com/s/files/1/0641/4290/1439/files/Charge.png?v=1752572953"
+        width="38"
+        height="46"
+        alt="Power Icon">
+      <span class="info-title">{{ key_features.bundle_key_feature.value }}</span>
+    </div>
+  {% endunless %}
+
   {% else %}
     {% comment %}
       FOR INDIVIDUAL PRODUCTS: Use existing logic
@@ -152,6 +163,17 @@
           height="46"
           alt="Power Icon">
         <span class="info-title">Charge Time: {{ key_features.charge_time.value }}</span>
+      </div>
+    {% endunless %}
+
+    {% unless key_features.bundle_key_feature == blank or key_features.bundle_key_feature == '-' %}
+      <div class="power-rating">
+        <img
+          src="https://cdn.shopify.com/s/files/1/0641/4290/1439/files/Charge.png?v=1752572953"
+          width="38"
+          height="46"
+          alt="Power Icon">
+        <span class="info-title">{{ key_features.bundle_key_feature.value }}</span>
       </div>
     {% endunless %}
 
