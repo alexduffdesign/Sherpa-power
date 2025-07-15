@@ -375,7 +375,7 @@
         "allow_transparent_header": false,
         "enable_parallax": false,
         "image_size": "fill",
-        "image": "shopify://shop_images/Peak_3.6_Featured.jpg",
+        "image": "shopify://shop_images/Peak_3.6_Featured_6cd6976b-e050-4732-ace3-3f2e134e56f6.jpg",
         "mobile_image": "shopify://shop_images/Peak_3.6_Mobile_90288ffe-edb9-4472-b6a8-53b89ce486e2.jpg",
         "mobile_text_position": "place-self-end-center text-center",
         "desktop_text_position": "sm:place-self-start sm:text-start",
