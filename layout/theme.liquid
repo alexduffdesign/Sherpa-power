@@ -36,12 +36,6 @@
       {% if template.name == 'blog' and current_tags %}
   <meta name="description" content="Browse blog posts tagged with {{ current_tags | join: ', ' }}.">
 {% endif %}
-      <!--{% if page_title == blank %}
-        {{ shop.name }}
-      {% else %}
-        {{ page_title }}{% if current_page != 1 %}
-          &ndash; {{ 'general.page' | t: page: current_page }}{% endif %}
-      {% endif %}-->
       {% if template.name == 'blog' and current_tags %}
           <title>{{ blog.title }} - {{ current_tags | join: ", " }}</title>
         {% elsif template.name == 'blog' %}
