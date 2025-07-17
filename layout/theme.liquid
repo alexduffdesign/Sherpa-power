@@ -46,7 +46,13 @@
     </title>
 
     {%- if page_description -%}
-      <meta name="description" content="{{ page_description | escape }}">
+      {% if request.path == '/' %}
+          <meta name="description" content="Discover Sherpa Power's range of rugged portable power solutions for adventurers, professionals, and emergency use.">
+        {% elsif request.path == '/collections' %}
+          <meta name="description" content="Browse all Sherpa Power product collections including portable chargers, solar panels, and accessories.">
+        {% else %}
+          <meta name="description" content="{{ page_description | escape }}">
+        {% endif %}
     {%- endif -%}
 
     <link rel="canonical" href="{{ canonical_url }}">
