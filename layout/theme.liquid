@@ -33,12 +33,19 @@
     <meta http-equiv="Expires" content="0">
     <meta name="p:domain_verify" content="b54340c8c8df1b58239f3ded31e4b12b"/>
     <title>
-      {% if page_title == blank %}
+      <!--{% if page_title == blank %}
         {{ shop.name }}
       {% else %}
         {{ page_title }}{% if current_page != 1 %}
           &ndash; {{ 'general.page' | t: page: current_page }}{% endif %}
-      {% endif %}
+      {% endif %}-->
+      {% if template.name == 'blog' and current_tags %}
+          <title>{{ blog.title }} - {{ current_tags | join: ", " }}</title>
+        {% elsif template.name == 'blog' %}
+          <title>{{ blog.title }}</title>
+        {% else %}
+          <title>{% if page_title %}{{ page_title }}{% else %}{{ shop.name }}{% endif %}</title>
+        {% endif %}
     </title>
 
     {%- if page_description -%}
