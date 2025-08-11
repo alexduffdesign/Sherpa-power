@@ -620,7 +620,7 @@
         "heading_jATAAL": {
           "type": "heading",
           "settings": {
-            "range_text": "Onboard Power",
+            "range_text": "Charge & Solar",
             "text": "",
             "heading_tag": "h1",
             "heading_gradient": "linear-gradient(180deg, rgba(37, 194, 185, 1) 41%, rgba(9, 239, 226, 1) 72%)"
