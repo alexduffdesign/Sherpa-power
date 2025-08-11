@@ -593,6 +593,62 @@
         "richtext_byWz6r",
         "button_kqCzbn"
       ],
+      "disabled": true,
+      "custom_css": [
+        ".place-self-end-center {margin-top: auto; margin-bottom: auto;}",
+        ".prose {text-align: center; max-width: 28rem;}",
+        ".h3 {margin-block: 0em;}",
+        "@media screen and (max-width: 767px) {.prose {margin-bottom: 2rem; }}"
+      ],
+      "settings": {
+        "full_width": true,
+        "allow_transparent_header": false,
+        "enable_parallax": false,
+        "image_size": "auto",
+        "image": "shopify://shop_images/Charge_Hero_Image.jpg",
+        "mobile_image": "shopify://shop_images/CHARGE_mob.jpg",
+        "mobile_text_position": "place-self-end text-end",
+        "desktop_text_position": "sm:place-self-center-end sm:text-end",
+        "text_color": "#ffffff",
+        "overlay_color": "#000000",
+        "overlay_opacity": 0
+      }
+    },
+    "image_with_text_overlay_46wtVn": {
+      "type": "image-with-text-overlay",
+      "blocks": {
+        "heading_jATAAL": {
+          "type": "heading",
+          "settings": {
+            "range_text": "Onboard Power",
+            "text": "",
+            "heading_tag": "h1",
+            "heading_gradient": "linear-gradient(180deg, rgba(37, 194, 185, 1) 41%, rgba(9, 239, 226, 1) 72%)"
+          }
+        },
+        "richtext_8wVBaP": {
+          "type": "richtext",
+          "settings": {
+            "content": "<p>Sherpa-Charge when the Sun goes down. Generate power equivalent to a 5m square solar panel from your vehicle alternator.</p>"
+          }
+        },
+        "button_Q9Mdfq": {
+          "type": "button",
+          "settings": {
+            "style": "fill",
+            "size": "lg",
+            "text": "SHOP THE CHARGE-500",
+            "url": "shopify://collections/charging-solutions",
+            "background": "",
+            "text_color": ""
+          }
+        }
+      },
+      "block_order": [
+        "heading_jATAAL",
+        "richtext_8wVBaP",
+        "button_Q9Mdfq"
+      ],
       "custom_css": [
         ".place-self-end-center {margin-top: auto; margin-bottom: auto;}",
         ".prose {text-align: center; max-width: 28rem;}",
@@ -1009,6 +1065,7 @@
     "rich_text_NHqDQA",
     "impact_text_LycQGm",
     "image_with_text_overlay_4qMqtQ",
+    "image_with_text_overlay_46wtVn",
     "media_with_text_kKAhjw",
     "media_with_text_9aYmQG",
     "text_with_icons_MeKcXe",
