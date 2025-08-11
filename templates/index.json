@@ -660,10 +660,10 @@
         "allow_transparent_header": false,
         "enable_parallax": false,
         "image_size": "auto",
-        "image": "shopify://shop_images/Charge_Hero_Image.jpg",
+        "image": "shopify://shop_images/Charge_Solar.jpg",
         "mobile_image": "shopify://shop_images/CHARGE_mob.jpg",
         "mobile_text_position": "place-self-end text-end",
-        "desktop_text_position": "sm:place-self-center-end sm:text-end",
+        "desktop_text_position": "sm:place-self-center sm:text-center",
         "text_color": "#ffffff",
         "overlay_color": "#000000",
         "overlay_opacity": 0
