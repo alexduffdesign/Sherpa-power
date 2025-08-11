@@ -375,6 +375,8 @@
         "allow_transparent_header": false,
         "enable_parallax": false,
         "image_size": "auto",
+        "image": "shopify://shop_images/Sherpa-Base-5000W-power-station-home-backup.png",
+        "mobile_image": "shopify://shop_images/Base_Range_Usecase_Image_Mobile_6f871cde-21ed-4ecc-8011-be09369188b6.jpg",
         "mobile_text_position": "place-self-end-center text-center",
         "desktop_text_position": "sm:place-self-start-end sm:text-end",
         "text_color": "#ffffff",
