@@ -194,6 +194,132 @@
         "overlay_opacity": 0
       }
     },
+    "image_with_text_overlay_DzeKnT": {
+      "type": "image-with-text-overlay",
+      "blocks": {
+        "heading_NDCdic": {
+          "type": "heading",
+          "settings": {
+            "range_text": "PEAK",
+            "text": "Range",
+            "heading_tag": "h1",
+            "heading_gradient": "linear-gradient(180deg, rgba(218, 198, 31, 1) 33%, rgba(240, 244, 46, 1) 76%)"
+          }
+        },
+        "heading_n7HiC8": {
+          "type": "heading",
+          "settings": {
+            "range_text": "",
+            "text": "Built For Professionals",
+            "heading_tag": "h3",
+            "heading_gradient": ""
+          }
+        },
+        "richtext_wehxUF": {
+          "type": "richtext",
+          "settings": {
+            "content": "<p>The PEAK range includes more portable units that are lighter in weight with protective features, suited to more active and mobile applications such as commercial vehicles, skilled trades and camping</p>"
+          }
+        },
+        "button_XKYhGq": {
+          "type": "button",
+          "settings": {
+            "style": "fill",
+            "size": "lg",
+            "text": "SHOP THE PEAK RANGE",
+            "url": "shopify://collections/peak-portable-power-stations",
+            "background": "",
+            "text_color": ""
+          }
+        }
+      },
+      "block_order": [
+        "heading_NDCdic",
+        "heading_n7HiC8",
+        "richtext_wehxUF",
+        "button_XKYhGq"
+      ],
+      "custom_css": [
+        ".prose {text-align: center; max-width: 32em;}",
+        ".h3 {margin-block: 0em;}",
+        "@media screen and (min-width: 767px) {.prose {margin-left: 5em; }}",
+        "@media screen and (max-width: 767px) {.prose {margin-bottom: 1.6rem; }}"
+      ],
+      "settings": {
+        "full_width": true,
+        "allow_transparent_header": false,
+        "enable_parallax": false,
+        "image_size": "fill",
+        "image": "shopify://shop_images/Peak_3.6_Featured_6cd6976b-e050-4732-ace3-3f2e134e56f6.jpg",
+        "mobile_image": "shopify://shop_images/Peak_3.6_Mobile_2.jpg",
+        "mobile_text_position": "place-self-end-center text-center",
+        "desktop_text_position": "sm:place-self-start sm:text-start",
+        "text_color": "#ffffff",
+        "overlay_color": "#000000",
+        "overlay_opacity": 0
+      }
+    },
+    "impact_text_e3niPJ": {
+      "type": "impact-text",
+      "blocks": {
+        "item_jBbJRr": {
+          "type": "item",
+          "settings": {
+            "title": "",
+            "subheading": "Applications",
+            "content": "",
+            "button_text": "",
+            "button_url": "",
+            "animate_impact_text": false,
+            "animate_impact_text_duration": 2
+          }
+        },
+        "item_WBaGKJ": {
+          "type": "item",
+          "settings": {
+            "title": "",
+            "subheading": "",
+            "content": "<p>Camping and leisure | Drone and Surveying equipment | Professional photography | E-biking | Smart devices, Router and Laptop | Cordless power tools - <a href=\"https://www.sherpapower.co.uk/products/sherpa-peak-0-6-portable-power-pack\" title=\"https://www.sherpapower.co.uk/products/sherpa-peak-0-6-portable-power-pack\"><strong>PEAK 0.6,</strong></a><strong> </strong><a href=\"/products/peak-2-2-portable-power-station\" title=\"Sherpa PEAK 2.2\"><strong>PEAK 2.2 </strong></a><strong>or </strong><a href=\"/products/sherpa-peak-3-6\" title=\"Sherpa PEAK 3.6\"><strong>PEAK 3.6</strong></a>.</p>",
+            "button_text": "",
+            "button_url": "",
+            "animate_impact_text": false,
+            "animate_impact_text_duration": 2
+          }
+        },
+        "item_Ejyqm3": {
+          "type": "item",
+          "settings": {
+            "title": "",
+            "subheading": "",
+            "content": "<p>Mains Power Tools | Travel | Kettle, Toaster, Hair straighteners | DJ equipment | Fridge freezer | Vacuum cleaner | Diesel heater | Campervanning - <a href=\"https://www.sherpapower.co.uk/products/peak-2-2-portable-power-station\" title=\"https://www.sherpapower.co.uk/products/peak-2-2-portable-power-station\"><strong>PEAK 2.2</strong></a><strong> </strong>(Extra Batteries optional)</p>",
+            "button_text": "",
+            "button_url": "",
+            "animate_impact_text": true,
+            "animate_impact_text_duration": 2
+          }
+        }
+      },
+      "block_order": [
+        "item_jBbJRr",
+        "item_WBaGKJ",
+        "item_Ejyqm3"
+      ],
+      "settings": {
+        "full_width": true,
+        "stack_mobile": true,
+        "text_alignment": "center",
+        "impact_text_style": "fill",
+        "text_divider": "line",
+        "impact_text_size_ratio": 0.8,
+        "background": "",
+        "background_gradient": "",
+        "heading_text_color": "",
+        "heading_gradient": "linear-gradient(180deg, rgba(35, 31, 37, 1) 44%, rgba(37, 194, 147, 1) 100%)",
+        "text_color": "",
+        "button_background": "",
+        "button_text_color": ""
+      }
+    },
     "image_with_text_overlay_zzgdjL": {
       "type": "image-with-text-overlay",
       "blocks": {
@@ -249,8 +375,6 @@
         "allow_transparent_header": false,
         "enable_parallax": false,
         "image_size": "auto",
-        "image": "shopify://shop_images/BASE_5_homepage.png",
-        "mobile_image": "shopify://shop_images/Base_Range_Mobile_653a1abd-f7be-4e72-a617-2ffa52fa4cd8.jpg",
         "mobile_text_position": "place-self-end-center text-center",
         "desktop_text_position": "sm:place-self-start-end sm:text-end",
         "text_color": "#ffffff",
@@ -317,71 +441,6 @@
         "text_color": "",
         "button_background": "",
         "button_text_color": ""
-      }
-    },
-    "image_with_text_overlay_DzeKnT": {
-      "type": "image-with-text-overlay",
-      "blocks": {
-        "heading_NDCdic": {
-          "type": "heading",
-          "settings": {
-            "range_text": "PEAK",
-            "text": "Range",
-            "heading_tag": "h1",
-            "heading_gradient": "linear-gradient(180deg, rgba(218, 198, 31, 1) 33%, rgba(240, 244, 46, 1) 76%)"
-          }
-        },
-        "heading_n7HiC8": {
-          "type": "heading",
-          "settings": {
-            "range_text": "",
-            "text": "Built For Professionals",
-            "heading_tag": "h3",
-            "heading_gradient": ""
-          }
-        },
-        "richtext_wehxUF": {
-          "type": "richtext",
-          "settings": {
-            "content": "<p>The PEAK range includes more portable units that are lighter in weight with protective features, suited to more active and mobile applications such as commercial vehicles, skilled trades and camping</p>"
-          }
-        },
-        "button_XKYhGq": {
-          "type": "button",
-          "settings": {
-            "style": "fill",
-            "size": "lg",
-            "text": "SHOP THE PEAK RANGE",
-            "url": "shopify://collections/peak-portable-power-stations",
-            "background": "",
-            "text_color": ""
-          }
-        }
-      },
-      "block_order": [
-        "heading_NDCdic",
-        "heading_n7HiC8",
-        "richtext_wehxUF",
-        "button_XKYhGq"
-      ],
-      "custom_css": [
-        ".prose {text-align: center; max-width: 32em;}",
-        ".h3 {margin-block: 0em;}",
-        "@media screen and (min-width: 767px) {.prose {margin-left: 5em; }}",
-        "@media screen and (max-width: 767px) {.prose {margin-bottom: 1.6rem; }}"
-      ],
-      "settings": {
-        "full_width": true,
-        "allow_transparent_header": false,
-        "enable_parallax": false,
-        "image_size": "fill",
-        "image": "shopify://shop_images/Peak_3.6_Featured_6cd6976b-e050-4732-ace3-3f2e134e56f6.jpg",
-        "mobile_image": "shopify://shop_images/Peak_3.6_Mobile_2.jpg",
-        "mobile_text_position": "place-self-end-center text-center",
-        "desktop_text_position": "sm:place-self-start sm:text-start",
-        "text_color": "#ffffff",
-        "overlay_color": "#000000",
-        "overlay_opacity": 0
       }
     },
     "rich_text_NHqDQA": {
@@ -471,67 +530,6 @@
         "item_eGmbf4"
       ],
       "disabled": true,
-      "settings": {
-        "full_width": true,
-        "stack_mobile": true,
-        "text_alignment": "center",
-        "impact_text_style": "fill",
-        "text_divider": "line",
-        "impact_text_size_ratio": 0.8,
-        "background": "",
-        "background_gradient": "",
-        "heading_text_color": "",
-        "heading_gradient": "linear-gradient(180deg, rgba(35, 31, 37, 1) 44%, rgba(37, 194, 147, 1) 100%)",
-        "text_color": "",
-        "button_background": "",
-        "button_text_color": ""
-      }
-    },
-    "impact_text_e3niPJ": {
-      "type": "impact-text",
-      "blocks": {
-        "item_jBbJRr": {
-          "type": "item",
-          "settings": {
-            "title": "",
-            "subheading": "Applications",
-            "content": "",
-            "button_text": "",
-            "button_url": "",
-            "animate_impact_text": false,
-            "animate_impact_text_duration": 2
-          }
-        },
-        "item_WBaGKJ": {
-          "type": "item",
-          "settings": {
-            "title": "",
-            "subheading": "",
-            "content": "<p>Camping and leisure | Drone and Surveying equipment | Professional photography | E-biking | Smart devices, Router and Laptop | Cordless power tools - <a href=\"https://www.sherpapower.co.uk/products/sherpa-peak-0-6-portable-power-pack\" title=\"https://www.sherpapower.co.uk/products/sherpa-peak-0-6-portable-power-pack\"><strong>PEAK 0.6</strong></a><strong> </strong>or<strong> </strong><a href=\"https://www.sherpapower.co.uk/products/peak-2-2-portable-power-station\" title=\"https://www.sherpapower.co.uk/products/peak-2-2-portable-power-station\"><strong>PEAK 2.2</strong></a></p>",
-            "button_text": "",
-            "button_url": "",
-            "animate_impact_text": false,
-            "animate_impact_text_duration": 2
-          }
-        },
-        "item_Ejyqm3": {
-          "type": "item",
-          "settings": {
-            "title": "",
-            "subheading": "",
-            "content": "<p>Mains Power Tools | Travel | Kettle, Toaster, Hair straighteners | DJ equipment | Fridge freezer | Vacuum cleaner | Diesel heater | Campervanning - <a href=\"https://www.sherpapower.co.uk/products/peak-2-2-portable-power-station\" title=\"https://www.sherpapower.co.uk/products/peak-2-2-portable-power-station\"><strong>PEAK 2.2</strong></a><strong> </strong>(Extra Batteries optional)</p>",
-            "button_text": "",
-            "button_url": "",
-            "animate_impact_text": true,
-            "animate_impact_text_duration": 2
-          }
-        }
-      },
-      "block_order": [
-        "item_jBbJRr",
-        "item_WBaGKJ",
-        "item_Ejyqm3"
-      ],
       "settings": {
         "full_width": true,
         "stack_mobile": true,
@@ -1002,12 +1000,12 @@
     "image_with_text_overlay_7zWHBP",
     "impact-text",
     "image_with_text_overlay_RwjfPp",
+    "image_with_text_overlay_DzeKnT",
+    "impact_text_e3niPJ",
     "image_with_text_overlay_zzgdjL",
     "impact_text_Pefk6J",
-    "image_with_text_overlay_DzeKnT",
     "rich_text_NHqDQA",
     "impact_text_LycQGm",
-    "impact_text_e3niPJ",
     "image_with_text_overlay_4qMqtQ",
     "media_with_text_kKAhjw",
     "media_with_text_9aYmQG",
