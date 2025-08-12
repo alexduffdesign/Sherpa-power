@@ -41,6 +41,7 @@
       pointer-events: none;
       mix-blend-mode: soft-light;
       overflow: hidden;
+      z-index: 1;
     }
 
     #shopify-section-{{ section.id }} .clouds-track {
@@ -63,6 +64,10 @@
       from { transform: translateX(0%); }
       to { transform: translateX(-50%); }
     }
+
+    /* Ensure overlay scrim and text remain above clouds */
+    #shopify-section-{{ section.id }} .content-over-media:before { z-index: 2; }
+    #shopify-section-{{ section.id }} .content-over-media > :not(img, video, iframe, svg, video-media) { z-index: 3; }
 
     @media (prefers-reduced-motion: reduce) {
       #shopify-section-{{ section.id }} .clouds-track {
@@ -102,15 +107,7 @@
       {%- endif -%}
     {%- endif -%}
 
-    {%- if section.settings.enable_clouds and section.settings.cloud_image != blank -%}
-      {%- capture cloud_sizes -%}{% if section.settings.full_width %}100vw{% else %}(max-width: 740px) calc(100vw - 40px), (max-width: 999px) calc(100vw - 64px), min({{ settings.page_width }}px, 100vw - 96px){% endif %}{%- endcapture -%}
-      <div class="clouds-layer" aria-hidden="true">
-        <div class="clouds-track">
-          {{- section.settings.cloud_image | image_url: width: section.settings.cloud_image.width | image_tag: loading: 'lazy', sizes: cloud_sizes, widths: '200,300,400,500,600,700,800,900,1000,1200,1400,1600,1800,2000,2200,2400,2600,2800,3000,3200', class: 'clouds-image' -}}
-          {{- section.settings.cloud_image | image_url: width: section.settings.cloud_image.width | image_tag: loading: 'lazy', sizes: cloud_sizes, widths: '200,300,400,500,600,700,800,900,1000,1200,1400,1600,1800,2000,2200,2400,2600,2800,3000,3200', class: 'clouds-image' -}}
-        </div>
-      </div>
-    {%- endif -%}
+    
 
     {%- if section.blocks.size > 0 -%}
       <div class="{{ section.settings.mobile_text_position }} {{ section.settings.desktop_text_position }}">
@@ -161,6 +158,16 @@
       </div>
     {%- endif -%}
   </image-banner>
+
+  {%- if section.settings.enable_clouds and section.settings.cloud_image != blank -%}
+    {%- capture cloud_sizes -%}{% if section.settings.full_width %}100vw{% else %}(max-width: 740px) calc(100vw - 40px), (max-width: 999px) calc(100vw - 64px), min({{ settings.page_width }}px, 100vw - 96px){% endif %}{%- endcapture -%}
+    <div class="clouds-layer" aria-hidden="true">
+      <div class="clouds-track">
+        {{- section.settings.cloud_image | image_url: width: section.settings.cloud_image.width | image_tag: loading: 'lazy', sizes: cloud_sizes, widths: '200,300,400,500,600,700,800,900,1000,1200,1400,1600,1800,2000,2200,2400,2600,2800,3000,3200', class: 'clouds-image' -}}
+        {{- section.settings.cloud_image | image_url: width: section.settings.cloud_image.width | image_tag: loading: 'lazy', sizes: cloud_sizes, widths: '200,300,400,500,600,700,800,900,1000,1200,1400,1600,1800,2000,2200,2400,2600,2800,3000,3200', class: 'clouds-image' -}}
+      </div>
+    </div>
+  {%- endif -%}
 </div>
 
 {% schema %}
