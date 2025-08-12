@@ -60,6 +60,7 @@
         "image_size": "auto",
         "image": "shopify://shop_images/Gang.jpg",
         "mobile_image": "shopify://shop_images/Hero_Image_Mobile.jpg",
+        "overlay_image": "shopify://shop_images/Serpa_3.6_Controls_1111ed29-b56f-4597-bb5c-30a1fdf7bc82.svg",
         "mobile_text_position": "place-self-end-center text-center",
         "desktop_text_position": "sm:place-self-end-center sm:text-center",
         "text_color": "#ffffff",
