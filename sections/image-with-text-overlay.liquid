@@ -14,6 +14,24 @@
       margin-block-start: calc(-1 * var(--header-height) * var(--section-is-first));
     {%- endif -%}
   }
+
+  /* Overlay screen fade-in */
+  #shopify-section-{{ section.id }} .overlay-screen {
+    opacity: 0;
+    animation: overlay-screen-on-{{ section.id }} 1000ms ease-in-out 2s forwards;
+  }
+
+  @keyframes overlay-screen-on-{{ section.id }} {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    #shopify-section-{{ section.id }} .overlay-screen {
+      animation: none;
+      opacity: 1;
+    }
+  }
 </style>
 
 <div {% render 'section-properties' %} {% if section.settings.allow_transparent_header %}allow-transparent-header{% endif %}>
@@ -37,12 +55,12 @@
       {%- capture overlay_sizes -%}{% if section.settings.full_width %}100vw{% else %}(max-width: 740px) calc(100vw - 40px), (max-width: 999px) calc(100vw - 64px), min({{ settings.page_width }}px, 100vw - 96px){% endif %}{%- endcapture -%}
 
       {%- if section.settings.overlay_image != blank -%}
-        {%- capture overlay_image_class -%}{% if section.settings.overlay_mobile_image != blank %}hidden sm:block {% endif %}pointer-events-none{%- endcapture -%}
+        {%- capture overlay_image_class -%}hidden sm:block pointer-events-none overlay-screen{%- endcapture -%}
         {{- section.settings.overlay_image | image_url: width: section.settings.overlay_image.width | image_tag: loading: 'lazy', sizes: overlay_sizes, widths: '200,300,400,500,600,700,800,900,1000,1200,1400,1600,1800,2000,2200,2400,2600,2800,3000,3200', class: overlay_image_class, style: 'position:absolute;top:0;left:0;right:0;bottom:0;width:100%;height:100%;' -}}
       {%- endif -%}
 
       {%- if section.settings.overlay_mobile_image != blank -%}
-        {{- section.settings.overlay_mobile_image | image_url: width: section.settings.overlay_mobile_image.width | image_tag: loading: 'lazy', sizes: overlay_sizes, widths: '200,300,400,500,600,700,800,900,1000,1200,1400,1600', class: 'sm:hidden pointer-events-none', style: 'position:absolute;top:0;left:0;right:0;bottom:0;width:100%;height:100%;' -}}
+        {{- section.settings.overlay_mobile_image | image_url: width: section.settings.overlay_mobile_image.width | image_tag: loading: 'lazy', sizes: overlay_sizes, widths: '200,300,400,500,600,700,800,900,1000,1200,1400,1600', class: 'sm:hidden pointer-events-none overlay-screen', style: 'position:absolute;top:0;left:0;right:0;bottom:0;width:100%;height:100%;' -}}
       {%- endif -%}
     {%- endif -%}
 
