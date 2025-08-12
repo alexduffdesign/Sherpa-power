@@ -895,6 +895,7 @@
       "block_order": [
         "testimonial_6MkfYm"
       ],
+      "disabled": true,
       "custom_css": [
         ".testimonial {background-image: linear-gradient(transparent 90%, #25c293 100%); border-width: 1px; border-color: #231f25; background-color: transparent;}",
         ".section-full {padding-bottom: 0rem;}"
