@@ -882,56 +882,19 @@
         "testimonial_6MkfYm": {
           "type": "testimonial",
           "settings": {
-            "image": "shopify://shop_images/6_63b4d533-7516-46ad-912f-d6cacb38b36c.jpg",
+            "image": "shopify://shop_images/review.png",
             "round_avatar": true,
             "show_rating": true,
-            "rating": 4,
-            "author": "Sherpa P",
-            "title": "Leave a review",
-            "content": "<p>Share what your customers are saying about your products, customer service or shipping rates.</p>"
-          }
-        },
-        "testimonial_8VCB9d": {
-          "type": "testimonial",
-          "settings": {
-            "round_avatar": true,
-            "show_rating": true,
-            "rating": 4,
-            "author": "John S.",
-            "title": "Testimonial 1",
-            "content": "<p>Share what your customers are saying about your products, customer service or shipping rates.</p>"
-          }
-        },
-        "testimonial_N6KKd6": {
-          "type": "testimonial",
-          "settings": {
-            "round_avatar": true,
-            "show_rating": true,
-            "rating": 4,
-            "author": "",
-            "title": "Testimonial",
-            "content": "<p>Share what your customers are saying about your products, customer service or shipping rates.</p>"
-          }
-        },
-        "testimonial_WTByeL": {
-          "type": "testimonial",
-          "settings": {
-            "round_avatar": true,
-            "show_rating": true,
-            "rating": 4,
-            "author": "Joshua A.",
-            "title": "Testimonial 3",
-            "content": "<p>Share what your customers are saying about your products, customer service or shipping rates.</p>"
+            "rating": 5,
+            "author": "Gareth Johns",
+            "title": "Solid bit of kit",
+            "content": "<p>Solid bit of kit. We have just completed four nights off-grid with no sun for the solar panel for top-ups, but we still had enough power for lots of coffee and hair drying each day. These were the things we missed in the motorhome when travelling off-grid! The app still reported 53% power left.</p>"
           }
         }
       },
       "block_order": [
-        "testimonial_6MkfYm",
-        "testimonial_8VCB9d",
-        "testimonial_N6KKd6",
-        "testimonial_WTByeL"
+        "testimonial_6MkfYm"
       ],
-      "disabled": true,
       "custom_css": [
         ".testimonial {background-image: linear-gradient(transparent 90%, #25c293 100%); border-width: 1px; border-color: #231f25; background-color: transparent;}",
         ".section-full {padding-bottom: 0rem;}"
