@@ -33,6 +33,19 @@
       {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder' | replace: '<svg', '<svg preserveAspectRatio="xMinYMin slice"' }}
     {%- endif -%}
 
+    {%- if section.settings.overlay_image != blank or section.settings.overlay_mobile_image != blank -%}
+      {%- capture overlay_sizes -%}{% if section.settings.full_width %}100vw{% else %}(max-width: 740px) calc(100vw - 40px), (max-width: 999px) calc(100vw - 64px), min({{ settings.page_width }}px, 100vw - 96px){% endif %}{%- endcapture -%}
+
+      {%- if section.settings.overlay_image != blank -%}
+        {%- capture overlay_image_class -%}{% if section.settings.overlay_mobile_image != blank %}hidden sm:block {% endif %}pointer-events-none{%- endcapture -%}
+        {{- section.settings.overlay_image | image_url: width: section.settings.overlay_image.width | image_tag: loading: 'lazy', sizes: overlay_sizes, widths: '200,300,400,500,600,700,800,900,1000,1200,1400,1600,1800,2000,2200,2400,2600,2800,3000,3200', class: overlay_image_class, style: 'position:absolute;top:0;left:0;right:0;bottom:0;width:100%;height:100%;' -}}
+      {%- endif -%}
+
+      {%- if section.settings.overlay_mobile_image != blank -%}
+        {{- section.settings.overlay_mobile_image | image_url: width: section.settings.overlay_mobile_image.width | image_tag: loading: 'lazy', sizes: overlay_sizes, widths: '200,300,400,500,600,700,800,900,1000,1200,1400,1600', class: 'sm:hidden pointer-events-none', style: 'position:absolute;top:0;left:0;right:0;bottom:0;width:100%;height:100%;' -}}
+      {%- endif -%}
+    {%- endif -%}
+
     {%- if section.blocks.size > 0 -%}
       <div class="{{ section.settings.mobile_text_position }} {{ section.settings.desktop_text_position }}">
         <div class="prose">
@@ -155,6 +168,22 @@
       "id": "mobile_image",
       "label": "Mobile image",
       "info": "1300 x 1500px .jpg recommended. Default to desktop image."
+    },
+    {
+      "type": "header",
+      "content": "Overlay images"
+    },
+    {
+      "type": "image_picker",
+      "id": "overlay_image",
+      "label": "Overlay image",
+      "info": "Optional image displayed above the main image."
+    },
+    {
+      "type": "image_picker",
+      "id": "overlay_mobile_image",
+      "label": "Overlay mobile image",
+      "info": "Optional mobile image displayed above the main image on small screens. Defaults to overlay image if not set."
     },
     {
       "type": "select",
