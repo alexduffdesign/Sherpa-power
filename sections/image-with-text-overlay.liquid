@@ -32,6 +32,44 @@
       opacity: 1;
     }
   }
+
+  {%- if section.settings.enable_clouds -%}
+    /* Clouds effect */
+    #shopify-section-{{ section.id }} .clouds-layer {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      mix-blend-mode: soft-light;
+      overflow: hidden;
+    }
+
+    #shopify-section-{{ section.id }} .clouds-track {
+      width: 200%;
+      height: 100%;
+      display: flex;
+      will-change: transform;
+      animation: clouds-marquee-{{ section.id }} 120s linear infinite;
+    }
+
+    #shopify-section-{{ section.id }} .clouds-image {
+      width: 50%;
+      height: 100%;
+      object-fit: cover;
+      flex: 0 0 50%;
+      display: block;
+    }
+
+    @keyframes clouds-marquee-{{ section.id }} {
+      from { transform: translateX(0%); }
+      to { transform: translateX(-50%); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      #shopify-section-{{ section.id }} .clouds-track {
+        animation: none;
+      }
+    }
+  {%- endif -%}
 </style>
 
 <div {% render 'section-properties' %} {% if section.settings.allow_transparent_header %}allow-transparent-header{% endif %}>
@@ -62,6 +100,16 @@
       {%- if section.settings.overlay_mobile_image != blank -%}
         {{- section.settings.overlay_mobile_image | image_url: width: section.settings.overlay_mobile_image.width | image_tag: loading: 'lazy', sizes: overlay_sizes, widths: '200,300,400,500,600,700,800,900,1000,1200,1400,1600', class: 'sm:hidden pointer-events-none overlay-screen', style: 'position:absolute;top:0;left:0;right:0;bottom:0;width:100%;height:100%;' -}}
       {%- endif -%}
+    {%- endif -%}
+
+    {%- if section.settings.enable_clouds and section.settings.cloud_image != blank -%}
+      {%- capture cloud_sizes -%}{% if section.settings.full_width %}100vw{% else %}(max-width: 740px) calc(100vw - 40px), (max-width: 999px) calc(100vw - 64px), min({{ settings.page_width }}px, 100vw - 96px){% endif %}{%- endcapture -%}
+      <div class="clouds-layer" aria-hidden="true">
+        <div class="clouds-track">
+          {{- section.settings.cloud_image | image_url: width: section.settings.cloud_image.width | image_tag: loading: 'lazy', sizes: cloud_sizes, widths: '200,300,400,500,600,700,800,900,1000,1200,1400,1600,1800,2000,2200,2400,2600,2800,3000,3200', class: 'clouds-image' -}}
+          {{- section.settings.cloud_image | image_url: width: section.settings.cloud_image.width | image_tag: loading: 'lazy', sizes: cloud_sizes, widths: '200,300,400,500,600,700,800,900,1000,1200,1400,1600,1800,2000,2200,2400,2600,2800,3000,3200', class: 'clouds-image' -}}
+        </div>
+      </div>
     {%- endif -%}
 
     {%- if section.blocks.size > 0 -%}
@@ -186,6 +234,23 @@
       "id": "mobile_image",
       "label": "Mobile image",
       "info": "1300 x 1500px .jpg recommended. Default to desktop image."
+    },
+    {
+      "type": "header",
+      "content": "Cloud effect"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_clouds",
+      "label": "Enable moving clouds",
+      "default": false
+    },
+    {
+      "type": "image_picker",
+      "id": "cloud_image",
+      "label": "Cloud image",
+      "info": "A horizontally tileable cloud texture. For best results, use an image roughly 2× the banner width.",
+      "visible_if": "{{ section.settings.enable_clouds }}"
     },
     {
       "type": "header",
