@@ -61,7 +61,7 @@
         "image": "shopify://shop_images/The_Gang_Updated.jpg",
         "mobile_image": "shopify://shop_images/Hero_Image_Mobile.jpg",
         "enable_clouds": true,
-        "cloud_image": "shopify://shop_images/Cloud-move.png",
+        "cloud_image": "shopify://shop_images/Cloud-move_1.png",
         "overlay_image": "shopify://shop_images/Serpa_3.6_Controls_1ad78d4e-2e90-4caa-b267-a50659ab0547.svg",
         "mobile_text_position": "place-self-end-center text-center",
         "desktop_text_position": "sm:place-self-end-center sm:text-center",
