@@ -24,7 +24,7 @@
           "settings": {
             "range_text": "About us and our mission.",
             "text": "",
-            "heading_tag": "h1",
+            "heading_tag": "h0",
             "heading_gradient": "linear-gradient(180deg, rgba(37, 194, 147, 1), rgba(247, 247, 247, 1) 100%)"
           }
         }
@@ -320,7 +320,6 @@
       "type": "revealed-image-on-scroll",
       "settings": {
         "image": "shopify://shop_images/Hero_Image_Showing_The_Range.jpg",
-        "mobile_image": "shopify://shop_images/Hero_Image_Mobile_1_1.jpg",
         "subheading": "",
         "title": "Meet The Sherpa Range",
         "background": "",
