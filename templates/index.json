@@ -678,6 +678,52 @@
         "overlay_opacity": 0
       }
     },
+    "image_with_text_overlay_rive_YTUXFc": {
+      "type": "image-with-text-overlay-rive",
+      "blocks": {
+        "heading_TVDbGk": {
+          "type": "heading",
+          "settings": {
+            "range_text": "Heading",
+            "text": "Image with text overlay",
+            "heading_tag": "h1",
+            "heading_gradient": ""
+          }
+        },
+        "richtext_rAbBeF": {
+          "type": "richtext",
+          "settings": {
+            "content": "<p>Use this text to share information about your brand with your customers.</p>"
+          }
+        },
+        "rive_animation_tQWhHh": {
+          "type": "rive_animation",
+          "settings": {
+            "rive_src": "https://cdn.shopify.com/s/files/1/0641/4290/1439/files/sherpa_charge___solar.riv?v=1756892826",
+            "state_machines": "state-machine-1",
+            "artboard": "Artboard",
+            "autoplay": true,
+            "play_when_in_view": true,
+            "layer": "above_overlay"
+          }
+        }
+      },
+      "block_order": [
+        "heading_TVDbGk",
+        "richtext_rAbBeF",
+        "rive_animation_tQWhHh"
+      ],
+      "name": "Image with text (Rive)",
+      "settings": {
+        "full_width": true,
+        "allow_transparent_header": false,
+        "enable_parallax": false,
+        "image_size": "auto",
+        "text_color": "#ffffff",
+        "overlay_color": "#000000",
+        "overlay_opacity": 30
+      }
+    },
     "media_with_text_kKAhjw": {
       "type": "media-with-text",
       "blocks": {
@@ -1040,6 +1086,7 @@
     "impact_text_LycQGm",
     "image_with_text_overlay_4qMqtQ",
     "image_with_text_overlay_46wtVn",
+    "image_with_text_overlay_rive_YTUXFc",
     "media_with_text_kKAhjw",
     "media_with_text_9aYmQG",
     "text_with_icons_MeKcXe",
