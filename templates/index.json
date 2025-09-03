@@ -684,8 +684,8 @@
         "heading_TVDbGk": {
           "type": "heading",
           "settings": {
-            "range_text": "Heading",
-            "text": "Image with text overlay",
+            "range_text": "Charge & Solar",
+            "text": "",
             "heading_tag": "h1",
             "heading_gradient": ""
           }
@@ -693,7 +693,7 @@
         "richtext_rAbBeF": {
           "type": "richtext",
           "settings": {
-            "content": "<p>Use this text to share information about your brand with your customers.</p>"
+            "content": "<p>Sherpa-Charge when the Sun goes down. Generate power equivalent to a 5m square solar panel from your vehicle alternator.</p>"
           }
         },
         "rive_animation_tQWhHh": {
