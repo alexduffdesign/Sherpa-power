@@ -21,6 +21,8 @@
 
   /* Rive layer positioning */
   #shopify-section-{{ section.id }} .rive-layer {
+    max-width: 100%;
+    height: 100%;
     position: absolute;
     inset: 0;
     pointer-events: none;
@@ -72,23 +74,6 @@
       {%- endif -%}
     {%- endif -%}
 
-    {%- comment -%}
-      Rive animation blocks (decorative layer). Multiple blocks allowed.
-    {%- endcomment -%}
-    {%- for block in section.blocks -%}
-      {%- if block.type == 'rive_animation' -%}
-        <div class="rive-layer" style="z-index: {% if block.settings.layer == 'above_overlay' %}3{% else %}1{% endif %};" {{ block.shopify_attributes }}>
-          <rive-media
-            {% if block.settings.play_when_in_view %}play-when-in-view{% endif %}
-            {% if block.settings.autoplay %}autoplay{% endif %}
-            src="{{ block.settings.rive_src | escape }}"
-            {% if block.settings.artboard != blank %}artboard="{{ block.settings.artboard | escape }}"{% endif %}
-            {% if block.settings.state_machines != blank %}state-machines="{{ block.settings.state_machines | escape }}"{% endif %}
-          ></rive-media>
-        </div>
-      {%- endif -%}
-    {%- endfor -%}
-
     {%- if section.blocks.size > 0 -%}
       <div class="{{ section.settings.mobile_text_position }} {{ section.settings.desktop_text_position }}">
         <div class="prose">
@@ -138,6 +123,24 @@
       </div>
     {%- endif -%}
   </image-banner>
+
+  {%- comment -%}
+      Rive animation blocks (decorative layer). Multiple blocks allowed.
+    {%- endcomment -%}
+    {%- for block in section.blocks -%}
+        {%- if block.type == 'rive_animation' -%}
+          <div class="rive-layer" style="z-index: {% if block.settings.layer == 'above_overlay' %}3{% else %}1{% endif %};" {{ block.shopify_attributes }}>
+            <rive-media
+              {% if block.settings.play_when_in_view %}play-when-in-view{% endif %}
+              {% if block.settings.autoplay %}autoplay{% endif %}
+              src="{{ block.settings.rive_src | escape }}"
+              {% if block.settings.artboard != blank %}artboard="{{ block.settings.artboard | escape }}"{% endif %}
+              {% if block.settings.state_machines != blank %}state-machines="{{ block.settings.state_machines | escape }}"{% endif %}
+            ></rive-media>
+          </div>
+        {%- endif -%}
+      {%- endfor -%}
+      
 </div>
 
 {% schema %}
