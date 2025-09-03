@@ -662,6 +662,7 @@
         ".h3 {margin-block: 0em;}",
         "@media screen and (max-width: 767px) {.prose {margin-bottom: 2rem; }}"
       ],
+      "name": "Charge and Solar",
       "settings": {
         "full_width": true,
         "allow_transparent_header": false,
@@ -710,6 +711,7 @@
         ".media-with-text__media > * {object-fit: contain;}",
         ".media-with-text__content {padding-left: 0px; padding-right: 4em;}"
       ],
+      "name": "Capture, store, use",
       "settings": {
         "full_width": true,
         "spacing": "small"
