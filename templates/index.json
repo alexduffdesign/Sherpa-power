@@ -700,7 +700,7 @@
           "type": "rive_animation",
           "settings": {
             "rive_src": "https://cdn.shopify.com/s/files/1/0641/4290/1439/files/sherpa_charge___solar.riv?v=1756892826",
-            "state_machines": "state-machine-1",
+            "state_machines": "State-Machine-1",
             "artboard": "Artboard",
             "autoplay": true,
             "play_when_in_view": true,
