@@ -662,6 +662,7 @@
         ".h3 {margin-block: 0em;}",
         "@media screen and (max-width: 767px) {.prose {margin-bottom: 2rem; }}"
       ],
+      "name": "Charge and Solar",
       "settings": {
         "full_width": true,
         "allow_transparent_header": false,
