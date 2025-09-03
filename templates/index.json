@@ -711,6 +711,7 @@
         ".media-with-text__media > * {object-fit: contain;}",
         ".media-with-text__content {padding-left: 0px; padding-right: 4em;}"
       ],
+      "name": "Capture, store, use",
       "settings": {
         "full_width": true,
         "spacing": "small"
