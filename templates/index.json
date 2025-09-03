@@ -656,6 +656,7 @@
         "richtext_8wVBaP",
         "button_Q9Mdfq"
       ],
+      "disabled": true,
       "custom_css": [
         ".place-self-end-center {margin-top: auto; margin-bottom: auto;}",
         ".prose {text-align: center; max-width: 28rem; margin-bottom: 8rem;}",
@@ -684,8 +685,8 @@
         "heading_TVDbGk": {
           "type": "heading",
           "settings": {
-            "range_text": "Heading",
-            "text": "Image with text overlay",
+            "range_text": "Charge & Solar",
+            "text": "",
             "heading_tag": "h1",
             "heading_gradient": ""
           }
@@ -693,14 +694,14 @@
         "richtext_rAbBeF": {
           "type": "richtext",
           "settings": {
-            "content": "<p>Use this text to share information about your brand with your customers.</p>"
+            "content": "<p>Sherpa-Charge when the Sun goes down. Generate power equivalent to a 5m square solar panel from your vehicle alternator.</p>"
           }
         },
         "rive_animation_tQWhHh": {
           "type": "rive_animation",
           "settings": {
-            "rive_src": "https://cdn.shopify.com/s/files/1/0641/4290/1439/files/sherpa_charge___solar.riv?v=1756892826",
-            "state_machines": "state-machine-1",
+            "rive_src": "https://cdn.shopify.com/s/files/1/0641/4290/1439/files/sherpa_charge___solar.riv?v=1756901173",
+            "state_machines": "State Machine 1",
             "artboard": "Artboard",
             "autoplay": true,
             "play_when_in_view": true,
@@ -712,6 +713,12 @@
         "heading_TVDbGk",
         "richtext_rAbBeF",
         "rive_animation_tQWhHh"
+      ],
+      "custom_css": [
+        ".place-self-end-center {margin-top: auto; margin-bottom: auto;}",
+        ".prose {text-align: center; max-width: 28rem; margin-bottom: 8rem;}",
+        ".h3 {margin-block: 0em;}",
+        "@media screen and (max-width: 767px) {.prose {margin-bottom: 2rem; }}"
       ],
       "name": "Image with text (Rive)",
       "settings": {
