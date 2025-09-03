@@ -726,7 +726,7 @@
         "allow_transparent_header": false,
         "enable_parallax": false,
         "image_size": "auto",
-        "image": "shopify://shop_images/charge_solar_2.jpg",
+        "image": "shopify://shop_images/charge_solar_3_fig.jpg",
         "text_color": "#ffffff",
         "overlay_color": "#000000",
         "overlay_opacity": 0
