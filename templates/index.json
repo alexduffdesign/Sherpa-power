@@ -729,7 +729,7 @@
         "image": "shopify://shop_images/charge-solar-new.jpg",
         "text_color": "#ffffff",
         "overlay_color": "#000000",
-        "overlay_opacity": 0
+        "overlay_opacity": 7
       }
     },
     "media_with_text_kKAhjw": {
