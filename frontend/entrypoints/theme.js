@@ -5791,7 +5791,7 @@ if (!window.customElements.get("video-media")) {
 }
 
 // js/common/media/rive-media.js
-var RIVE_SCRIPT_URL = "https://unpkg.com/@rive-app/canvas";
+var RIVE_SCRIPT_URL = "https://unpkg.com/@rive-app/webgl2";
 var _riveInstance, _riveCanvas, _onResize, onResize_fn;
 var RiveMedia = class extends BaseMedia {
   constructor() {
