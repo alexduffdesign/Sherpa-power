@@ -28,7 +28,7 @@
           "type": "heading",
           "settings": {
             "text": "Which Range Is Right For You?",
-            "heading_tag": "h2",
+            "heading_tag": "h1",
             "text_color": "",
             "gradient": ""
           }
@@ -72,7 +72,6 @@
         "item_DddUrh": {
           "type": "item",
           "settings": {
-            "image": "shopify://shop_images/Base-range-usecase-image_1.jpg",
             "column_size": "3",
             "title": "BASE",
             "heading_tag": "h4",
