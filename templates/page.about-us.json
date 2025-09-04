@@ -24,7 +24,7 @@
           "settings": {
             "range_text": "{{ page.title }}",
             "text": "",
-            "heading_tag": "h0",
+            "heading_tag": "h1",
             "heading_gradient": "linear-gradient(180deg, rgba(37, 194, 147, 1), rgba(247, 247, 247, 1) 100%)"
           }
         }
