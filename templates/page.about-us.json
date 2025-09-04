@@ -22,7 +22,7 @@
         "heading_kgHwRj": {
           "type": "heading",
           "settings": {
-            "range_text": "About us and our mission.",
+            "range_text": "{{ page.title }}",
             "text": "",
             "heading_tag": "h0",
             "heading_gradient": "linear-gradient(180deg, rgba(37, 194, 147, 1), rgba(247, 247, 247, 1) 100%)"
