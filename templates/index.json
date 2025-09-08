@@ -62,7 +62,6 @@
         "mobile_image": "shopify://shop_images/Hero_Image_Mobile.jpg",
         "enable_clouds": false,
         "cloud_image": "shopify://shop_images/Cloud-move_1.png",
-        "overlay_image": "shopify://shop_images/Serpa_3.6_Controls_1ad78d4e-2e90-4caa-b267-a50659ab0547.svg",
         "mobile_text_position": "place-self-end-center text-center",
         "desktop_text_position": "sm:place-self-end-center sm:text-center",
         "text_color": "#ffffff",
@@ -599,7 +598,6 @@
         "richtext_byWz6r",
         "button_kqCzbn"
       ],
-      "disabled": true,
       "custom_css": [
         ".place-self-end-center {margin-top: auto; margin-bottom: auto;}",
         ".prose {text-align: center; max-width: 28rem;}",
@@ -714,6 +712,7 @@
         "richtext_rAbBeF",
         "rive_animation_tQWhHh"
       ],
+      "disabled": true,
       "custom_css": [
         ".place-self-end-center {margin-top: auto; margin-bottom: auto;}",
         ".prose {text-align: center; max-width: 28rem; margin-bottom: 8rem;}",
