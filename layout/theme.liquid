@@ -35,15 +35,16 @@
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
-    <meta name="p:domain_verify" content="b54340c8c8df1b58239f3ded31e4b12b"/>
-    
-  {% if template.name == 'blog' and current_tags %}
-  <title>{{ blog.title }} - {{ current_tags | join: ", " }}</title>
-{% elsif template.name == 'blog' %}
-  <title>{{ blog.title }}</title>
-{% else %}
-  <title>{% if page_title %}{{ page_title }}{% else %}{{ shop.name }}{% endif %}</title>
-{% endif %}
+    <meta name="p:domain_verify" content="b54340c8c8df1b58239f3ded31e4b12b" />
+    <title>
+      {% if page_title == blank %}
+        {{ shop.name }}
+      {% else %}
+        {{ page_title }}{% if current_page != 1 %}
+          &ndash; {{ 'general.page' | t: page: current_page }}{% endif %}
+      {% endif %}
+    </title>
+
 
     {%- if page_description -%}
       {% if request.path == '/' %}
@@ -94,7 +95,7 @@
     {%- render 'js-variables' -%}
 
     <script type="module" src="{{ 'vendor.min.js' | asset_url }}"></script>
-    <script type="module" src="{{ 'theme.js' | asset_url }}"></script>
+    {% comment %} <script type="module" src="{{ 'theme.js' | asset_url }}"></script> {% endcomment %}
     <script type="module" src="{{ 'sections.js' | asset_url }}"></script>
     {{ content_for_header }}
 

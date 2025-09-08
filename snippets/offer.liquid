@@ -147,6 +147,12 @@
         </div>
       {%- endif -%}
 
+      {%- if key_features_cs.output_current != blank -%}
+        <div class="product-feature">
+          <strong>⚡️ Output Current</strong><br> {{ key_features_cs.output_current | metafield_tag }}
+        </div>
+      {%- endif -%}
+
       {%- if key_features_cs.input_voltage != blank -%}
         <div class="product-feature">
           <strong>⚡️ Input Voltage</strong><br> {{ key_features_cs.input_voltage | metafield_tag }}

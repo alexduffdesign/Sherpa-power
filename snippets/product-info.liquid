@@ -325,6 +325,11 @@
           
         {%- endif -%}
 
+      {%- when 'bundle_key_features' -%}
+        {%- if product.metafields.custom.bundle_key_features.value != blank -%}
+          {%- render 'bundle-key-features', block: block -%}
+        {%- endif -%}
+
       {%- when 'estimated_shipping' -%}
       {%- render 'estimated-shipping', block: block, product: product -%}
 

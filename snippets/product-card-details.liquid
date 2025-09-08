@@ -46,10 +46,15 @@
   {%- assign key_features = product.metafields.custom.key_features.value -%}
 
   {% comment %}
-    THESE ARE FOR PORTABLE POWER STATIONS
+    CHECK IF THIS IS A BUNDLE PRODUCT
   {% endcomment %}
-
-  <!-- Replace 'namespace' and 'key' with actual metafield namespace and key -->
+  
+  {% if product.tags contains 'bundle' %}
+    {% comment %}
+      FOR BUNDLE PRODUCTS: Only show power station key_features 
+    {% endcomment %}
+    
+    <!-- Replace 'namespace' and 'key' with actual metafield namespace and key -->
   {% unless product.metafields.custom.capacity == blank or product.metafields.custom.capacity == '-' %}
     <div class="power-rating">
       <img
@@ -93,58 +98,138 @@
         alt="Power Icon">
       <span class="info-title">Charge Time: {{ key_features.charge_time.value }}</span>
     </div>
-  {% endunless %}</div>
+  {% endunless %}
+
+  {% unless key_features.bundle_key_feature == blank or key_features.bundle_key_feature == '-' %}
+    <div class="power-rating">
+      <img
+        src="https://cdn.shopify.com/s/files/1/0641/4290/1439/files/Charge.png?v=1752572953"
+        width="38"
+        height="46"
+        alt="Power Icon">
+      <span class="info-title">{{ key_features.bundle_key_feature.value }}</span>
+    </div>
+  {% endunless %}
+
+  {% else %}
+    {% comment %}
+      FOR INDIVIDUAL PRODUCTS: Use existing logic
+    {% endcomment %}
+    
+    {% comment %}
+      THESE ARE FOR PORTABLE POWER STATIONS
+    {% endcomment %}
+
+    <!-- Replace 'namespace' and 'key' with actual metafield namespace and key -->
+    {% unless product.metafields.custom.capacity == blank or product.metafields.custom.capacity == '-' %}
+      <div class="power-rating">
+        <img
+          src="https://cdn.shopify.com/s/files/1/0641/4290/1439/files/Capacity.png?v=1714485042"
+          width="38"
+          height="46"
+          alt="Power Icon">
+        <!-- Replace with your actual icon URL -->
+        <span class="info-title">Capacity: {{ product.metafields.custom.capacity.value }}</span>
+      </div>
+    {% endunless %}
+
+    {% unless key_features.output_ac == blank or key_features.output_ac == '-' %}
+      <div class="power-rating">
+        <img
+          src="https://cdn.shopify.com/s/files/1/0641/4290/1439/files/AC_Output.png?v=1714485042"
+          width="38"
+          height="46"
+          alt="Power Icon">
+        <span class="info-title">Output (AC): {{ key_features.output_ac.value }}</span>
+      </div>
+    {% endunless %}
+
+    {% unless key_features.input_ac == blank or key_features.input_ac == '-' %}
+      <div class="power-rating">
+        <img
+          src="https://cdn.shopify.com/s/files/1/0641/4290/1439/files/AC_Input.png?v=1714485042"
+          width="38"
+          height="46"
+          alt="Power Icon">
+        <span class="info-title">Input (AC): {{ key_features.input_ac.value }}</span>
+      </div>
+    {% endunless %}
+
+    {% unless key_features.charge_time == blank or key_features.charge_time == '-' %}
+      <div class="power-rating">
+        <img
+          src="https://cdn.shopify.com/s/files/1/0641/4290/1439/files/Charge_Time.png?v=1714485041"
+          width="38"
+          height="46"
+          alt="Power Icon">
+        <span class="info-title">Charge Time: {{ key_features.charge_time.value }}</span>
+      </div>
+    {% endunless %}
+
+    {% unless key_features.bundle_key_feature == blank or key_features.bundle_key_feature == '-' %}
+      <div class="power-rating">
+        <img
+          src="https://cdn.shopify.com/s/files/1/0641/4290/1439/files/Charge.png?v=1752572953"
+          width="38"
+          height="46"
+          alt="Power Icon">
+        <span class="info-title">{{ key_features.bundle_key_feature.value }}</span>
+      </div>
+    {% endunless %}
 
 
-{% comment %}
-  THESE ARE FOR CHARGING APPLICATIONS AND SOLAR
-{% endcomment %}
+    {% comment %}
+      THESE ARE FOR CHARGING APPLICATIONS AND SOLAR
+    {% endcomment %}
 
-{%- assign key_features_cs = product.metafields.custom.key_features_cs.value -%}
+    {%- assign key_features_cs = product.metafields.custom.key_features_cs.value -%}
 
-{% if key_features_cs.output_power != blank %}
-  <div class="power-rating">
-    <img
-      src="https://cdn.shopify.com/s/files/1/0641/4290/1439/files/AC_Output.png?v=1714485042"
-      width="38"
-      height="46"
-      alt="Power Icon">
-    <span class="info-title">Output Power: {{ key_features_cs.output_power.value }}</span>
-  </div>
-{% endif %}
-
-
-{% if key_features_cs.output_voltage != blank %}
-  <div class="power-rating">
-    <img
-      src="https://cdn.shopify.com/s/files/1/0641/4290/1439/files/AC_Output.png?v=1714485042"
-      width="38"
-      height="46"
-      alt="Power Icon">
-    <span class="info-title">Output Voltage: {{ key_features_cs.output_voltage.value }}</span>
-  </div>
-{% endif %}
+    {% if key_features_cs.output_power != blank %}
+      <div class="power-rating">
+        <img
+          src="https://cdn.shopify.com/s/files/1/0641/4290/1439/files/AC_Output.png?v=1714485042"
+          width="38"
+          height="46"
+          alt="Power Icon">
+        <span class="info-title">Output Power: {{ key_features_cs.output_power.value }}</span>
+      </div>
+    {% endif %}
 
 
-{% if key_features_cs.input_voltage != blank %}
-  <div class="power-rating">
-    <img
-      src="https://cdn.shopify.com/s/files/1/0641/4290/1439/files/AC_Input.png?v=1714485042"
-      width="38"
-      height="46"
-      alt="Power Icon">
-    <span class="info-title">Input Voltage: {{ key_features_cs.input_voltage.value }}</span>
-  </div>
-{% endif %}
+    {% if key_features_cs.output_voltage != blank %}
+      <div class="power-rating">
+        <img
+          src="https://cdn.shopify.com/s/files/1/0641/4290/1439/files/AC_Output.png?v=1714485042"
+          width="38"
+          height="46"
+          alt="Power Icon">
+        <span class="info-title">Output Voltage: {{ key_features_cs.output_voltage.value }}</span>
+      </div>
+    {% endif %}
 
 
-{% if key_features_cs.warranty != blank %}
-  <div class="power-rating">
-    <img
-      src="https://cdn.shopify.com/s/files/1/0641/4290/1439/files/Warranty_Product_Card.png?v=1742988773"
-      width="38"
-      height="46"
-      alt="Power Icon">
-    <span class="info-title">Warranty: {{ key_features_cs.warranty.value }}</span>
-  </div>
-{% endif %}
+    {% if key_features_cs.input_voltage != blank %}
+      <div class="power-rating">
+        <img
+          src="https://cdn.shopify.com/s/files/1/0641/4290/1439/files/AC_Input.png?v=1714485042"
+          width="38"
+          height="46"
+          alt="Power Icon">
+        <span class="info-title">Input Voltage: {{ key_features_cs.input_voltage.value }}</span>
+      </div>
+    {% endif %}
+
+
+    {% if key_features_cs.warranty != blank %}
+      <div class="power-rating">
+        <img
+          src="https://cdn.shopify.com/s/files/1/0641/4290/1439/files/Warranty_Product_Card.png?v=1742988773"
+          width="38"
+          height="46"
+          alt="Power Icon">
+        <span class="info-title">Warranty: {{ key_features_cs.warranty.value }}</span>
+      </div>
+    {% endif %}
+    
+  {% endif %}
+</div>

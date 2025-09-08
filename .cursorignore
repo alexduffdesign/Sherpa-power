@@ -1,13 +1,13 @@
-# Ignore everything
-*
+# # Ignore everything
+# *
 
-# Allow only these specific files
-!frontend
-!chatbot-drawer.js
-!chatbot-section.js
-!chatbot-template.js
-!applications.liquid
-!vite-config.js
+# # Allow only these specific files
+# !frontend
+# !chatbot-drawer.js
+# !chatbot-section.js
+# !chatbot-template.js
+# !applications.liquid
+# !vite-config.js
 
 
 
