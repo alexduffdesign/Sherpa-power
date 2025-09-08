@@ -946,20 +946,55 @@
         "testimonial_6MkfYm": {
           "type": "testimonial",
           "settings": {
-            "image": "shopify://shop_images/review.png",
+            "image": "shopify://shop_images/6_63b4d533-7516-46ad-912f-d6cacb38b36c.jpg",
             "round_avatar": true,
             "show_rating": true,
-            "rating": 5,
-            "author": "Gareth Johns",
-            "title": "Solid bit of kit",
-            "content": "<p>Solid bit of kit. We have just completed four nights off-grid with no sun for the solar panel for top-ups, but we still had enough power for lots of coffee and hair drying each day. These were the things we missed in the motorhome when travelling off-grid! The app still reported 53% power left.</p>"
+            "rating": 4,
+            "author": "Sherpa P",
+            "title": "Please leave a review",
+            "content": "<p>Share your experience to help us and others</p>"
+          }
+        },
+        "testimonial_8VCB9d": {
+          "type": "testimonial",
+          "disabled": true,
+          "settings": {
+            "round_avatar": true,
+            "show_rating": true,
+            "rating": 4,
+            "author": "John S.",
+            "title": "Testimonial 1",
+            "content": "<p>Share what your customers are saying about your products, customer service or shipping rates.</p>"
+          }
+        },
+        "testimonial_N6KKd6": {
+          "type": "testimonial",
+          "disabled": true,
+          "settings": {
+            "round_avatar": true,
+            "show_rating": true,
+            "rating": 4,
+            "author": "",
+            "title": "Testimonial",
+            "content": "<p>Share what your experience for others to see</p>"
+          }
+        },
+        "testimonial_WTByeL": {
+          "type": "testimonial",
+          "disabled": true,
+          "settings": {
+            "round_avatar": true,
+            "show_rating": true,
+            "rating": 4,
+            "author": "Joshua A.",
+            "title": "Testimonial 3",
+            "content": "<p>Share what your customers are saying about your products, customer service or shipping rates.</p>"
           }
         }
       },
       "block_order": [
         "testimonial_6MkfYm"
       ],
-      "disabled": true,
       "custom_css": [
         ".testimonial {background-image: linear-gradient(transparent 90%, #25c293 100%); border-width: 1px; border-color: #231f25; background-color: transparent;}",
         ".section-full {padding-bottom: 0rem;}"
@@ -969,15 +1004,15 @@
         "stack_testimonials": false,
         "subheading": "",
         "title": "REVIEWS",
-        "content": "<p>Real Power, Real Feedback. Don't just take our word for it...</p>",
+        "content": "<h5><br/><br/></h5>",
         "link_url": "",
         "link_text": "",
-        "background": "#ebebeb",
+        "background": "#f7f7f7",
         "background_gradient": "",
-        "text_color": "",
-        "heading_color": "",
+        "text_color": "#1a1a1a",
+        "heading_color": "rgba(0,0,0,0)",
         "heading_gradient": "linear-gradient(180deg, rgba(35, 31, 37, 1) 55%, rgba(28, 160, 121, 1) 82%)",
-        "testimonial_card_background": "",
+        "testimonial_card_background": "#ffffff",
         "testimonial_card_text_color": ""
       }
     },

@@ -22,7 +22,7 @@
         "heading_kgHwRj": {
           "type": "heading",
           "settings": {
-            "range_text": "About us and our mission.",
+            "range_text": "{{ page.title }}",
             "text": "",
             "heading_tag": "h1",
             "heading_gradient": "linear-gradient(180deg, rgba(37, 194, 147, 1), rgba(247, 247, 247, 1) 100%)"
@@ -122,13 +122,20 @@
           "settings": {
             "liquid": "<a href=\"https://sunvault.co.uk/\">Sunvault Energy Solutions</a>"
           }
+        },
+        "liquid_qcGNP7": {
+          "type": "liquid",
+          "settings": {
+            "liquid": "<a href=\"https://www.batteriesandsolar.co.uk/blog/blog-1/the-secret-to-endless-summer-adventures-17\">Batteries & Solar Ltd</a>"
+          }
         }
       },
       "block_order": [
         "heading_wd3Fep",
         "richtext_ym3B7i",
         "richtext_6GPUAz",
-        "liquid_qdqAqM"
+        "liquid_qdqAqM",
+        "liquid_qcGNP7"
       ],
       "settings": {
         "full_width": true,
@@ -313,7 +320,6 @@
       "type": "revealed-image-on-scroll",
       "settings": {
         "image": "shopify://shop_images/Hero_Image_Showing_The_Range.jpg",
-        "mobile_image": "shopify://shop_images/Hero_Image_Mobile_1_1.jpg",
         "subheading": "",
         "title": "Meet The Sherpa Range",
         "background": "",

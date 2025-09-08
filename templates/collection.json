@@ -74,8 +74,8 @@
         "products_per_row_mobile": "1",
         "products_per_row_desktop": 3,
         "filter_layout": "sidebar",
-        "show_sort_by": false,
-        "show_filters": false,
+        "show_sort_by": true,
+        "show_filters": true,
         "show_filter_group_name": false,
         "show_filter_values_count": true,
         "open_first_filter_group": false
@@ -100,6 +100,7 @@
         "play_JTRgNH",
         "heading_peKHdx"
       ],
+      "disabled": true,
       "settings": {
         "full_width": false,
         "allow_transparent_header": false,
