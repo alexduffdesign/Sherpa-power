@@ -85,19 +85,6 @@
             "liquid": "<div class=\"payment-wrap\"> \n<p> Use any of these payment methods:</p>\n<img class=\"payment-method-icons\" src=\"https://cdn.shopify.com/s/files/1/0641/4290/1439/files/Payment_Images.png?v=1712333344\"\n</div>\n\n<style>\n.payment-wrap {\ndisplay: flex;\nflex-direction: row;\njustify-content: flex-start;\nflex-wrap: wrap;\ngrid-gap: 0.5rem 0.5rem;\nmargin-bottom: 2rem;\n}\n\n.payment-method-icons {\nwidth: 50%;\nobject-fit: contain;\n}\n\n@media screen and (max-width: 767px) {\n.payment-method-icons {\nwidth: 100%;\n}\n}\n</style>"
           }
         },
-        "bundle_key_features_DYczLJ": {
-          "type": "bundle_key_features",
-          "settings": {
-            "text_alignment": "start",
-            "icon_position": "aligned",
-            "icon": "none",
-            "icon_width": 24,
-            "title": "Key Features",
-            "content": "",
-            "background": "#e1f1ec",
-            "text_color": "#3f4345"
-          }
-        }
       },
       "block_order": [
         "title",
@@ -111,7 +98,6 @@
         "liquid_HVMrxB",
         "estimated_shipping_pbbJYc",
         "liquid_KQWMtz",
-        "bundle_key_features_DYczLJ"
       ],
       "custom_css": [
         ".shopify-payment-button__button {height: 100%;}",
