@@ -60,7 +60,7 @@
         "image_size": "auto",
         "image": "shopify://shop_images/The_Gang_Desktop.jpg",
         "mobile_image": "shopify://shop_images/Hero_Image_Mobile_New.jpg",
-        "enable_clouds": false,
+        "enable_clouds": true,
         "cloud_image": "shopify://shop_images/Cloud-move_1.png",
         "overlay_image": "shopify://shop_images/The_Gang_Desktop_Screens.svg",
         "overlay_mobile_image": "shopify://shop_images/Serpa_Image_Size_Mobile.svg",
