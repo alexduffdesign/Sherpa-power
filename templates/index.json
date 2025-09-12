@@ -58,11 +58,12 @@
         "allow_transparent_header": false,
         "enable_parallax": false,
         "image_size": "auto",
-        "image": "shopify://shop_images/The_Gang_Updated.jpg",
-        "mobile_image": "shopify://shop_images/Hero_Image_Mobile.jpg",
+        "image": "shopify://shop_images/The_Gang_Desktop.jpg",
+        "mobile_image": "shopify://shop_images/Hero_Image_Mobile_New.jpg",
         "enable_clouds": true,
         "cloud_image": "shopify://shop_images/Cloud-move_1.png",
-        "overlay_image": "shopify://shop_images/Serpa_3.6_Controls_1ad78d4e-2e90-4caa-b267-a50659ab0547.svg",
+        "overlay_image": "shopify://shop_images/The_Gang_Desktop_Screens.svg",
+        "overlay_mobile_image": "shopify://shop_images/Serpa_Image_Size_Mobile.svg",
         "mobile_text_position": "place-self-end-center text-center",
         "desktop_text_position": "sm:place-self-end-center sm:text-center",
         "text_color": "#ffffff",
@@ -953,42 +954,6 @@
             "author": "Sherpa P",
             "title": "Please leave a review",
             "content": "<p>Share your experience to help us and others</p>"
-          }
-        },
-        "testimonial_8VCB9d": {
-          "type": "testimonial",
-          "disabled": true,
-          "settings": {
-            "round_avatar": true,
-            "show_rating": true,
-            "rating": 4,
-            "author": "John S.",
-            "title": "Testimonial 1",
-            "content": "<p>Share what your customers are saying about your products, customer service or shipping rates.</p>"
-          }
-        },
-        "testimonial_N6KKd6": {
-          "type": "testimonial",
-          "disabled": true,
-          "settings": {
-            "round_avatar": true,
-            "show_rating": true,
-            "rating": 4,
-            "author": "",
-            "title": "Testimonial",
-            "content": "<p>Share what your experience for others to see</p>"
-          }
-        },
-        "testimonial_WTByeL": {
-          "type": "testimonial",
-          "disabled": true,
-          "settings": {
-            "round_avatar": true,
-            "show_rating": true,
-            "rating": 4,
-            "author": "Joshua A.",
-            "title": "Testimonial 3",
-            "content": "<p>Share what your customers are saying about your products, customer service or shipping rates.</p>"
           }
         }
       },
