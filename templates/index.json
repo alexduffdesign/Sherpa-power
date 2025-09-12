@@ -48,7 +48,7 @@
         "button_f8WBiH"
       ],
       "custom_css": [
-        ".prose {max-width: 490px; margin-bottom: 1rem;}",
+        ".prose {max-width: 490px; margin-bottom: 1.5rem;}",
         ".h3 {margin-top: 0em;}",
         ".xx-small {color: red;}",
         "@media screen and (max-width: 767px) {.prose {margin-bottom: 1rem; }}"
