@@ -41,7 +41,7 @@
         "mega_menu_3Te6Fk": {
           "type": "mega_menu",
           "settings": {
-            "menu_item": "ALL PRODUCTS",
+            "menu_item": "Power Stations",
             "layout": "drawer",
             "submenu_style": "bold_heading",
             "image_heading_1": "",
@@ -53,10 +53,10 @@
             "image_heading_3": "",
             "image_link_3": "",
             "image_text_color_3": "#ffffff",
-            "product": "",
+            "product": "sherpa-base-2-5-portable-power",
             "product_card_background": "",
             "product_card_text_color": "",
-            "promo_content_layout": "grid",
+            "promo_content_layout": "carousel",
             "stretch_promo": false,
             "drawer_link_image": "hide"
           }
