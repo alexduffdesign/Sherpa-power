@@ -41,7 +41,7 @@
         "mega_menu_3Te6Fk": {
           "type": "mega_menu",
           "settings": {
-            "menu_item": "",
+            "menu_item": "ALL PRODUCTS",
             "layout": "drawer",
             "submenu_style": "bold_heading",
             "image_heading_1": "",
@@ -72,7 +72,7 @@
         "logo": "shopify://shop_images/Sherpa_Logo_Updated.svg",
         "logo_max_width": 125,
         "logo_mobile_max_width": 100,
-        "menu": "main-menu",
+        "menu": "mega-menu",
         "sidebar_menu": "",
         "secondary_menu": "secondary-menu",
         "menu_open_trigger": "click",
