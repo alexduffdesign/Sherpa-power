@@ -669,6 +669,7 @@
         "enable_parallax": false,
         "image_size": "auto",
         "image": "shopify://shop_images/charge-solar_desktop_final.jpg",
+        "mobile_image": "shopify://shop_images/charge_solar_mobile_new.png",
         "text_color": "#ffffff",
         "overlay_color": "#000000",
         "overlay_opacity": 7
