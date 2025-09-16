@@ -156,9 +156,6 @@
               {% if block.settings.artboard != blank %}artboard="{{ block.settings.artboard | escape }}"{% endif %}
               {% if block.settings.state_machines != blank %}state-machines="{{ block.settings.state_machines | escape }}"{% endif %}
               data-bind-mobile="true"
-              {% if block.settings.vm_name != blank %}data-vm-name="{{ block.settings.vm_name | escape }}"{% endif %}
-              data-vm-prop="{{ block.settings.vm_property | default: 'mobile' | escape }}"
-              data-breakpoint="{{ block.settings.mobile_breakpoint | default: 699 }}"
             ></rive-media>
           </div>
         {%- endif -%}
@@ -174,10 +171,7 @@
  * - Cleans up listeners on section unload and supports theme editor re-renders.
  */
 (() => {
-  function getMQ(el) {
-    const bp = parseInt(el.getAttribute('data-breakpoint') || '699', 10);
-    return window.matchMedia(`(max-width: ${isNaN(bp) ? 699 : bp}px)`);
-  }
+  const mediaQuery = window.matchMedia('(max-width: 699px)');
 
   /**
    * Attach binding to a given rive-media element.
@@ -185,40 +179,23 @@
    */
   function attachBinding(el) {
     if (!el || el.dataset.mobileBinding === '1') return;
-    const mediaQuery = getMQ(el);
-    const vmNameAttr = el.getAttribute('data-vm-name') || '';
-    const vmPropName = el.getAttribute('data-vm-prop') || 'mobile';
 
     /** Apply the current MQ value to the VM boolean property. */
     function applyBoolean(vmi) {
       if (!vmi) return false;
       let boolProp = null;
       try {
-        if (vmNameAttr && typeof vmi.instance === 'function') {
-          // If runtime exposes nested instances, attempt resolving by name (future-proof)
-        }
         if (typeof vmi.boolean === 'function') {
-          boolProp = vmi.boolean(vmPropName);
+          boolProp = vmi.boolean('mobile');
         } else if (typeof vmi.property === 'function') {
-          const p = vmi.property(vmPropName);
+          const p = vmi.property('mobile');
           if (p && typeof p.value === 'boolean') boolProp = p;
         }
       } catch (e) {}
       if (!boolProp) return false;
 
       const setValue = () => {
-        try {
-          const value = !!mediaQuery.matches;
-          boolProp.value = value;
-          if (window?.console?.log) {
-            console.log('[Rive VM]', {
-              section: 'image-with-text-rive',
-              vmPropName,
-              breakpoint: mediaQuery.media,
-              value,
-            });
-          }
-        } catch (e) {}
+        try { boolProp.value = !!mediaQuery.matches; } catch (e) {}
       };
       setValue();
 
@@ -386,10 +363,6 @@
         { "type": "text", "id": "rive_src", "label": "Rive file URL (.riv)", "info": "Provide a public URL to your .riv file (Shopify Files or CDN)." },
         { "type": "text", "id": "state_machines", "label": "State machines (comma-separated)" },
         { "type": "text", "id": "artboard", "label": "Artboard name" },
-        { "type": "header", "content": "Data binding" },
-        { "type": "text", "id": "vm_name", "label": "View model name (optional)", "info": "Leave blank to use the artboard's default exported instance." },
-        { "type": "text", "id": "vm_property", "label": "View model property", "default": "mobile" },
-        { "type": "range", "id": "mobile_breakpoint", "label": "Mobile breakpoint (px)", "min": 320, "max": 1400, "step": 1, "default": 699 },
         { "type": "checkbox", "id": "autoplay", "label": "Autoplay", "default": true },
         { "type": "checkbox", "id": "play_when_in_view", "label": "Play when in view", "default": true },
         { "type": "select", "id": "layer", "label": "Layer position", "options": [
