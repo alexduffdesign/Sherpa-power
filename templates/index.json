@@ -682,7 +682,7 @@
         "image_size": "auto",
         "image": "shopify://shop_images/charge-solar_desktop_final.jpg",
         "mobile_image": "shopify://shop_images/charge_solar_mobile_new.png",
-        "mobile_text_position": "place-self-center text-center",
+        "mobile_text_position": "place-self-end-center text-center",
         "desktop_text_position": "sm:place-self-center-end sm:text-end",
         "text_color": "#ffffff",
         "overlay_color": "#000000",
