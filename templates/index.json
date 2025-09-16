@@ -640,6 +640,17 @@
             "content": "<p>Sherpa-Charge when the Sun goes down. Generate power equivalent to a 5m square solar panel from your vehicle alternator.</p>"
           }
         },
+        "button_ihWa83": {
+          "type": "button",
+          "settings": {
+            "style": "fill",
+            "size": "lg",
+            "text": "Button text",
+            "url": "",
+            "background": "",
+            "text_color": ""
+          }
+        },
         "rive_animation_tQWhHh": {
           "type": "rive_animation",
           "settings": {
@@ -655,6 +666,7 @@
       "block_order": [
         "heading_TVDbGk",
         "richtext_rAbBeF",
+        "button_ihWa83",
         "rive_animation_tQWhHh"
       ],
       "custom_css": [
@@ -662,7 +674,7 @@
         ".h3 {margin-block: 0em;}",
         "@media screen and (max-width: 767px) {.prose {margin-bottom: 2rem; }}"
       ],
-      "name": "Image with text (Rive)",
+      "name": "Charge And Solar (Rive)",
       "settings": {
         "full_width": true,
         "allow_transparent_header": false,
@@ -670,6 +682,8 @@
         "image_size": "auto",
         "image": "shopify://shop_images/charge-solar_desktop_final.jpg",
         "mobile_image": "shopify://shop_images/charge_solar_mobile_new.png",
+        "mobile_text_position": "place-self-end-center text-center",
+        "desktop_text_position": "sm:place-self-center-end sm:text-end",
         "text_color": "#ffffff",
         "overlay_color": "#000000",
         "overlay_opacity": 7
