@@ -15,6 +15,24 @@
     {%- endif -%}
   }
 
+  /* Overlay screen fade-in */
+  #shopify-section-{{ section.id }} .overlay-screen {
+    opacity: 0;
+    animation: overlay-screen-on-{{ section.id }} 400ms ease-in-out 1.5s forwards;
+  }
+
+  @keyframes overlay-screen-on-{{ section.id }} {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    #shopify-section-{{ section.id }} .overlay-screen {
+      animation: none;
+      opacity: 1;
+    }
+  }
+
   /* Ensure overlay scrim and text remain above decorative layers */
   #shopify-section-{{ section.id }} .content-over-media:before { z-index: 2; }
   #shopify-section-{{ section.id }} .content-over-media > :not(img, video, iframe, svg, video-media, rive-media) { z-index: 3; }
@@ -66,11 +84,12 @@
       {%- capture overlay_sizes -%}{% if section.settings.full_width %}100vw{% else %}(max-width: 740px) calc(100vw - 40px), (max-width: 999px) calc(100vw - 64px), min({{ settings.page_width }}px, 100vw - 96px){% endif %}{%- endcapture -%}
 
       {%- if section.settings.overlay_image != blank -%}
-        {{- section.settings.overlay_image | image_url: width: section.settings.overlay_image.width | image_tag: loading: 'lazy', sizes: overlay_sizes, widths: '200,300,400,500,600,700,800,900,1000,1200,1400,1600,1800,2000,2200,2400,2600,2800,3000,3200', class: 'hidden sm:block pointer-events-none', style: 'position:absolute;top:0;left:0;right:0;bottom:0;width:100%;height:100%;z-index:1;' -}}
+        {%- capture overlay_image_class -%}hidden sm:block pointer-events-none overlay-screen{%- endcapture -%}
+        {{- section.settings.overlay_image | image_url: width: section.settings.overlay_image.width | image_tag: loading: 'lazy', sizes: overlay_sizes, widths: '200,300,400,500,600,700,800,900,1000,1200,1400,1600,1800,2000,2200,2400,2600,2800,3000,3200', class: overlay_image_class, style: 'position:absolute;top:0;left:0;right:0;bottom:0;width:100%;height:100%;z-index:1;' -}}
       {%- endif -%}
 
       {%- if section.settings.overlay_mobile_image != blank -%}
-        {{- section.settings.overlay_mobile_image | image_url: width: section.settings.overlay_mobile_image.width | image_tag: loading: 'lazy', sizes: overlay_sizes, widths: '200,300,400,500,600,700,800,900,1000,1200,1400,1600', class: 'sm:hidden pointer-events-none', style: 'position:absolute;top:0;left:0;right:0;bottom:0;width:100%;height:100%;z-index:1;' -}}
+        {{- section.settings.overlay_mobile_image | image_url: width: section.settings.overlay_mobile_image.width | image_tag: loading: 'lazy', sizes: overlay_sizes, widths: '200,300,400,500,600,700,800,900,1000,1200,1400,1600', class: 'sm:hidden pointer-events-none overlay-screen', style: 'position:absolute;top:0;left:0;right:0;bottom:0;width:100%;height:100%;z-index:1;' -}}
       {%- endif -%}
     {%- endif -%}
 
@@ -171,6 +190,28 @@
     { "type": "header", "content": "Overlay images" },
     { "type": "image_picker", "id": "overlay_image", "label": "Overlay image" },
     { "type": "image_picker", "id": "overlay_mobile_image", "label": "Overlay mobile image" },
+    { "type": "select", "id": "mobile_text_position", "label": "Mobile content position", "options": [
+        { "value": "place-self-start text-start", "label": "Top left" },
+        { "value": "place-self-start-center text-center", "label": "Top center" },
+        { "value": "place-self-start-end text-end", "label": "Top right" },
+        { "value": "place-self-center-start text-start", "label": "Middle left" },
+        { "value": "place-self-center text-center", "label": "Middle center" },
+        { "value": "place-self-center-end text-end", "label": "Middle right" },
+        { "value": "place-self-end-start text-start", "label": "Bottom left" },
+        { "value": "place-self-end-center text-center", "label": "Bottom center" },
+        { "value": "place-self-end text-end", "label": "Bottom right" }
+      ], "default": "place-self-center text-center" },
+    { "type": "select", "id": "desktop_text_position", "label": "Desktop content position", "options": [
+        { "value": "sm:place-self-start sm:text-start", "label": "Top left" },
+        { "value": "sm:place-self-start-center sm:text-center", "label": "Top center" },
+        { "value": "sm:place-self-start-end sm:text-end", "label": "Top right" },
+        { "value": "sm:place-self-center-start sm:text-start", "label": "Middle left" },
+        { "value": "sm:place-self-center sm:text-center", "label": "Middle center" },
+        { "value": "sm:place-self-center-end sm:text-end", "label": "Middle right" },
+        { "value": "sm:place-self-end-start sm:text-start", "label": "Bottom left" },
+        { "value": "sm:place-self-end-center sm:text-center", "label": "Bottom center" },
+        { "value": "sm:place-self-end sm:text-end", "label": "Bottom right" }
+      ], "default": "sm:place-self-center sm:text-center" },
     { "type": "header", "content": "Colors" },
     { "type": "color", "id": "text_color", "label": "Text", "default": "#ffffff" },
     { "type": "color", "id": "overlay_color", "label": "Overlay", "default": "#000000" },
