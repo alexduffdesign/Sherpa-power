@@ -5854,6 +5854,7 @@ var RiveMedia = class extends BaseMedia {
         canvas: __privateGet(this, _riveCanvas),
         autoplay,
         artboard,
+        autoBind: true,
         stateMachines:
           stateMachines.length === 0
             ? undefined
@@ -5866,6 +5867,11 @@ var RiveMedia = class extends BaseMedia {
           } catch (e) {}
           this.setAttribute("loaded", "");
           this.setAttribute("can-play", "");
+          try {
+            this.dispatchEvent(
+              new CustomEvent("rive:ready", { detail: { rive: instance } })
+            );
+          } catch (e) {}
         },
       });
       __privateSet(this, _riveInstance, instance);
@@ -5885,6 +5891,13 @@ var RiveMedia = class extends BaseMedia {
       };
       resolve(controller);
     });
+  }
+  get riveInstance() {
+    try {
+      return __privateGet(this, _riveInstance);
+    } catch (e) {
+      return void 0;
+    }
   }
   _playerHandler(target, prop) {
     target[prop]();
