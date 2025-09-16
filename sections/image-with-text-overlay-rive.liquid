@@ -63,7 +63,7 @@
   }
 </style>
 
-<div {% render 'section-properties' %} {% if section.settings.allow_transparent_header %}allow-transparent-header{% endif %}>
+<div {% render 'section-properties' %} {% if section.settings.allow_transparent_header %}allow-transparent-header{% endif %} data-section-type="image-with-text-rive">
   {%- capture class -%}content-over-media content-over-media--{{ section.settings.image_size }} {% if section.settings.full_width %}full-bleed{% else %}shadow-block rounded-lg{% endif %}{%- endcapture -%}
 
   <image-banner reveal-on-scroll="true" {% if section.settings.enable_parallax %}parallax="0.3"{% endif %} {% render 'surface', class: class, text_color: section.settings.text_color %}>
@@ -155,12 +155,117 @@
               src="{{ block.settings.rive_src | escape }}"
               {% if block.settings.artboard != blank %}artboard="{{ block.settings.artboard | escape }}"{% endif %}
               {% if block.settings.state_machines != blank %}state-machines="{{ block.settings.state_machines | escape }}"{% endif %}
+              data-bind-mobile="true"
             ></rive-media>
           </div>
         {%- endif -%}
       {%- endfor -%}
       
 </div>
+
+{% javascript %}
+/**
+ * Bind the Rive view model boolean property "mobile" to a 699px breakpoint.
+ * - Safe-guards: no-ops if view model or property is missing.
+ * - Works with multiple rive-media in the section.
+ * - Cleans up listeners on section unload and supports theme editor re-renders.
+ */
+(() => {
+  const mediaQuery = window.matchMedia('(max-width: 699px)');
+
+  /**
+   * Attach binding to a given rive-media element.
+   * @param {HTMLElement} el - The <rive-media> element.
+   */
+  function attachBinding(el) {
+    if (!el || el.dataset.mobileBinding === '1') return;
+
+    /** Apply the current MQ value to the VM boolean property. */
+    function applyBoolean(vmi) {
+      if (!vmi) return false;
+      let boolProp = null;
+      try {
+        if (typeof vmi.boolean === 'function') {
+          boolProp = vmi.boolean('mobile');
+        } else if (typeof vmi.property === 'function') {
+          const p = vmi.property('mobile');
+          if (p && typeof p.value === 'boolean') boolProp = p;
+        }
+      } catch (e) {}
+      if (!boolProp) return false;
+
+      const setValue = () => {
+        try { boolProp.value = !!mediaQuery.matches; } catch (e) {}
+      };
+      setValue();
+
+      // Listen for viewport changes
+      if (typeof mediaQuery.addEventListener === 'function') {
+        mediaQuery.addEventListener('change', setValue);
+      } else if (typeof mediaQuery.addListener === 'function') {
+        mediaQuery.addListener(setValue);
+      }
+
+      // Store cleanup on element
+      el.__sherpaMobileBindingCleanup = () => {
+        if (typeof mediaQuery.removeEventListener === 'function') {
+          mediaQuery.removeEventListener('change', setValue);
+        } else if (typeof mediaQuery.removeListener === 'function') {
+          mediaQuery.removeListener(setValue);
+        }
+      };
+      el.dataset.mobileBinding = '1';
+      return true;
+    }
+
+    function tryBind(instance) {
+      if (!instance) return;
+      const vmi = instance.viewModelInstance;
+      if (!vmi) return;
+      applyBoolean(vmi);
+    }
+
+    // Prefer rive:ready event (dispatched when instance is ready)
+    const onReady = (evt) => {
+      tryBind(evt?.detail?.rive);
+    };
+    el.addEventListener('rive:ready', onReady, { once: true });
+
+    // If already ready, use the exposed getter
+    try {
+      if (el.riveInstance) {
+        tryBind(el.riveInstance);
+      }
+    } catch (e) {}
+  }
+
+  function initWithin(root) {
+    if (!root) return;
+    root.querySelectorAll('rive-media[data-bind-mobile="true"]').forEach(attachBinding);
+  }
+
+  // Initialize for all existing instances of this section type
+  document.querySelectorAll('[data-section-type="image-with-text-rive"]').forEach(initWithin);
+
+  // Theme editor lifecycle: handle load/unload per section instance
+  document.addEventListener('shopify:section:load', (event) => {
+    const section = event.target;
+    if (!(section instanceof HTMLElement)) return;
+    const root = section.querySelector('[data-section-type="image-with-text-rive"]');
+    if (root) initWithin(root);
+  });
+
+  document.addEventListener('shopify:section:unload', (event) => {
+    const section = event.target;
+    if (!(section instanceof HTMLElement)) return;
+    section.querySelectorAll('rive-media[data-bind-mobile="true"]').forEach((el) => {
+      try { el.__sherpaMobileBindingCleanup?.(); } catch (e) {}
+      delete el.__sherpaMobileBindingCleanup;
+      if (el.dataset) delete el.dataset.mobileBinding;
+    });
+  });
+})();
+{% endjavascript %}
 
 {% schema %}
 {
