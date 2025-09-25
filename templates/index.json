@@ -645,7 +645,7 @@
           "settings": {
             "style": "fill",
             "size": "lg",
-            "text": "Button text",
+            "text": "SHOP CHARGE & SOLAR",
             "url": "",
             "background": "",
             "text_color": ""
@@ -692,8 +692,33 @@
     "media_with_text_kKAhjw": {
       "type": "media-with-text",
       "blocks": {
+        "video_7fdkbP": {
+          "type": "video",
+          "settings": {
+            "video": "shopify://files/videos/sherpa-video-3.mp4",
+            "external_video_url": "https://www.youtube.com/watch?v=_9VUPq3SxOc",
+            "autoplay": true,
+            "media_width": 60,
+            "media_position": "start",
+            "text_position": "place-self-center text-center",
+            "icon": "none",
+            "icon_width": 48,
+            "subheading": "",
+            "title": "FREE YOURSELF From Grid Reliance",
+            "content": "<p>We aspire to be a leading force in energy ownership, setting high standards for product performance and compatibility to offer a wider application and freedom to work and play while respecting our environment. </p>",
+            "link_text": "",
+            "link_url": "",
+            "background": "#f7f7f7",
+            "background_gradient": "",
+            "text_color": "#3f4345",
+            "text_gradient": "",
+            "button_background": "",
+            "button_text_color": ""
+          }
+        },
         "image_qtJ9qF": {
           "type": "image",
+          "disabled": true,
           "settings": {
             "image": "shopify://shop_images/Capture_Store_Use.jpg",
             "media_width": 60,
@@ -716,6 +741,7 @@
         }
       },
       "block_order": [
+        "video_7fdkbP",
         "image_qtJ9qF"
       ],
       "custom_css": [
