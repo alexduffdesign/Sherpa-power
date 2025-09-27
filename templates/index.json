@@ -689,6 +689,46 @@
         "overlay_opacity": 7
       }
     },
+    "media_with_text_RQC7mw": {
+      "type": "media-with-text",
+      "blocks": {
+        "video_cVULiz": {
+          "type": "video",
+          "settings": {
+            "video": "shopify://files/videos/Onboard Power.mp4",
+            "external_video_url": "https://www.youtube.com/watch?v=_9VUPq3SxOc",
+            "autoplay": true,
+            "media_width": 70,
+            "media_position": "end",
+            "text_position": "place-self-center text-center",
+            "icon": "none",
+            "icon_width": 48,
+            "subheading": "",
+            "title": "Heading",
+            "content": "<p>Use this text to share information about your brand with your customers. Describe a product, share announcements, or welcome customers to your store.</p>",
+            "link_text": "",
+            "link_url": "",
+            "background": "#000000",
+            "background_gradient": "",
+            "text_color": "#ffffff",
+            "text_gradient": "",
+            "button_background": "",
+            "button_text_color": ""
+          }
+        }
+      },
+      "block_order": [
+        "video_cVULiz"
+      ],
+      "custom_css": [
+        ".pros {padding-top: 0rem;}"
+      ],
+      "name": "Media with text",
+      "settings": {
+        "full_width": true,
+        "spacing": "none"
+      }
+    },
     "media_with_text_kKAhjw": {
       "type": "media-with-text",
       "blocks": {
@@ -1076,6 +1116,7 @@
     "impact_text_LycQGm",
     "image_with_text_overlay_4qMqtQ",
     "image_with_text_overlay_rive_YTUXFc",
+    "media_with_text_RQC7mw",
     "media_with_text_kKAhjw",
     "media_with_text_9aYmQG",
     "text_with_icons_MeKcXe",
