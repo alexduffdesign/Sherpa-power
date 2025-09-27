@@ -698,17 +698,17 @@
             "video": "shopify://files/videos/Onboard Power.mp4",
             "external_video_url": "https://www.youtube.com/watch?v=_9VUPq3SxOc",
             "autoplay": true,
-            "media_width": 70,
+            "media_width": 65,
             "media_position": "end",
             "text_position": "place-self-center text-center",
             "icon": "none",
             "icon_width": 48,
             "subheading": "",
-            "title": "Heading",
-            "content": "<p>Use this text to share information about your brand with your customers. Describe a product, share announcements, or welcome customers to your store.</p>",
-            "link_text": "",
+            "title": "Onboard Power",
+            "content": "<p>Use this text to share information about your brand with your customers.</p>",
+            "link_text": "SHOP ONBOARD POWER",
             "link_url": "",
-            "background": "#000000",
+            "background": "#231f25",
             "background_gradient": "",
             "text_color": "#ffffff",
             "text_gradient": "",
@@ -723,7 +723,7 @@
       "custom_css": [
         ".section-full {padding-top: 0rem;}"
       ],
-      "name": "Media with text",
+      "name": "Onboard Power",
       "settings": {
         "full_width": true,
         "spacing": "none"
