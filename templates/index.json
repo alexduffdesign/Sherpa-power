@@ -721,7 +721,7 @@
         "video_cVULiz"
       ],
       "custom_css": [
-        ".pros {padding-top: 0rem;}"
+        ".section-full {padding-top: 0rem;}"
       ],
       "name": "Media with text",
       "settings": {
