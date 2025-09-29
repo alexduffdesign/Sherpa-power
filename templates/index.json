@@ -269,6 +269,44 @@
         "overlay_opacity": 0
       }
     },
+    "media_with_text_Qdeytq": {
+      "type": "media-with-text",
+      "blocks": {
+        "image_aWNi8R": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/Peak_Desktop_bd98153b-26be-4246-a323-fbe7ff9b984e.jpg",
+            "media_width": 60,
+            "media_position": "start",
+            "text_position": "place-self-center text-center",
+            "icon": "none",
+            "icon_width": 48,
+            "subheading": "",
+            "title": "Peak Range",
+            "content": "<p>The PEAK range includes more portable units that are lighter in weight with protective features, suited to more active and mobile applications such as commercial vehicles, skilled trades and camping</p>",
+            "link_text": "SHOP THE PEAK RANGE",
+            "link_url": "",
+            "background": "#231f25",
+            "background_gradient": "",
+            "text_color": "#ffffff",
+            "text_gradient": "",
+            "button_background": "",
+            "button_text_color": ""
+          }
+        }
+      },
+      "block_order": [
+        "image_aWNi8R"
+      ],
+      "custom_css": [
+        ".section-full {padding-top: 0;}"
+      ],
+      "name": "Media with text",
+      "settings": {
+        "full_width": true,
+        "spacing": "none"
+      }
+    },
     "impact_text_e3niPJ": {
       "type": "impact-text",
       "blocks": {
@@ -990,6 +1028,7 @@
     "impact-text",
     "image_with_text_overlay_RwjfPp",
     "image_with_text_overlay_DzeKnT",
+    "media_with_text_Qdeytq",
     "impact_text_e3niPJ",
     "image_with_text_overlay_zzgdjL",
     "impact_text_Pefk6J",
