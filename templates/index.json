@@ -247,6 +247,7 @@
         "richtext_wehxUF",
         "button_XKYhGq"
       ],
+      "disabled": true,
       "custom_css": [
         ".prose {text-align: center; max-width: 32em;}",
         ".h3 {margin-block: 0em;}",
@@ -414,6 +415,7 @@
         "richtext_UpFWqJ",
         "button_4qiQGj"
       ],
+      "disabled": true,
       "custom_css": [
         ".prose {text-align: center; max-width: 32rem;}",
         ".h3 {margin-block: 0em;}",
@@ -433,6 +435,41 @@
         "text_color": "#ffffff",
         "overlay_color": "#000000",
         "overlay_opacity": 0
+      }
+    },
+    "media_with_text_EDVjPG": {
+      "type": "media-with-text",
+      "blocks": {
+        "image_YJTtmd": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/Sherpa-Base-2500W-power-kitchen-backup.jpg",
+            "media_width": 60,
+            "media_position": "end",
+            "text_position": "place-self-center text-center",
+            "icon": "none",
+            "icon_width": 48,
+            "subheading": "",
+            "title": "BASE Range",
+            "content": "<p>The BASE range is geared towards higher capacity requirements with high output and high solar input capabilities - your answer to off grid living, motorhome and home backup solutions</p>",
+            "link_text": "SHOP THE BASE RANGE",
+            "link_url": "",
+            "background": "#231f25",
+            "background_gradient": "",
+            "text_color": "#ffffff",
+            "text_gradient": "",
+            "button_background": "",
+            "button_text_color": ""
+          }
+        }
+      },
+      "block_order": [
+        "image_YJTtmd"
+      ],
+      "name": "Media with text",
+      "settings": {
+        "full_width": true,
+        "spacing": "none"
       }
     },
     "impact_text_Pefk6J": {
@@ -647,7 +684,7 @@
             "icon": "none",
             "icon_width": 48,
             "subheading": "",
-            "title": "Onboard Power",
+            "title": "ONBOARD POWER",
             "content": "<p>Use this text to share information about your brand with your customers.</p>",
             "link_text": "SHOP ONBOARD POWER",
             "link_url": "",
@@ -1031,6 +1068,7 @@
     "media_with_text_Qdeytq",
     "impact_text_e3niPJ",
     "image_with_text_overlay_zzgdjL",
+    "media_with_text_EDVjPG",
     "impact_text_Pefk6J",
     "image_with_text_overlay_4qMqtQ",
     "image_with_text_overlay_rive_YTUXFc",
