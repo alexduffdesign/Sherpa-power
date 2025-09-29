@@ -53,6 +53,7 @@
         ".xx-small {color: red;}",
         "@media screen and (max-width: 767px) {.prose {margin-bottom: 1rem; }}"
       ],
+      "name": "Hero",
       "settings": {
         "full_width": true,
         "allow_transparent_header": false,
@@ -117,6 +118,7 @@
         "item_AiDhHy"
       ],
       "custom_css": [],
+      "name": "USPs",
       "settings": {
         "full_width": true,
         "stack_mobile": true,
@@ -184,6 +186,7 @@
         ".prose {text-align: center; max-width: 38rem;}",
         "@media screen and (max-width: 767px) {.prose {margin-bottom: 2rem; }}"
       ],
+      "name": "Peak Range OLD",
       "settings": {
         "full_width": true,
         "allow_transparent_header": false,
@@ -244,12 +247,14 @@
         "richtext_wehxUF",
         "button_XKYhGq"
       ],
+      "disabled": true,
       "custom_css": [
         ".prose {text-align: center; max-width: 32em;}",
         ".h3 {margin-block: 0em;}",
         "@media screen and (min-width: 767px) {.prose {margin-left: 5em; }}",
         "@media screen and (max-width: 767px) {.prose {margin-bottom: 1.6rem; }}"
       ],
+      "name": "PEAK",
       "settings": {
         "full_width": true,
         "allow_transparent_header": false,
@@ -263,6 +268,44 @@
         "text_color": "#ffffff",
         "overlay_color": "#000000",
         "overlay_opacity": 0
+      }
+    },
+    "media_with_text_Qdeytq": {
+      "type": "media-with-text",
+      "blocks": {
+        "image_aWNi8R": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/Peak_Desktop_bd98153b-26be-4246-a323-fbe7ff9b984e.jpg",
+            "media_width": 60,
+            "media_position": "start",
+            "text_position": "place-self-center-start text-start",
+            "icon": "none",
+            "icon_width": 48,
+            "subheading": "",
+            "title": "Peak Range",
+            "content": "<p>The PEAK range includes more portable units that are lighter in weight with protective features, suited to more active and mobile applications such as commercial vehicles, skilled trades and camping</p>",
+            "link_text": "SHOP THE PEAK RANGE",
+            "link_url": "",
+            "background": "#231f25",
+            "background_gradient": "",
+            "text_color": "#ffffff",
+            "text_gradient": "",
+            "button_background": "",
+            "button_text_color": ""
+          }
+        }
+      },
+      "block_order": [
+        "image_aWNi8R"
+      ],
+      "custom_css": [
+        ".section-full {padding-top: 0;}"
+      ],
+      "name": "Media with text",
+      "settings": {
+        "full_width": true,
+        "spacing": "none"
       }
     },
     "impact_text_e3niPJ": {
@@ -310,6 +353,7 @@
         "item_WBaGKJ",
         "item_Ejyqm3"
       ],
+      "name": "PEAK Applications",
       "settings": {
         "full_width": true,
         "stack_mobile": true,
@@ -371,11 +415,13 @@
         "richtext_UpFWqJ",
         "button_4qiQGj"
       ],
+      "disabled": true,
       "custom_css": [
         ".prose {text-align: center; max-width: 32rem;}",
         ".h3 {margin-block: 0em;}",
         "@media screen and (max-width: 767px) {.prose {margin-bottom: 2rem; }}"
       ],
+      "name": "Base",
       "settings": {
         "full_width": true,
         "allow_transparent_header": false,
@@ -389,6 +435,41 @@
         "text_color": "#ffffff",
         "overlay_color": "#000000",
         "overlay_opacity": 0
+      }
+    },
+    "media_with_text_EDVjPG": {
+      "type": "media-with-text",
+      "blocks": {
+        "image_YJTtmd": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/Sherpa-Base-2500W-power-kitchen-backup.jpg",
+            "media_width": 60,
+            "media_position": "end",
+            "text_position": "place-self-center-start text-start",
+            "icon": "none",
+            "icon_width": 48,
+            "subheading": "",
+            "title": "BASE Range",
+            "content": "<p>The BASE range is geared towards higher capacity requirements with high output and high solar input capabilities - your answer to off grid living, motorhome and home backup solutions</p>",
+            "link_text": "SHOP THE BASE RANGE",
+            "link_url": "",
+            "background": "#231f25",
+            "background_gradient": "",
+            "text_color": "#ffffff",
+            "text_gradient": "",
+            "button_background": "",
+            "button_text_color": ""
+          }
+        }
+      },
+      "block_order": [
+        "image_YJTtmd"
+      ],
+      "name": "Media with text",
+      "settings": {
+        "full_width": true,
+        "spacing": "none"
       }
     },
     "impact_text_Pefk6J": {
@@ -436,109 +517,7 @@
         "item_JTGHVm",
         "item_iG73CU"
       ],
-      "settings": {
-        "full_width": true,
-        "stack_mobile": true,
-        "text_alignment": "center",
-        "impact_text_style": "fill",
-        "text_divider": "line",
-        "impact_text_size_ratio": 0.8,
-        "background": "",
-        "background_gradient": "",
-        "heading_text_color": "",
-        "heading_gradient": "linear-gradient(180deg, rgba(35, 31, 37, 1) 44%, rgba(37, 194, 147, 1) 100%)",
-        "text_color": "",
-        "button_background": "",
-        "button_text_color": ""
-      }
-    },
-    "rich_text_NHqDQA": {
-      "type": "rich-text",
-      "blocks": {
-        "heading_DLN4Qa": {
-          "type": "heading",
-          "settings": {
-            "text": "Applications",
-            "heading_tag": "h3",
-            "text_color": "",
-            "gradient": ""
-          }
-        },
-        "subheading_nN8XAp": {
-          "type": "subheading",
-          "disabled": true,
-          "settings": {
-            "text": "Lighter use"
-          }
-        },
-        "richtext_BJVU8T": {
-          "type": "richtext",
-          "settings": {
-            "content": "<p>Camping and leisure | Drone and surveying equipment | Professional photography | E-biking | Smart devices, router and laptop | Cordless power tools - <strong>PEAK 0.6 </strong>or<strong> 2.2</strong></p><p>Mains power tools | Travel kettle, toaster, hair straighteners | DJ equipment | Fridge freezer | Coffee machine | Microwave - <strong>PEAK 2.2</strong></p><p></p>"
-          }
-        }
-      },
-      "block_order": [
-        "heading_DLN4Qa",
-        "subheading_nN8XAp",
-        "richtext_BJVU8T"
-      ],
-      "disabled": true,
-      "settings": {
-        "full_width": true,
-        "content_width": "small",
-        "text_position": "start",
-        "background": "",
-        "background_gradient": "",
-        "text_color": ""
-      }
-    },
-    "impact_text_LycQGm": {
-      "type": "impact-text",
-      "blocks": {
-        "item_f3TgKJ": {
-          "type": "item",
-          "settings": {
-            "title": "",
-            "subheading": "Applications",
-            "content": "",
-            "button_text": "",
-            "button_url": "",
-            "animate_impact_text": false,
-            "animate_impact_text_duration": 2
-          }
-        },
-        "item_wdPQXq": {
-          "type": "item",
-          "settings": {
-            "title": "",
-            "subheading": "",
-            "content": "<p>Welding | Compressor | Heavy duty power tools | Air conditioning | Welfare power | Production set lighting</p>",
-            "button_text": "",
-            "button_url": "",
-            "animate_impact_text": false,
-            "animate_impact_text_duration": 2
-          }
-        },
-        "item_eGmbf4": {
-          "type": "item",
-          "settings": {
-            "title": "",
-            "subheading": "",
-            "content": "<p>Tea urn | Commercial coffee machine | Industrial microwave | Freezer | Induction hob | Electric oven</p>",
-            "button_text": "",
-            "button_url": "",
-            "animate_impact_text": true,
-            "animate_impact_text_duration": 2
-          }
-        }
-      },
-      "block_order": [
-        "item_f3TgKJ",
-        "item_wdPQXq",
-        "item_eGmbf4"
-      ],
-      "disabled": true,
+      "name": "Base Applications",
       "settings": {
         "full_width": true,
         "stack_mobile": true,
@@ -607,6 +586,7 @@
         ".h3 {margin-block: 0em;}",
         "@media screen and (max-width: 767px) {.prose {margin-bottom: 2rem; }}"
       ],
+      "name": "Old Charge Image",
       "settings": {
         "full_width": true,
         "allow_transparent_header": false,
@@ -628,7 +608,7 @@
         "heading_TVDbGk": {
           "type": "heading",
           "settings": {
-            "range_text": "Charge & Solar",
+            "range_text": "CHARGE & SOLAR",
             "text": "",
             "heading_tag": "h1",
             "heading_gradient": ""
@@ -645,7 +625,7 @@
           "settings": {
             "style": "fill",
             "size": "lg",
-            "text": "Button text",
+            "text": "SHOP CHARGE & SOLAR",
             "url": "",
             "background": "",
             "text_color": ""
@@ -654,7 +634,7 @@
         "rive_animation_tQWhHh": {
           "type": "rive_animation",
           "settings": {
-            "rive_src": "https://cdn.shopify.com/s/files/1/0641/4290/1439/files/sherpa_charge___solar_76584ae5-9968-4ed2-b7a2-08af4ccb3e36.riv?v=1757953400",
+            "rive_src": "https://cdn.shopify.com/s/files/1/0641/4290/1439/files/sherpa_charge___solar_4b01b4eb-abd7-4d2a-95fc-cade56165ca9.riv?v=1759164927",
             "state_machines": "State Machine 1",
             "artboard": "Artboard",
             "autoplay": true,
@@ -689,34 +669,76 @@
         "overlay_opacity": 7
       }
     },
-    "media_with_text_kKAhjw": {
+    "media_with_text_RQC7mw": {
       "type": "media-with-text",
       "blocks": {
-        "image_qtJ9qF": {
-          "type": "image",
+        "video_cVULiz": {
+          "type": "video",
           "settings": {
-            "image": "shopify://shop_images/Capture_Store_Use.jpg",
-            "media_width": 60,
-            "media_position": "start",
-            "text_position": "place-self-center-start text-start",
+            "video": "shopify://files/videos/Onboard Power.mp4",
+            "external_video_url": "https://www.youtube.com/watch?v=_9VUPq3SxOc",
+            "autoplay": true,
+            "media_width": 65,
+            "media_position": "end",
+            "text_position": "place-self-center text-center",
             "icon": "none",
-            "icon_width": 68,
+            "icon_width": 48,
             "subheading": "",
-            "title": "FREE YOURSELF  From Grid Reliance",
-            "content": "<p>We aspire to be a leading force in energy ownership, setting high standards for product performance and compatibility to offer a wider application and freedom to work and play while respecting our environment. </p>",
-            "link_text": "",
+            "title": "ONBOARD POWER",
+            "content": "<p>Use this text to share information about your brand with your customers.</p>",
+            "link_text": "SHOP ONBOARD POWER",
             "link_url": "",
-            "background": "rgba(0,0,0,0)",
+            "background": "#231f25",
             "background_gradient": "",
-            "text_color": "#3f4345",
-            "text_gradient": "linear-gradient(180deg, rgba(35, 31, 37, 1) 55%, rgba(28, 160, 121, 1) 82%)",
+            "text_color": "#ffffff",
+            "text_gradient": "",
             "button_background": "",
             "button_text_color": ""
           }
         }
       },
       "block_order": [
-        "image_qtJ9qF"
+        "video_cVULiz"
+      ],
+      "custom_css": [
+        ".section-full {padding-top: 0rem;}"
+      ],
+      "name": "Onboard Power",
+      "settings": {
+        "full_width": true,
+        "spacing": "none"
+      }
+    },
+    "media_with_text_kKAhjw": {
+      "type": "media-with-text",
+      "blocks": {
+        "video_7fdkbP": {
+          "type": "video",
+          "settings": {
+            "video": "shopify://files/videos/sherpa-video-3.mp4",
+            "external_video_url": "https://www.youtube.com/watch?v=_9VUPq3SxOc",
+            "autoplay": true,
+            "media_width": 60,
+            "media_position": "start",
+            "text_position": "place-self-center text-center",
+            "icon": "none",
+            "icon_width": 48,
+            "subheading": "",
+            "title": "FREE YOURSELF From Grid Reliance",
+            "content": "<p>We aspire to be a leading force in energy ownership, setting high standards for product performance and compatibility to offer a wider application and freedom to work and play while respecting our environment. </p>",
+            "link_text": "",
+            "link_url": "",
+            "background": "#f7f7f7",
+            "background_gradient": "",
+            "text_color": "#3f4345",
+            "text_gradient": "",
+            "button_background": "",
+            "button_text_color": ""
+          }
+        }
+      },
+      "block_order": [
+        "video_7fdkbP"
       ],
       "custom_css": [
         ".media-with-text__media > * {object-fit: contain;}",
@@ -1043,13 +1065,14 @@
     "impact-text",
     "image_with_text_overlay_RwjfPp",
     "image_with_text_overlay_DzeKnT",
+    "media_with_text_Qdeytq",
     "impact_text_e3niPJ",
     "image_with_text_overlay_zzgdjL",
+    "media_with_text_EDVjPG",
     "impact_text_Pefk6J",
-    "rich_text_NHqDQA",
-    "impact_text_LycQGm",
     "image_with_text_overlay_4qMqtQ",
     "image_with_text_overlay_rive_YTUXFc",
+    "media_with_text_RQC7mw",
     "media_with_text_kKAhjw",
     "media_with_text_9aYmQG",
     "text_with_icons_MeKcXe",
