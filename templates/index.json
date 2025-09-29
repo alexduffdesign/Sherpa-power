@@ -53,6 +53,7 @@
         ".xx-small {color: red;}",
         "@media screen and (max-width: 767px) {.prose {margin-bottom: 1rem; }}"
       ],
+      "name": "Hero",
       "settings": {
         "full_width": true,
         "allow_transparent_header": false,
@@ -117,6 +118,7 @@
         "item_AiDhHy"
       ],
       "custom_css": [],
+      "name": "USPs",
       "settings": {
         "full_width": true,
         "stack_mobile": true,
@@ -184,6 +186,7 @@
         ".prose {text-align: center; max-width: 38rem;}",
         "@media screen and (max-width: 767px) {.prose {margin-bottom: 2rem; }}"
       ],
+      "name": "Peak Range OLD",
       "settings": {
         "full_width": true,
         "allow_transparent_header": false,
@@ -250,6 +253,7 @@
         "@media screen and (min-width: 767px) {.prose {margin-left: 5em; }}",
         "@media screen and (max-width: 767px) {.prose {margin-bottom: 1.6rem; }}"
       ],
+      "name": "PEAK",
       "settings": {
         "full_width": true,
         "allow_transparent_header": false,
@@ -310,6 +314,7 @@
         "item_WBaGKJ",
         "item_Ejyqm3"
       ],
+      "name": "PEAK Applications",
       "settings": {
         "full_width": true,
         "stack_mobile": true,
@@ -376,6 +381,7 @@
         ".h3 {margin-block: 0em;}",
         "@media screen and (max-width: 767px) {.prose {margin-bottom: 2rem; }}"
       ],
+      "name": "Base",
       "settings": {
         "full_width": true,
         "allow_transparent_header": false,
@@ -436,109 +442,7 @@
         "item_JTGHVm",
         "item_iG73CU"
       ],
-      "settings": {
-        "full_width": true,
-        "stack_mobile": true,
-        "text_alignment": "center",
-        "impact_text_style": "fill",
-        "text_divider": "line",
-        "impact_text_size_ratio": 0.8,
-        "background": "",
-        "background_gradient": "",
-        "heading_text_color": "",
-        "heading_gradient": "linear-gradient(180deg, rgba(35, 31, 37, 1) 44%, rgba(37, 194, 147, 1) 100%)",
-        "text_color": "",
-        "button_background": "",
-        "button_text_color": ""
-      }
-    },
-    "rich_text_NHqDQA": {
-      "type": "rich-text",
-      "blocks": {
-        "heading_DLN4Qa": {
-          "type": "heading",
-          "settings": {
-            "text": "Applications",
-            "heading_tag": "h3",
-            "text_color": "",
-            "gradient": ""
-          }
-        },
-        "subheading_nN8XAp": {
-          "type": "subheading",
-          "disabled": true,
-          "settings": {
-            "text": "Lighter use"
-          }
-        },
-        "richtext_BJVU8T": {
-          "type": "richtext",
-          "settings": {
-            "content": "<p>Camping and leisure | Drone and surveying equipment | Professional photography | E-biking | Smart devices, router and laptop | Cordless power tools - <strong>PEAK 0.6 </strong>or<strong> 2.2</strong></p><p>Mains power tools | Travel kettle, toaster, hair straighteners | DJ equipment | Fridge freezer | Coffee machine | Microwave - <strong>PEAK 2.2</strong></p><p></p>"
-          }
-        }
-      },
-      "block_order": [
-        "heading_DLN4Qa",
-        "subheading_nN8XAp",
-        "richtext_BJVU8T"
-      ],
-      "disabled": true,
-      "settings": {
-        "full_width": true,
-        "content_width": "small",
-        "text_position": "start",
-        "background": "",
-        "background_gradient": "",
-        "text_color": ""
-      }
-    },
-    "impact_text_LycQGm": {
-      "type": "impact-text",
-      "blocks": {
-        "item_f3TgKJ": {
-          "type": "item",
-          "settings": {
-            "title": "",
-            "subheading": "Applications",
-            "content": "",
-            "button_text": "",
-            "button_url": "",
-            "animate_impact_text": false,
-            "animate_impact_text_duration": 2
-          }
-        },
-        "item_wdPQXq": {
-          "type": "item",
-          "settings": {
-            "title": "",
-            "subheading": "",
-            "content": "<p>Welding | Compressor | Heavy duty power tools | Air conditioning | Welfare power | Production set lighting</p>",
-            "button_text": "",
-            "button_url": "",
-            "animate_impact_text": false,
-            "animate_impact_text_duration": 2
-          }
-        },
-        "item_eGmbf4": {
-          "type": "item",
-          "settings": {
-            "title": "",
-            "subheading": "",
-            "content": "<p>Tea urn | Commercial coffee machine | Industrial microwave | Freezer | Induction hob | Electric oven</p>",
-            "button_text": "",
-            "button_url": "",
-            "animate_impact_text": true,
-            "animate_impact_text_duration": 2
-          }
-        }
-      },
-      "block_order": [
-        "item_f3TgKJ",
-        "item_wdPQXq",
-        "item_eGmbf4"
-      ],
-      "disabled": true,
+      "name": "Base Applications",
       "settings": {
         "full_width": true,
         "stack_mobile": true,
@@ -607,6 +511,7 @@
         ".h3 {margin-block: 0em;}",
         "@media screen and (max-width: 767px) {.prose {margin-bottom: 2rem; }}"
       ],
+      "name": "Old Charge Image",
       "settings": {
         "full_width": true,
         "allow_transparent_header": false,
@@ -755,34 +660,10 @@
             "button_background": "",
             "button_text_color": ""
           }
-        },
-        "image_qtJ9qF": {
-          "type": "image",
-          "disabled": true,
-          "settings": {
-            "image": "shopify://shop_images/Capture_Store_Use.jpg",
-            "media_width": 60,
-            "media_position": "start",
-            "text_position": "place-self-center-start text-start",
-            "icon": "none",
-            "icon_width": 68,
-            "subheading": "",
-            "title": "FREE YOURSELF  From Grid Reliance",
-            "content": "<p>We aspire to be a leading force in energy ownership, setting high standards for product performance and compatibility to offer a wider application and freedom to work and play while respecting our environment. </p>",
-            "link_text": "",
-            "link_url": "",
-            "background": "rgba(0,0,0,0)",
-            "background_gradient": "",
-            "text_color": "#3f4345",
-            "text_gradient": "linear-gradient(180deg, rgba(35, 31, 37, 1) 55%, rgba(28, 160, 121, 1) 82%)",
-            "button_background": "",
-            "button_text_color": ""
-          }
         }
       },
       "block_order": [
-        "video_7fdkbP",
-        "image_qtJ9qF"
+        "video_7fdkbP"
       ],
       "custom_css": [
         ".media-with-text__media > * {object-fit: contain;}",
@@ -1112,8 +993,6 @@
     "impact_text_e3niPJ",
     "image_with_text_overlay_zzgdjL",
     "impact_text_Pefk6J",
-    "rich_text_NHqDQA",
-    "impact_text_LycQGm",
     "image_with_text_overlay_4qMqtQ",
     "image_with_text_overlay_rive_YTUXFc",
     "media_with_text_RQC7mw",
