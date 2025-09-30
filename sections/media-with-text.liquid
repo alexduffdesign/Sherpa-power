@@ -18,14 +18,14 @@
 }
 }
 
-/* Pattern background support for content */
+/* Background image support for content */
 #shopify-section-{{ section.id }} .media-with-text__content {
   position: relative;
   overflow: hidden;
 }
 
 #shopify-section-{{ section.id }}
-.media-with-text__pattern {
+.media-with-text__content-bg {
   position: absolute;
   inset: 0;
   background-repeat: repeat;
@@ -137,8 +137,8 @@
 
         {%- capture content_class -%}media-with-text__content {% unless section.settings.spacing == 'none' %}rounded{% endunless %}{%- endcapture -%}
         <div {% render 'surface', class: content_class, background: block.settings.background, background_gradient: block.settings.background_gradient, text_color: block.settings.text_color %}>
-          {%- if block.settings.pattern_image != blank -%}
-            <div class="media-with-text__pattern" style="background-image: url('{{ block.settings.pattern_image | image_url: width: block.settings.pattern_image.width }}'); background-size: {{ block.settings.pattern_size }}px; opacity: {{ block.settings.pattern_opacity | divided_by: 100.0 }};"></div>
+          {%- if block.settings.content_bg_image != blank -%}
+            <div class="media-with-text__content-bg" style="background-image: url('{{ block.settings.content_bg_image | image_url: width: block.settings.content_bg_image.width }}'); background-size: {{ block.settings.content_bg_size }}px; opacity: {{ block.settings.content_bg_opacity | divided_by: 100.0 }};"></div>
           {%- endif -%}
           <div class="prose break-all {{ block.settings.text_position }}" reveal-on-scroll="true">
             {%- if block.settings.custom_icon != blank -%}
@@ -616,28 +616,28 @@
           },
           {
             "type": "header",
-            "content": "Pattern"
+            "content": "Background image"
           },
           {
             "type": "image_picker",
-            "id": "pattern_image",
-            "label": "Pattern image",
+            "id": "content_bg_image",
+            "label": "Background image",
             "info": "Small transparent PNG or SVG recommended"
           },
           {
             "type": "range",
-            "id": "pattern_size",
-            "label": "Pattern tile size",
+            "id": "content_bg_size",
+            "label": "Background tile size",
             "min": 16,
             "max": 600,
-            "step": 4,
+            "step": 8,
             "unit": "px",
             "default": 120
           },
           {
             "type": "range",
-            "id": "pattern_opacity",
-            "label": "Pattern opacity",
+            "id": "content_bg_opacity",
+            "label": "Background image opacity",
             "min": 0,
             "max": 100,
             "step": 5,
@@ -1095,28 +1095,28 @@
           },
           {
             "type": "header",
-            "content": "Pattern"
+            "content": "Background image"
           },
           {
             "type": "image_picker",
-            "id": "pattern_image",
-            "label": "Pattern image",
+            "id": "content_bg_image",
+            "label": "Background image",
             "info": "Small transparent PNG or SVG recommended"
           },
           {
             "type": "range",
-            "id": "pattern_size",
-            "label": "Pattern tile size",
+            "id": "content_bg_size",
+            "label": "Background tile size",
             "min": 16,
             "max": 600,
-            "step": 4,
+            "step": 8,
             "unit": "px",
             "default": 120
           },
           {
             "type": "range",
-            "id": "pattern_opacity",
-            "label": "Pattern opacity",
+            "id": "content_bg_opacity",
+            "label": "Background image opacity",
             "min": 0,
             "max": 100,
             "step": 5,
