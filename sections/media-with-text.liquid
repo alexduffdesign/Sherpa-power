@@ -18,6 +18,15 @@ CSS
     }
   }
 
+  /* Ensure buttons inside content adopt heading typography */
+  #shopify-section-{{ section.id }} .media-with-text__content .button {
+    font-family: var(--heading-font-family);
+    font-weight: var(--heading-font-weight);
+    font-style: var(--heading-font-style);
+    letter-spacing: var(--heading-letter-spacing);
+    text-transform: var(--heading-text-transform);
+  }
+
   {%- for block in section.blocks -%}
     {%- assign media_ratio = block.settings.media_width | divided_by: 50.0 -%}
     {%- assign content_ratio = 2.0 | minus: media_ratio -%}
