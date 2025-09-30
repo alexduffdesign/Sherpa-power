@@ -59,12 +59,12 @@
         "allow_transparent_header": false,
         "enable_parallax": false,
         "image_size": "auto",
-        "image": "shopify://shop_images/The_Gang_Desktop.jpg",
-        "mobile_image": "shopify://shop_images/Hero_Image_Mobile_New.jpg",
+        "image": "shopify://shop_images/The_Gang_Desktop_New_1c8a9bbe-83bc-4dd9-bc98-a00eb6723e16.jpg",
+        "mobile_image": "shopify://shop_images/Hero_Image_Mobile_Update.jpg",
         "enable_clouds": true,
         "cloud_image": "shopify://shop_images/Cloud-move_1.png",
-        "overlay_image": "shopify://shop_images/The_Gang_Desktop_Screens.svg",
-        "overlay_mobile_image": "shopify://shop_images/Serpa_Image_Size_Mobile.svg",
+        "overlay_image": "shopify://shop_images/The_Gang_Desktop_Screen.svg",
+        "overlay_mobile_image": "shopify://shop_images/The_Gang_Mobile_Screen.svg",
         "mobile_text_position": "place-self-end-center text-center",
         "desktop_text_position": "sm:place-self-end-center sm:text-center",
         "text_color": "#ffffff",
@@ -277,7 +277,7 @@
           "type": "image",
           "settings": {
             "image": "shopify://shop_images/Peak_Desktop_bd98153b-26be-4246-a323-fbe7ff9b984e.jpg",
-            "media_width": 60,
+            "media_width": 70,
             "media_position": "start",
             "text_position": "place-self-center-start text-start",
             "icon": "none",
@@ -292,7 +292,9 @@
             "text_color": "#ffffff",
             "text_gradient": "",
             "button_background": "",
-            "button_text_color": ""
+            "button_text_color": "",
+            "content_background_image": "shopify://shop_images/Green_Pattern.jpg",
+            "content_background_opacity": 50
           }
         }
       },
@@ -444,7 +446,7 @@
           "type": "image",
           "settings": {
             "image": "shopify://shop_images/Sherpa-Base-2500W-power-kitchen-backup.jpg",
-            "media_width": 60,
+            "media_width": 70,
             "media_position": "end",
             "text_position": "place-self-center-start text-start",
             "icon": "none",
@@ -459,7 +461,8 @@
             "text_color": "#ffffff",
             "text_gradient": "",
             "button_background": "",
-            "button_text_color": ""
+            "button_text_color": "",
+            "content_background_opacity": 40
           }
         }
       },
@@ -675,7 +678,7 @@
         "video_cVULiz": {
           "type": "video",
           "settings": {
-            "video": "shopify://files/videos/Onboard Power.mp4",
+            "video": "shopify://files/videos/Onboard Power Final.mp4",
             "external_video_url": "https://www.youtube.com/watch?v=_9VUPq3SxOc",
             "autoplay": true,
             "media_width": 65,
@@ -693,7 +696,8 @@
             "text_color": "#ffffff",
             "text_gradient": "",
             "button_background": "",
-            "button_text_color": ""
+            "button_text_color": "",
+            "content_background_opacity": 40
           }
         }
       },
@@ -720,7 +724,7 @@
             "autoplay": true,
             "media_width": 60,
             "media_position": "start",
-            "text_position": "place-self-center text-center",
+            "text_position": "place-self-center-start text-start",
             "icon": "none",
             "icon_width": 48,
             "subheading": "",
@@ -733,7 +737,8 @@
             "text_color": "#3f4345",
             "text_gradient": "",
             "button_background": "",
-            "button_text_color": ""
+            "button_text_color": "",
+            "content_background_opacity": 40
           }
         }
       },
@@ -741,8 +746,7 @@
         "video_7fdkbP"
       ],
       "custom_css": [
-        ".media-with-text__media > * {object-fit: contain;}",
-        ".media-with-text__content {padding-left: 0px; padding-right: 4em;}"
+        ".media-with-text__media > * {object-fit: contain;}"
       ],
       "name": "Capture, store, use",
       "settings": {
@@ -772,7 +776,8 @@
             "text_color": "#3f4345",
             "text_gradient": "linear-gradient(180deg, rgba(35, 31, 37, 1) 55%, rgba(28, 160, 121, 1) 82%)",
             "button_background": "",
-            "button_text_color": ""
+            "button_text_color": "",
+            "content_background_opacity": 40
           }
         }
       },
