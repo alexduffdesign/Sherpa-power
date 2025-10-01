@@ -4357,12 +4357,14 @@ model-media .shopify-model-viewer-ui {
 
 .prose ol,
 .list-decimal {
-  list-style: decimal inside;
+  list-style: decimal;
+  list-style-position: outside;
 }
 
 .prose ul,
 .list-disc {
-  list-style: inside;
+  list-style: disc;
+  list-style-position: outside;
 }
 
 .prose :is(ol, ul) :is(ol, ul) {
@@ -4428,7 +4430,7 @@ model-media .shopify-model-viewer-ui {
 .prose ul,
 .prose ol {
   row-gap: 0.6em;
-  display: grid;
+  display: block;
 }
 
 .prose
