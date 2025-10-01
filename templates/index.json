@@ -287,14 +287,14 @@
             "content": "<p>The PEAK range includes more portable units that are lighter in weight with protective features, suited to more active and mobile applications such as commercial vehicles, skilled trades and camping</p>",
             "link_text": "SHOP THE PEAK RANGE",
             "link_url": "",
-            "background": "#231f25",
+            "background": "#231e25",
             "background_gradient": "",
             "text_color": "#ffffff",
             "text_gradient": "",
             "button_background": "",
             "button_text_color": "",
             "content_background_image": "shopify://shop_images/Waves.jpg",
-            "content_background_opacity": 24
+            "content_background_opacity": 22
           }
         }
       },
