@@ -144,7 +144,7 @@
                               <span class="circle-chevron group-hover:colors group-expanded:colors">{%- render 'icon' with 'chevron-right-small', direction_aware: true -%}</span>
                             </button>
                           {%- else -%}
-                            {%- if is_mega_menu and sub_link.type == 'collection_link' -%}
+                            {%- if sub_link.type == 'collection_link' -%}
                               {%- render 'navigation-collection-card', link: sub_link -%}
                             {%- else -%}
                               <a class="group {% if is_image_shown and is_mega_menu %}h-stack gap-4{% else %}block w-full{% endif %}" href="{{ sub_link.url }}">
@@ -190,7 +190,7 @@
 
                                 {%- for sub_sub_link in sub_link.links -%}
                                   <li class="{% if mobile_opening == 'left' %}h3{% else %}h5{% endif %} sm:h5">
-                                    {%- if is_mega_menu and sub_sub_link.type == 'collection_link' -%}
+                                    {%- if sub_sub_link.type == 'collection_link' -%}
                                       {%- render 'navigation-collection-card', link: sub_sub_link -%}
                                     {%- else -%}
                                       <a class="group {% if is_image_shown %}h-stack gap-4{% else %}block w-full{% endif %}"
