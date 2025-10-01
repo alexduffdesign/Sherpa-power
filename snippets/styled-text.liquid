@@ -21,11 +21,12 @@
 {%- endcomment -%}
 
 {%- liquid
-  assign has_token_peak = content contains '[PEAK]'
-  assign has_token_base = content contains '[BASE]'
-  assign has_token_pro = content contains '[PRO]'
   assign has_token = false
-  if has_token_peak or has_token_base or has_token_pro
+  if content contains '[PEAK]'
+    assign has_token = true
+  elsif content contains '[BASE]'
+    assign has_token = true
+  elsif content contains '[PRO]'
     assign has_token = true
   endif
 
