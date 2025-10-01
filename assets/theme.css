@@ -8271,12 +8271,13 @@ split-lines {
 }
 
 .mega-menu__nav {
-  max-width: var(--column-list-max-width, max-content);
+  max-width: 25em;
   gap: var(--mega-menu-nav-gap);
   flex-wrap: wrap;
   flex: auto;
   align-items: start;
   display: flex;
+  flex-direction: row;
 }
 
 .mega-menu__nav > li {
@@ -12765,14 +12766,14 @@ split-lines {
 
 /* Increase padding for subheading on desktop */
 .subheading {
-    padding-top: 20px; /* Adjust value */
-    padding-bottom: 20px; /* Adjust value */
+  padding-top: 20px; /* Adjust value */
+  padding-bottom: 20px; /* Adjust value */
 }
 
 /* Responsive padding for mobile */
 @media (max-width: 768px) {
-    .subheading {
-        padding-top: 15px; /* Adjust value */
-        padding-bottom: 15px; /* Adjust value */
-    }
+  .subheading {
+    padding-top: 15px; /* Adjust value */
+    padding-bottom: 15px; /* Adjust value */
+  }
 }
