@@ -611,7 +611,7 @@
         "heading_TVDbGk": {
           "type": "heading",
           "settings": {
-            "range_text": "CHARGE & SOLAR",
+            "range_text": "[CHARGE] & [SOLAR]",
             "text": "",
             "heading_tag": "h1",
             "heading_gradient": ""
