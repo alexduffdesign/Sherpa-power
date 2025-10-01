@@ -8271,7 +8271,7 @@ split-lines {
 }
 
 .mega-menu__nav {
-  max-width: 25em;
+  max-width: var(--column-list-max-width, max-content);
   gap: var(--mega-menu-nav-gap);
   flex-wrap: wrap;
   flex: auto;
@@ -8281,7 +8281,7 @@ split-lines {
 }
 
 .mega-menu__nav > li {
-  width: var(--mega-menu-nav-column-max-width);
+  width: 25rem;
 }
 
 @media screen and (min-width: 1400px) {
