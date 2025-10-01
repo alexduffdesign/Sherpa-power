@@ -67,10 +67,6 @@ strong {
   font-weight: bolder;
 }
 
-summary {
-  font-family: var(--heading-font-family);
-}
-
 code,
 kbd,
 samp,
@@ -171,6 +167,7 @@ summary {
   -webkit-user-select: none;
   user-select: none;
   list-style-type: none;
+  font-family: var(--heading-font-family);
 }
 
 summary::-webkit-details-marker {
