@@ -28,6 +28,10 @@
     assign has_token = true
   elsif content contains '[PRO]'
     assign has_token = true
+  elsif content contains '[SOLAR]'
+    assign has_token = true
+  elsif content contains '[CHARGE]'
+    assign has_token = true
   endif
 
   capture class
@@ -56,7 +60,13 @@
     <split-lines>{{ content | strip | escape }}</split-lines>
   {%- else -%}
     {%- if has_token -%}
-      {%- assign temp = content | replace: '[PEAK]', '__TOKEN_PEAK__' | replace: '[BASE]', '__TOKEN_BASE__' | replace: '[PRO]', '__TOKEN_PRO__' -%}
+      {%- assign temp = content
+        | replace: '[PEAK]', '__TOKEN_PEAK__'
+        | replace: '[BASE]', '__TOKEN_BASE__'
+        | replace: '[PRO]', '__TOKEN_PRO__'
+        | replace: '[SOLAR]', '__TOKEN_SOLAR__'
+        | replace: '[CHARGE]', '__TOKEN_CHARGE__'
+      -%}
       {%- assign escaped = temp | strip | escape -%}
       {%- assign with_tokens = escaped | replace: '__TOKEN_PEAK__', '<span class="text-gradient-peak">PEAK</span>' | replace: '__TOKEN_BASE__', '<span class="text-gradient-base">BASE</span>' | replace: '__TOKEN_PRO__', '<span class="text-gradient-pro">PRO</span>' | replace: '__TOKEN_SOLAR__', '<span class="text-gradient-solar">SOLAR</span>' | replace: '__TOKEN_CHARGE__', '<span class="text-gradient-charge">CHARGE</span>' -%}
       {{- with_tokens -}}
