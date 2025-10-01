@@ -277,6 +277,7 @@
           "type": "image",
           "settings": {
             "image": "shopify://shop_images/Peak_Desktop_bd98153b-26be-4246-a323-fbe7ff9b984e.jpg",
+            "mobile_image": "shopify://shop_images/Peak_Mobile_Update.jpg",
             "media_width": 70,
             "media_position": "start",
             "text_position": "place-self-center-start text-start",
@@ -359,7 +360,7 @@
       "settings": {
         "full_width": true,
         "stack_mobile": true,
-        "text_alignment": "center",
+        "text_alignment": "start",
         "impact_text_style": "fill",
         "text_divider": "line",
         "impact_text_size_ratio": 0.8,
@@ -446,6 +447,7 @@
           "type": "image",
           "settings": {
             "image": "shopify://shop_images/Sherpa-Base-2500W-power-kitchen-backup.jpg",
+            "mobile_image": "shopify://shop_images/Base_Mobile.jpg",
             "media_width": 70,
             "media_position": "end",
             "text_position": "place-self-center-start text-start",
@@ -524,7 +526,7 @@
       "settings": {
         "full_width": true,
         "stack_mobile": true,
-        "text_alignment": "center",
+        "text_alignment": "start",
         "impact_text_style": "fill",
         "text_divider": "line",
         "impact_text_size_ratio": 0.8,
