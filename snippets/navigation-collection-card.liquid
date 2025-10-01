@@ -1,0 +1,34 @@
+{%- comment -%}
+  Renders a clickable card for a menu link that targets a collection.
+  Inputs:
+  - link: a menu link (expected type: collection_link)
+{%- endcomment -%}
+
+{%- assign collection_obj = link.object -%}
+{%- assign title = link.title -%}
+{%- assign desc = collection_obj.metafields.custom.menu_description.value -%}
+{%- assign wattage = collection_obj.metafields.custom.wattage_range.value -%}
+{%- assign menu_image = collection_obj.metafields.custom.menu_image.value | default: collection_obj.image -%}
+
+<a href="{{ link.url }}" class="mega-menu__card-link">
+  <div class="mega-menu__card">
+    {%- if menu_image != blank -%}
+      <img
+        class="mega-menu__card-image"
+        src="{{ menu_image | image_url: width: 720, height: 480, crop: 'center' }}"
+        alt="{{ collection_obj.title | escape }}"
+        width="720"
+        height="480"
+        loading="lazy">
+    {%- endif -%}
+    <div class="mega-menu__card-content v-stack gap-2">
+      <div class="mega-menu__card-title h5">{{ title }}</div>
+      {%- if wattage != blank -%}
+        <div class="mega-menu__card-wattage">{{ wattage }}</div>
+      {%- endif -%}
+      {%- if desc != blank -%}
+        <p class="mega-menu__card-desc">{{ desc }}</p>
+      {%- endif -%}
+    </div>
+  </div>
+</a>
