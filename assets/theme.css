@@ -12778,3 +12778,28 @@ split-lines {
     padding-bottom: 15px; /* Adjust value */
   }
 }
+
+/* Text gradient utilities for product tiers */
+.text-gradient-peak {
+  background: linear-gradient(180deg, #dac61f 62.7%, #f0f42e 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+}
+
+.text-gradient-base {
+  background: linear-gradient(180deg, #25c293 54.68%, #38ff7e 77.27%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+}
+
+.text-gradient-pro {
+  background: linear-gradient(180deg, #c7c7c7 66%, #ffffff 89.5%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+}
