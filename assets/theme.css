@@ -12804,3 +12804,19 @@ split-lines {
   background-clip: text;
   color: transparent;
 }
+
+.text-gradient-solar {
+  background: linear-gradient(180deg, #25c2b9 0%, #09efe2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+}
+
+.text-gradient-charge {
+  background: linear-gradient(180deg, #25c2b9 0%, #09efe2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+}

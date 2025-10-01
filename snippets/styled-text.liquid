@@ -58,7 +58,7 @@
     {%- if has_token -%}
       {%- assign temp = content | replace: '[PEAK]', '__TOKEN_PEAK__' | replace: '[BASE]', '__TOKEN_BASE__' | replace: '[PRO]', '__TOKEN_PRO__' -%}
       {%- assign escaped = temp | strip | escape -%}
-      {%- assign with_tokens = escaped | replace: '__TOKEN_PEAK__', '<span class="text-gradient-peak">PEAK</span>' | replace: '__TOKEN_BASE__', '<span class="text-gradient-base">BASE</span>' | replace: '__TOKEN_PRO__', '<span class="text-gradient-pro">PRO</span>' -%}
+      {%- assign with_tokens = escaped | replace: '__TOKEN_PEAK__', '<span class="text-gradient-peak">PEAK</span>' | replace: '__TOKEN_BASE__', '<span class="text-gradient-base">BASE</span>' | replace: '__TOKEN_PRO__', '<span class="text-gradient-pro">PRO</span>' | replace: '__TOKEN_SOLAR__', '<span class="text-gradient-solar">SOLAR</span>' | replace: '__TOKEN_CHARGE__', '<span class="text-gradient-charge">CHARGE</span>' -%}
       {{- with_tokens -}}
     {%- else -%}
       {{- content | strip | escape -}}
