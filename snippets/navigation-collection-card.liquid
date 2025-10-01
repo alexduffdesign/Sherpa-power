@@ -42,7 +42,10 @@
         loading="lazy">
     {%- endif -%}
     <div class="mega-menu__card-content v-stack gap-2">
-      <div class="mega-menu__card-title h5 {{ title_gradient_class }}">{{ title }}</div>
+      <div class="mega-menu__card-title h5 {{ title_gradient_class }}">
+        {%- render 'text-gradient'
+          , text: title -%}
+      </div>
       {%- if wattage != blank -%}
         <div class="mega-menu__card-wattage h6">{{ wattage }}</div>
       {%- endif -%}
