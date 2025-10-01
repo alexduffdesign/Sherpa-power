@@ -735,7 +735,7 @@
             "background": "#f7f7f7",
             "background_gradient": "",
             "text_color": "#3f4345",
-            "text_gradient": "",
+            "text_gradient": "linear-gradient(180deg, rgba(35, 30, 37, 1) 62%, rgba(37, 194, 147, 1) 81%)",
             "button_background": "",
             "button_text_color": "",
             "content_background_opacity": 40
