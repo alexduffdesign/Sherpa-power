@@ -8278,11 +8278,12 @@ split-lines {
   align-items: start;
   display: flex;
   flex-direction: row;
+  flex-grow: 1;
 }
 
-.mega-menu__nav > li {
+/* .mega-menu__nav > li {
   width: 25rem;
-}
+} */
 
 @media screen and (min-width: 1400px) {
   .mega-menu {
