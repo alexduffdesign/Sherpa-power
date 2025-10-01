@@ -277,6 +277,7 @@
           "type": "image",
           "settings": {
             "image": "shopify://shop_images/Peak_Desktop_bd98153b-26be-4246-a323-fbe7ff9b984e.jpg",
+            "mobile_image": "shopify://shop_images/Peak_Mobile_Update.jpg",
             "media_width": 70,
             "media_position": "start",
             "text_position": "place-self-center-start text-start",
