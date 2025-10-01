@@ -360,7 +360,7 @@
       "settings": {
         "full_width": true,
         "stack_mobile": true,
-        "text_alignment": "center",
+        "text_alignment": "start",
         "impact_text_style": "fill",
         "text_divider": "line",
         "impact_text_size_ratio": 0.8,
@@ -526,7 +526,7 @@
       "settings": {
         "full_width": true,
         "stack_mobile": true,
-        "text_alignment": "center",
+        "text_alignment": "start",
         "impact_text_style": "fill",
         "text_divider": "line",
         "impact_text_size_ratio": 0.8,
