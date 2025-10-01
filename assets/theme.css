@@ -8215,6 +8215,7 @@ split-lines {
   position: absolute;
   top: 100%;
   overflow: hidden auto;
+  border-bottom: 1px solid white;
   box-shadow: 0 9999px 0 9999px #0006;
 }
 
