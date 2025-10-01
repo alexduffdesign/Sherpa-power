@@ -8273,7 +8273,6 @@ split-lines {
 .mega-menu__nav {
   max-width: var(--column-list-max-width, max-content);
   gap: var(--mega-menu-nav-gap);
-  flex-wrap: wrap;
   flex: auto;
   align-items: start;
   display: flex;
@@ -8281,9 +8280,9 @@ split-lines {
   flex-grow: 1;
 }
 
-/* .mega-menu__nav > li {
-  width: 25rem;
-} */
+.mega-menu__nav > li {
+  max-width: 25rem;
+}
 
 @media screen and (min-width: 1400px) {
   .mega-menu {
