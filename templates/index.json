@@ -294,6 +294,11 @@
             "text_gradient": "",
             "button_background": "",
             "button_text_color": "",
+            "rive_src": "",
+            "rive_state_machines": "",
+            "rive_artboard": "",
+            "rive_autoplay": true,
+            "rive_play_when_in_view": true,
             "content_background_image": "shopify://shop_images/Waves.jpg",
             "content_background_opacity": 22
           }
@@ -464,6 +469,11 @@
             "text_gradient": "",
             "button_background": "",
             "button_text_color": "",
+            "rive_src": "",
+            "rive_state_machines": "",
+            "rive_artboard": "",
+            "rive_autoplay": true,
+            "rive_play_when_in_view": true,
             "content_background_opacity": 40
           }
         }
@@ -563,6 +573,11 @@
             "text_gradient": "",
             "button_background": "",
             "button_text_color": "",
+            "rive_src": "https://cdn.shopify.com/s/files/1/0641/4290/1439/files/sherpa_charge___solar_072da6f3-7a1c-4731-a845-2b3e6ad540ea.riv?v=1759416526",
+            "rive_state_machines": "State Machine 1",
+            "rive_artboard": "Artboard",
+            "rive_autoplay": true,
+            "rive_play_when_in_view": true,
             "content_background_image": "shopify://shop_images/Waves.jpg",
             "content_background_opacity": 22
           }
@@ -738,6 +753,11 @@
             "text_gradient": "",
             "button_background": "",
             "button_text_color": "",
+            "rive_src": "",
+            "rive_state_machines": "",
+            "rive_artboard": "",
+            "rive_autoplay": true,
+            "rive_play_when_in_view": true,
             "content_background_opacity": 40
           }
         }
@@ -779,6 +799,11 @@
             "text_gradient": "linear-gradient(180deg, rgba(35, 30, 37, 1) 62%, rgba(37, 194, 147, 1) 81%)",
             "button_background": "",
             "button_text_color": "",
+            "rive_src": "",
+            "rive_state_machines": "",
+            "rive_artboard": "",
+            "rive_autoplay": true,
+            "rive_play_when_in_view": true,
             "content_background_opacity": 40
           }
         }
@@ -818,6 +843,11 @@
             "text_gradient": "linear-gradient(180deg, rgba(35, 31, 37, 1) 55%, rgba(28, 160, 121, 1) 82%)",
             "button_background": "",
             "button_text_color": "",
+            "rive_src": "",
+            "rive_state_machines": "",
+            "rive_artboard": "",
+            "rive_autoplay": true,
+            "rive_play_when_in_view": true,
             "content_background_opacity": 40
           }
         }
