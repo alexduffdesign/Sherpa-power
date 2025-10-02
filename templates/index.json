@@ -446,8 +446,8 @@
         "image_YJTtmd": {
           "type": "image",
           "settings": {
-            "image": "shopify://shop_images/Sherpa-Base-2500W-power-kitchen-backup.jpg",
-            "mobile_image": "shopify://shop_images/Base_Mobile.jpg",
+            "image": "shopify://shop_images/Base_Desktop_New.jpg",
+            "mobile_image": "shopify://shop_images/Base_Mobile_New.jpg",
             "media_width": 70,
             "media_position": "end",
             "text_position": "place-self-center-start text-start",
