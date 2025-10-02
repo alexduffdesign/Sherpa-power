@@ -135,141 +135,6 @@
         "button_text_color": ""
       }
     },
-    "image_with_text_overlay_RwjfPp": {
-      "type": "image-with-text-overlay",
-      "blocks": {
-        "heading_QY9FrQ": {
-          "type": "heading",
-          "settings": {
-            "range_text": "PEAK",
-            "text": "Range",
-            "heading_tag": "h1",
-            "heading_gradient": "linear-gradient(180deg, rgba(218, 198, 31, 1) 25%, rgba(240, 244, 46, 1) 84%)"
-          }
-        },
-        "heading_MrDPGz": {
-          "type": "heading",
-          "settings": {
-            "range_text": "",
-            "text": "Built For Adventures",
-            "heading_tag": "h3",
-            "heading_gradient": ""
-          }
-        },
-        "richtext_EGhb3b": {
-          "type": "richtext",
-          "settings": {
-            "content": "<p>The PEAK range includes more portable units that are lighter in weight with protective features, suited to more active and mobile applications such as commercial vehicles, skilled trades and camping</p>"
-          }
-        },
-        "button_hDGq89": {
-          "type": "button",
-          "settings": {
-            "style": "fill",
-            "size": "lg",
-            "text": "SHOP THE PEAK RANGE",
-            "url": "shopify://collections/peak-portable-power-stations",
-            "background": "",
-            "text_color": ""
-          }
-        }
-      },
-      "block_order": [
-        "heading_QY9FrQ",
-        "heading_MrDPGz",
-        "richtext_EGhb3b",
-        "button_hDGq89"
-      ],
-      "disabled": true,
-      "custom_css": [
-        ".h3 {margin-block: 0em;}",
-        ".prose {text-align: center; max-width: 38rem;}",
-        "@media screen and (max-width: 767px) {.prose {margin-bottom: 2rem; }}"
-      ],
-      "name": "Peak Range OLD",
-      "settings": {
-        "full_width": true,
-        "allow_transparent_header": false,
-        "enable_parallax": false,
-        "image_size": "auto",
-        "image": "shopify://shop_images/Peak_Range_Hero_Image.jpg",
-        "mobile_image": "shopify://shop_images/Pro_Mobile_New.jpg",
-        "enable_clouds": false,
-        "mobile_text_position": "place-self-end-center text-center",
-        "desktop_text_position": "sm:place-self-start-center sm:text-center",
-        "text_color": "#ffffff",
-        "overlay_color": "#000000",
-        "overlay_opacity": 0
-      }
-    },
-    "image_with_text_overlay_DzeKnT": {
-      "type": "image-with-text-overlay",
-      "blocks": {
-        "heading_NDCdic": {
-          "type": "heading",
-          "settings": {
-            "range_text": "PEAK",
-            "text": "Range",
-            "heading_tag": "h1",
-            "heading_gradient": "linear-gradient(180deg, rgba(218, 198, 31, 1) 33%, rgba(240, 244, 46, 1) 76%)"
-          }
-        },
-        "heading_n7HiC8": {
-          "type": "heading",
-          "settings": {
-            "range_text": "",
-            "text": "Built For Professionals",
-            "heading_tag": "h3",
-            "heading_gradient": ""
-          }
-        },
-        "richtext_wehxUF": {
-          "type": "richtext",
-          "settings": {
-            "content": "<p>The PEAK range includes more portable units that are lighter in weight with protective features, suited to more active and mobile applications such as commercial vehicles, skilled trades and camping</p>"
-          }
-        },
-        "button_XKYhGq": {
-          "type": "button",
-          "settings": {
-            "style": "fill",
-            "size": "lg",
-            "text": "SHOP THE PEAK RANGE",
-            "url": "shopify://collections/peak-portable-power-stations",
-            "background": "",
-            "text_color": ""
-          }
-        }
-      },
-      "block_order": [
-        "heading_NDCdic",
-        "heading_n7HiC8",
-        "richtext_wehxUF",
-        "button_XKYhGq"
-      ],
-      "disabled": true,
-      "custom_css": [
-        ".prose {text-align: center; max-width: 32em;}",
-        ".h3 {margin-block: 0em;}",
-        "@media screen and (min-width: 767px) {.prose {margin-left: 5em; }}",
-        "@media screen and (max-width: 767px) {.prose {margin-bottom: 1.6rem; }}"
-      ],
-      "name": "PEAK",
-      "settings": {
-        "full_width": true,
-        "allow_transparent_header": false,
-        "enable_parallax": false,
-        "image_size": "fill",
-        "image": "shopify://shop_images/Peak_Desktop_bd98153b-26be-4246-a323-fbe7ff9b984e.jpg",
-        "mobile_image": "shopify://shop_images/Peak_Mobile_c87b348f-0ac1-4f2f-8125-22064fe65cef.jpg",
-        "enable_clouds": false,
-        "mobile_text_position": "place-self-end-center text-center",
-        "desktop_text_position": "sm:place-self-start sm:text-start",
-        "text_color": "#ffffff",
-        "overlay_color": "#000000",
-        "overlay_opacity": 0
-      }
-    },
     "media_with_text_Qdeytq": {
       "type": "media-with-text",
       "blocks": {
@@ -310,7 +175,7 @@
       "custom_css": [
         ".section-full {padding-top: 0;}"
       ],
-      "name": "Media with text",
+      "name": "PEAK",
       "settings": {
         "full_width": true,
         "spacing": "none"
@@ -378,73 +243,6 @@
         "button_text_color": ""
       }
     },
-    "image_with_text_overlay_zzgdjL": {
-      "type": "image-with-text-overlay",
-      "blocks": {
-        "heading_MbG4JB": {
-          "type": "heading",
-          "settings": {
-            "range_text": "BASE",
-            "text": "Range",
-            "heading_tag": "h1",
-            "heading_gradient": "linear-gradient(180deg, rgba(37, 194, 147, 0.8) 45%, rgba(56, 255, 126, 1) 88%)"
-          }
-        },
-        "heading_fX3Fr3": {
-          "type": "heading",
-          "settings": {
-            "range_text": "",
-            "text": "Built For Off-Grid",
-            "heading_tag": "h3",
-            "heading_gradient": ""
-          }
-        },
-        "richtext_UpFWqJ": {
-          "type": "richtext",
-          "settings": {
-            "content": "<p>The BASE range is geared towards higher capacity requirements with high output and high solar input capabilities - your answer to off grid living, motorhome and home backup solutions</p>"
-          }
-        },
-        "button_4qiQGj": {
-          "type": "button",
-          "settings": {
-            "style": "fill",
-            "size": "lg",
-            "text": "SHOP THE BASE RANGE",
-            "url": "shopify://collections/base-portable-power-stations",
-            "background": "",
-            "text_color": ""
-          }
-        }
-      },
-      "block_order": [
-        "heading_MbG4JB",
-        "heading_fX3Fr3",
-        "richtext_UpFWqJ",
-        "button_4qiQGj"
-      ],
-      "disabled": true,
-      "custom_css": [
-        ".prose {text-align: center; max-width: 32rem;}",
-        ".h3 {margin-block: 0em;}",
-        "@media screen and (max-width: 767px) {.prose {margin-bottom: 2rem; }}"
-      ],
-      "name": "Base",
-      "settings": {
-        "full_width": true,
-        "allow_transparent_header": false,
-        "enable_parallax": false,
-        "image_size": "auto",
-        "image": "shopify://shop_images/Sherpa-Base-5000W-power-station-home-backup.png",
-        "mobile_image": "shopify://shop_images/Base_Range_Usecase_Image_Mobile_6f871cde-21ed-4ecc-8011-be09369188b6.jpg",
-        "enable_clouds": false,
-        "mobile_text_position": "place-self-end-center text-center",
-        "desktop_text_position": "sm:place-self-start-end sm:text-end",
-        "text_color": "#ffffff",
-        "overlay_color": "#000000",
-        "overlay_opacity": 0
-      }
-    },
     "media_with_text_EDVjPG": {
       "type": "media-with-text",
       "blocks": {
@@ -481,7 +279,7 @@
       "block_order": [
         "image_YJTtmd"
       ],
-      "name": "Media with text",
+      "name": "BASE",
       "settings": {
         "full_width": true,
         "spacing": "none"
@@ -565,7 +363,7 @@
             "icon_width": 48,
             "subheading": "",
             "title": "[SOLAR] & [CHARGE]",
-            "content": "<p>Fast charge while you drive and solar charge while you enjoy the views. Easy to set up, efficient and reliable.</p>",
+            "content": "<p>Sherpa-Charge when the Sun goes down. Generate power equivalent to a 5m square solar panel from your vehicle alternator.</p>",
             "link_text": "SHOP SOLAR & CHARGE",
             "link_url": "shopify://collections/solar",
             "background": "#231f25",
@@ -589,146 +387,10 @@
       "custom_css": [
         ".section-full {padding-bottom: 0rem;}"
       ],
-      "name": "Media with text",
+      "name": "SOLAR & CHARGE",
       "settings": {
         "full_width": true,
         "spacing": "none"
-      }
-    },
-    "image_with_text_overlay_4qMqtQ": {
-      "type": "image-with-text-overlay",
-      "blocks": {
-        "heading_7zpMtV": {
-          "type": "heading",
-          "settings": {
-            "range_text": "CHARGE",
-            "text": "",
-            "heading_tag": "h1",
-            "heading_gradient": "linear-gradient(180deg, rgba(37, 194, 185, 1) 41%, rgba(9, 239, 226, 1) 72%)"
-          }
-        },
-        "heading_FBLFwH": {
-          "type": "heading",
-          "settings": {
-            "range_text": "",
-            "text": "While You Drive",
-            "heading_tag": "h3",
-            "heading_gradient": ""
-          }
-        },
-        "richtext_byWz6r": {
-          "type": "richtext",
-          "settings": {
-            "content": "<p>Sherpa-Charge when the Sun goes down. Generate power equivalent to a 5m square solar panel from your vehicle alternator.</p>"
-          }
-        },
-        "button_kqCzbn": {
-          "type": "button",
-          "settings": {
-            "style": "fill",
-            "size": "lg",
-            "text": "SHOP THE CHARGE-500",
-            "url": "shopify://collections/charging-solutions",
-            "background": "",
-            "text_color": ""
-          }
-        }
-      },
-      "block_order": [
-        "heading_7zpMtV",
-        "heading_FBLFwH",
-        "richtext_byWz6r",
-        "button_kqCzbn"
-      ],
-      "disabled": true,
-      "custom_css": [
-        ".place-self-end-center {margin-top: auto; margin-bottom: auto;}",
-        ".prose {text-align: center; max-width: 28rem;}",
-        ".h3 {margin-block: 0em;}",
-        "@media screen and (max-width: 767px) {.prose {margin-bottom: 2rem; }}"
-      ],
-      "name": "Old Charge Image",
-      "settings": {
-        "full_width": true,
-        "allow_transparent_header": false,
-        "enable_parallax": false,
-        "image_size": "auto",
-        "image": "shopify://shop_images/Charge_Hero_Image.jpg",
-        "mobile_image": "shopify://shop_images/CHARGE_mob.jpg",
-        "enable_clouds": false,
-        "mobile_text_position": "place-self-end text-end",
-        "desktop_text_position": "sm:place-self-center-end sm:text-end",
-        "text_color": "#ffffff",
-        "overlay_color": "#000000",
-        "overlay_opacity": 0
-      }
-    },
-    "image_with_text_overlay_rive_YTUXFc": {
-      "type": "image-with-text-overlay-rive",
-      "blocks": {
-        "heading_TVDbGk": {
-          "type": "heading",
-          "settings": {
-            "range_text": "[CHARGE] & [SOLAR]",
-            "text": "",
-            "heading_tag": "h1",
-            "heading_gradient": ""
-          }
-        },
-        "richtext_rAbBeF": {
-          "type": "richtext",
-          "settings": {
-            "content": "<p>Sherpa-Charge when the Sun goes down. Generate power equivalent to a 5m square solar panel from your vehicle alternator.</p>"
-          }
-        },
-        "button_ihWa83": {
-          "type": "button",
-          "settings": {
-            "style": "fill",
-            "size": "lg",
-            "text": "SHOP CHARGE & SOLAR",
-            "url": "",
-            "background": "",
-            "text_color": ""
-          }
-        },
-        "rive_animation_tQWhHh": {
-          "type": "rive_animation",
-          "settings": {
-            "rive_src": "https://cdn.shopify.com/s/files/1/0641/4290/1439/files/sherpa_charge___solar_4b01b4eb-abd7-4d2a-95fc-cade56165ca9.riv?v=1759164927",
-            "state_machines": "State Machine 1",
-            "artboard": "Artboard",
-            "autoplay": true,
-            "play_when_in_view": true,
-            "layer": "above_overlay"
-          }
-        }
-      },
-      "block_order": [
-        "heading_TVDbGk",
-        "richtext_rAbBeF",
-        "button_ihWa83",
-        "rive_animation_tQWhHh"
-      ],
-      "disabled": true,
-      "custom_css": [
-        ".prose {text-align: center; max-width: 32rem;}",
-        ".h3 {margin-block: 0em;}",
-        "@media screen and (max-width: 767px) {.prose {margin-bottom: 2rem; }}"
-      ],
-      "name": "Charge And Solar (Rive)",
-      "settings": {
-        "full_width": true,
-        "allow_transparent_header": false,
-        "enable_parallax": false,
-        "image_size": "auto",
-        "image": "shopify://shop_images/charge-solar_desktop_final.jpg",
-        "mobile_image": "shopify://shop_images/charge_solar_mobile_new.png",
-        "mobile_text_position": "place-self-end-center text-center",
-        "desktop_text_position": "sm:place-self-center-end sm:text-end",
-        "text_color": "#ffffff",
-        "overlay_color": "#000000",
-        "overlay_opacity": 7
       }
     },
     "media_with_text_RQC7mw": {
@@ -747,9 +409,9 @@
             "icon_width": 48,
             "subheading": "",
             "title": "ONBOARD POWER",
-            "content": "<p>A complete power and charging solution for your commercial fleet. Minimal installation, maximum power, simple operation.</p>",
+            "content": "<p>Use this text to share information about your brand with your customers.</p>",
             "link_text": "SHOP ONBOARD POWER",
-            "link_url": "",
+            "link_url": "shopify://collections/onboard-power-solution",
             "background": "#231f25",
             "background_gradient": "",
             "text_color": "#ffffff",
@@ -1104,6 +766,339 @@
         "text_color": ""
       }
     },
+    "image_with_text_overlay_rive_YTUXFc": {
+      "type": "image-with-text-overlay-rive",
+      "blocks": {
+        "heading_TVDbGk": {
+          "type": "heading",
+          "settings": {
+            "range_text": "[CHARGE] & [SOLAR]",
+            "text": "",
+            "heading_tag": "h1",
+            "heading_gradient": ""
+          }
+        },
+        "richtext_rAbBeF": {
+          "type": "richtext",
+          "settings": {
+            "content": "<p>Sherpa-Charge when the Sun goes down. Generate power equivalent to a 5m square solar panel from your vehicle alternator.</p>"
+          }
+        },
+        "button_ihWa83": {
+          "type": "button",
+          "settings": {
+            "style": "fill",
+            "size": "lg",
+            "text": "SHOP CHARGE & SOLAR",
+            "url": "",
+            "background": "",
+            "text_color": ""
+          }
+        },
+        "rive_animation_tQWhHh": {
+          "type": "rive_animation",
+          "settings": {
+            "rive_src": "https://cdn.shopify.com/s/files/1/0641/4290/1439/files/sherpa_charge___solar_4b01b4eb-abd7-4d2a-95fc-cade56165ca9.riv?v=1759164927",
+            "state_machines": "State Machine 1",
+            "artboard": "Artboard",
+            "autoplay": true,
+            "play_when_in_view": true,
+            "layer": "above_overlay"
+          }
+        }
+      },
+      "block_order": [
+        "heading_TVDbGk",
+        "richtext_rAbBeF",
+        "button_ihWa83",
+        "rive_animation_tQWhHh"
+      ],
+      "disabled": true,
+      "name": "Charge And Solar (Rive)",
+      "settings": {
+        "full_width": true,
+        "allow_transparent_header": false,
+        "enable_parallax": false,
+        "image_size": "auto",
+        "image": "shopify://shop_images/charge-solar_desktop_final.jpg",
+        "mobile_image": "shopify://shop_images/charge_solar_mobile_new.png",
+        "mobile_text_position": "place-self-end-center text-center",
+        "desktop_text_position": "sm:place-self-center-end sm:text-end",
+        "text_color": "#ffffff",
+        "overlay_color": "#000000",
+        "overlay_opacity": 7
+      }
+    },
+    "image_with_text_overlay_4qMqtQ": {
+      "type": "image-with-text-overlay",
+      "blocks": {
+        "heading_7zpMtV": {
+          "type": "heading",
+          "settings": {
+            "range_text": "CHARGE",
+            "text": "",
+            "heading_tag": "h1",
+            "heading_gradient": "linear-gradient(180deg, rgba(37, 194, 185, 1) 41%, rgba(9, 239, 226, 1) 72%)"
+          }
+        },
+        "heading_FBLFwH": {
+          "type": "heading",
+          "settings": {
+            "range_text": "",
+            "text": "While You Drive",
+            "heading_tag": "h3",
+            "heading_gradient": ""
+          }
+        },
+        "richtext_byWz6r": {
+          "type": "richtext",
+          "settings": {
+            "content": "<p>Sherpa-Charge when the Sun goes down. Generate power equivalent to a 5m square solar panel from your vehicle alternator.</p>"
+          }
+        },
+        "button_kqCzbn": {
+          "type": "button",
+          "settings": {
+            "style": "fill",
+            "size": "lg",
+            "text": "SHOP THE CHARGE-500",
+            "url": "shopify://collections/charging-solutions",
+            "background": "",
+            "text_color": ""
+          }
+        }
+      },
+      "block_order": [
+        "heading_7zpMtV",
+        "heading_FBLFwH",
+        "richtext_byWz6r",
+        "button_kqCzbn"
+      ],
+      "disabled": true,
+      "custom_css": [
+        ".place-self-end-center {margin-top: auto; margin-bottom: auto;}",
+        ".prose {text-align: center; max-width: 28rem;}",
+        ".h3 {margin-block: 0em;}",
+        "@media screen and (max-width: 767px) {.prose {margin-bottom: 2rem; }}"
+      ],
+      "name": "Old Charge Image",
+      "settings": {
+        "full_width": true,
+        "allow_transparent_header": false,
+        "enable_parallax": false,
+        "image_size": "auto",
+        "image": "shopify://shop_images/Charge_Hero_Image.jpg",
+        "mobile_image": "shopify://shop_images/CHARGE_mob.jpg",
+        "enable_clouds": false,
+        "mobile_text_position": "place-self-end text-end",
+        "desktop_text_position": "sm:place-self-center-end sm:text-end",
+        "text_color": "#ffffff",
+        "overlay_color": "#000000",
+        "overlay_opacity": 0
+      }
+    },
+    "image_with_text_overlay_zzgdjL": {
+      "type": "image-with-text-overlay",
+      "blocks": {
+        "heading_MbG4JB": {
+          "type": "heading",
+          "settings": {
+            "range_text": "BASE",
+            "text": "Range",
+            "heading_tag": "h1",
+            "heading_gradient": "linear-gradient(180deg, rgba(37, 194, 147, 0.8) 45%, rgba(56, 255, 126, 1) 88%)"
+          }
+        },
+        "heading_fX3Fr3": {
+          "type": "heading",
+          "settings": {
+            "range_text": "",
+            "text": "Built For Off-Grid",
+            "heading_tag": "h3",
+            "heading_gradient": ""
+          }
+        },
+        "richtext_UpFWqJ": {
+          "type": "richtext",
+          "settings": {
+            "content": "<p>The BASE range is geared towards higher capacity requirements with high output and high solar input capabilities - your answer to off grid living, motorhome and home backup solutions</p>"
+          }
+        },
+        "button_4qiQGj": {
+          "type": "button",
+          "settings": {
+            "style": "fill",
+            "size": "lg",
+            "text": "SHOP THE BASE RANGE",
+            "url": "shopify://collections/base-portable-power-stations",
+            "background": "",
+            "text_color": ""
+          }
+        }
+      },
+      "block_order": [
+        "heading_MbG4JB",
+        "heading_fX3Fr3",
+        "richtext_UpFWqJ",
+        "button_4qiQGj"
+      ],
+      "disabled": true,
+      "custom_css": [
+        ".prose {text-align: center; max-width: 32rem;}",
+        ".h3 {margin-block: 0em;}",
+        "@media screen and (max-width: 767px) {.prose {margin-bottom: 2rem; }}"
+      ],
+      "name": "Base",
+      "settings": {
+        "full_width": true,
+        "allow_transparent_header": false,
+        "enable_parallax": false,
+        "image_size": "auto",
+        "image": "shopify://shop_images/Sherpa-Base-5000W-power-station-home-backup.png",
+        "mobile_image": "shopify://shop_images/Base_Range_Usecase_Image_Mobile_6f871cde-21ed-4ecc-8011-be09369188b6.jpg",
+        "enable_clouds": false,
+        "mobile_text_position": "place-self-end-center text-center",
+        "desktop_text_position": "sm:place-self-start-end sm:text-end",
+        "text_color": "#ffffff",
+        "overlay_color": "#000000",
+        "overlay_opacity": 0
+      }
+    },
+    "image_with_text_overlay_RwjfPp": {
+      "type": "image-with-text-overlay",
+      "blocks": {
+        "heading_QY9FrQ": {
+          "type": "heading",
+          "settings": {
+            "range_text": "PEAK",
+            "text": "Range",
+            "heading_tag": "h1",
+            "heading_gradient": "linear-gradient(180deg, rgba(218, 198, 31, 1) 25%, rgba(240, 244, 46, 1) 84%)"
+          }
+        },
+        "heading_MrDPGz": {
+          "type": "heading",
+          "settings": {
+            "range_text": "",
+            "text": "Built For Adventures",
+            "heading_tag": "h3",
+            "heading_gradient": ""
+          }
+        },
+        "richtext_EGhb3b": {
+          "type": "richtext",
+          "settings": {
+            "content": "<p>The PEAK range includes more portable units that are lighter in weight with protective features, suited to more active and mobile applications such as commercial vehicles, skilled trades and camping</p>"
+          }
+        },
+        "button_hDGq89": {
+          "type": "button",
+          "settings": {
+            "style": "fill",
+            "size": "lg",
+            "text": "SHOP THE PEAK RANGE",
+            "url": "shopify://collections/peak-portable-power-stations",
+            "background": "",
+            "text_color": ""
+          }
+        }
+      },
+      "block_order": [
+        "heading_QY9FrQ",
+        "heading_MrDPGz",
+        "richtext_EGhb3b",
+        "button_hDGq89"
+      ],
+      "disabled": true,
+      "custom_css": [
+        ".h3 {margin-block: 0em;}",
+        ".prose {text-align: center; max-width: 38rem;}",
+        "@media screen and (max-width: 767px) {.prose {margin-bottom: 2rem; }}"
+      ],
+      "name": "Peak Range OLD",
+      "settings": {
+        "full_width": true,
+        "allow_transparent_header": false,
+        "enable_parallax": false,
+        "image_size": "auto",
+        "image": "shopify://shop_images/Peak_Range_Hero_Image.jpg",
+        "mobile_image": "shopify://shop_images/Pro_Mobile_New.jpg",
+        "enable_clouds": false,
+        "mobile_text_position": "place-self-end-center text-center",
+        "desktop_text_position": "sm:place-self-start-center sm:text-center",
+        "text_color": "#ffffff",
+        "overlay_color": "#000000",
+        "overlay_opacity": 0
+      }
+    },
+    "image_with_text_overlay_DzeKnT": {
+      "type": "image-with-text-overlay",
+      "blocks": {
+        "heading_NDCdic": {
+          "type": "heading",
+          "settings": {
+            "range_text": "PEAK",
+            "text": "Range",
+            "heading_tag": "h1",
+            "heading_gradient": "linear-gradient(180deg, rgba(218, 198, 31, 1) 33%, rgba(240, 244, 46, 1) 76%)"
+          }
+        },
+        "heading_n7HiC8": {
+          "type": "heading",
+          "settings": {
+            "range_text": "",
+            "text": "Built For Professionals",
+            "heading_tag": "h3",
+            "heading_gradient": ""
+          }
+        },
+        "richtext_wehxUF": {
+          "type": "richtext",
+          "settings": {
+            "content": "<p>The PEAK range includes more portable units that are lighter in weight with protective features, suited to more active and mobile applications such as commercial vehicles, skilled trades and camping</p>"
+          }
+        },
+        "button_XKYhGq": {
+          "type": "button",
+          "settings": {
+            "style": "fill",
+            "size": "lg",
+            "text": "SHOP THE PEAK RANGE",
+            "url": "shopify://collections/peak-portable-power-stations",
+            "background": "",
+            "text_color": ""
+          }
+        }
+      },
+      "block_order": [
+        "heading_NDCdic",
+        "heading_n7HiC8",
+        "richtext_wehxUF",
+        "button_XKYhGq"
+      ],
+      "disabled": true,
+      "custom_css": [
+        ".prose {text-align: center; max-width: 32em;}",
+        ".h3 {margin-block: 0em;}",
+        "@media screen and (min-width: 767px) {.prose {margin-left: 5em; }}",
+        "@media screen and (max-width: 767px) {.prose {margin-bottom: 1.6rem; }}"
+      ],
+      "name": "PEAK",
+      "settings": {
+        "full_width": true,
+        "allow_transparent_header": false,
+        "enable_parallax": false,
+        "image_size": "fill",
+        "image": "shopify://shop_images/Peak_Desktop_bd98153b-26be-4246-a323-fbe7ff9b984e.jpg",
+        "mobile_image": "shopify://shop_images/Peak_Mobile_c87b348f-0ac1-4f2f-8125-22064fe65cef.jpg",
+        "enable_clouds": false,
+        "mobile_text_position": "place-self-end-center text-center",
+        "desktop_text_position": "sm:place-self-start sm:text-start",
+        "text_color": "#ffffff",
+        "overlay_color": "#000000",
+        "overlay_opacity": 0
+      }
+    },
     "blog_posts_fRtbAP": {
       "type": "blog-posts",
       "blocks": {
@@ -1142,16 +1137,11 @@
   "order": [
     "image_with_text_overlay_7zWHBP",
     "impact-text",
-    "image_with_text_overlay_RwjfPp",
-    "image_with_text_overlay_DzeKnT",
     "media_with_text_Qdeytq",
     "impact_text_e3niPJ",
-    "image_with_text_overlay_zzgdjL",
     "media_with_text_EDVjPG",
     "impact_text_Pefk6J",
     "media_with_text_n34PPt",
-    "image_with_text_overlay_4qMqtQ",
-    "image_with_text_overlay_rive_YTUXFc",
     "media_with_text_RQC7mw",
     "media_with_text_kKAhjw",
     "media_with_text_9aYmQG",
@@ -1159,6 +1149,11 @@
     "text_with_icons_G8zt7p",
     "testimonials_yFBQm8",
     "text_with_icons_HzqCqj",
+    "image_with_text_overlay_rive_YTUXFc",
+    "image_with_text_overlay_4qMqtQ",
+    "image_with_text_overlay_zzgdjL",
+    "image_with_text_overlay_RwjfPp",
+    "image_with_text_overlay_DzeKnT",
     "blog_posts_fRtbAP"
   ]
 }
