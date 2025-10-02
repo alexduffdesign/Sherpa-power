@@ -539,6 +539,44 @@
         "button_text_color": ""
       }
     },
+    "media_with_text_n34PPt": {
+      "type": "media-with-text",
+      "blocks": {
+        "image_LV6iLi": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/charge-solar_desktop_final.jpg",
+            "mobile_image": "shopify://shop_images/charge_solar_mobile_new.png",
+            "media_width": 70,
+            "media_position": "start",
+            "text_position": "place-self-center-start text-start",
+            "icon": "none",
+            "icon_width": 48,
+            "subheading": "",
+            "title": "[CHARGE] & [SOLAR]",
+            "content": "<p>The PEAK range includes more portable units that are lighter in weight with protective features, suited to more active and mobile applications such as commercial vehicles, skilled trades and camping</p>",
+            "link_text": "SHOP THE PEAK RANGE",
+            "link_url": "",
+            "background": "#231e25",
+            "background_gradient": "",
+            "text_color": "#ffffff",
+            "text_gradient": "",
+            "button_background": "",
+            "button_text_color": "",
+            "content_background_image": "shopify://shop_images/Waves.jpg",
+            "content_background_opacity": 22
+          }
+        }
+      },
+      "block_order": [
+        "image_LV6iLi"
+      ],
+      "name": "Media with text",
+      "settings": {
+        "full_width": true,
+        "spacing": "none"
+      }
+    },
     "image_with_text_overlay_4qMqtQ": {
       "type": "image-with-text-overlay",
       "blocks": {
@@ -654,6 +692,7 @@
         "button_ihWa83",
         "rive_animation_tQWhHh"
       ],
+      "disabled": true,
       "custom_css": [
         ".prose {text-align: center; max-width: 32rem;}",
         ".h3 {margin-block: 0em;}",
@@ -1077,6 +1116,7 @@
     "image_with_text_overlay_zzgdjL",
     "media_with_text_EDVjPG",
     "impact_text_Pefk6J",
+    "media_with_text_n34PPt",
     "image_with_text_overlay_4qMqtQ",
     "image_with_text_overlay_rive_YTUXFc",
     "media_with_text_RQC7mw",
