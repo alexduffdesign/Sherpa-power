@@ -545,8 +545,8 @@
         "image_LV6iLi": {
           "type": "image",
           "settings": {
-            "image": "shopify://shop_images/charge-solar_desktop_final.jpg",
-            "mobile_image": "shopify://shop_images/charge_solar_mobile_new.png",
+            "image": "shopify://shop_images/charge_solar_updated.jpg",
+            "mobile_image": "shopify://shop_images/charge_solar_3_mobile_1.jpg",
             "media_width": 70,
             "media_position": "start",
             "text_position": "place-self-center-start text-start",
