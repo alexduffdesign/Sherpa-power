@@ -27,36 +27,6 @@
   text-transform: var(--heading-text-transform);
 }
 
-/* Rive overlay inside media */
-#shopify-section-{{ section.id }} .media-with-text__media {
-  position: relative;
-  overflow: hidden;
-}
-
-#shopify-section-{{ section.id }} .rive-overlay {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  overflow: hidden;
-  z-index: 1;
-}
-
-#shopify-section-{{ section.id }} .rive-overlay rive-media {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  display: block;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  #shopify-section-{{ section.id }} .rive-overlay rive-media[playing] {
-    animation: none;
-  }
-}
-
 {%- for block in section.blocks -%}
   {%- assign media_ratio = block.settings.media_width | divided_by: 50.0 -%}
   {%- assign content_ratio = 2.0 | minus: media_ratio -%}
@@ -113,7 +83,7 @@
   ------------------------------------------------------------------------------------------------------------------------
 {%- endcomment -%}
 
-<div {% render 'section-properties' %} data-section-type="media-with-text-rive">
+<div {% render 'section-properties' %}>
   <media-with-text class="media-with-text {% if section.settings.spacing == 'none' %}{% if section.settings.full_width %}full-bleed{% else %}rounded{% endif %}{% endif %}">
     {%- for block in section.blocks -%}
       <div
@@ -121,18 +91,6 @@
         class="media-with-text__item"
         {{ block.shopify_attributes }}>
         <div class="media-with-text__media {% unless section.settings.spacing == 'none' %}rounded{% endunless %}" reveal-on-scroll="true">
-          {%- if block.settings.rive_src != blank -%}
-            <div class="rive-overlay">
-              <rive-media
-                {% if block.settings.rive_play_when_in_view %}play-when-in-view{% endif %}
-                {% if block.settings.rive_autoplay %}autoplay{% endif %}
-                src="{{ block.settings.rive_src | escape }}"
-                {% if block.settings.rive_artboard != blank %}artboard="{{ block.settings.rive_artboard | escape }}"{% endif %}
-                {% if block.settings.rive_state_machines != blank %}state-machines="{{ block.settings.rive_state_machines | escape }}"{% endif %}
-                data-bind-mobile="true"
-              ></rive-media>
-            </div>
-          {%- endif -%}
           {%- if block.type == 'image' -%}
             {%- if block.settings.image != blank -%}
               {%- assign width_ratio = 100.0 | divided_by: block.settings.media_width -%}
@@ -244,99 +202,6 @@
     {%- endfor -%}
   </media-with-text>
 </div>
-
-{% javascript %}
-/**
- * Bind the Rive view model boolean property "mobile" to a 699px breakpoint.
- * - Safe-guards: no-ops if view model or property is missing.
- * - Works with multiple rive-media in the section.
- * - Cleans up listeners on section unload and supports theme editor re-renders.
- */
-(() => {
-  const mediaQuery = window.matchMedia('(max-width: 699px)');
-
-  function attachBinding(el) {
-    if (!el || el.dataset.mobileBinding === '1') return;
-
-    function applyBoolean(vmi) {
-      if (!vmi) return false;
-      let boolProp = null;
-      try {
-        if (typeof vmi.boolean === 'function') {
-          boolProp = vmi.boolean('mobile');
-        } else if (typeof vmi.property === 'function') {
-          const p = vmi.property('mobile');
-          if (p && typeof p.value === 'boolean') boolProp = p;
-        }
-      } catch (e) {}
-      if (!boolProp) return false;
-
-      const setValue = () => {
-        try { boolProp.value = !!mediaQuery.matches; } catch (e) {}
-      };
-      setValue();
-
-      if (typeof mediaQuery.addEventListener === 'function') {
-        mediaQuery.addEventListener('change', setValue);
-      } else if (typeof mediaQuery.addListener === 'function') {
-        mediaQuery.addListener(setValue);
-      }
-
-      el.__sherpaMobileBindingCleanup = () => {
-        if (typeof mediaQuery.removeEventListener === 'function') {
-          mediaQuery.removeEventListener('change', setValue);
-        } else if (typeof mediaQuery.removeListener === 'function') {
-          mediaQuery.removeListener(setValue);
-        }
-      };
-      el.dataset.mobileBinding = '1';
-      return true;
-    }
-
-    function tryBind(instance) {
-      if (!instance) return;
-      const vmi = instance.viewModelInstance;
-      if (!vmi) return;
-      applyBoolean(vmi);
-    }
-
-    const onReady = (evt) => {
-      tryBind(evt?.detail?.rive);
-    };
-    el.addEventListener('rive:ready', onReady, { once: true });
-
-    try {
-      if (el.riveInstance) {
-        tryBind(el.riveInstance);
-      }
-    } catch (e) {}
-  }
-
-  function initWithin(root) {
-    if (!root) return;
-    root.querySelectorAll('rive-media[data-bind-mobile="true"]').forEach(attachBinding);
-  }
-
-  document.querySelectorAll('[data-section-type="media-with-text-rive"]').forEach(initWithin);
-
-  document.addEventListener('shopify:section:load', (event) => {
-    const section = event.target;
-    if (!(section instanceof HTMLElement)) return;
-    const root = section.querySelector('[data-section-type="media-with-text-rive"]');
-    if (root) initWithin(root);
-  });
-
-  document.addEventListener('shopify:section:unload', (event) => {
-    const section = event.target;
-    if (!(section instanceof HTMLElement)) return;
-    section.querySelectorAll('rive-media[data-bind-mobile="true"]').forEach((el) => {
-      try { el.__sherpaMobileBindingCleanup?.(); } catch (e) {}
-      delete el.__sherpaMobileBindingCleanup;
-      if (el.dataset) delete el.dataset.mobileBinding;
-    });
-  });
-})();
-{% endjavascript %}
 
 {% schema %}
   {
@@ -816,38 +681,6 @@
           },
           {
             "type": "header",
-            "content": "Rive overlay"
-          },
-          {
-            "type": "text",
-            "id": "rive_src",
-            "label": "Rive file URL (.riv)",
-            "info": "Provide a public URL to your .riv file (Shopify Files or CDN)."
-          },
-          {
-            "type": "text",
-            "id": "rive_state_machines",
-            "label": "State machines (comma-separated)"
-          },
-          {
-            "type": "text",
-            "id": "rive_artboard",
-            "label": "Artboard name"
-          },
-          {
-            "type": "checkbox",
-            "id": "rive_autoplay",
-            "label": "Autoplay",
-            "default": true
-          },
-          {
-            "type": "checkbox",
-            "id": "rive_play_when_in_view",
-            "label": "Play when in view",
-            "default": true
-          },
-          {
-            "type": "header",
             "content": "Content background image"
           },
           {
@@ -1314,38 +1147,6 @@
             "type": "color",
             "id": "button_text_color",
             "label": "Button text"
-          },
-          {
-            "type": "header",
-            "content": "Rive overlay"
-          },
-          {
-            "type": "text",
-            "id": "rive_src",
-            "label": "Rive file URL (.riv)",
-            "info": "Provide a public URL to your .riv file (Shopify Files or CDN)."
-          },
-          {
-            "type": "text",
-            "id": "rive_state_machines",
-            "label": "State machines (comma-separated)"
-          },
-          {
-            "type": "text",
-            "id": "rive_artboard",
-            "label": "Artboard name"
-          },
-          {
-            "type": "checkbox",
-            "id": "rive_autoplay",
-            "label": "Autoplay",
-            "default": true
-          },
-          {
-            "type": "checkbox",
-            "id": "rive_play_when_in_view",
-            "label": "Play when in view",
-            "default": true
           },
           {
             "type": "header",
