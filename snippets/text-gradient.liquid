@@ -1,0 +1,25 @@
+{%- comment -%}
+  Renders text with gradient classes based on bracketed keywords.
+  Usage: {%- render 'text-gradient', text: collection.title -%}
+  Supported tokens: [PEAK], [BASE], [PRO]
+{%- endcomment -%}
+
+{%- assign processed_text = text -%}
+
+{%- if processed_text contains '[PEAK]' -%}
+  {%- assign processed_text = processed_text | replace: '[PEAK]', '<span class="text-gradient-peak">PEAK</span>' -%}
+{%- endif -%}
+{%- if processed_text contains '[BASE]' -%}
+  {%- assign processed_text = processed_text | replace: '[BASE]', '<span class="text-gradient-base">BASE</span>' -%}
+{%- endif -%}
+{%- if processed_text contains '[PRO]' -%}
+  {%- assign processed_text = processed_text | replace: '[PRO]', '<span class="text-gradient-pro">PRO</span>' -%}
+{%- endif -%}
+{%- if processed_text contains '[SOLAR]' -%}
+  {%- assign processed_text = processed_text | replace: '[SOLAR]', '<span class="text-gradient-solar">SOLAR</span>' -%}
+{%- endif -%}
+{%- if processed_text contains '[CHARGE]' -%}
+  {%- assign processed_text = processed_text | replace: '[CHARGE]', '<span class="text-gradient-charge">CHARGE</span>' -%}
+{%- endif -%}
+
+<span class="text-with-gradient">{{ processed_text }}</span>

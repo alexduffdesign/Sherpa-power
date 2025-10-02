@@ -15,6 +15,24 @@
     {%- endif -%}
   }
 
+  /* Overlay screen fade-in */
+  #shopify-section-{{ section.id }} .overlay-screen {
+    opacity: 0;
+    animation: overlay-screen-on-{{ section.id }} 400ms ease-in-out 1.5s forwards;
+  }
+
+  @keyframes overlay-screen-on-{{ section.id }} {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    #shopify-section-{{ section.id }} .overlay-screen {
+      animation: none;
+      opacity: 1;
+    }
+  }
+
   /* Ensure overlay scrim and text remain above decorative layers */
   #shopify-section-{{ section.id }} .content-over-media:before { z-index: 2; }
   #shopify-section-{{ section.id }} .content-over-media > :not(img, video, iframe, svg, video-media, rive-media) { z-index: 3; }
@@ -45,7 +63,7 @@
   }
 </style>
 
-<div {% render 'section-properties' %} {% if section.settings.allow_transparent_header %}allow-transparent-header{% endif %}>
+<div {% render 'section-properties' %} {% if section.settings.allow_transparent_header %}allow-transparent-header{% endif %} data-section-type="image-with-text-rive">
   {%- capture class -%}content-over-media content-over-media--{{ section.settings.image_size }} {% if section.settings.full_width %}full-bleed{% else %}shadow-block rounded-lg{% endif %}{%- endcapture -%}
 
   <image-banner reveal-on-scroll="true" {% if section.settings.enable_parallax %}parallax="0.3"{% endif %} {% render 'surface', class: class, text_color: section.settings.text_color %}>
@@ -66,11 +84,12 @@
       {%- capture overlay_sizes -%}{% if section.settings.full_width %}100vw{% else %}(max-width: 740px) calc(100vw - 40px), (max-width: 999px) calc(100vw - 64px), min({{ settings.page_width }}px, 100vw - 96px){% endif %}{%- endcapture -%}
 
       {%- if section.settings.overlay_image != blank -%}
-        {{- section.settings.overlay_image | image_url: width: section.settings.overlay_image.width | image_tag: loading: 'lazy', sizes: overlay_sizes, widths: '200,300,400,500,600,700,800,900,1000,1200,1400,1600,1800,2000,2200,2400,2600,2800,3000,3200', class: 'hidden sm:block pointer-events-none', style: 'position:absolute;top:0;left:0;right:0;bottom:0;width:100%;height:100%;z-index:1;' -}}
+        {%- capture overlay_image_class -%}hidden sm:block pointer-events-none overlay-screen{%- endcapture -%}
+        {{- section.settings.overlay_image | image_url: width: section.settings.overlay_image.width | image_tag: loading: 'lazy', sizes: overlay_sizes, widths: '200,300,400,500,600,700,800,900,1000,1200,1400,1600,1800,2000,2200,2400,2600,2800,3000,3200', class: overlay_image_class, style: 'position:absolute;top:0;left:0;right:0;bottom:0;width:100%;height:100%;z-index:1;' -}}
       {%- endif -%}
 
       {%- if section.settings.overlay_mobile_image != blank -%}
-        {{- section.settings.overlay_mobile_image | image_url: width: section.settings.overlay_mobile_image.width | image_tag: loading: 'lazy', sizes: overlay_sizes, widths: '200,300,400,500,600,700,800,900,1000,1200,1400,1600', class: 'sm:hidden pointer-events-none', style: 'position:absolute;top:0;left:0;right:0;bottom:0;width:100%;height:100%;z-index:1;' -}}
+        {{- section.settings.overlay_mobile_image | image_url: width: section.settings.overlay_mobile_image.width | image_tag: loading: 'lazy', sizes: overlay_sizes, widths: '200,300,400,500,600,700,800,900,1000,1200,1400,1600', class: 'sm:hidden pointer-events-none overlay-screen', style: 'position:absolute;top:0;left:0;right:0;bottom:0;width:100%;height:100%;z-index:1;' -}}
       {%- endif -%}
     {%- endif -%}
 
@@ -136,12 +155,117 @@
               src="{{ block.settings.rive_src | escape }}"
               {% if block.settings.artboard != blank %}artboard="{{ block.settings.artboard | escape }}"{% endif %}
               {% if block.settings.state_machines != blank %}state-machines="{{ block.settings.state_machines | escape }}"{% endif %}
+              data-bind-mobile="true"
             ></rive-media>
           </div>
         {%- endif -%}
       {%- endfor -%}
       
 </div>
+
+{% javascript %}
+/**
+ * Bind the Rive view model boolean property "mobile" to a 699px breakpoint.
+ * - Safe-guards: no-ops if view model or property is missing.
+ * - Works with multiple rive-media in the section.
+ * - Cleans up listeners on section unload and supports theme editor re-renders.
+ */
+(() => {
+  const mediaQuery = window.matchMedia('(max-width: 699px)');
+
+  /**
+   * Attach binding to a given rive-media element.
+   * @param {HTMLElement} el - The <rive-media> element.
+   */
+  function attachBinding(el) {
+    if (!el || el.dataset.mobileBinding === '1') return;
+
+    /** Apply the current MQ value to the VM boolean property. */
+    function applyBoolean(vmi) {
+      if (!vmi) return false;
+      let boolProp = null;
+      try {
+        if (typeof vmi.boolean === 'function') {
+          boolProp = vmi.boolean('mobile');
+        } else if (typeof vmi.property === 'function') {
+          const p = vmi.property('mobile');
+          if (p && typeof p.value === 'boolean') boolProp = p;
+        }
+      } catch (e) {}
+      if (!boolProp) return false;
+
+      const setValue = () => {
+        try { boolProp.value = !!mediaQuery.matches; } catch (e) {}
+      };
+      setValue();
+
+      // Listen for viewport changes
+      if (typeof mediaQuery.addEventListener === 'function') {
+        mediaQuery.addEventListener('change', setValue);
+      } else if (typeof mediaQuery.addListener === 'function') {
+        mediaQuery.addListener(setValue);
+      }
+
+      // Store cleanup on element
+      el.__sherpaMobileBindingCleanup = () => {
+        if (typeof mediaQuery.removeEventListener === 'function') {
+          mediaQuery.removeEventListener('change', setValue);
+        } else if (typeof mediaQuery.removeListener === 'function') {
+          mediaQuery.removeListener(setValue);
+        }
+      };
+      el.dataset.mobileBinding = '1';
+      return true;
+    }
+
+    function tryBind(instance) {
+      if (!instance) return;
+      const vmi = instance.viewModelInstance;
+      if (!vmi) return;
+      applyBoolean(vmi);
+    }
+
+    // Prefer rive:ready event (dispatched when instance is ready)
+    const onReady = (evt) => {
+      tryBind(evt?.detail?.rive);
+    };
+    el.addEventListener('rive:ready', onReady, { once: true });
+
+    // If already ready, use the exposed getter
+    try {
+      if (el.riveInstance) {
+        tryBind(el.riveInstance);
+      }
+    } catch (e) {}
+  }
+
+  function initWithin(root) {
+    if (!root) return;
+    root.querySelectorAll('rive-media[data-bind-mobile="true"]').forEach(attachBinding);
+  }
+
+  // Initialize for all existing instances of this section type
+  document.querySelectorAll('[data-section-type="image-with-text-rive"]').forEach(initWithin);
+
+  // Theme editor lifecycle: handle load/unload per section instance
+  document.addEventListener('shopify:section:load', (event) => {
+    const section = event.target;
+    if (!(section instanceof HTMLElement)) return;
+    const root = section.querySelector('[data-section-type="image-with-text-rive"]');
+    if (root) initWithin(root);
+  });
+
+  document.addEventListener('shopify:section:unload', (event) => {
+    const section = event.target;
+    if (!(section instanceof HTMLElement)) return;
+    section.querySelectorAll('rive-media[data-bind-mobile="true"]').forEach((el) => {
+      try { el.__sherpaMobileBindingCleanup?.(); } catch (e) {}
+      delete el.__sherpaMobileBindingCleanup;
+      if (el.dataset) delete el.dataset.mobileBinding;
+    });
+  });
+})();
+{% endjavascript %}
 
 {% schema %}
 {
@@ -171,6 +295,28 @@
     { "type": "header", "content": "Overlay images" },
     { "type": "image_picker", "id": "overlay_image", "label": "Overlay image" },
     { "type": "image_picker", "id": "overlay_mobile_image", "label": "Overlay mobile image" },
+    { "type": "select", "id": "mobile_text_position", "label": "Mobile content position", "options": [
+        { "value": "place-self-start text-start", "label": "Top left" },
+        { "value": "place-self-start-center text-center", "label": "Top center" },
+        { "value": "place-self-start-end text-end", "label": "Top right" },
+        { "value": "place-self-center-start text-start", "label": "Middle left" },
+        { "value": "place-self-center text-center", "label": "Middle center" },
+        { "value": "place-self-center-end text-end", "label": "Middle right" },
+        { "value": "place-self-end-start text-start", "label": "Bottom left" },
+        { "value": "place-self-end-center text-center", "label": "Bottom center" },
+        { "value": "place-self-end text-end", "label": "Bottom right" }
+      ], "default": "place-self-center text-center" },
+    { "type": "select", "id": "desktop_text_position", "label": "Desktop content position", "options": [
+        { "value": "sm:place-self-start sm:text-start", "label": "Top left" },
+        { "value": "sm:place-self-start-center sm:text-center", "label": "Top center" },
+        { "value": "sm:place-self-start-end sm:text-end", "label": "Top right" },
+        { "value": "sm:place-self-center-start sm:text-start", "label": "Middle left" },
+        { "value": "sm:place-self-center sm:text-center", "label": "Middle center" },
+        { "value": "sm:place-self-center-end sm:text-end", "label": "Middle right" },
+        { "value": "sm:place-self-end-start sm:text-start", "label": "Bottom left" },
+        { "value": "sm:place-self-end-center sm:text-center", "label": "Bottom center" },
+        { "value": "sm:place-self-end sm:text-end", "label": "Bottom right" }
+      ], "default": "sm:place-self-center sm:text-center" },
     { "type": "header", "content": "Colors" },
     { "type": "color", "id": "text_color", "label": "Text", "default": "#ffffff" },
     { "type": "color", "id": "overlay_color", "label": "Overlay", "default": "#000000" },

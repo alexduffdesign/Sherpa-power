@@ -1,28 +1,73 @@
 {%- comment -%}
-----------------------------------------------------------------------------------------------------------------------
-MEGA MENU PANEL
-----------------------------------------------------------------------------------------------------------------------
+  ----------------------------------------------------------------------------------------------------------------------
+  MEGA MENU PANEL
+  ----------------------------------------------------------------------------------------------------------------------
 
-This component is used to show the different links in different panel for the menu drawer
+  This component is used to show the different links in different panel for the menu drawer
 
-********************************************
-Supported variables
-********************************************
+  ********************************************
+  Supported variables
+  ********************************************
 
-* main_menu: the menu to show for the primary menu
-* secondary_menu: the secondary menu (shown on mobile)
-* mega_menu_block: use when mega menu is set to drawer
-* is_mega_menu: set to true if mega menu is set to drawer
-* layout
+  * main_menu: the menu to show for the primary menu
+  * secondary_menu: the secondary menu (shown on mobile)
+  * mega_menu_block: use when mega menu is set to drawer
+  * is_mega_menu: set to true if mega menu is set to drawer
+  * layout
 {%- endcomment -%}
+
+<style>
+  /* Scoped styles for collection cards in the mobile/drawer panel */
+  .panel-list__wrapper .mega-menu__card-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+  }
+  .panel-list__wrapper .mega-menu__card {
+    border-radius: 12px;
+    overflow: hidden;
+    background: rgb(241 241 241);
+    transition: transform 160ms ease
+    , background 160ms ease;
+  }
+  .panel-list__wrapper .mega-menu__card:hover {
+    transform: translateY(-2px);
+    background: var(--color-foreground-alpha-2, rgba(255, 255, 255, 0.06));
+  }
+  .panel-list__wrapper .mega-menu__card-image {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+  .panel-list__wrapper .mega-menu__card-content {
+    padding: var(--spacing-4);
+  }
+  .panel-list__wrapper .mega-menu__card-title {
+    margin: 0;
+  }
+  .panel-list__wrapper .mega-menu__card-wattage {
+    font-weight: 600;
+  }
+</style>
 
 <div class="panel-list__wrapper">
   <div class="panel">
-    <div class="panel__wrapper" {% if mega_menu_block.settings.promo_content_layout == 'grid' or mega_menu_block.settings.promo_content_layout == 'collage' %}style="--panel-wrapper-justify-content: flex-start"{% endif %}>
+    <div
+      class="panel__wrapper"
+      {% if mega_menu_block.settings.promo_content_layout == 'grid' or mega_menu_block.settings.promo_content_layout == 'collage' %}
+      style="--panel-wrapper-justify-content: flex-start"
+      {% endif %}>
       <div class="panel__scroller v-stack gap-8">
         {%- if is_mega_menu -%}
-          <button is="close-button" aria-label="{{ 'general.accessibility.close' | t | escape }}" {%- if section.settings.opening_from == 'bottom' -%}class="sm-max:hidden"{%- endif -%}>
-            {%- render 'icon' with 'close', width: 19, height: 19 -%}
+          <button
+            is="close-button"
+            aria-label="{{ 'general.accessibility.close' | t | escape }}"
+            {%- if section.settings.opening_from == 'bottom' -%}
+            class="sm-max:hidden"
+            {%- endif -%}>
+            {%- render 'icon' with 'close'
+              , width: 19
+              , height: 19 -%}
           </button>
         {%- endif -%}
 
@@ -40,14 +85,15 @@ Supported variables
                   if menu_item_downcase == link_title_downcase
                     assign mega_menu_block = block
 
-                  if block.settings.drawer_link_image == 'show'
-                    assign is_image_shown = true
-                    break
-                  endif
+                    if block.settings.drawer_link_image == 'show'
+                      assign is_image_shown = true
+                      break
+                    endif
 
                     break
                   endif
-                endfor %}
+                endfor
+              %}
 
             {%- else -%}
               {%- assign is_image_shown = false -%}
@@ -60,13 +106,19 @@ Supported variables
 
             <li class="h3 sm:h4">
               {%- if link.links.size > 0 or mega_menu_block != '' and is_mega_menu == false -%}
-                <button class="text-with-icon w-full group justify-between" aria-expanded="false" data-panel="1-{% increment level_1 %}">
+                <button
+                  class="text-with-icon w-full group justify-between"
+                  aria-expanded="false"
+                  data-panel="1-{% increment level_1 %}">
                   <span>{{ link.title }}</span>
-                  <span class="circle-chevron group-hover:colors group-expanded:colors">{%- render 'icon' with 'chevron-right-small', direction_aware: true -%}</span>
+                  <span class="circle-chevron group-hover:colors group-expanded:colors">{%- render 'icon' with 'chevron-right-small'
+, direction_aware: true -%}</span>
                 </button>
               {%- else -%}
                 <a href="{{ link.url }}" class="group block w-full">
-                  <span><span class="reversed-link">{{ link.title }}</span></span>
+                  <span>
+                    <span class="reversed-link">{{ link.title }}</span>
+                  </span>
                 </a>
               {%- endif -%}
             </li>
@@ -92,31 +144,35 @@ Supported variables
                               <span class="circle-chevron group-hover:colors group-expanded:colors">{%- render 'icon' with 'chevron-right-small', direction_aware: true -%}</span>
                             </button>
                           {%- else -%}
-                            <a class="group {% if is_image_shown and is_mega_menu %}h-stack gap-4{% else %}block w-full{% endif %}" href="{{ sub_link.url }}">
-                              {%- if is_image_shown and sub_link.object != blank and is_mega_menu -%}
-                                {%- assign sub_link_image = '' -%}
+                            {%- if sub_link.type == 'collection_link' -%}
+                              {%- render 'navigation-collection-card', link: sub_link -%}
+                            {%- else -%}
+                              <a class="group {% if is_image_shown and is_mega_menu %}h-stack gap-4{% else %}block w-full{% endif %}" href="{{ sub_link.url }}">
+                                {%- if is_image_shown and sub_link.object != blank and is_mega_menu -%}
+                                  {%- assign sub_link_image = '' -%}
 
-                                {%- case sub_link.type -%}
-                                  {%- when 'collection_link' -%}
-                                    {%- assign sub_link_image = sub_link.object.products.first.featured_media -%}
+                                  {%- case sub_link.type -%}
+                                    {%- when 'collection_link' -%}
+                                      {%- assign sub_link_image = sub_link.object.products.first.featured_media -%}
 
-                                  {%- when 'product_link' -%}
-                                    {%- assign sub_link_image = sub_link.object.featured_media -%}
+                                    {%- when 'product_link' -%}
+                                      {%- assign sub_link_image = sub_link.object.featured_media -%}
 
-                                  {%- when 'blog_link' -%}
-                                    {%- assign sub_link_image = sub_link.object.articles.first.image -%}
+                                    {%- when 'blog_link' -%}
+                                      {%- assign sub_link_image = sub_link.object.articles.first.image -%}
 
-                                  {%- when 'article_link' -%}
-                                    {%- assign sub_link_image = sub_link.object.image -%}
-                                {%- endcase -%}
+                                    {%- when 'article_link' -%}
+                                      {%- assign sub_link_image = sub_link.object.image -%}
+                                  {%- endcase -%}
 
-                                {%- if sub_link_image != '' -%}
-                                  {{- sub_link_image | image_url: width: 120 | image_tag: loading: 'lazy', sizes: '60px', widths: '120', class: 'panel-link__image rounded' -}}
+                                  {%- if sub_link_image != '' -%}
+                                    {{- sub_link_image | image_url: width: 120 | image_tag: loading: 'lazy', sizes: '60px', widths: '120', class: 'panel-link__image rounded' -}}
+                                  {%- endif -%}
                                 {%- endif -%}
-                              {%- endif -%}
 
-                              <span><span class="reversed-link">{{ sub_link.title }}</span></span>
-                            </a>
+                                <span><span class="reversed-link">{{ sub_link.title }}</span></span>
+                              </a>
+                            {%- endif -%}
                           {%- endif -%}
                         </li>
 
@@ -134,32 +190,36 @@ Supported variables
 
                                 {%- for sub_sub_link in sub_link.links -%}
                                   <li class="{% if mobile_opening == 'left' %}h3{% else %}h5{% endif %} sm:h5">
-                                    <a class="group {% if is_image_shown %}h-stack gap-4{% else %}block w-full{% endif %}"
-                                       href="{{ sub_sub_link.url }}">
-                                      {%- if is_image_shown and sub_sub_link.object != blank -%}
-                                        {%- assign sub_sub_link_image = '' -%}
+                                    {%- if sub_sub_link.type == 'collection_link' -%}
+                                      {%- render 'navigation-collection-card', link: sub_sub_link -%}
+                                    {%- else -%}
+                                      <a class="group {% if is_image_shown %}h-stack gap-4{% else %}block w-full{% endif %}"
+                                         href="{{ sub_sub_link.url }}">
+                                        {%- if is_image_shown and sub_sub_link.object != blank -%}
+                                          {%- assign sub_sub_link_image = '' -%}
 
-                                        {%- case sub_sub_link.type -%}
-                                          {%- when 'collection_link' -%}
-                                            {%- assign sub_sub_link_image = sub_sub_link.object.products.first.featured_media -%}
+                                          {%- case sub_sub_link.type -%}
+                                            {%- when 'collection_link' -%}
+                                              {%- assign sub_sub_link_image = sub_sub_link.object.products.first.featured_media -%}
 
-                                          {%- when 'product_link' -%}
-                                            {%- assign sub_sub_link_image = sub_sub_link.object.featured_media -%}
+                                            {%- when 'product_link' -%}
+                                              {%- assign sub_sub_link_image = sub_sub_link.object.featured_media -%}
 
-                                          {%- when 'blog_link' -%}
-                                            {%- assign sub_sub_link_image = sub_sub_link.object.articles.first.image -%}
+                                            {%- when 'blog_link' -%}
+                                              {%- assign sub_sub_link_image = sub_sub_link.object.articles.first.image -%}
 
-                                          {%- when 'article_link' -%}
-                                            {%- assign sub_sub_link_image = sub_sub_link.object.image -%}
-                                        {%- endcase -%}
+                                            {%- when 'article_link' -%}
+                                              {%- assign sub_sub_link_image = sub_sub_link.object.image -%}
+                                          {%- endcase -%}
 
-                                        {%- if sub_sub_link_image != blank -%}
-                                          {{- sub_sub_link_image | image_url: width: 104 | image_tag: loading: 'lazy', sizes: '52px', widths: '52,104', class: 'panel-link__image rounded' -}}
+                                          {%- if sub_sub_link_image != blank -%}
+                                            {{- sub_sub_link_image | image_url: width: 104 | image_tag: loading: 'lazy', sizes: '52px', widths: '52,104', class: 'panel-link__image rounded' -}}
+                                          {%- endif -%}
                                         {%- endif -%}
-                                      {%- endif -%}
 
-                                      <span><span class="reversed-link">{{ sub_sub_link.title }}</span></span>
-                                    </a>
+                                        <span><span class="reversed-link">{{ sub_sub_link.title }}</span></span>
+                                      </a>
+                                    {%- endif -%}
                                   </li>
                                 {%- endfor -%}
                               </ul>
@@ -185,7 +245,11 @@ Supported variables
           <ul class="v-stack gap-3">
             {%- for link in secondary_menu.links -%}
               <li>
-                <a href="{{ link.url }}" class="h6 group"><span><span class="reversed-link">{{ link.title }}</span></span></a>
+                <a href="{{ link.url }}" class="h6 group">
+                  <span>
+                    <span class="reversed-link">{{ link.title }}</span>
+                  </span>
+                </a>
               </li>
             {%- endfor -%}
           </ul>
@@ -193,12 +257,16 @@ Supported variables
       </div>
 
       {%- if is_mega_menu -%}
-        {%- render 'navigation-promo-block', navigation_layout: layout, mega_menu_block: mega_menu_block, is_navigation_drawer: true, link_col: link.links.size -%}
-      {%- else -%}
+        {%- render 'navigation-promo-block'
+          , navigation_layout: layout
+          , mega_menu_block: mega_menu_block
+          , is_navigation_drawer: true
+          , link_col: link.links.size -%}
+        {%- else -%}
         {%- comment -%}
-        ----------------------------------------------------------------------------------------------------------------
-        SOCIAL MEDIA + LOCALIZATION
-        ----------------------------------------------------------------------------------------------------------------
+          ----------------------------------------------------------------------------------------------------------------
+          SOCIAL MEDIA + LOCALIZATION
+          ----------------------------------------------------------------------------------------------------------------
         {%- endcomment -%}
 
         {%- if section.settings.show_social_media -%}
@@ -220,11 +288,15 @@ Supported variables
             {%- if country_selector or locale_selector or shop.customer_accounts_enabled -%}
               <div class="panel-footer__localization-wrapper h-stack gap-6 border-t md:hidden">
                 {%- if country_selector -%}
-                  {%- render 'localization-selector', type: 'country', show_country_name: show_country_name, show_country_flag: show_country_flag -%}
+                  {%- render 'localization-selector'
+                    , type: 'country'
+                    , show_country_name: show_country_name
+                    , show_country_flag: show_country_flag -%}
                 {%- endif -%}
 
                 {%- if locale_selector -%}
-                  {%- render 'localization-selector', type: 'locale' -%}
+                  {%- render 'localization-selector'
+                    , type: 'locale' -%}
                 {%- endif -%}
 
                 {%- if shop.customer_accounts_enabled -%}

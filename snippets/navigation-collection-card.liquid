@@ -1,0 +1,61 @@
+{%- comment -%}
+  Renders a clickable card for a menu link that targets a collection.
+  Inputs:
+  - link: a menu link (expected type: collection_link)
+{%- endcomment -%}
+
+{%- assign collection_obj = link.object -%}
+{%- assign title = link.title -%}
+{%- assign title_upper = title | upcase -%}
+{%- assign desc = collection_obj.metafields.custom.menu_description.value -%}
+{%- assign wattage = collection_obj.metafields.custom.wattage_range.value -%}
+{%- assign menu_image = collection_obj.metafields.custom.menu_image.value | default: collection_obj.image -%}
+
+{%- assign title_gradient_class = '' -%}
+{%- if title_upper contains 'PEAK' -%}
+  {%- assign title_gradient_class = 'text-gradient-peak' -%}
+{%- elsif title_upper contains 'BASE' -%}
+  {%- assign title_gradient_class = 'text-gradient-base' -%}
+{%- elsif title_upper contains 'PRO' -%}
+  {%- assign title_gradient_class = 'text-gradient-pro' -%}
+{%- elsif title_upper contains 'SOLAR' -%}
+  {%- assign title_gradient_class = 'text-gradient-solar' -%}
+{%- elsif title_upper contains 'CHARGE' -%}
+  {%- assign title_gradient_class = 'text-gradient-charge' -%}
+{%- endif -%}
+
+<style>
+  .mega-menu__card-desc {
+    font-family: var(--text-font-family);
+    font-size: var(--text-base);
+    font-style: initial;
+    line-height: 1.3rem;
+    font-weight: 500;
+  }
+</style>
+
+<a href="{{ link.url }}" class="mega-menu__card-link">
+  <div class="mega-menu__card">
+    {%- if menu_image != blank -%}
+      <img
+        class="mega-menu__card-image"
+        src="{{ menu_image | image_url: width: 720, height: 480, crop: 'center' }}"
+        alt="{{ collection_obj.title | escape }}"
+        width="720"
+        height="480"
+        loading="lazy">
+    {%- endif -%}
+    <div class="mega-menu__card-content v-stack gap-2">
+      <div class="mega-menu__card-title h5 {{ title_gradient_class }}">
+        {%- render 'text-gradient'
+          , text: title -%}
+      </div>
+      {%- if wattage != blank -%}
+        <div class="mega-menu__card-wattage h6">{{ wattage }}</div>
+      {%- endif -%}
+      {%- if desc != blank -%}
+        <p class="mega-menu__card-desc">{{ desc }}</p>
+      {%- endif -%}
+    </div>
+  </div>
+</a>

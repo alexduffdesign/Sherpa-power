@@ -167,6 +167,7 @@ summary {
   -webkit-user-select: none;
   user-select: none;
   list-style-type: none;
+  font-family: var(--heading-font-family);
 }
 
 summary::-webkit-details-marker {
@@ -4356,12 +4357,14 @@ model-media .shopify-model-viewer-ui {
 
 .prose ol,
 .list-decimal {
-  list-style: decimal inside;
+  list-style: decimal;
+  list-style-position: outside;
 }
 
 .prose ul,
 .list-disc {
-  list-style: inside;
+  list-style: disc;
+  list-style-position: outside;
 }
 
 .prose :is(ol, ul) :is(ol, ul) {
@@ -4427,7 +4430,7 @@ model-media .shopify-model-viewer-ui {
 .prose ul,
 .prose ol {
   row-gap: 0.6em;
-  display: grid;
+  display: block;
 }
 
 .prose
@@ -7958,7 +7961,7 @@ split-lines {
 
 @media screen and (min-width: 1150px) {
   .header__link-list {
-    gap: var(--spacing-4) var(--header-link-list-spacing);
+    gap: var(--spacing-6);
     display: flex;
   }
 }
@@ -8215,6 +8218,7 @@ split-lines {
   position: absolute;
   top: 100%;
   overflow: hidden auto;
+  border-bottom: 1px solid white;
   box-shadow: 0 9999px 0 9999px #0006;
 }
 
@@ -8273,14 +8277,15 @@ split-lines {
 .mega-menu__nav {
   max-width: var(--column-list-max-width, max-content);
   gap: var(--mega-menu-nav-gap);
-  flex-wrap: wrap;
   flex: auto;
   align-items: start;
   display: flex;
+  flex-direction: row;
+  flex-grow: 1;
 }
 
 .mega-menu__nav > li {
-  width: var(--mega-menu-nav-column-max-width);
+  max-width: 25rem;
 }
 
 @media screen and (min-width: 1400px) {
@@ -12765,14 +12770,55 @@ split-lines {
 
 /* Increase padding for subheading on desktop */
 .subheading {
-    padding-top: 20px; /* Adjust value */
-    padding-bottom: 20px; /* Adjust value */
+  padding-top: 20px; /* Adjust value */
+  padding-bottom: 20px; /* Adjust value */
 }
 
 /* Responsive padding for mobile */
 @media (max-width: 768px) {
-    .subheading {
-        padding-top: 15px; /* Adjust value */
-        padding-bottom: 15px; /* Adjust value */
-    }
+  .subheading {
+    padding-top: 15px; /* Adjust value */
+    padding-bottom: 15px; /* Adjust value */
+  }
+}
+
+/* Text gradient utilities for product tiers */
+.text-gradient-peak {
+  background: linear-gradient(180deg, #dac61f 62.7%, #f0f42e 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+}
+
+.text-gradient-base {
+  background: linear-gradient(180deg, #25c293 54.68%, #38ff7e 77.27%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+}
+
+.text-gradient-pro {
+  background: linear-gradient(180deg, #c7c7c7 66%, #ffffff 89.5%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+}
+
+.text-gradient-solar {
+  background: linear-gradient(180deg, #25c2b9 0%, #09efe2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+}
+
+.text-gradient-charge {
+  background: linear-gradient(180deg, #25c2b9 0%, #09efe2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
 }
