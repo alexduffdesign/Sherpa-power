@@ -97,6 +97,15 @@
             "background": "#e1f1ec",
             "text_color": "#3f4345"
           }
+        },
+        "seedgrow_whatsapp_chat_app_block_GbxYp3": {
+          "type": "shopify://apps/seedgrow-whatsapp-chat/blocks/app-block/b85b5e45-9cea-417a-9b9e-0aa961ccf3ef",
+          "settings": {
+            "button_label": "Need help? Chat with us",
+            "button_style": "round",
+            "background_color": "#25c293",
+            "text_color": "#ffffff"
+          }
         }
       },
       "block_order": [
@@ -111,7 +120,8 @@
         "liquid_HVMrxB",
         "estimated_shipping_pbbJYc",
         "liquid_KQWMtz",
-        "offer_Xg7N4t"
+        "offer_Xg7N4t",
+        "seedgrow_whatsapp_chat_app_block_GbxYp3"
       ],
       "custom_css": [
         ".shopify-payment-button__button {height: 100%;}",
