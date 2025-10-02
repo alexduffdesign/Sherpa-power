@@ -586,6 +586,9 @@
       "block_order": [
         "video_tCxAiL"
       ],
+      "custom_css": [
+        ".section-full {padding-bottom: 0rem;}"
+      ],
       "name": "Media with text",
       "settings": {
         "full_width": true,
