@@ -37,7 +37,7 @@
     "text_font": "barlow_semi_condensed_n4",
     "show_page_transition": false,
     "heading_apparition": "split_fade",
-    "show_secondary_image": false,
+    "show_secondary_image": true,
     "show_sold_out_badge": false,
     "discount_mode": "saving",
     "product_color_display": "swatch",
