@@ -165,9 +165,9 @@ quick buy information in a template, that will be extracted in JS, but ensure it
   "availability": "https://schema.org/{% if product.available %}InStock{% else %}OutOfStock{% endif %}",
   "url": "{{ product.url | absolute_url }}"
   }
-      {
-      "type": "payment_terms",
-      "name": "Payment installments",
+  {
+   "type": "payment_terms",
+    "name": "Payment installments",
       "limit": 1,
       "settings": [
         {
