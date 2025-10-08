@@ -114,7 +114,7 @@
           "gdpr_text": "Please accept our privacy policy first to start a conversation.",
           "background_color": "#2db742",
           "text_color": "#ffffff",
-          "position": "right",
+          "position": "left",
           "label_width": 155,
           "scroll_bar_height": 500,
           "icon_size": 50,
