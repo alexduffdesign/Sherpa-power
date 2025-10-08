@@ -84,35 +84,6 @@
         "disabled": false,
         "settings": {}
       },
-      "11813581335429059158": {
-        "type": "shopify://apps/seedgrow-whatsapp-chat/blocks/app-embed/b85b5e45-9cea-417a-9b9e-0aa961ccf3ef",
-        "disabled": false,
-        "settings": {
-          "show_on_desktop": true,
-          "show_on_mobile": true,
-          "show_label_on_desktop": true,
-          "show_dismiss_button_desktop": false,
-          "show_label_on_mobile": true,
-          "show_dismiss_button_mobile": true,
-          "show_scroll_bar": false,
-          "show_gdpr_notice": false,
-          "use_click_to_chat": false,
-          "widget_label_text": "Need Help? Chat with us",
-          "widget_text": "Start a Conversation",
-          "description": "Hi! Click one of our members below to chat on WhatsApp",
-          "response_text": "The team typically replies in a few minutes.",
-          "gdpr_text": "Please accept our privacy policy first to start a conversation.",
-          "background_color": "#2DB742",
-          "text_color": "#ffffff",
-          "position": "right",
-          "label_width": 155,
-          "scroll_bar_height": 500,
-          "icon_size": 56,
-          "distance_left": 30,
-          "distance_right": 30,
-          "distance_bottom": 30
-        }
-      },
       "1967102994182284862": {
         "type": "shopify://apps/paypal-pay-later-messaging/blocks/messaging/7f4cb7b9-066b-479a-a35c-56c0fddabee5",
         "disabled": false,
@@ -121,6 +92,35 @@
           "product_locator": "document.querySelector(\"#shopify-section-template--17362980962495__main > div > div > safe-sticky > div.product-info__price > div > price-list > sale-price\")",
           "cart_locator": "",
           "cart_drawer_locator": ""
+        }
+      },
+      "11813581335429059158": {
+        "type": "shopify://apps/seedgrow-whatsapp-chat/blocks/app-embed/b85b5e45-9cea-417a-9b9e-0aa961ccf3ef",
+        "disabled": false,
+        "settings": {
+          "show_on_desktop": true,
+          "show_on_mobile": true,
+          "show_label_on_desktop": true,
+          "show_dismiss_button_desktop": true,
+          "show_label_on_mobile": true,
+          "show_dismiss_button_mobile": true,
+          "show_scroll_bar": false,
+          "show_gdpr_notice": false,
+          "use_click_to_chat": false,
+          "widget_label_text": "Need Help? Chat with us",
+          "widget_text": "Start a Conversation",
+          "description": "",
+          "response_text": "The team typically replies in a few minutes.",
+          "gdpr_text": "Please accept our privacy policy first to start a conversation.",
+          "background_color": "#2db742",
+          "text_color": "#ffffff",
+          "position": "right",
+          "label_width": 155,
+          "scroll_bar_height": 500,
+          "icon_size": 50,
+          "distance_left": 30,
+          "distance_right": 30,
+          "distance_bottom": 30
         }
       }
     }
