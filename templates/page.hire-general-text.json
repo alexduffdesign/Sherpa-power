@@ -21,10 +21,10 @@
             "heading_gradient": "linear-gradient(180deg, rgba(37, 194, 147, 1), rgba(247, 247, 247, 1) 100%)"
           }
         },
-        "subheading_y8XgbG": {
-          "type": "subheading",
+        "richtext_mzVEcR": {
+          "type": "richtext",
           "settings": {
-            "text": "Ask us about rental options of our portable power range. We can provide a greener solution to your event operations so you don't have to have noisy and smelly generators running to power your kit. We offer competitive rates and excellent customer support. Get in touch today."
+            "content": "<p><strong>Ask us about our portable power station hire options.</strong><br/><br/>We offer a cleaner, quieter, and greener way to power your event operations - no need for noisy, smelly fuel generators. Our <strong>portable power station hire</strong> service provides reliable energy for all your equipment, with <strong>competitive rates</strong> and <strong>dedicated customer support</strong> to keep everything running smoothly.<br/><br/></p>"
           }
         },
         "richtext_Q48Bpb": {
@@ -42,7 +42,7 @@
       },
       "block_order": [
         "heading_kgHwRj",
-        "subheading_y8XgbG",
+        "richtext_mzVEcR",
         "richtext_Q48Bpb",
         "liquid_W3xzHg"
       ],
@@ -52,6 +52,7 @@
         "enable_parallax": false,
         "image_size": "sm",
         "image": "shopify://shop_images/Peak_a00281de-5293-4b66-8424-9366c979ed4a.jpg",
+        "enable_clouds": false,
         "mobile_text_position": "place-self-center text-center",
         "desktop_text_position": "sm:place-self-center sm:text-center",
         "text_color": "#ffffff",
