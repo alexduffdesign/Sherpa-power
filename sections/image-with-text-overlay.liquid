@@ -120,19 +120,19 @@
                 {%- endif -%}                
 
               {%- when 'heading' -%}
-              <div img-w-text_wrap >
-              {%- if block.settings.range_text != blank -%}
-                  <p  class="{{ block.settings.heading_tag }}" {% if settings.heading_apparition != 'none' %}reveal-on-scroll="false"{% endif %} {{ block.shopify_attributes }}>
-                    {%- render 'styled-text', gradient: block.settings.heading_gradient, content: block.settings.range_text, apparition_effect: true -%}
-                  </p>
-                {%- endif -%}
-              
-                {%- if block.settings.text != blank -%}
-                  <h1 no-margin class="{{ block.settings.heading_tag }}" {% if settings.heading_apparition != 'none' %}reveal-on-scroll="false"{% endif %} {{ block.shopify_attributes }}>
-                    {%- render 'styled-text', content: block.settings.text, apparition_effect: true -%}
-                  </h1>
-                {%- endif -%}
-              </div>
+                <div img-w-text_wrap >
+                  {%- if block.settings.range_text != blank -%}
+                    <{{ block.settings.heading_tag }} class="{{ block.settings.heading_tag }}" {% if settings.heading_apparition != 'none' %}reveal-on-scroll="false"{% endif %} {{ block.shopify_attributes }}>
+                      {%- render 'styled-text', gradient: block.settings.heading_gradient, content: block.settings.range_text, apparition_effect: true -%}
+                    </{{ block.settings.heading_tag }}>
+                  {%- endif -%}
+                  
+                  {%- if block.settings.text != blank -%}
+                    <{{ block.settings.heading_tag }} no-margin class="{{ block.settings.heading_tag }}" {% if settings.heading_apparition != 'none' %}reveal-on-scroll="false"{% endif %} {{ block.shopify_attributes }}>
+                      {%- render 'styled-text', content: block.settings.text, apparition_effect: true -%}
+                    </{{ block.settings.heading_tag }}>
+                  {%- endif -%}
+                </div>
 
               {%- when 'richtext' -%}
                 {%- if block.settings.content != blank -%}
