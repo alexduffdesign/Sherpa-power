@@ -218,7 +218,7 @@
           "repeater": "{{ product.metafields.custom.product_application_image.value }}",
           "settings": {
             "image": "{{ block.repeater.image.value }}",
-            "column_size": "3",
+            "column_size": "4",
             "title": "{{ block.repeater.text.value }}",
             "heading_tag": "h4",
             "content": "<p>{{ block.repeater.paragraph | metafield_tag }}</p>",
@@ -348,7 +348,13 @@
             "text_color": "#3f4345",
             "text_gradient": "",
             "button_background": "",
-            "button_text_color": ""
+            "button_text_color": "",
+            "rive_src": "",
+            "rive_state_machines": "",
+            "rive_artboard": "",
+            "rive_autoplay": true,
+            "rive_play_when_in_view": true,
+            "content_background_opacity": 40
           }
         }
       },
