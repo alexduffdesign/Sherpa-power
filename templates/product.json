@@ -218,7 +218,7 @@
           "repeater": "{{ product.metafields.custom.product_application_image.value }}",
           "settings": {
             "image": "{{ block.repeater.image.value }}",
-            "column_size": "4",
+            "column_size": "2",
             "title": "{{ block.repeater.text.value }}",
             "heading_tag": "h4",
             "content": "<p>{{ block.repeater.paragraph | metafield_tag }}</p>",
@@ -232,7 +232,7 @@
         "item_T87eYy"
       ],
       "settings": {
-        "full_width": true,
+        "full_width": false,
         "stack_on_mobile": true,
         "gap": "medium",
         "text_alignment": "center",
