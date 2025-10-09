@@ -232,7 +232,7 @@
         "item_T87eYy"
       ],
       "settings": {
-        "full_width": false,
+        "full_width": true,
         "stack_on_mobile": true,
         "gap": "medium",
         "text_alignment": "center",
