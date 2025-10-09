@@ -67,6 +67,34 @@
             "title": "Can a power station be charged by solar and mains at the same time?",
             "content": "<p>Yes, our products will accept both types of charge at the same time, with priority given to the solar (or DC) charge so you save energy coming from the grid.</p>"
           }
+        },
+        "item_UNUaq9": {
+          "type": "item",
+          "settings": {
+            "title": "How do I convert mAh to kWh?",
+            "content": "<p>To convert <strong>mAh (milliamp hours)</strong> to <strong>kWh (kilowatt hours)</strong>, you need to know the voltage of your battery. Use this simple formula:</p><p><strong>mAh × V ÷ 1,000,000 = Wh</strong><br/><br/>Then, <strong>Wh ÷ 1,000 = kWh</strong></p><p><strong>Example:</strong><br/><br/>A 20,000mAh power bank at 12V →<br/><br/>20,000 × 12 ÷ 1,000,000 = <strong>0.24kWh</strong></p><p>So that portable power pack stores roughly <strong>0.24 kilowatt-hours</strong> of energy.</p>"
+          }
+        },
+        "item_EjRCWx": {
+          "type": "item",
+          "settings": {
+            "title": "How do I convert kWh to mAh?",
+            "content": "<p>If you want to know how many milliamp hours equal a certain number of kilowatt hours, reverse the formula:</p><p><strong>kWh × 1,000,000 ÷ V = mAh</strong></p><p><strong>Example:</strong><br/><br/>A 1kWh battery at 12V →<br/><br/>1 × 1,000,000 ÷ 12 = <strong>83,333mAh</strong></p><p>That means a 1kWh system could theoretically hold around <strong>83,000mAh</strong> at 12 volts.</p>"
+          }
+        },
+        "item_fmPceT": {
+          "type": "item",
+          "settings": {
+            "title": "What’s the difference between mAh and kWh?",
+            "content": "<ul><li><strong>mAh (milliamp hours)</strong> measures electrical <strong>charge</strong> — how much current a battery can supply over time.<br/></li><li><strong>kWh (kilowatt hours)</strong> measures <strong>energy use or storage</strong> — how much total power can be delivered.<br/></li></ul><p>mAh is more common for <strong>small devices</strong> like phones or portable power banks, while kWh is used for <strong>larger systems</strong> such as home batteries, generators, and solar energy storage.</p>"
+          }
+        },
+        "item_HgEGjQ": {
+          "type": "item",
+          "settings": {
+            "title": "What’s the difference between AC and DC power (UK)?",
+            "content": "<p>In the UK, <strong>AC (alternating current)</strong> is what comes from your mains sockets — typically <strong>230V AC</strong>. It’s ideal for powering household appliances.</p><p><strong>DC (direct current)</strong>, on the other hand, is the type of power stored in batteries and used by most electronics. Portable power stations often convert <strong>DC to AC</strong> so you can plug in standard UK devices safely.</p>"
+          }
         }
       },
       "block_order": [
@@ -76,7 +104,11 @@
         "item_Xxmg4E",
         "item_j3wkAn",
         "item_7LDUcU",
-        "item_xUPBPx"
+        "item_xUPBPx",
+        "item_UNUaq9",
+        "item_EjRCWx",
+        "item_fmPceT",
+        "item_HgEGjQ"
       ],
       "settings": {
         "full_width": true,
