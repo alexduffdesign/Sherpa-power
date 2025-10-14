@@ -1132,6 +1132,26 @@
         "heading_color": "",
         "heading_gradient": "linear-gradient(180deg, rgba(35, 31, 37, 1) 55%, rgba(28, 160, 121, 1) 82%)"
       }
+    },
+    "17604464902b6fca69": {
+      "type": "apps",
+      "blocks": {
+        "s_store_locator_storeify_storelocator_g3HDPx": {
+          "type": "shopify://apps/s-store-locator/blocks/storeify-storelocator/e7003487-cc51-4321-9488-2c47c07a5b17",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "s_store_locator_storeify_storelocator_g3HDPx"
+      ],
+      "settings": {
+        "full_width": true,
+        "remove_vertical_spacing": false,
+        "remove_horizontal_spacing": false,
+        "background": "",
+        "background_gradient": "",
+        "text_color": ""
+      }
     }
   },
   "order": [
@@ -1148,6 +1168,7 @@
     "text_with_icons_MeKcXe",
     "text_with_icons_G8zt7p",
     "testimonials_yFBQm8",
+    "17604464902b6fca69",
     "text_with_icons_HzqCqj",
     "image_with_text_overlay_rive_YTUXFc",
     "image_with_text_overlay_4qMqtQ",
