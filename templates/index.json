@@ -141,7 +141,7 @@
         "image_aWNi8R": {
           "type": "image",
           "settings": {
-            "image": "shopify://shop_images/Peak_Desktop_bd98153b-26be-4246-a323-fbe7ff9b984e.jpg",
+            "image": "shopify://shop_images/Peak-3600W-power-bank-work-off-grid.jpg",
             "mobile_image": "shopify://shop_images/Peak_Mobile_Update.jpg",
             "media_width": 70,
             "media_position": "start",
@@ -1110,7 +1110,6 @@
         "allow_transparent_header": false,
         "enable_parallax": false,
         "image_size": "fill",
-        "image": "shopify://shop_images/Peak_Desktop_bd98153b-26be-4246-a323-fbe7ff9b984e.jpg",
         "mobile_image": "shopify://shop_images/Peak_Mobile_c87b348f-0ac1-4f2f-8125-22064fe65cef.jpg",
         "enable_clouds": false,
         "mobile_text_position": "place-self-end-center text-center",
