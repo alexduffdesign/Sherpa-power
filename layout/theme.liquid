@@ -23,17 +23,6 @@
   </script>
   
   <head>
-    {% if page_description %}
-  <meta name="description" content="{{ page_description | escape }}">
-{% elsif template == 'blog' %}
-  {% if current_tags %}
-    <meta name="description" content="Explore articles tagged with {{ current_tags | join: ', ' }} in {{ blog.title }}. Find expert advice and tips from Sherpa Power.">
-  {% else %}
-    <meta name="description" content="{{ blog.title }} - Expert advice, tips, and news about power solutions from Sherpa Power.">
-  {% endif %}
-{% else %}
-  <meta name="description" content="{{ page_description | default: shop.description | escape }}">
-{% endif %}
     <meta name="google-site-verification" content="3lES4uw7nV7HkTCumxqMHNEZGek6g6b10wj3y4aV6hU" />
     {% if template == 'search' %}
         <meta name="robots" content="noindex, nofollow">
