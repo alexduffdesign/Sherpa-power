@@ -23,6 +23,23 @@
   </script>
   
   <head>
+    {% if page_description %}
+  <meta name="description" content="{{ page_description | escape }}">
+{% elsif template == 'blog' %}
+  {% if current_tags %}
+    <meta name="description" content="Browse {{ current_tags | join: ', ' }} articles in {{ blog.title }}. {{ shop.description | truncate: 100 | escape }}">
+  {% else %}
+    <meta name="description" content="{{ blog.title }} - {{ shop.description | escape }}">
+  {% endif %}
+{% elsif template == 'article' %}
+  <meta name="description" content="{{ article.excerpt_or_content | strip_html | truncatewords: 25 | escape }}">
+{% elsif template == 'collection' %}
+  <meta name="description" content="{{ collection.description | default: collection.title | strip_html | truncatewords: 25 | escape }}">
+{% elsif template == 'product' %}
+  <meta name="description" content="{{ product.description | strip_html | truncatewords: 25 | escape }}">
+{% else %}
+  <meta name="description" content="{{ shop.description | escape }}">
+{% endif %}
     <meta name="google-site-verification" content="3lES4uw7nV7HkTCumxqMHNEZGek6g6b10wj3y4aV6hU" />
     {% if template == 'search' %}
         <meta name="robots" content="noindex, nofollow">
