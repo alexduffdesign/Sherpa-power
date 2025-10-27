@@ -36,7 +36,13 @@
       <div class="container">
         <div class="blog-banner-content v-stack gap-10 text-center justify-items-center">
           <div class="v-stack gap-5 sm:gap-8">
-            <h1 class="h0">{{- blog.title -}}</h1>
+            <h1>
+  {% if current_tags %}
+    {{ current_tags | join: ', ' | capitalize }} - {{ blog.title }}
+  {% else %}
+    {{ blog.title }}
+  {% endif %}
+</h1>
 
             {%- if section.settings.content != blank -%}
               <div class="prose">
