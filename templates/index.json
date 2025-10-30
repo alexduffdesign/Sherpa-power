@@ -695,12 +695,24 @@
             "title": "Very helpful staff",
             "content": "<p>Very helpful staff with question I had thanks, I haven't fitted the power unit to my campervan yet but I have been carrying out tests and it's all we need thanks again</p>"
           }
+        },
+        "testimonial_HaHLJC": {
+          "type": "testimonial",
+          "settings": {
+            "round_avatar": true,
+            "show_rating": true,
+            "rating": 5,
+            "author": "Nathan C",
+            "title": "Fantastic piece of kit.",
+            "content": "<p>Fantastic piece of kit. For the marine industry I can't find better as having anderson DC out allows me to power the whole system (except the windlass) and with the add on battery also having another I am powering my eberspacher independently. And with every unit accepting up to 2100W of solar/wind/ hydro or alternate charge, 2 or 3 units provides all options. Quality build is at industry level and these little power banks can fit pretty much anywhere. . . . Highly recommend.<br/><br/></p>"
+          }
         }
       },
       "block_order": [
         "testimonial_6MkfYm",
         "testimonial_DhzCR3",
-        "testimonial_HkywaD"
+        "testimonial_HkywaD",
+        "testimonial_HaHLJC"
       ],
       "custom_css": [
         ".testimonial {background-image: linear-gradient(transparent 90%, #25c293 100%); border-width: 1px; border-color: #231f25; background-color: transparent;}",
