@@ -668,7 +668,7 @@
             "image": "shopify://shop_images/6_63b4d533-7516-46ad-912f-d6cacb38b36c.jpg",
             "round_avatar": true,
             "show_rating": true,
-            "rating": 4,
+            "rating": 5,
             "author": "G Johns",
             "title": "Solid bit of kit",
             "content": "<p>Solid bit of kit. We have just completed four nights off-grid with no sun for the solar panel for top-ups, but we still had enough power for lots of coffee and hair drying each day. These were the things we missed in the motorhome when travelling off-grid! The app still reported 53% power left.<br/><br/></p>"
@@ -679,16 +679,28 @@
           "settings": {
             "round_avatar": true,
             "show_rating": true,
-            "rating": 4,
+            "rating": 5,
             "author": "G D",
             "title": "I experienced a couple of power cuts",
             "content": "<p>I experienced a couple of power cuts recently and decided that I needed to do something<br/>to keep the lights on during a cut.<br/>I have put my Sherpa in the garage and have a small portable solar panel in the garden.<br/>So far the Sherpa works fine.<br/>Now I don't feel so anxious (I am 80 ) about a power cut in midwinter.<br/>In the future I intend to increase my solar panel area and gradually use the Sherpa<br/>to power more and more mains electrical gear to try and keep my electricity bill down.<br/><br/></p>"
+          }
+        },
+        "testimonial_HkywaD": {
+          "type": "testimonial",
+          "settings": {
+            "round_avatar": true,
+            "show_rating": true,
+            "rating": 4,
+            "author": "C Bingham",
+            "title": "Very helpful staff",
+            "content": "<p>Very helpful staff with question I had thanks, I haven't fitted the power unit to my campervan yet but I have been carrying out tests and it's all we need thanks again</p>"
           }
         }
       },
       "block_order": [
         "testimonial_6MkfYm",
-        "testimonial_DhzCR3"
+        "testimonial_DhzCR3",
+        "testimonial_HkywaD"
       ],
       "custom_css": [
         ".testimonial {background-image: linear-gradient(transparent 90%, #25c293 100%); border-width: 1px; border-color: #231f25; background-color: transparent;}",
