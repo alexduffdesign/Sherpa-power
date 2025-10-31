@@ -92,7 +92,7 @@
         "item_HgEGjQ": {
           "type": "item",
           "settings": {
-            "title": "What’s the difference between AC and DC power (UK)?",
+            "title": "What’s the difference between AC and DC power?",
             "content": "<p>In the UK, <strong>AC (alternating current)</strong> is what comes from your mains sockets — typically <strong>230V AC</strong>. It’s ideal for powering household appliances.</p><p><strong>DC (direct current)</strong>, on the other hand, is the type of power stored in batteries and used by most electronics. Portable power stations often convert <strong>DC to AC</strong> so you can plug in standard UK devices safely.</p>"
           }
         }
