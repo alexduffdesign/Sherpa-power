@@ -85,8 +85,8 @@
         "item_fmPceT": {
           "type": "item",
           "settings": {
-            "title": "What’s the difference between mAh and kWh?",
-            "content": "<ul><li><strong>mAh (milliamp hours)</strong> measures electrical <strong>charge</strong> — how much current a battery can supply over time.<br/></li><li><strong>kWh (kilowatt hours)</strong> measures <strong>energy use or storage</strong> — how much total power can be delivered.<br/></li></ul><p>mAh is more common for <strong>small devices</strong> like phones or portable power banks, while kWh is used for <strong>larger systems</strong> such as home batteries, generators, and solar energy storage.</p>"
+            "title": "What’s the difference between Ah and kWh?",
+            "content": "<p><strong>The answer is more to do with the type of power you use. </strong></p><p><strong>DC power or battery power is usually better understood in Ah</strong></p><ul><li><strong>Ah (amp hours)</strong> measures electrical <strong>charge</strong> -how much current a battery can supply over a period of an hour.</li></ul><p>AC or mains power is measures in Watts and Watt hours</p><ul><li><strong>Wh (Watt hours)</strong> measures <strong>energy use or storage</strong> - how much total power can be delivered over a period of an hour.<br/></li></ul><p>mAh is more common for <strong>small devices</strong> like phones or portable power banks, while kWh is used for <strong>larger systems</strong> such as home batteries, generators, and solar energy storage.</p>"
           }
         },
         "item_HgEGjQ": {
