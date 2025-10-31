@@ -72,7 +72,7 @@
           "type": "item",
           "settings": {
             "title": "How do I convert Ah to Wh?",
-            "content": "<p>To convert <strong>Ah (amp hours)</strong> to <strong>Wh (Watt hours)</strong>, you need to know the voltage of your battery and the nominal voltage of that will be a little higher. For example, a 12V battery may have a nominal voltage of 12.5V. </p><p>Use this simple formula:</p><p><strong>Ah × V = Wh</strong><br/><br/>(For<strong> kWh, </strong>divide the Wh by 1,000)</p><p><strong>Example:</strong><br/><br/>A 125 Ah power bank at 12.5V →<br/><br/>125 × 12.5  = 1562.5 <strong>Wh</strong></p><p>So that portable power pack stores roughly <strong>1.5 kilowatt-hours</strong> of energy.</p>"
+            "content": "<p>To convert <strong>Ah (amp hours)</strong> to <strong>Wh (Watt hours)</strong>, you need to know the voltage of your battery and the nominal voltage of that will be a little higher. For example, a 12V battery may have a nominal voltage of 12.5V. </p><p>Use this simple formula:</p><p><strong>Ah × V = Wh</strong><br/><br/>(For<strong> kWh, </strong>divide the Wh by 1,000)</p><p><strong>Example:</strong><br/><br/>A 125 Ah power bank at 12.5V →<br/><br/>125 × 12.5  = <strong>1562.5</strong> <strong>Wh</strong></p><p>So that portable power pack stores roughly <strong>1.5 kilowatt-hours</strong> of energy.</p>"
           }
         },
         "item_EjRCWx": {
