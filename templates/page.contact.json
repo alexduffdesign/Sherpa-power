@@ -60,11 +60,11 @@
           "type": "item",
           "settings": {
             "column_size": "3",
-            "title": "support@sherpapower.co.uk",
+            "title": "Email",
             "heading_tag": "h5",
             "content": "",
-            "link_url": "",
-            "link_text": "",
+            "link_url": "mailto:support@sherpapower.co.uk",
+            "link_text": "support@sherpapower.co.uk",
             "link_style": "link"
           }
         },
@@ -75,7 +75,7 @@
             "title": "Phone : 02920 028 686",
             "heading_tag": "h5",
             "content": "",
-            "link_url": "",
+            "link_url": "tel:02920028686",
             "link_text": "",
             "link_style": "link"
           }
