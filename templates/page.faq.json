@@ -72,14 +72,14 @@
           "type": "item",
           "settings": {
             "title": "How do I convert Ah to Wh?",
-            "content": "<p>To convert <strong>Ah (amp hours)</strong> to <strong>Wh (kilowatt hours)</strong>, you need to know the voltage of your battery. Use this simple formula:</p><p><strong>Ah × V = Wh</strong><br/><br/>Then, <strong>Wh ÷ 1,000 = kWh</strong></p><p><strong>Example:</strong><br/><br/>A 125 Ah power bank at 12.5V →<br/><br/>125 × 12.5  = 1562.5 <strong>Wh</strong></p><p></p><p>So that portable power pack stores roughly <strong>0.24 kilowatt-hours</strong> of energy.</p>"
+            "content": "<p>To convert <strong>Ah (amp hours)</strong> to <strong>Wh (Watt hours)</strong>, you need to know the voltage of your battery and the nominal voltage of that will be a little higher. For example, a 12V battery may have a nominal voltage of 12.5V. </p><p>Use this simple formula:</p><p><strong>Ah × V = Wh</strong><br/><br/>(For<strong> kWh, </strong>divide the Wh by 1,000)</p><p><strong>Example:</strong><br/><br/>A 125 Ah power bank at 12.5V →<br/><br/>125 × 12.5  = 1562.5 <strong>Wh</strong></p><p>So that portable power pack stores roughly <strong>1.5 kilowatt-hours</strong> of energy.</p>"
           }
         },
         "item_EjRCWx": {
           "type": "item",
           "settings": {
             "title": "How do I convert kWh to mAh?",
-            "content": "<p>If you want to know how many milliamp hours equal a certain number of kilowatt hours, reverse the formula:</p><p><strong>kWh × 1,000,000 ÷ V = mAh</strong></p><p><strong>Example:</strong><br/><br/>A 1kWh battery at 12V →<br/><br/>1 × 1,000,000 ÷ 12 = <strong>83,333mAh</strong></p><p>That means a 1kWh system could theoretically hold around <strong>83,000mAh</strong> at 12 volts.</p>"
+            "content": "<p>If you want to know how many amp hours are equal a certain number of kilowatt hours, first find out the battery voltage. Again, this will be written as 12V but nominal voltages are a bit higher and 12.5 is a good average.</p><p><strong>Wh ÷ V = Ah</strong></p><p><strong>Example:</strong><br/><br/>A 2,000 Wh battery at 12.5V →<br/><br/>2,000 ÷ 12.5 = <strong>160Ah</strong></p><p>Or <strong>1.6 kWh</strong></p>"
           }
         },
         "item_fmPceT": {
