@@ -71,8 +71,8 @@
         "item_UNUaq9": {
           "type": "item",
           "settings": {
-            "title": "How do I convert mAh to kWh?",
-            "content": "<p>To convert <strong>mAh (milliamp hours)</strong> to <strong>kWh (kilowatt hours)</strong>, you need to know the voltage of your battery. Use this simple formula:</p><p><strong>mAh × V ÷ 1,000,000 = Wh</strong><br/><br/>Then, <strong>Wh ÷ 1,000 = kWh</strong></p><p><strong>Example:</strong><br/><br/>A 20,000mAh power bank at 12V →<br/><br/>20,000 × 12 ÷ 1,000,000 = <strong>0.24kWh</strong></p><p>So that portable power pack stores roughly <strong>0.24 kilowatt-hours</strong> of energy.</p>"
+            "title": "How do I convert Ah to Wh?",
+            "content": "<p>To convert <strong>Ah (amp hours)</strong> to <strong>Wh (kilowatt hours)</strong>, you need to know the voltage of your battery. Use this simple formula:</p><p><strong>Ah × V = Wh</strong><br/><br/>Then, <strong>Wh ÷ 1,000 = kWh</strong></p><p><strong>Example:</strong><br/><br/>A 125 Ah power bank at 12.5V →<br/><br/>125 × 12.5  = 1562.5 <strong>Wh</strong></p><p></p><p>So that portable power pack stores roughly <strong>0.24 kilowatt-hours</strong> of energy.</p>"
           }
         },
         "item_EjRCWx": {
