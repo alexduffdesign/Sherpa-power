@@ -65,7 +65,7 @@
             "content": "",
             "link_url": "mailto:support@sherpapower.co.uk",
             "link_text": "support@sherpapower.co.uk",
-            "link_style": "link"
+            "link_style": "button"
           }
         },
         "item_rTqBNR": {
@@ -77,7 +77,7 @@
             "content": "",
             "link_url": "tel:02920028686",
             "link_text": "02920 028 686",
-            "link_style": "link"
+            "link_style": "button"
           }
         },
         "item_xcbYzh": {
