@@ -78,7 +78,7 @@
         "item_EjRCWx": {
           "type": "item",
           "settings": {
-            "title": "How do I convert kWh to mAh?",
+            "title": "How do I convert Wh to Ah?",
             "content": "<p>If you want to know how many amp hours are equal a certain number of kilowatt hours, first find out the battery voltage. Again, this will be written as 12V but nominal voltages are a bit higher and 12.5 is a good average.</p><p><strong>Wh ÷ V = Ah</strong></p><p><strong>Example:</strong><br/><br/>A 2,000 Wh battery at 12.5V →<br/><br/>2,000 ÷ 12.5 = <strong>160 Ah</strong></p><p>Or <strong>1.6 kWh</strong></p>"
           }
         },
