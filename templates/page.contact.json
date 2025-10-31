@@ -72,11 +72,11 @@
           "type": "item",
           "settings": {
             "column_size": "3",
-            "title": "Phone : 02920 028 686",
+            "title": "Phone",
             "heading_tag": "h5",
             "content": "",
             "link_url": "tel:02920028686",
-            "link_text": "",
+            "link_text": "02920 028 686",
             "link_style": "link"
           }
         },
