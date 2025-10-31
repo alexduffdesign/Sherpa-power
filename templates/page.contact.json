@@ -84,9 +84,9 @@
           "type": "item",
           "settings": {
             "column_size": "3",
-            "title": "AI: Our Sherpa Guide can help with product run time calculations & technical queries 24h a day",
+            "title": "AI:",
             "heading_tag": "h5",
-            "content": "",
+            "content": "<h5>Our Sherpa Guide can help with product run time calculations & technical queries 24h a day</h5>",
             "link_url": "",
             "link_text": "",
             "link_style": "link"
