@@ -38,6 +38,7 @@
         "enable_parallax": false,
         "image_size": "sm",
         "image": "shopify://shop_images/Hero_Image_Showing_The_Range.jpg",
+        "enable_clouds": false,
         "mobile_text_position": "place-self-center text-center",
         "desktop_text_position": "sm:place-self-center sm:text-center",
         "text_color": "#ffffff",
@@ -83,7 +84,7 @@
           "type": "item",
           "settings": {
             "column_size": "3",
-            "title": "AI: Our Sherpa Guide is designed to help with product related questions and run times 24h a day",
+            "title": "AI: Our Sherpa Guide can help with product run time calculations & technical queries 24h a day",
             "heading_tag": "h5",
             "content": "",
             "link_url": "",
