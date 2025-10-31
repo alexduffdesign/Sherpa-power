@@ -78,8 +78,8 @@
         "item_EjRCWx": {
           "type": "item",
           "settings": {
-            "title": "How do I convert kWh to mAh?",
-            "content": "<p>If you want to know how many milliamp hours equal a certain number of kilowatt hours, reverse the formula:</p><p><strong>kWh × 1,000,000 ÷ V = mAh</strong></p><p><strong>Example:</strong><br/><br/>A 1kWh battery at 12V →<br/><br/>1 × 1,000,000 ÷ 12 = <strong>83,333mAh</strong></p><p>That means a 1kWh system could theoretically hold around <strong>83,000mAh</strong> at 12 volts.</p>"
+            "title": "How do I convert kWh to Ah?",
+            "content": "<p>If you want to know how many milliamp hours equal a certain number of kilowatt hours, reverse the formula:</p><p><strong>kWh × 1,000,000 ÷ V = Ah</strong></p><p><strong>Example:</strong><br/><br/>A 1kWh battery at 12V →<br/><br/>1 × 1,000,000 ÷ 12 = <strong>83,333mAh</strong></p><p>That means a 1kWh system could theoretically hold around <strong>83,000Ah</strong> at 12 volts.</p>"
           }
         },
         "item_fmPceT": {
