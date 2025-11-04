@@ -28,7 +28,7 @@
           "type": "heading",
           "settings": {
             "text": "Which Range Is Right For You?",
-            "heading_tag": "h1",
+            "heading_tag": "h2",
             "text_color": "",
             "gradient": ""
           }
