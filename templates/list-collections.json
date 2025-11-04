@@ -72,6 +72,7 @@
         "item_DddUrh": {
           "type": "item",
           "settings": {
+            "image": "shopify://shop_images/Base_Range.jpg",
             "column_size": "3",
             "title": "BASE",
             "heading_tag": "h4",
