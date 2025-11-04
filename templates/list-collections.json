@@ -47,7 +47,7 @@
       "settings": {
         "full_width": true,
         "content_width": "large",
-        "text_position": "start",
+        "text_position": "center",
         "background": "",
         "background_gradient": "",
         "text_color": ""
