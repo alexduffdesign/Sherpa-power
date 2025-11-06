@@ -182,6 +182,7 @@
       "blocks": {
         "228a2e16-64aa-4ed7-a7f6-8a72d86cff2f": {
           "type": "shopify://apps/yotpo-product-reviews/blocks/reviews/eb7dfd7d-db44-4334-bc49-c893b51b36cf",
+          "disabled": true,
           "settings": {
             "product": "{{product}}"
           }
