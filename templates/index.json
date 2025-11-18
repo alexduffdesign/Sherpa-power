@@ -444,8 +444,8 @@
         "video_7fdkbP": {
           "type": "video",
           "settings": {
-            "video": "shopify://files/videos/sherpa-video-3.mp4",
-            "external_video_url": "https://www.youtube.com/watch?v=_9VUPq3SxOc",
+            "video": "shopify://files/videos/Capture-Store-Use-Energy.mp4",
+            "external_video_url": "",
             "autoplay": true,
             "media_width": 60,
             "media_position": "start",
@@ -468,7 +468,7 @@
             "rive_artboard": "",
             "rive_autoplay": true,
             "rive_play_when_in_view": true,
-            "content_background_opacity": 40
+            "content_background_opacity": 38
           }
         }
       },
