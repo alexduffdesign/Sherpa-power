@@ -447,7 +447,7 @@
             "video": "shopify://files/videos/Capture-Store-Use-Energy.mp4",
             "external_video_url": "",
             "autoplay": true,
-            "media_width": 70,
+            "media_width": 60,
             "media_position": "start",
             "text_position": "place-self-center-start text-start",
             "icon": "none",
