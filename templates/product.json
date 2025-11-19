@@ -263,6 +263,128 @@
         "heading_gradient": ""
       }
     },
+    "feature_chart_yKTc8E": {
+      "type": "feature-chart",
+      "blocks": {
+        "headings_6faDY8": {
+          "type": "headings",
+          "settings": {
+            "heading_1": "Battery",
+            "heading_2": "Output (AC)",
+            "heading_3": "Output (DC)",
+            "heading_4": "Input (AC)",
+            "heading_5": "Input (Solar / DC)",
+            "heading_6": "Charge time",
+            "heading_7": "Warranty",
+            "heading_8": "Weight",
+            "heading_9": "App compatible",
+            "heading_10": "Expandable capacity",
+            "heading_11": "",
+            "heading_12": "",
+            "heading_13": "",
+            "heading_14": "",
+            "heading_15": "",
+            "heading_16": "",
+            "heading_17": "",
+            "heading_18": "",
+            "heading_19": "",
+            "heading_20": ""
+          }
+        },
+        "values_gzBQxp": {
+          "type": "values",
+          "source": "{{ product.metafields.custom.key_features.value }}",
+          "settings": {
+            "product": "{{ product }}",
+            "value_1": "<p>{{ block.settings.product.metafields.custom.key_features.value.battery | metafield_tag }}</p>",
+            "value_2": "<p>{{ block.settings.product.metafields.custom.key_features.value.output_ac | metafield_tag }}</p>",
+            "value_3": "<p>{{ block.settings.product.metafields.custom.key_features.value.output_dc | metafield_tag }}</p>",
+            "value_4": "<p>{{ block.settings.product.metafields.custom.key_features.value.input_ac | metafield_tag }}</p>",
+            "value_5": "<p>{{ block.settings.product.metafields.custom.key_features.value.input_solar_dc | metafield_tag }}</p>",
+            "value_6": "<p>{{ block.settings.product.metafields.custom.key_features.value.charge_time | metafield_tag }}</p>",
+            "value_7": "<p>{{ block.settings.product.metafields.custom.key_features.value.warranty | metafield_tag }}</p>",
+            "value_8": "<p>{{ block.settings.product.metafields.custom.key_features.value.weight | metafield_tag }}</p>",
+            "value_9": "<p>{{ block.settings.product.metafields.custom.key_features.value.app_compatible | metafield_tag }}</p>",
+            "value_10": "<p>{{ block.settings.product.metafields.custom.key_features.value.expandable_capacity | metafield_tag }}</p>",
+            "value_11": "",
+            "value_12": "",
+            "value_13": "",
+            "value_14": "",
+            "value_15": "",
+            "value_16": "",
+            "value_17": "",
+            "value_18": "",
+            "value_19": "",
+            "value_20": "",
+            "view_button_background": "",
+            "view_button_text_color": ""
+          }
+        },
+        "values_eqrHba": {
+          "type": "values",
+          "repeater": "{{ product.metafields.custom.compare_key_features.value }}",
+          "settings": {
+            "product": "{{ block.repeater.product_select.value }}",
+            "value_1": "<p>{{ block.settings.product.metafields.custom.key_features.value.battery | metafield_tag }}</p>",
+            "value_2": "<p>{{ block.settings.product.metafields.custom.key_features.value.output_ac | metafield_tag }}</p>",
+            "value_3": "<p>{{ block.settings.product.metafields.custom.key_features.value.output_dc | metafield_tag }}</p>",
+            "value_4": "<p>{{ block.settings.product.metafields.custom.key_features.value.input_ac | metafield_tag }}</p>",
+            "value_5": "<p>{{ block.settings.product.metafields.custom.key_features.value.input_solar_dc | metafield_tag }}</p>",
+            "value_6": "<p>{{ block.settings.product.metafields.custom.key_features.value.charge_time | metafield_tag }}</p>",
+            "value_7": "<p>{{ block.settings.product.metafields.custom.key_features.value.warranty | metafield_tag }}</p>",
+            "value_8": "<p>{{ block.settings.product.metafields.custom.key_features.value.weight | metafield_tag }}</p>",
+            "value_9": "<p>{{ block.settings.product.metafields.custom.key_features.value.app_compatible | metafield_tag }}</p>",
+            "value_10": "<p>{{ block.settings.product.metafields.custom.key_features.value.expandable_capacity | metafield_tag }}</p>",
+            "value_11": "",
+            "value_12": "",
+            "value_13": "",
+            "value_14": "",
+            "value_15": "",
+            "value_16": "",
+            "value_17": "",
+            "value_18": "",
+            "value_19": "",
+            "value_20": "",
+            "view_button_background": "",
+            "view_button_text_color": ""
+          }
+        }
+      },
+      "block_order": [
+        "headings_6faDY8",
+        "values_gzBQxp",
+        "values_eqrHba"
+      ],
+      "custom_css": [
+        ".section-full {background-image: url(\"https://cdn.shopify.com/s/files/1/0641/4290/1439/files/Green_Pattern.jpg?v=1712336884\"); background-size: cover;}",
+        ".feature-chart {border-color: #4848482e; border-width: 1px;}"
+      ],
+      "settings": {
+        "full_width": true,
+        "subheading": "",
+        "title": "Product Comparison",
+        "content": "",
+        "button_text": "",
+        "button_url": "",
+        "text_position": "start",
+        "max_rows": 5,
+        "view_all_text": "View all",
+        "view_less_text": "View less",
+        "view_product": "View",
+        "viewing_product": "",
+        "show_product_swatch": true,
+        "background": "#e1f1ec",
+        "background_gradient": "",
+        "text_color": "#231f25",
+        "heading_color": "",
+        "heading_gradient": "linear-gradient(180deg, rgba(35, 31, 37, 1) 55%, rgba(28, 160, 121, 1) 82%)",
+        "button_background": "",
+        "button_text_color": "",
+        "chart_background": "#ffffff",
+        "chart_text_color": "",
+        "chart_true_false_color": ""
+      }
+    },
     "multi_column_rmUzKh": {
       "type": "multi-column",
       "blocks": {
@@ -423,128 +545,6 @@
       "settings": {
         "full_width": false,
         "spacing": "large"
-      }
-    },
-    "feature_chart_yKTc8E": {
-      "type": "feature-chart",
-      "blocks": {
-        "headings_6faDY8": {
-          "type": "headings",
-          "settings": {
-            "heading_1": "Battery",
-            "heading_2": "Output (AC)",
-            "heading_3": "Output (DC)",
-            "heading_4": "Input (AC)",
-            "heading_5": "Input (Solar / DC)",
-            "heading_6": "Charge time",
-            "heading_7": "Warranty",
-            "heading_8": "Weight",
-            "heading_9": "App compatible",
-            "heading_10": "Expandable capacity",
-            "heading_11": "",
-            "heading_12": "",
-            "heading_13": "",
-            "heading_14": "",
-            "heading_15": "",
-            "heading_16": "",
-            "heading_17": "",
-            "heading_18": "",
-            "heading_19": "",
-            "heading_20": ""
-          }
-        },
-        "values_gzBQxp": {
-          "type": "values",
-          "source": "{{ product.metafields.custom.key_features.value }}",
-          "settings": {
-            "product": "{{ product }}",
-            "value_1": "<p>{{ block.settings.product.metafields.custom.key_features.value.battery | metafield_tag }}</p>",
-            "value_2": "<p>{{ block.settings.product.metafields.custom.key_features.value.output_ac | metafield_tag }}</p>",
-            "value_3": "<p>{{ block.settings.product.metafields.custom.key_features.value.output_dc | metafield_tag }}</p>",
-            "value_4": "<p>{{ block.settings.product.metafields.custom.key_features.value.input_ac | metafield_tag }}</p>",
-            "value_5": "<p>{{ block.settings.product.metafields.custom.key_features.value.input_solar_dc | metafield_tag }}</p>",
-            "value_6": "<p>{{ block.settings.product.metafields.custom.key_features.value.charge_time | metafield_tag }}</p>",
-            "value_7": "<p>{{ block.settings.product.metafields.custom.key_features.value.warranty | metafield_tag }}</p>",
-            "value_8": "<p>{{ block.settings.product.metafields.custom.key_features.value.weight | metafield_tag }}</p>",
-            "value_9": "<p>{{ block.settings.product.metafields.custom.key_features.value.app_compatible | metafield_tag }}</p>",
-            "value_10": "<p>{{ block.settings.product.metafields.custom.key_features.value.expandable_capacity | metafield_tag }}</p>",
-            "value_11": "",
-            "value_12": "",
-            "value_13": "",
-            "value_14": "",
-            "value_15": "",
-            "value_16": "",
-            "value_17": "",
-            "value_18": "",
-            "value_19": "",
-            "value_20": "",
-            "view_button_background": "",
-            "view_button_text_color": ""
-          }
-        },
-        "values_eqrHba": {
-          "type": "values",
-          "repeater": "{{ product.metafields.custom.compare_key_features.value }}",
-          "settings": {
-            "product": "{{ block.repeater.product_select.value }}",
-            "value_1": "<p>{{ block.settings.product.metafields.custom.key_features.value.battery | metafield_tag }}</p>",
-            "value_2": "<p>{{ block.settings.product.metafields.custom.key_features.value.output_ac | metafield_tag }}</p>",
-            "value_3": "<p>{{ block.settings.product.metafields.custom.key_features.value.output_dc | metafield_tag }}</p>",
-            "value_4": "<p>{{ block.settings.product.metafields.custom.key_features.value.input_ac | metafield_tag }}</p>",
-            "value_5": "<p>{{ block.settings.product.metafields.custom.key_features.value.input_solar_dc | metafield_tag }}</p>",
-            "value_6": "<p>{{ block.settings.product.metafields.custom.key_features.value.charge_time | metafield_tag }}</p>",
-            "value_7": "<p>{{ block.settings.product.metafields.custom.key_features.value.warranty | metafield_tag }}</p>",
-            "value_8": "<p>{{ block.settings.product.metafields.custom.key_features.value.weight | metafield_tag }}</p>",
-            "value_9": "<p>{{ block.settings.product.metafields.custom.key_features.value.app_compatible | metafield_tag }}</p>",
-            "value_10": "<p>{{ block.settings.product.metafields.custom.key_features.value.expandable_capacity | metafield_tag }}</p>",
-            "value_11": "",
-            "value_12": "",
-            "value_13": "",
-            "value_14": "",
-            "value_15": "",
-            "value_16": "",
-            "value_17": "",
-            "value_18": "",
-            "value_19": "",
-            "value_20": "",
-            "view_button_background": "",
-            "view_button_text_color": ""
-          }
-        }
-      },
-      "block_order": [
-        "headings_6faDY8",
-        "values_gzBQxp",
-        "values_eqrHba"
-      ],
-      "custom_css": [
-        ".section-full {background-image: url(\"https://cdn.shopify.com/s/files/1/0641/4290/1439/files/Green_Pattern.jpg?v=1712336884\"); background-size: cover;}",
-        ".feature-chart {border-color: #4848482e; border-width: 1px;}"
-      ],
-      "settings": {
-        "full_width": true,
-        "subheading": "",
-        "title": "Product Comparison",
-        "content": "",
-        "button_text": "",
-        "button_url": "",
-        "text_position": "start",
-        "max_rows": 5,
-        "view_all_text": "View all",
-        "view_less_text": "View less",
-        "view_product": "View",
-        "viewing_product": "",
-        "show_product_swatch": true,
-        "background": "#e1f1ec",
-        "background_gradient": "",
-        "text_color": "#231f25",
-        "heading_color": "",
-        "heading_gradient": "linear-gradient(180deg, rgba(35, 31, 37, 1) 55%, rgba(28, 160, 121, 1) 82%)",
-        "button_background": "",
-        "button_text_color": "",
-        "chart_background": "#ffffff",
-        "chart_text_color": "",
-        "chart_true_false_color": ""
       }
     },
     "images_with_text_scrolling_JL4rre": {
@@ -753,11 +753,11 @@
     "5a02f3f3c8e3898120e0",
     "e5f4ad7ea4390a27b68e",
     "tabs_PEEk4b",
+    "feature_chart_yKTc8E",
     "multi_column_rmUzKh",
+    "media_with_text_DRJHR3",
     "slideshow_YPY7JE",
     "applications_HCb8JU",
-    "media_with_text_DRJHR3",
-    "feature_chart_yKTc8E",
     "images_with_text_scrolling_JL4rre",
     "multi_column_GP6kWa",
     "faq_jb7QW4"
