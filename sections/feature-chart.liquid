@@ -199,14 +199,13 @@ LIQUID
                   {%- if values_blocks[i] != blank -%}
                     {%- assign value = values_blocks[i].settings[value_key] -%}
                     {%- assign stripped_value = value | strip_html | strip -%}
-                    {%- assign check_value = stripped_value | upcase | strip -%}
 
                     <div class="feature-chart__value prose text-subdued" {% if outputted_count == 0 %}{{ values_blocks[i].shopify_attributes }}{% endif %}>
-                      {%- if check_value == 'FALSE' or check_value == 'NO' or check_value == '0' -%}
+                      {%- if stripped_value == 'FALSE' -%}
                         <svg fill="none" class="icon offset-icon" width="16" height="16" viewBox="0 0 16 16" style="--icon-height: 16px">
                           <path d="m.94 3.06 12 12 2.12-2.12-12-12L.94 3.06Zm2.12 12 12-12L12.94.94l-12 12 2.12 2.12Z" fill="{{ section.settings.chart_true_false_color | default: section.settings.chart_text_color | default: settings.text_color }}"></path>
                         </svg>
-                      {%- elsif check_value == 'TRUE' or check_value == 'YES' or check_value == '1' -%}
+                      {%- elsif stripped_value == 'TRUE' -%}
                         <svg fill="none" class="icon offset-icon" width="20" height="16" viewBox="0 0 20 16" style="--icon-height: 16px">
                           <path d="m2 7.6 5.259 5.6L18 2" stroke="{{ section.settings.chart_true_false_color | default: section.settings.chart_text_color | default: settings.text_color }}" stroke-width="3"></path>
                         </svg>
