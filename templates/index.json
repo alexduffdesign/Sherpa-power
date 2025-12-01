@@ -661,6 +661,7 @@
     },
     "custom_html_qeGAV7": {
       "type": "custom-html",
+      "disabled": true,
       "name": "Custom HTML",
       "settings": {
         "full_width": true,
@@ -727,7 +728,6 @@
         "testimonial_HkywaD",
         "testimonial_HaHLJC"
       ],
-      "disabled": true,
       "custom_css": [
         ".testimonial {background-image: linear-gradient(transparent 90%, #25c293 100%); border-width: 1px; border-color: #231f25; background-color: transparent;}",
         ".section-full {padding-bottom: 0rem;}"
