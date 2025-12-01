@@ -659,6 +659,19 @@
         "text_color": ""
       }
     },
+    "custom_html_qeGAV7": {
+      "type": "custom-html",
+      "name": "Custom HTML",
+      "settings": {
+        "full_width": true,
+        "remove_vertical_spacing": false,
+        "remove_horizontal_spacing": false,
+        "html": "<!-- Elfsight Google Reviews | Untitled Google Reviews -->\n<script src=\"https://elfsightcdn.com/platform.js\" async=\"\"></script>\n<div class=\"elfsight-app-7af739f8-6e63-4e38-9531-aac3c97396e3\" data-elfsight-app-lazy=\"\"></div>",
+        "background": "#ebebeb",
+        "background_gradient": "",
+        "text_color": ""
+      }
+    },
     "testimonials_yFBQm8": {
       "type": "testimonials",
       "blocks": {
@@ -714,6 +727,7 @@
         "testimonial_HkywaD",
         "testimonial_HaHLJC"
       ],
+      "disabled": true,
       "custom_css": [
         ".testimonial {background-image: linear-gradient(transparent 90%, #25c293 100%); border-width: 1px; border-color: #231f25; background-color: transparent;}",
         ".section-full {padding-bottom: 0rem;}"
@@ -1184,20 +1198,6 @@
         "heading_color": "",
         "heading_gradient": "linear-gradient(180deg, rgba(35, 31, 37, 1) 55%, rgba(28, 160, 121, 1) 82%)"
       }
-    },
-    "custom_html_qeGAV7": {
-      "type": "custom-html",
-      "disabled": true,
-      "name": "Custom HTML",
-      "settings": {
-        "full_width": true,
-        "remove_vertical_spacing": false,
-        "remove_horizontal_spacing": false,
-        "html": "<!-- Elfsight Google Reviews | Untitled Google Reviews -->\n<script src=\"https://elfsightcdn.com/platform.js\" async=\"\"></script>\n<div class=\"elfsight-app-7af739f8-6e63-4e38-9531-aac3c97396e3\" data-elfsight-app-lazy=\"\"></div>",
-        "background": "",
-        "background_gradient": "",
-        "text_color": ""
-      }
     }
   },
   "order": [
@@ -1213,6 +1213,7 @@
     "media_with_text_9aYmQG",
     "text_with_icons_MeKcXe",
     "text_with_icons_G8zt7p",
+    "custom_html_qeGAV7",
     "testimonials_yFBQm8",
     "17604464902b6fca69",
     "text_with_icons_HzqCqj",
@@ -1221,7 +1222,6 @@
     "image_with_text_overlay_zzgdjL",
     "image_with_text_overlay_RwjfPp",
     "image_with_text_overlay_DzeKnT",
-    "blog_posts_fRtbAP",
-    "custom_html_qeGAV7"
+    "blog_posts_fRtbAP"
   ]
 }
