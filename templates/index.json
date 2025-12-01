@@ -1184,6 +1184,20 @@
         "heading_color": "",
         "heading_gradient": "linear-gradient(180deg, rgba(35, 31, 37, 1) 55%, rgba(28, 160, 121, 1) 82%)"
       }
+    },
+    "custom_html_qeGAV7": {
+      "type": "custom-html",
+      "disabled": true,
+      "name": "Custom HTML",
+      "settings": {
+        "full_width": true,
+        "remove_vertical_spacing": false,
+        "remove_horizontal_spacing": false,
+        "html": "<!-- Elfsight Google Reviews | Untitled Google Reviews -->\n<script src=\"https://elfsightcdn.com/platform.js\" async=\"\"></script>\n<div class=\"elfsight-app-7af739f8-6e63-4e38-9531-aac3c97396e3\" data-elfsight-app-lazy=\"\"></div>",
+        "background": "",
+        "background_gradient": "",
+        "text_color": ""
+      }
     }
   },
   "order": [
@@ -1207,6 +1221,7 @@
     "image_with_text_overlay_zzgdjL",
     "image_with_text_overlay_RwjfPp",
     "image_with_text_overlay_DzeKnT",
-    "blog_posts_fRtbAP"
+    "blog_posts_fRtbAP",
+    "custom_html_qeGAV7"
   ]
 }
