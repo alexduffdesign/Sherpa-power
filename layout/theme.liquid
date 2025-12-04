@@ -162,6 +162,32 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
     {% section 'chatbot-drawer' %}
 
+    <script>
+// Hide Elfsight branding
+(function() {
+  function hideElfsightBranding() {
+    const links = document.querySelectorAll('a[href*="elfsight.com/google-reviews-widget"]');
+    links.forEach(link => {
+      link.style.setProperty('display', 'none', 'important');
+      link.style.setProperty('visibility', 'hidden', 'important');
+      link.style.setProperty('opacity', '0', 'important');
+      link.style.setProperty('height', '0', 'important');
+    });
+  }
+  
+  // Run immediately
+  hideElfsightBranding();
+  
+  // Run after widget loads
+  setTimeout(hideElfsightBranding, 1000);
+  setTimeout(hideElfsightBranding, 2000);
+  
+  // Watch for changes
+  const observer = new MutationObserver(hideElfsightBranding);
+  observer.observe(document.body, { childList: true, subtree: true });
+})();
+</script>
+
   </body>
   <!-- Google Tag Manager (noscript) -->
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WX7FVQP8"
