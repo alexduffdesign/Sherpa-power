@@ -234,6 +234,7 @@
         },
         "yotpo_product_reviews_ugc_reviews_hXY66T": {
           "type": "shopify://apps/yotpo-product-reviews/blocks/reviews/eb7dfd7d-db44-4334-bc49-c893b51b36cf",
+          "disabled": true,
           "settings": {
             "product": "{{ product }}"
           }
@@ -261,6 +262,19 @@
         "text_color": "",
         "heading_color": "",
         "heading_gradient": ""
+      }
+    },
+    "custom_html_fhiTiP": {
+      "type": "custom-html",
+      "name": "Custom HTML",
+      "settings": {
+        "full_width": true,
+        "remove_vertical_spacing": false,
+        "remove_horizontal_spacing": false,
+        "html": "<!-- Elfsight Google Reviews | Untitled Google Reviews -->\n<script src=\"https://elfsightcdn.com/platform.js\" async=\"\"></script>\n<div class=\"elfsight-app-7af739f8-6e63-4e38-9531-aac3c97396e3\" data-elfsight-app-lazy=\"\"></div>",
+        "background": "",
+        "background_gradient": "",
+        "text_color": ""
       }
     },
     "feature_chart_yKTc8E": {
@@ -419,6 +433,53 @@
         "text_color": ""
       }
     },
+    "media_with_text_DRJHR3": {
+      "type": "media-with-text",
+      "blocks": {
+        "image_iRBGcB": {
+          "type": "image",
+          "repeater": "{{ product.metafields.custom.features.value }}",
+          "settings": {
+            "image": "{{ block.repeater.image_desktop.value }}",
+            "media_width": 45,
+            "media_position": "end",
+            "text_position": "place-self-center-start text-start",
+            "icon": "none",
+            "icon_width": 48,
+            "subheading": "",
+            "title": "{{ block.repeater.heading.value }}",
+            "content": "<p>{{ block.repeater.paragraph | metafield_tag }}</p>",
+            "link_text": "",
+            "link_url": "",
+            "background": "#f7f7f7",
+            "background_gradient": "",
+            "text_color": "#3f4345",
+            "text_gradient": "",
+            "button_background": "",
+            "button_text_color": "",
+            "rive_src": "",
+            "rive_state_machines": "",
+            "rive_artboard": "",
+            "rive_autoplay": true,
+            "rive_play_when_in_view": true,
+            "content_background_opacity": 40
+          }
+        }
+      },
+      "block_order": [
+        "image_iRBGcB"
+      ],
+      "custom_css": [
+        ".media-with-text__media > * {object-fit: contain;}",
+        "@media screen and (max 767px) {.prose {text-align: center; }}",
+        ".media-with-text {grid-gap: 4rem;}",
+        "@media screen and (min-width: 767px) {.media-with-text__item {padding: 4.5rem; } .media-with-text__content {padding-left: 0rem; padding-right: 4rem; }}"
+      ],
+      "settings": {
+        "full_width": false,
+        "spacing": "large"
+      }
+    },
     "slideshow_YPY7JE": {
       "type": "slideshow",
       "blocks": {
@@ -498,53 +559,6 @@
         "calculator_title": "Find Out How Long You Can Power Your Appliance",
         "calculator_subtitle": "For best results be specific on your item e.g Macbook 15inch 2023",
         "is_section_chatbot": true
-      }
-    },
-    "media_with_text_DRJHR3": {
-      "type": "media-with-text",
-      "blocks": {
-        "image_iRBGcB": {
-          "type": "image",
-          "repeater": "{{ product.metafields.custom.features.value }}",
-          "settings": {
-            "image": "{{ block.repeater.image_desktop.value }}",
-            "media_width": 45,
-            "media_position": "end",
-            "text_position": "place-self-center-start text-start",
-            "icon": "none",
-            "icon_width": 48,
-            "subheading": "",
-            "title": "{{ block.repeater.heading.value }}",
-            "content": "<p>{{ block.repeater.paragraph | metafield_tag }}</p>",
-            "link_text": "",
-            "link_url": "",
-            "background": "#f7f7f7",
-            "background_gradient": "",
-            "text_color": "#3f4345",
-            "text_gradient": "",
-            "button_background": "",
-            "button_text_color": "",
-            "rive_src": "",
-            "rive_state_machines": "",
-            "rive_artboard": "",
-            "rive_autoplay": true,
-            "rive_play_when_in_view": true,
-            "content_background_opacity": 40
-          }
-        }
-      },
-      "block_order": [
-        "image_iRBGcB"
-      ],
-      "custom_css": [
-        ".media-with-text__media > * {object-fit: contain;}",
-        "@media screen and (max 767px) {.prose {text-align: center; }}",
-        ".media-with-text {grid-gap: 4rem;}",
-        "@media screen and (min-width: 767px) {.media-with-text__item {padding: 4.5rem; } .media-with-text__content {padding-left: 0rem; padding-right: 4rem; }}"
-      ],
-      "settings": {
-        "full_width": false,
-        "spacing": "large"
       }
     },
     "images_with_text_scrolling_JL4rre": {
@@ -753,6 +767,7 @@
     "5a02f3f3c8e3898120e0",
     "e5f4ad7ea4390a27b68e",
     "tabs_PEEk4b",
+    "custom_html_fhiTiP",
     "feature_chart_yKTc8E",
     "multi_column_rmUzKh",
     "media_with_text_DRJHR3",
