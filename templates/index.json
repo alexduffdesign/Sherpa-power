@@ -661,7 +661,6 @@
     },
     "custom_html_qeGAV7": {
       "type": "custom-html",
-      "disabled": true,
       "name": "Custom HTML",
       "settings": {
         "full_width": true,
