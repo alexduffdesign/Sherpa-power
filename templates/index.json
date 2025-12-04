@@ -661,6 +661,9 @@
     },
     "custom_html_qeGAV7": {
       "type": "custom-html",
+      "custom_css": [
+        "css/* Hide Elfsight branding */.elfsight-app-7af739f8-6e63-4e38-9531-aac3c97396e3 a[href*=\"elfsight\"] {display: none !important;}"
+      ],
       "name": "Custom HTML",
       "settings": {
         "full_width": true,
