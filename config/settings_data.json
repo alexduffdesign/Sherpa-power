@@ -127,6 +127,23 @@
         "type": "shopify://apps/s-store-locator/blocks/embed-app/e7003487-cc51-4321-9488-2c47c07a5b17",
         "disabled": true,
         "settings": {}
+      },
+      "12258922384453542286": {
+        "type": "shopify://apps/inflate/blocks/inflate-embed/019977a2-174c-7149-b89e-00f33673b79f",
+        "disabled": false,
+        "settings": {}
+      },
+      "17776213695176358135": {
+        "type": "shopify://apps/inflate/blocks/inflate-stars-override/019977a2-174c-7149-b89e-00f33673b79f",
+        "disabled": false,
+        "settings": {
+          "star_size": "md"
+        }
+      },
+      "7037249188487500088": {
+        "type": "shopify://apps/inflate/blocks/inflate-sidebar/019977a2-174c-7149-b89e-00f33673b79f",
+        "disabled": false,
+        "settings": {}
       }
     }
   },
