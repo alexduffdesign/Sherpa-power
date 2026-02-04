@@ -11,6 +11,26 @@
   "type": "footer",
   "name": "Footer group",
   "sections": {
+    "177020402493c2cae1": {
+      "type": "apps",
+      "blocks": {
+        "inflate_inflate_footer_badge_krQRqW": {
+          "type": "shopify://apps/inflate/blocks/inflate-footer-badge/019977a2-174c-7149-b89e-00f33673b79f",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "inflate_inflate_footer_badge_krQRqW"
+      ],
+      "settings": {
+        "full_width": true,
+        "remove_vertical_spacing": false,
+        "remove_horizontal_spacing": false,
+        "background": "",
+        "background_gradient": "",
+        "text_color": ""
+      }
+    },
     "footer": {
       "type": "footer",
       "blocks": {
@@ -72,6 +92,7 @@
     }
   },
   "order": [
+    "177020402493c2cae1",
     "footer"
   ]
 }
