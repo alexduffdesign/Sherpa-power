@@ -678,6 +678,7 @@
       "blocks": {
         "testimonial_6MkfYm": {
           "type": "testimonial",
+          "disabled": true,
           "settings": {
             "image": "shopify://shop_images/6_63b4d533-7516-46ad-912f-d6cacb38b36c.jpg",
             "round_avatar": true,
@@ -690,6 +691,7 @@
         },
         "testimonial_DhzCR3": {
           "type": "testimonial",
+          "disabled": true,
           "settings": {
             "round_avatar": true,
             "show_rating": true,
@@ -701,6 +703,7 @@
         },
         "testimonial_HkywaD": {
           "type": "testimonial",
+          "disabled": true,
           "settings": {
             "round_avatar": true,
             "show_rating": true,
@@ -712,6 +715,7 @@
         },
         "testimonial_HaHLJC": {
           "type": "testimonial",
+          "disabled": true,
           "settings": {
             "round_avatar": true,
             "show_rating": true,
@@ -728,6 +732,7 @@
         "testimonial_HkywaD",
         "testimonial_HaHLJC"
       ],
+      "disabled": true,
       "custom_css": [
         ".testimonial {background-image: linear-gradient(transparent 90%, #25c293 100%); border-width: 1px; border-color: #231f25; background-color: transparent;}",
         ".section-full {padding-bottom: 0rem;}"
@@ -1198,6 +1203,26 @@
         "heading_color": "",
         "heading_gradient": "linear-gradient(180deg, rgba(35, 31, 37, 1) 55%, rgba(28, 160, 121, 1) 82%)"
       }
+    },
+    "177020384295ec2499": {
+      "type": "apps",
+      "blocks": {
+        "inflate_inflate_grid_N9zMY4": {
+          "type": "shopify://apps/inflate/blocks/inflate-grid/019977a2-174c-7149-b89e-00f33673b79f",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "inflate_inflate_grid_N9zMY4"
+      ],
+      "settings": {
+        "full_width": true,
+        "remove_vertical_spacing": false,
+        "remove_horizontal_spacing": false,
+        "background": "",
+        "background_gradient": "",
+        "text_color": ""
+      }
     }
   },
   "order": [
@@ -1213,6 +1238,7 @@
     "media_with_text_9aYmQG",
     "text_with_icons_MeKcXe",
     "text_with_icons_G8zt7p",
+    "177020384295ec2499",
     "custom_html_qeGAV7",
     "testimonials_yFBQm8",
     "17604464902b6fca69",
