@@ -659,8 +659,29 @@
         "text_color": ""
       }
     },
+    "177020384295ec2499": {
+      "type": "apps",
+      "blocks": {
+        "inflate_inflate_grid_N9zMY4": {
+          "type": "shopify://apps/inflate/blocks/inflate-grid/019977a2-174c-7149-b89e-00f33673b79f",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "inflate_inflate_grid_N9zMY4"
+      ],
+      "settings": {
+        "full_width": true,
+        "remove_vertical_spacing": false,
+        "remove_horizontal_spacing": false,
+        "background": "",
+        "background_gradient": "",
+        "text_color": ""
+      }
+    },
     "custom_html_qeGAV7": {
       "type": "custom-html",
+      "disabled": true,
       "custom_css": [],
       "name": "Custom HTML",
       "settings": {
@@ -1202,26 +1223,6 @@
         "text_color": "",
         "heading_color": "",
         "heading_gradient": "linear-gradient(180deg, rgba(35, 31, 37, 1) 55%, rgba(28, 160, 121, 1) 82%)"
-      }
-    },
-    "177020384295ec2499": {
-      "type": "apps",
-      "blocks": {
-        "inflate_inflate_grid_N9zMY4": {
-          "type": "shopify://apps/inflate/blocks/inflate-grid/019977a2-174c-7149-b89e-00f33673b79f",
-          "settings": {}
-        }
-      },
-      "block_order": [
-        "inflate_inflate_grid_N9zMY4"
-      ],
-      "settings": {
-        "full_width": true,
-        "remove_vertical_spacing": false,
-        "remove_horizontal_spacing": false,
-        "background": "",
-        "background_gradient": "",
-        "text_color": ""
       }
     }
   },
