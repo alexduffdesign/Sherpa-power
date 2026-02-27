@@ -202,6 +202,7 @@
         <div
           id="section-chatbot-container"
           class="section-chatbot section-stack__sidebar"
+          data-product-id="{{ product.id }}"
           data-product-title="{{ product.title }}"
           data-product-capacity="{{ product.metafields.custom.capacity | escape }}"
           data-product-ac-output-continuous-power="{{ product.metafields.custom.ac_output_continuous_power }}"
@@ -231,6 +232,8 @@
       
       // Get product details from data attributes
       const productDetails = {
+        id: container.dataset.productId,
+        powerStationId: container.dataset.productId,
         title: container.dataset.productTitle,
         capacity: container.dataset.productCapacity,
         ac_output_continuous_power: container.dataset.productAcOutputContinuousPower,
