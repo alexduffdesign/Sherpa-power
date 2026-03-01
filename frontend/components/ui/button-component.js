@@ -52,9 +52,10 @@ export class ButtonComponent extends HTMLElement {
       }
 
       try {
-        const parsedPayload = JSON.parse(payload);
+        const parsedPayload = payload ? JSON.parse(payload) : {};
         this._eventBus.emit("buttonClicked", {
-          action: parsedPayload,
+          action: parsedPayload.action || parsedPayload.request || null,
+          openUrl: parsedPayload.openUrl || null,
           label: label,
         });
       } catch (error) {

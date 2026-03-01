@@ -242,6 +242,12 @@ export class CarouselComponent extends HTMLElement {
       const item = document.createElement("div");
       item.classList.add("carousel__item");
 
+      const descriptionText =
+        typeof card.description === "string"
+          ? card.description
+          : card.description?.text || "";
+      const buttonLabel = this.getButtonLabel(card?.buttons?.[0]);
+
       item.innerHTML = `
         <div class="carousel__item-wrapper">
           <div class="carousel__item-content">
@@ -259,12 +265,12 @@ export class CarouselComponent extends HTMLElement {
             }
             ${
               card.description
-                ? `<p class="carousel__item-description">${card.description.text}</p>`
+                ? `<p class="carousel__item-description">${descriptionText}</p>`
                 : ""
             }
             ${
               card.buttons && card.buttons.length > 0
-                ? `<button class="button carousel__item-button" data-button-index="${index}">${card.buttons[0].name}</button>`
+                ? `<button class="button carousel__item-button" data-button-index="${index}">${buttonLabel}</button>`
                 : ""
             }
           </div>
@@ -341,16 +347,41 @@ export class CarouselComponent extends HTMLElement {
     }
 
     const buttonData = card.buttons[0];
-    const productTitle = buttonData.request.payload.title;
+    const action = buttonData.request || buttonData.action || null;
+    const openUrl =
+      buttonData.openUrl ||
+      buttonData.url ||
+      buttonData.payload?.actions?.find((entry) => entry?.type === "open_url")
+        ?.payload?.url ||
+      null;
+    const productTitle = action?.payload?.title || card.title;
     const displayLabel = productTitle
       ? `Selected ${productTitle}`
       : "Selected Power Station";
 
-    this._eventBus.emit("buttonClicked", {
-      action: buttonData.request,
-      label: displayLabel,
-    });
+    if (openUrl) {
+      this._eventBus.emit("buttonClicked", {
+        openUrl,
+        label: this.getButtonLabel(buttonData),
+      });
+    } else if (action) {
+      this._eventBus.emit("buttonClicked", {
+        action,
+        label: displayLabel,
+      });
+    } else {
+      console.warn("Card button has no supported action shape:", buttonData);
+    }
 
     this.remove();
+  }
+
+  getButtonLabel(buttonData) {
+    return (
+      buttonData?.name ||
+      buttonData?.label ||
+      buttonData?.text ||
+      "Select"
+    );
   }
 }

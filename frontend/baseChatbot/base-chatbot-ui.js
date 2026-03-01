@@ -100,6 +100,20 @@ class ChatbotUI {
     // Handle button clicks
     this.eventBus.on("buttonClicked", (payload) => {
       const userMessage = payload.label || "Button clicked";
+
+      if (payload.openUrl) {
+        window.open(payload.openUrl, "_blank", "noopener,noreferrer");
+        this.addMessage("user", userMessage, null, false);
+        this.removeInteractiveElements();
+        return;
+      }
+
+      if (!payload.action) {
+        console.warn("Button click is missing action payload:", payload);
+        this.removeInteractiveElements();
+        return;
+      }
+
       this.showTypingIndicator();
       this.addMessage("user", userMessage, null, false); // Use this directly since we're in ChatbotUI
       this.eventBus.emit("sendAction", payload.action); // Emit event for core to handle
@@ -238,10 +252,13 @@ class ChatbotUI {
     buttonGroup.className = "button-group";
 
     buttons.forEach((buttonData) => {
+      const label = this.getButtonLabel(buttonData);
+      const payload = this.getButtonPayload(buttonData);
+
       const button = document.createElement("button-component");
       button.eventBus = this.eventBus;
-      button.setAttribute("label", buttonData.name);
-      button.setAttribute("payload", JSON.stringify(buttonData.request));
+      button.setAttribute("label", label);
+      button.setAttribute("payload", JSON.stringify(payload));
       buttonGroup.appendChild(button);
     });
 
@@ -267,6 +284,27 @@ class ChatbotUI {
     carousel.setAttribute("data-carousel", JSON.stringify({ cards: items }));
     this.messageContainer.appendChild(carousel);
     this.scrollToBottom();
+  }
+
+  getButtonLabel(buttonData) {
+    return (
+      buttonData?.name ||
+      buttonData?.label ||
+      buttonData?.text ||
+      "Select"
+    );
+  }
+
+  getButtonPayload(buttonData) {
+    return {
+      action: buttonData?.request || buttonData?.action || null,
+      openUrl:
+        buttonData?.openUrl ||
+        buttonData?.url ||
+        buttonData?.payload?.actions?.find((action) => action?.type === "open_url")
+          ?.payload?.url ||
+        null,
+    };
   }
 
   /**

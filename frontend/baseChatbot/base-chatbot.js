@@ -165,25 +165,18 @@ class ChatbotCore {
       };
       return this.sendAction(actionPayload);
     } else if (payload.type === "button") {
-      const requestPayload = {
+      return this.sendAction({
         action: {
           type: "button",
-          payload: actionData,
+          payload: payload.payload || payload,
         },
-      };
-      this.core.sendAction(requestPayload);
+      });
     } else if (payload.action) {
       // Handle carousel button clicks
       return this.sendAction({ action: payload.action });
     } else {
-      // Fallback to just sending userMessage as text if unknown
-      const requestPayload = {
-        request: {
-          type: "text",
-          payload: userMessage,
-        },
-      };
-      this.core.sendAction(requestPayload);
+      // Fallback to sending a plain text message when the payload shape is unknown
+      return this.sendMessage(userMessage);
     }
   }
 
@@ -231,28 +224,32 @@ class ChatbotCore {
       const eventTypeLine = lines.find((line) => line.startsWith("event:"));
       console.log("eventTypeLine:", eventTypeLine);
 
-      const dataLine = lines.find((line) => line.startsWith("data:"));
       let data = null;
-      if (dataLine) {
+      const dataLines = lines
+        .filter((line) => line.startsWith("data:"))
+        .map((line) => line.slice(5).trimStart());
+      const rawData = dataLines.join("\n").trim();
+
+      if (rawData && rawData !== "[DONE]") {
         try {
-          data = JSON.parse(
-            eventStr.substring(eventStr.indexOf("data:") + 5).trim()
-          );
+          data = JSON.parse(rawData);
         } catch (e) {
           console.error("Error parsing data:", e);
           return; // Skip processing if data is invalid
         }
       }
 
-      let eventType = eventTypeLine ? eventTypeLine.split(":")[1].trim() : null;
+      const eventType = eventTypeLine
+        ? eventTypeLine.split(":")[1].trim()
+        : null;
 
-      if (eventType === "trace" && data && data.type === "completion") {
-        this.handleCompletion(data.payload); // Pass the payload, not the entire data object
-      } else if (eventType === "trace" && data) {
-        this.processTrace(data);
-      } else if (eventType === "end") {
+      if (eventType === "end") {
         console.log("End event received");
         this.eventBus.emit("end", {});
+      } else if (data && data.type === "completion") {
+        this.handleCompletion(data.payload); // Pass the payload, not the entire data object
+      } else if (data && data.type) {
+        this.processTrace(data);
       } else {
         console.warn("Unknown event type:", eventType, data);
       }
@@ -282,17 +279,42 @@ class ChatbotCore {
           metadata: trace.payload.metadata,
         });
         break;
-      case "choice":
+      case "choice": {
+        const buttons = this.normalizeButtons(trace.payload?.buttons);
+        if (!buttons.length) {
+          console.warn("Choice trace has no renderable buttons:", trace);
+          break;
+        }
         this.eventBus.emit("choicePresented", {
-          buttons: trace.payload.buttons,
+          buttons,
         });
         break;
-      case "carousel":
+      }
+      case "carousel": {
+        const items = this.normalizeCardsPayload(trace.payload);
+        if (!items.length) {
+          console.warn("Carousel trace has no renderable cards:", trace);
+          break;
+        }
         this.eventBus.emit("carouselPresented", {
           type: "carousel",
-          items: trace.payload.cards,
+          items,
         });
         break;
+      }
+      case "card":
+      case "cardV2": {
+        const card = this.normalizeCard(trace.payload);
+        if (!card) {
+          console.warn("Card trace has no renderable card payload:", trace);
+          break;
+        }
+        this.eventBus.emit("carouselPresented", {
+          type: trace.type,
+          items: [card],
+        });
+        break;
+      }
       case "device_answer":
         if (this.type === "section") {
           this.eventBus.emit("deviceAnswer", trace.payload);
@@ -319,6 +341,63 @@ class ChatbotCore {
       default:
         console.warn(`Unhandled trace type: ${trace.type}`, trace);
     }
+  }
+
+  normalizeCardsPayload(payload) {
+    if (!payload) return [];
+
+    const rawCards = Array.isArray(payload)
+      ? payload
+      : Array.isArray(payload.cards)
+        ? payload.cards
+        : [];
+
+    return rawCards
+      .map((card) => this.normalizeCard(card))
+      .filter((card) => card !== null);
+  }
+
+  normalizeCard(card) {
+    if (!card || typeof card !== "object") {
+      return null;
+    }
+
+    const descriptionText =
+      typeof card.description === "string"
+        ? card.description
+        : card.description?.text || "";
+
+    const normalizedDescription = descriptionText
+      ? { text: descriptionText }
+      : null;
+
+    return {
+      ...card,
+      imageUrl: card.imageUrl || card.image_url || card.image?.url || null,
+      title: card.title || card.name || "",
+      description: normalizedDescription,
+      buttons: this.normalizeButtons(card.buttons),
+    };
+  }
+
+  normalizeButtons(buttons) {
+    if (!Array.isArray(buttons)) {
+      return [];
+    }
+
+    return buttons
+      .filter((button) => button && typeof button === "object")
+      .map((button) => ({
+        ...button,
+        name: button.name || button.label || button.text || "Select",
+        request: button.request || button.action || null,
+        openUrl:
+          button.openUrl ||
+          button.url ||
+          button.payload?.actions?.find((action) => action?.type === "open_url")
+            ?.payload?.url ||
+          null,
+      }));
   }
 
   /**
