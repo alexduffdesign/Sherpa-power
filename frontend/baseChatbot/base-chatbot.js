@@ -403,17 +403,26 @@ class ChatbotCore {
     const directCandidates = [
       button.openUrl,
       button.url,
+      button.href,
+      button.link,
+      button.targetUrl,
       button.payload?.url,
+      button.payload?.href,
+      button.payload?.link,
       button.request?.payload?.url,
+      button.request?.payload?.href,
+      button.request?.payload?.link,
+      button.request?.payload,
       button.action?.payload?.url,
+      button.action?.payload?.href,
+      button.action?.payload?.link,
+      button.action?.payload,
     ];
 
-    const directUrl = directCandidates.find(
-      (candidate) => typeof candidate === "string" && candidate.trim()
-    );
+    const directUrl = this.getFirstUrlCandidate(directCandidates);
 
     if (directUrl) {
-      return directUrl.trim();
+      return directUrl;
     }
 
     const actionCollections = [
@@ -438,12 +447,19 @@ class ChatbotCore {
       return null;
     }
 
-    const openUrlAction = actions.find(
-      (action) =>
-        action &&
-        typeof action === "object" &&
-        (action.type === "open_url" || action.name === "open_url")
-    );
+    const openUrlAction = actions.find((action) => {
+      if (!action || typeof action !== "object") {
+        return false;
+      }
+
+      const typeName = `${action.type || action.name || ""}`.toLowerCase();
+      return (
+        typeName === "open_url" ||
+        typeName === "openurl" ||
+        typeName === "url" ||
+        typeName === "link"
+      );
+    });
 
     if (!openUrlAction) {
       return null;
@@ -451,15 +467,41 @@ class ChatbotCore {
 
     const actionCandidates = [
       openUrlAction.url,
+      openUrlAction.href,
+      openUrlAction.link,
       openUrlAction.payload?.url,
       openUrlAction.payload?.href,
+      openUrlAction.payload?.link,
+      openUrlAction.payload,
+      openUrlAction.value,
     ];
 
-    const actionUrl = actionCandidates.find(
-      (candidate) => typeof candidate === "string" && candidate.trim()
+    return this.getFirstUrlCandidate(actionCandidates);
+  }
+
+  getFirstUrlCandidate(candidates) {
+    const rawValue = candidates.find(
+      (candidate) => typeof candidate === "string" && this.isLikelyUrl(candidate)
     );
 
-    return actionUrl ? actionUrl.trim() : null;
+    return rawValue ? rawValue.trim() : null;
+  }
+
+  isLikelyUrl(value) {
+    if (typeof value !== "string") {
+      return false;
+    }
+
+    const normalized = value.trim();
+    if (!normalized) {
+      return false;
+    }
+
+    return (
+      /^https?:\/\//i.test(normalized) ||
+      /^\/(?!\/)/.test(normalized) ||
+      /^www\./i.test(normalized)
+    );
   }
 
   /**

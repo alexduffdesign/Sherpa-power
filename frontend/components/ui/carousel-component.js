@@ -348,7 +348,10 @@ export class CarouselComponent extends HTMLElement {
 
     const buttonData = card.buttons[0];
     const action = buttonData.request || buttonData.action || null;
-    const openUrl = this.extractOpenUrl(buttonData);
+    const openUrl =
+      this.extractOpenUrl(buttonData) ||
+      this.extractCardUrl(card) ||
+      this.extractProductUrlFromAction(action);
     const productTitle = action?.payload?.title || card.title;
     const displayLabel = productTitle
       ? `Selected ${productTitle}`
@@ -371,6 +374,47 @@ export class CarouselComponent extends HTMLElement {
     this.remove();
   }
 
+  extractCardUrl(card) {
+    if (!card || typeof card !== "object") {
+      return null;
+    }
+
+    const candidates = [
+      card.openUrl,
+      card.url,
+      card.href,
+      card.link,
+      card.targetUrl,
+      card.payload?.url,
+      card.payload?.href,
+      card.action?.payload?.url,
+      card.action?.payload?.href,
+    ];
+
+    return this.getFirstUrlCandidate(candidates);
+  }
+
+  extractProductUrlFromAction(action) {
+    if (!action || typeof action !== "object") {
+      return null;
+    }
+
+    const handleCandidates = [
+      action.payload?.productHandle,
+      action.payload?.handle,
+      action.payload?.product_handle,
+      action.payload?.product?.handle,
+    ];
+
+    const productHandle = handleCandidates.find(
+      (candidate) => typeof candidate === "string" && candidate.trim()
+    );
+
+    return productHandle
+      ? `/products/${encodeURIComponent(productHandle.trim())}`
+      : null;
+  }
+
   extractOpenUrl(buttonData) {
     if (!buttonData || typeof buttonData !== "object") {
       return null;
@@ -379,17 +423,26 @@ export class CarouselComponent extends HTMLElement {
     const directCandidates = [
       buttonData.openUrl,
       buttonData.url,
+      buttonData.href,
+      buttonData.link,
+      buttonData.targetUrl,
       buttonData.payload?.url,
+      buttonData.payload?.href,
+      buttonData.payload?.link,
       buttonData.request?.payload?.url,
+      buttonData.request?.payload?.href,
+      buttonData.request?.payload?.link,
+      buttonData.request?.payload,
       buttonData.action?.payload?.url,
+      buttonData.action?.payload?.href,
+      buttonData.action?.payload?.link,
+      buttonData.action?.payload,
     ];
 
-    const directUrl = directCandidates.find(
-      (candidate) => typeof candidate === "string" && candidate.trim()
-    );
+    const directUrl = this.getFirstUrlCandidate(directCandidates);
 
     if (directUrl) {
-      return directUrl.trim();
+      return directUrl;
     }
 
     const actionCollections = [
@@ -414,12 +467,19 @@ export class CarouselComponent extends HTMLElement {
       return null;
     }
 
-    const openUrlAction = actions.find(
-      (action) =>
-        action &&
-        typeof action === "object" &&
-        (action.type === "open_url" || action.name === "open_url")
-    );
+    const openUrlAction = actions.find((action) => {
+      if (!action || typeof action !== "object") {
+        return false;
+      }
+
+      const typeName = `${action.type || action.name || ""}`.toLowerCase();
+      return (
+        typeName === "open_url" ||
+        typeName === "openurl" ||
+        typeName === "url" ||
+        typeName === "link"
+      );
+    });
 
     if (!openUrlAction) {
       return null;
@@ -427,15 +487,41 @@ export class CarouselComponent extends HTMLElement {
 
     const actionCandidates = [
       openUrlAction.url,
+      openUrlAction.href,
+      openUrlAction.link,
       openUrlAction.payload?.url,
       openUrlAction.payload?.href,
+      openUrlAction.payload?.link,
+      openUrlAction.payload,
+      openUrlAction.value,
     ];
 
-    const actionUrl = actionCandidates.find(
-      (candidate) => typeof candidate === "string" && candidate.trim()
+    return this.getFirstUrlCandidate(actionCandidates);
+  }
+
+  getFirstUrlCandidate(candidates) {
+    const rawValue = candidates.find(
+      (candidate) => typeof candidate === "string" && this.isLikelyUrl(candidate)
     );
 
-    return actionUrl ? actionUrl.trim() : null;
+    return rawValue ? rawValue.trim() : null;
+  }
+
+  isLikelyUrl(value) {
+    if (typeof value !== "string") {
+      return false;
+    }
+
+    const normalized = value.trim();
+    if (!normalized) {
+      return false;
+    }
+
+    return (
+      /^https?:\/\//i.test(normalized) ||
+      /^\/(?!\/)/.test(normalized) ||
+      /^www\./i.test(normalized)
+    );
   }
 
   getButtonLabel(buttonData) {
