@@ -117,17 +117,6 @@ export class MessageComponent extends HTMLElement {
       const tempDiv = document.createElement("div");
       tempDiv.innerHTML = htmlSegment;
 
-      // Normalize any text nodes to remove extra whitespace
-      const normalizeNode = (node) => {
-        if (node.nodeType === 3) {
-          // Text node
-          node.textContent = node.textContent.replace(/\s+/g, " ").trim();
-        }
-        node.childNodes.forEach(normalizeNode);
-      };
-
-      normalizeNode(tempDiv);
-
       while (tempDiv.firstChild) {
         messageContent.appendChild(tempDiv.firstChild);
       }

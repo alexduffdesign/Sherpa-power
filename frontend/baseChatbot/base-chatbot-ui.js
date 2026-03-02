@@ -147,6 +147,12 @@ class ChatbotUI {
       this.hideTypingIndicator();
     });
 
+    // Reset streamed message boundaries at completion end so
+    // multiple assistant completions render as separate bubbles.
+    this.eventBus.on("assistantMessageFinalized", () => {
+      this.currentAssistantMessage = null;
+    });
+
     this.eventBus.on("deviceSources", ({ sources }) => {
       this.addDeviceSources(sources);
     });
