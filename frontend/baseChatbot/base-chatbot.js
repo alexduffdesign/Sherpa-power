@@ -390,14 +390,76 @@ class ChatbotCore {
       .map((button) => ({
         ...button,
         name: button.name || button.label || button.text || "Select",
-        request: button.request || button.action || null,
-        openUrl:
-          button.openUrl ||
-          button.url ||
-          button.payload?.actions?.find((action) => action?.type === "open_url")
-            ?.payload?.url ||
-          null,
+        request: button.request || button.action || button.payload?.action || null,
+        openUrl: this.extractOpenUrl(button),
       }));
+  }
+
+  extractOpenUrl(button) {
+    if (!button || typeof button !== "object") {
+      return null;
+    }
+
+    const directCandidates = [
+      button.openUrl,
+      button.url,
+      button.payload?.url,
+      button.request?.payload?.url,
+      button.action?.payload?.url,
+    ];
+
+    const directUrl = directCandidates.find(
+      (candidate) => typeof candidate === "string" && candidate.trim()
+    );
+
+    if (directUrl) {
+      return directUrl.trim();
+    }
+
+    const actionCollections = [
+      button.actions,
+      button.payload?.actions,
+      button.request?.payload?.actions,
+      button.action?.payload?.actions,
+    ];
+
+    for (const actions of actionCollections) {
+      const url = this.extractOpenUrlFromActions(actions);
+      if (url) {
+        return url;
+      }
+    }
+
+    return null;
+  }
+
+  extractOpenUrlFromActions(actions) {
+    if (!Array.isArray(actions)) {
+      return null;
+    }
+
+    const openUrlAction = actions.find(
+      (action) =>
+        action &&
+        typeof action === "object" &&
+        (action.type === "open_url" || action.name === "open_url")
+    );
+
+    if (!openUrlAction) {
+      return null;
+    }
+
+    const actionCandidates = [
+      openUrlAction.url,
+      openUrlAction.payload?.url,
+      openUrlAction.payload?.href,
+    ];
+
+    const actionUrl = actionCandidates.find(
+      (candidate) => typeof candidate === "string" && candidate.trim()
+    );
+
+    return actionUrl ? actionUrl.trim() : null;
   }
 
   /**
