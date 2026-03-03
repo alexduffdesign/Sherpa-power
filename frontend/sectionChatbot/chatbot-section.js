@@ -88,8 +88,8 @@ class SectionChatbot {
     });
 
     // Handle requests to open the main chatbot drawer
-    this.core.eventBus.on("openMainChatbot", () => {
-      this.openMainChatbotDrawer();
+    this.core.eventBus.on("openMainChatbot", ({ trace }) => {
+      this.openMainChatbotDrawer(trace);
     });
 
     // Handle input focus for launch
@@ -162,7 +162,9 @@ class SectionChatbot {
     return data.devices || [];
   }
 
-  openMainChatbotDrawer() {
+  openMainChatbotDrawer(trace = null) {
+    console.log("Opening main chatbot drawer from section chatbot trace:", trace);
+
     const mainDrawer =
       document.querySelector("custom-drawer#header-ai-trigger") ||
       document.querySelector("custom-drawer.sherpa-guide");
@@ -177,7 +179,7 @@ class SectionChatbot {
     }
 
     const headerTrigger = document.querySelector(
-      'button.sherpa-guide[aria-controls="header-ai-trigger"]'
+      '[aria-controls="header-ai-trigger"]'
     );
 
     if (headerTrigger) {

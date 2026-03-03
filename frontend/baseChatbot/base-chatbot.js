@@ -271,6 +271,14 @@ class ChatbotCore {
 
     console.log("processTrace called with:", trace);
 
+    if (this.shouldOpenMainChatbot(trace)) {
+      this.eventBus.emit("openMainChatbot", {
+        payload: trace.payload || null,
+        trace,
+      });
+      return;
+    }
+
     switch (trace.type) {
       case "text":
         this.eventBus.emit("typing", { isTyping: false });
@@ -367,7 +375,19 @@ class ChatbotCore {
       payload?.action,
       payload?.type,
       payload?.event?.name,
+      payload?.eventName,
+      payload?.data?.name,
+      payload?.data?.actionName,
+      payload?.action?.name,
+      payload?.action?.actionName,
+      payload?.action?.type,
+      payload?.payload?.name,
+      payload?.payload?.actionName,
+      payload?.payload?.type,
       payload?.body?.name,
+      payload?.body?.actionName,
+      payload?.body?.action?.name,
+      payload?.body?.action?.actionName,
       typeof payload === "string" ? payload : null,
     ];
 
@@ -379,7 +399,44 @@ class ChatbotCore {
       return false;
     }
 
-    return actionName.trim().toLowerCase() === "openmainchatbot";
+    return this.normalizeActionName(actionName) === "openmainchatbot";
+  }
+
+  shouldOpenMainChatbot(trace) {
+    const traceTypeName = this.normalizeActionName(trace.type || "");
+    if (traceTypeName === "openmainchatbot") {
+      return true;
+    }
+
+    const traceNameCandidates = [
+      trace.name,
+      trace.eventName,
+      trace.actionName,
+      trace.action?.name,
+      trace.payload?.name,
+      trace.payload?.actionName,
+      trace.payload?.type,
+    ];
+
+    const traceNameMatch = traceNameCandidates.some(
+      (name) =>
+        typeof name === "string" &&
+        this.normalizeActionName(name) === "openmainchatbot"
+    );
+
+    if (traceNameMatch) {
+      return true;
+    }
+
+    return this.isOpenMainChatbotAction(trace.payload);
+  }
+
+  normalizeActionName(value) {
+    if (typeof value !== "string") {
+      return "";
+    }
+
+    return value.toLowerCase().replace(/[^a-z0-9]/g, "");
   }
 
   normalizeCardsPayload(payload) {
