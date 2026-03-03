@@ -87,6 +87,11 @@ class SectionChatbot {
       this.handleDeviceAnswer(payload);
     });
 
+    // Handle requests to open the main chatbot drawer
+    this.core.eventBus.on("openMainChatbot", () => {
+      this.openMainChatbotDrawer();
+    });
+
     // Handle input focus for launch
     const input = this.container.querySelector(".chatbot-input");
     if (input) {
@@ -155,6 +160,32 @@ class SectionChatbot {
     // Assuming data has the structure:
     // { devices: [ { deviceName: "...", runtime: "..." }, ... ] }
     return data.devices || [];
+  }
+
+  openMainChatbotDrawer() {
+    const mainDrawer =
+      document.querySelector("custom-drawer#header-ai-trigger") ||
+      document.querySelector("custom-drawer.sherpa-guide");
+
+    if (mainDrawer) {
+      if (typeof mainDrawer.show === "function") {
+        mainDrawer.show();
+      } else {
+        mainDrawer.setAttribute("open", "");
+      }
+      return;
+    }
+
+    const headerTrigger = document.querySelector(
+      'button.sherpa-guide[aria-controls="header-ai-trigger"]'
+    );
+
+    if (headerTrigger) {
+      headerTrigger.click();
+      return;
+    }
+
+    console.warn("Unable to open main chatbot drawer: trigger not found");
   }
 
   /**

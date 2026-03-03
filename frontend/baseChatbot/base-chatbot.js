@@ -338,9 +338,48 @@ class ChatbotCore {
           sources: trace.payload,
         });
         break;
+      case "openMainChatbot":
+        this.eventBus.emit("openMainChatbot", {
+          payload: trace.payload || null,
+          trace,
+        });
+        break;
+      case "custom_action":
+      case "customAction":
+        if (this.isOpenMainChatbotAction(trace.payload)) {
+          this.eventBus.emit("openMainChatbot", {
+            payload: trace.payload || null,
+            trace,
+          });
+        } else {
+          console.warn("Unhandled custom action trace:", trace);
+        }
+        break;
       default:
         console.warn(`Unhandled trace type: ${trace.type}`, trace);
     }
+  }
+
+  isOpenMainChatbotAction(payload) {
+    const actionNameCandidates = [
+      payload?.name,
+      payload?.actionName,
+      payload?.action,
+      payload?.type,
+      payload?.event?.name,
+      payload?.body?.name,
+      typeof payload === "string" ? payload : null,
+    ];
+
+    const actionName = actionNameCandidates.find(
+      (candidate) => typeof candidate === "string" && candidate.trim() !== ""
+    );
+
+    if (!actionName) {
+      return false;
+    }
+
+    return actionName.trim().toLowerCase() === "openmainchatbot";
   }
 
   normalizeCardsPayload(payload) {
