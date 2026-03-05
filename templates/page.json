@@ -23,18 +23,21 @@
         },
         "subheading_y8XgbG": {
           "type": "subheading",
+          "disabled": true,
           "settings": {
             "text": "Ask us about hire options of our portable power range. We can provide a greener solution to your event operations so you don't have to have noisy and smelly generators running to power your kit. We offer competitive rates and excellent customer support."
           }
         },
         "richtext_Q48Bpb": {
           "type": "richtext",
+          "disabled": true,
           "settings": {
             "content": "<p>Discounts apply to longer hire periods. </p><p>Further discounts available on a Hire Before Buy option.</p><p></p>"
           }
         },
         "liquid_W3xzHg": {
           "type": "liquid",
+          "disabled": true,
           "settings": {
             "liquid": "<a href=\"https://www.sherpapower.co.uk/pages/contact\">Contact Us About Product Hire</a>"
           }
@@ -52,6 +55,7 @@
         "enable_parallax": false,
         "image_size": "sm",
         "image": "shopify://shop_images/Peak_a00281de-5293-4b66-8424-9366c979ed4a.jpg",
+        "enable_clouds": false,
         "mobile_text_position": "place-self-center text-center",
         "desktop_text_position": "sm:place-self-center sm:text-center",
         "text_color": "#ffffff",
@@ -61,7 +65,6 @@
     },
     "main": {
       "type": "main-page",
-      "disabled": true,
       "settings": {
         "content_width": "80ch"
       }
