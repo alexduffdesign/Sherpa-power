@@ -17,7 +17,7 @@
           "settings": {
             "range_text": "{{ page.title }}",
             "text": "",
-            "heading_tag": "h3",
+            "heading_tag": "h2",
             "heading_gradient": "linear-gradient(180deg, rgba(37, 194, 147, 1), rgba(247, 247, 247, 1) 100%)"
           }
         },
@@ -65,6 +65,9 @@
     },
     "main": {
       "type": "main-page",
+      "custom_css": [
+        ".h1, .prose h1:not(.h0,.h1,.h2,.h3,.h4,.h5,.h6) {font-size: var(--text-h1); line-height: 1.1; white-space: nowrap; display: none;}"
+      ],
       "settings": {
         "content_width": "80ch"
       }
