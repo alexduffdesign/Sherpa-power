@@ -47,7 +47,7 @@
           "settings": {
             "range_text": "£50.00 (ex. VAT)",
             "text": "on all available  products",
-            "heading_tag": "h4",
+            "heading_tag": "h5",
             "heading_gradient": ""
           }
         },
