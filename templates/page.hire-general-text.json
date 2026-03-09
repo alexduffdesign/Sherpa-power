@@ -33,6 +33,24 @@
             "content": "<p>Discounts apply to longer hire periods. </p><p>Further discounts available on a Hire Before Buy option.</p><p></p>"
           }
         },
+        "heading_7qYcyn": {
+          "type": "heading",
+          "settings": {
+            "range_text": "Daily Hire Cost",
+            "text": "",
+            "heading_tag": "h3",
+            "heading_gradient": ""
+          }
+        },
+        "heading_XhjqQb": {
+          "type": "heading",
+          "settings": {
+            "range_text": "£50.00 (ex. VAT)",
+            "text": "",
+            "heading_tag": "h4",
+            "heading_gradient": ""
+          }
+        },
         "liquid_W3xzHg": {
           "type": "liquid",
           "settings": {
@@ -44,6 +62,8 @@
         "heading_kgHwRj",
         "richtext_mzVEcR",
         "richtext_Q48Bpb",
+        "heading_7qYcyn",
+        "heading_XhjqQb",
         "liquid_W3xzHg"
       ],
       "settings": {
@@ -69,6 +89,7 @@
     },
     "featured_collection_xUtPF7": {
       "type": "featured-collection",
+      "custom_css": [],
       "name": "Featured collection",
       "settings": {
         "collection": "hire-products",
@@ -92,45 +113,11 @@
         "product_card_background": "",
         "product_card_text_color": ""
       }
-    },
-    "multi_column_xeHgVL": {
-      "type": "multi-column",
-      "blocks": {
-        "item_xPXCDV": {
-          "type": "item",
-          "settings": {
-            "column_size": "3",
-            "title": "Daily Hire Cost (ex VAT)",
-            "heading_tag": "h5",
-            "content": "<p><strong>£50.00</strong></p>",
-            "link_url": "",
-            "link_text": "",
-            "link_style": "link"
-          }
-        }
-      },
-      "block_order": [
-        "item_xPXCDV"
-      ],
-      "name": "Multi-column",
-      "settings": {
-        "full_width": true,
-        "stack_on_mobile": false,
-        "gap": "small",
-        "text_alignment": "center",
-        "subheading": "",
-        "title": "",
-        "content": "",
-        "background": "",
-        "background_gradient": "",
-        "text_color": ""
-      }
     }
   },
   "order": [
     "image_with_text_overlay_gT6QRA",
     "main",
-    "featured_collection_xUtPF7",
-    "multi_column_xeHgVL"
+    "featured_collection_xUtPF7"
   ]
 }
