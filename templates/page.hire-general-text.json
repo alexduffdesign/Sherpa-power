@@ -114,6 +114,46 @@
         "product_card_text_color": ""
       }
     },
+    "rich_text_YdMUFC": {
+      "type": "rich-text",
+      "blocks": {
+        "subheading_WFHRKY": {
+          "type": "subheading",
+          "settings": {
+            "text": "Subheading"
+          }
+        },
+        "heading_eLp8ki": {
+          "type": "heading",
+          "settings": {
+            "text": "Daily Hire Costs",
+            "heading_tag": "h2",
+            "text_color": "",
+            "gradient": ""
+          }
+        },
+        "richtext_znRKn9": {
+          "type": "richtext",
+          "settings": {
+            "content": "<p>Use this text to share information about your brand with your customers. Describe a product, share announcements, or welcome customers to your store.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "subheading_WFHRKY",
+        "heading_eLp8ki",
+        "richtext_znRKn9"
+      ],
+      "name": "Rich text",
+      "settings": {
+        "full_width": true,
+        "content_width": "small",
+        "text_position": "center",
+        "background": "",
+        "background_gradient": "",
+        "text_color": ""
+      }
+    },
     "featured_product_4rpqRz": {
       "type": "featured-product",
       "blocks": {
@@ -221,6 +261,7 @@
     "image_with_text_overlay_gT6QRA",
     "main",
     "featured_collection_xUtPF7",
+    "rich_text_YdMUFC",
     "featured_product_4rpqRz"
   ]
 }
