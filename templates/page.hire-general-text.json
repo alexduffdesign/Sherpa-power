@@ -113,11 +113,114 @@
         "product_card_background": "",
         "product_card_text_color": ""
       }
+    },
+    "featured_product_4rpqRz": {
+      "type": "featured-product",
+      "blocks": {
+        "vendor_EPrj6J": {
+          "type": "vendor",
+          "settings": {}
+        },
+        "title_GG7XNQ": {
+          "type": "title",
+          "settings": {
+            "heading_tag": "h2"
+          }
+        },
+        "badges_j4WhFW": {
+          "type": "badges",
+          "settings": {}
+        },
+        "price_dJNqGA": {
+          "type": "price",
+          "settings": {
+            "show_taxes_notice": false
+          }
+        },
+        "rating_hUKWfz": {
+          "type": "rating",
+          "settings": {
+            "show_empty": false
+          }
+        },
+        "separator_3dB8rD": {
+          "type": "separator",
+          "settings": {}
+        },
+        "description_RxxJfB": {
+          "type": "description",
+          "settings": {
+            "collapse_content": false
+          }
+        },
+        "variant_picker_WDFYgp": {
+          "type": "variant_picker",
+          "settings": {
+            "hide_sold_out_variants": false,
+            "stack_blocks": true,
+            "selector_style": "block",
+            "swatch_selector_style": "swatch",
+            "variant_image_options": "",
+            "size_chart_page": ""
+          }
+        },
+        "quantity_selector_hfArtG": {
+          "type": "quantity_selector",
+          "settings": {}
+        },
+        "buy_buttons_GczUja": {
+          "type": "buy_buttons",
+          "settings": {
+            "show_payment_button": true,
+            "show_gift_card_recipient": true,
+            "atc_button_background": "",
+            "atc_button_text_color": "",
+            "payment_button_background": "",
+            "payment_button_text_color": ""
+          }
+        },
+        "pickup_availability_NExtKK": {
+          "type": "pickup_availability",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "vendor_EPrj6J",
+        "title_GG7XNQ",
+        "badges_j4WhFW",
+        "price_dJNqGA",
+        "rating_hUKWfz",
+        "separator_3dB8rD",
+        "description_RxxJfB",
+        "variant_picker_WDFYgp",
+        "quantity_selector_hfArtG",
+        "buy_buttons_GczUja",
+        "pickup_availability_NExtKK"
+      ],
+      "name": "Featured product",
+      "settings": {
+        "full_width": true,
+        "product": "sherpa-base-2-5-portable-power",
+        "desktop_media_width": 45,
+        "desktop_media_layout": "carousel_thumbnails_left",
+        "mobile_media_size": "expanded",
+        "mobile_carousel_control": "floating_dots",
+        "enable_video_autoplay": true,
+        "enable_video_looping": false,
+        "enable_image_zoom": true,
+        "max_image_zoom_level": 3,
+        "background": "",
+        "background_gradient": "",
+        "text_color": "",
+        "input_background": "rgba(0,0,0,0)",
+        "input_text_color": ""
+      }
     }
   },
   "order": [
     "image_with_text_overlay_gT6QRA",
     "main",
-    "featured_collection_xUtPF7"
+    "featured_collection_xUtPF7",
+    "featured_product_4rpqRz"
   ]
 }
