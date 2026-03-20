@@ -69,7 +69,10 @@
     },
     "main": {
       "type": "main-collection",
-      "custom_css": [],
+      "custom_css": [
+        ".product-card__image-wrapper {aspect-ratio: 1 / 1; overflow: hidden; width: 100%;}",
+        ".product-card__image {width: 100%; height: 100%; object-fit: contain; object-position: center; transition: opacity 0.2s ease-in-out;}"
+      ],
       "settings": {
         "products_per_page": 24,
         "products_per_row_mobile": "1",
