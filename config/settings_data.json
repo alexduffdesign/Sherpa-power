@@ -137,6 +137,16 @@
         "type": "shopify://apps/early-bird/blocks/app-embed/5e02e264-328a-43b1-b83b-d997dd7938d0",
         "disabled": false,
         "settings": {}
+      },
+      "14159778052447909406": {
+        "type": "shopify://apps/json-ld-for-seo-by-dmb/blocks/json_ld_seo/0199c79f-1805-7f3f-b460-9124f1158a77",
+        "disabled": false,
+        "settings": {}
+      },
+      "8419966592507824873": {
+        "type": "shopify://apps/seolab-seo-optimizer/blocks/app_embed/faf700f6-3b71-45c3-86d4-83ea9f7d9216",
+        "disabled": false,
+        "settings": {}
       }
     }
   },
