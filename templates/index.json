@@ -12,12 +12,21 @@
     "image_with_text_overlay_7zWHBP": {
       "type": "image-with-text-overlay",
       "blocks": {
+        "heading_Rxqwii": {
+          "type": "heading",
+          "settings": {
+            "range_text": "SHERPA POWER",
+            "text": "",
+            "heading_tag": "h1",
+            "heading_gradient": ""
+          }
+        },
         "heading_R7fDer": {
           "type": "heading",
           "settings": {
             "range_text": "",
             "text": "Own Your Energy",
-            "heading_tag": "h1",
+            "heading_tag": "h2",
             "heading_gradient": ""
           }
         },
@@ -43,6 +52,7 @@
         }
       },
       "block_order": [
+        "heading_Rxqwii",
         "heading_R7fDer",
         "heading_zgLJhG",
         "button_f8WBiH"
