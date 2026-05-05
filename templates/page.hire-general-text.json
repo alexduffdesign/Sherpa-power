@@ -89,6 +89,7 @@
     },
     "featured_collection_xUtPF7": {
       "type": "featured-collection",
+      "disabled": true,
       "custom_css": [],
       "name": "Featured collection",
       "settings": {
