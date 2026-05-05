@@ -35,6 +35,7 @@
         },
         "heading_7qYcyn": {
           "type": "heading",
+          "disabled": true,
           "settings": {
             "range_text": "Daily Hire Cost From",
             "text": "",
@@ -44,6 +45,7 @@
         },
         "heading_XhjqQb": {
           "type": "heading",
+          "disabled": true,
           "settings": {
             "range_text": "£50.00 (ex. VAT)",
             "text": "on all available  products",
