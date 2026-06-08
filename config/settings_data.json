@@ -147,6 +147,11 @@
         "type": "shopify://apps/seolab-seo-optimizer/blocks/app_embed/faf700f6-3b71-45c3-86d4-83ea9f7d9216",
         "disabled": false,
         "settings": {}
+      },
+      "4025711510167816184": {
+        "type": "shopify://apps/inflate/blocks/inflate-popup/019977a2-174c-7149-b89e-00f33673b79f",
+        "disabled": true,
+        "settings": {}
       }
     }
   },
