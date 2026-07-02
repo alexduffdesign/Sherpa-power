@@ -1,0 +1,630 @@
+<div
+  id="power-pack-configurator-{{ section.id }}"
+  class="ppc-wrap"
+  data-section-id="{{ section.id }}"
+>
+  <div class="ppc-inner">
+    <div class="ppc-header">
+      <h2 class="ppc-title">{{ section.settings.heading }}</h2>
+      <p class="ppc-sub">{{ section.settings.subheading }}</p>
+    </div>
+
+    <div class="ppc-cols">
+
+      <!-- LEFT: Unit preview -->
+      <div class="ppc-panel ppc-preview-panel">
+        <p class="ppc-panel-title">Unit preview</p>
+        <div class="ppc-unit-wrap">
+          <svg id="ppc-unit-{{ section.id }}" viewBox="0 0 220 260" width="220" height="260" xmlns="http://www.w3.org/2000/svg">
+            <rect x="20" y="30" width="180" height="200" rx="14" fill="#C8C6BC" stroke="#888780" stroke-width="1.2"/>
+            <rect x="30" y="42" width="160" height="96" rx="8" fill="#444441"/>
+            <rect x="36" y="48" width="148" height="84" rx="6" fill="#2C2C2A"/>
+            <text id="ppc-cap-label-{{ section.id }}" x="110" y="88" text-anchor="middle" font-size="18" font-weight="500" fill="#9FE1CB" font-family="sans-serif">—</text>
+            <text x="110" y="106" text-anchor="middle" font-size="11" fill="#5DCAA5" font-family="sans-serif">capacity</text>
+            <rect x="30" y="150" width="68" height="44" rx="6" fill="#3C3489"/>
+            <rect x="34" y="154" width="60" height="36" rx="4" fill="#26215C"/>
+            <circle cx="64" cy="172" r="10" fill="none" stroke="#7F77DD" stroke-width="1.5"/>
+            <line x1="64" y1="162" x2="64" y2="168" stroke="#7F77DD" stroke-width="1.5"/>
+            <line x1="64" y1="176" x2="64" y2="182" stroke="#7F77DD" stroke-width="1.5"/>
+            <line x1="54" y1="172" x2="60" y2="172" stroke="#7F77DD" stroke-width="1.5"/>
+            <line x1="68" y1="172" x2="74" y2="172" stroke="#7F77DD" stroke-width="1.5"/>
+            <text x="64" y="196" text-anchor="middle" font-size="9" fill="#AFA9EC" font-family="sans-serif">AC output</text>
+            <rect x="108" y="150" width="82" height="44" rx="6" fill="#083d2a"/>
+            <rect x="112" y="154" width="74" height="36" rx="4" fill="#04342C"/>
+            <rect x="120" y="158" width="16" height="26" rx="3" fill="#0F6E56"/>
+            <rect x="142" y="158" width="6" height="20" rx="2" fill="#1D9E75"/>
+            <rect x="154" y="160" width="6" height="18" rx="2" fill="#5DCAA5"/>
+            <text x="149" y="196" text-anchor="middle" font-size="9" fill="#9FE1CB" font-family="sans-serif">USB / DC</text>
+            <rect x="80" y="208" width="60" height="10" rx="3" fill="#5F5E5A"/>
+            <rect x="20" y="16" width="40" height="14" rx="4" fill="#888780"/>
+            <rect x="160" y="16" width="40" height="14" rx="4" fill="#888780"/>
+          </svg>
+
+          <div class="ppc-badge-row" id="ppc-badges-{{ section.id }}"></div>
+          <div class="ppc-spec-list" id="ppc-specs-{{ section.id }}"></div>
+        </div>
+      </div>
+
+      <!-- RIGHT: Options -->
+      <div class="ppc-panel ppc-options-panel">
+        <p class="ppc-panel-title">Specify your unit</p>
+
+        <div class="ppc-field">
+          <label class="ppc-label" for="ppc-cap-{{ section.id }}">Battery capacity</label>
+          <select id="ppc-cap-{{ section.id }}" class="ppc-select ppc-trigger">
+            <option value="">Select…</option>
+            <option value="500Wh">500Wh — compact</option>
+            <option value="1kWh">1kWh — standard</option>
+            <option value="2kWh">2kWh — extended</option>
+            <option value="5kWh">5kWh — high capacity</option>
+            <option value="10kWh">10kWh — industrial</option>
+          </select>
+        </div>
+
+        <div class="ppc-field">
+          <label class="ppc-label" for="ppc-vc-{{ section.id }}">Vehicle fast charge</label>
+          <select id="ppc-vc-{{ section.id }}" class="ppc-select ppc-trigger">
+            <option value="">Not required</option>
+            <option value="CCS (DC fast charge)">CCS — DC fast charge</option>
+            <option value="CHAdeMO">CHAdeMO</option>
+            <option value="Type 2 AC (7kW)">Type 2 AC (7kW)</option>
+            <option value="Type 2 AC (22kW)">Type 2 AC (22kW)</option>
+          </select>
+        </div>
+
+        <div class="ppc-field">
+          <label class="ppc-label" for="ppc-wp-{{ section.id }}">Waterproofing</label>
+          <select id="ppc-wp-{{ section.id }}" class="ppc-select ppc-trigger">
+            <option value="">Standard (indoor)</option>
+            <option value="IP54 — splash resistant">IP54 — splash resistant</option>
+            <option value="IP65 — dust &amp; jet proof">IP65 — dust &amp; jet proof</option>
+            <option value="IP67 — full immersion">IP67 — full immersion</option>
+          </select>
+        </div>
+
+        <div class="ppc-field">
+          <label class="ppc-label" for="ppc-3p-{{ section.id }}">3-phase power output</label>
+          <select id="ppc-3p-{{ section.id }}" class="ppc-select ppc-trigger">
+            <option value="">Not required</option>
+            <option value="3-phase 16A (11kW)">3-phase 16A (11kW)</option>
+            <option value="3-phase 32A (22kW)">3-phase 32A (22kW)</option>
+            <option value="3-phase 63A (43kW)">3-phase 63A (43kW)</option>
+          </select>
+        </div>
+
+        <div class="ppc-field">
+          <label class="ppc-label" for="ppc-sol-{{ section.id }}">Solar input</label>
+          <select id="ppc-sol-{{ section.id }}" class="ppc-select ppc-trigger">
+            <option value="">Not required</option>
+            <option value="MPPT 400W solar input">MPPT 400W</option>
+            <option value="MPPT 800W solar input">MPPT 800W</option>
+            <option value="MPPT 1600W solar input">MPPT 1600W</option>
+          </select>
+        </div>
+
+        <div class="ppc-field">
+          <label class="ppc-label" for="ppc-enc-{{ section.id }}">Enclosure &amp; mounting</label>
+          <select id="ppc-enc-{{ section.id }}" class="ppc-select ppc-trigger">
+            <option value="">Standard casing</option>
+            <option value="Rack mount (2U)">Rack mount (2U)</option>
+            <option value="Wall mount bracket">Wall mount bracket</option>
+            <option value="Wheeled trolley case">Wheeled trolley case</option>
+            <option value="Pelican-style hard case">Pelican-style hard case</option>
+          </select>
+        </div>
+
+        <div class="ppc-field ppc-qty-field">
+          <label class="ppc-label" for="ppc-qty-{{ section.id }}">Quantity required</label>
+          <input
+            type="number"
+            id="ppc-qty-{{ section.id }}"
+            class="ppc-input ppc-trigger"
+            min="1"
+            max="9999"
+            placeholder="e.g. 5"
+            value="1"
+          />
+        </div>
+
+        <button
+          type="button"
+          class="ppc-open-btn"
+          id="ppc-open-{{ section.id }}"
+        >
+          Review &amp; send enquiry →
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== MODAL ===================== -->
+<div class="ppc-modal-bg" id="ppc-modal-bg-{{ section.id }}" aria-modal="true" role="dialog" aria-label="Send enquiry">
+  <div class="ppc-modal">
+    <h3 class="ppc-modal-title">Your power pack wishlist</h3>
+    <div id="ppc-modal-specs-{{ section.id }}" class="ppc-modal-specs"></div>
+
+    <!-- Shopify native contact form -->
+    <form
+      method="post"
+      action="/contact#ppc-form-{{ section.id }}"
+      id="ppc-form-{{ section.id }}"
+      class="ppc-contact-form"
+      accept-charset="UTF-8"
+    >
+      <input type="hidden" name="form_type" value="contact"/>
+      <input type="hidden" name="utf8" value="✓"/>
+      <!-- Hidden field carries the full spec summary -->
+      <input type="hidden" name="contact[body]" id="ppc-hidden-body-{{ section.id }}"/>
+
+      <div class="ppc-cfield">
+        <label class="ppc-clabel" for="ppc-cname-{{ section.id }}">Your name</label>
+        <input type="text" id="ppc-cname-{{ section.id }}" name="contact[name]" class="ppc-cinput" placeholder="Jane Smith" required/>
+      </div>
+      <div class="ppc-cfield">
+        <label class="ppc-clabel" for="ppc-cemail-{{ section.id }}">Email address</label>
+        <input type="email" id="ppc-cemail-{{ section.id }}" name="contact[email]" class="ppc-cinput" placeholder="jane@company.com" required/>
+      </div>
+      <div class="ppc-cfield">
+        <label class="ppc-clabel" for="ppc-cnotes-{{ section.id }}">Additional notes</label>
+        <textarea id="ppc-cnotes-{{ section.id }}" name="contact[notes]" class="ppc-ctextarea" placeholder="Delivery timeline, site requirements, etc."></textarea>
+      </div>
+
+      <div class="ppc-modal-foot">
+        <button type="button" class="ppc-mbtn" id="ppc-close-{{ section.id }}">Back</button>
+        <button type="submit" class="ppc-mbtn ppc-mbtn--primary">Send enquiry</button>
+      </div>
+    </form>
+
+    {% if section.settings.show_success_note %}
+      <p class="ppc-success-note">{{ section.settings.success_note }}</p>
+    {% endif %}
+  </div>
+</div>
+
+<!-- ===================== STYLES ===================== -->
+<style>
+  .ppc-wrap {
+    padding: 3rem 1.25rem;
+    font-family: {{ section.settings.font_family }};
+    color: {{ section.settings.text_color }};
+    background: {{ section.settings.bg_color }};
+  }
+  .ppc-inner { max-width: 860px; margin: 0 auto; }
+  .ppc-header { margin-bottom: 1.75rem; }
+  .ppc-title {
+    font-size: 26px;
+    font-weight: 600;
+    color: {{ section.settings.heading_color }};
+    margin: 0 0 6px;
+  }
+  .ppc-sub {
+    font-size: 15px;
+    color: {{ section.settings.subtext_color }};
+    margin: 0;
+  }
+  .ppc-cols {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    align-items: start;
+  }
+  @media (max-width: 640px) {
+    .ppc-cols { grid-template-columns: 1fr; }
+  }
+  .ppc-panel {
+    background: {{ section.settings.panel_bg }};
+    border: 1px solid {{ section.settings.border_color }};
+    border-radius: 12px;
+    padding: 1.25rem;
+  }
+  .ppc-panel-title {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: {{ section.settings.subtext_color }};
+    margin: 0 0 1rem;
+  }
+  .ppc-unit-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+  }
+  .ppc-unit-wrap svg { display: block; }
+  .ppc-badge-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    justify-content: center;
+    min-height: 22px;
+  }
+  .ppc-badge {
+    font-size: 11px;
+    font-weight: 500;
+    padding: 3px 9px;
+    border-radius: 20px;
+  }
+  .ppc-badge--teal  { background:#E1F5EE; color:#0F6E56; border:1px solid #5DCAA5; }
+  .ppc-badge--blue  { background:#E6F1FB; color:#185FA5; border:1px solid #378ADD; }
+  .ppc-badge--purple{ background:#EEEDFE; color:#534AB7; border:1px solid #7F77DD; }
+  .ppc-badge--yellow{ background:#FAEEDA; color:#854F0B; border:1px solid #EF9F27; }
+  .ppc-badge--coral { background:#FAECE7; color:#993C1D; border:1px solid #D85A30; }
+  .ppc-spec-list { width: 100%; font-size: 12px; }
+  .ppc-spec-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 4px 0;
+    border-bottom: 1px solid {{ section.settings.border_color }};
+    color: {{ section.settings.subtext_color }};
+  }
+  .ppc-spec-row:last-child { border-bottom: none; }
+  .ppc-spec-val {
+    font-weight: 600;
+    color: {{ section.settings.text_color }};
+    text-align: right;
+    max-width: 55%;
+  }
+  .ppc-field { margin-bottom: .9rem; }
+  .ppc-field:last-of-type { margin-bottom: 0; }
+  .ppc-label {
+    display: block;
+    font-size: 13px;
+    color: {{ section.settings.subtext_color }};
+    margin-bottom: 5px;
+  }
+  .ppc-select,
+  .ppc-input {
+    width: 100%;
+    font-size: 14px;
+    padding: 8px 10px;
+    border: 1px solid {{ section.settings.border_color }};
+    border-radius: 8px;
+    background: {{ section.settings.panel_bg }};
+    color: {{ section.settings.text_color }};
+    appearance: auto;
+  }
+  .ppc-qty-field .ppc-input { width: 110px; }
+  .ppc-open-btn {
+    display: block;
+    width: 100%;
+    margin-top: 1.25rem;
+    padding: 11px;
+    font-size: 15px;
+    font-weight: 600;
+    background: {{ section.settings.btn_bg }};
+    color: {{ section.settings.btn_text }};
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: opacity .15s;
+  }
+  .ppc-open-btn:hover { opacity: .88; }
+
+  /* Modal */
+  .ppc-modal-bg {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,.5);
+    z-index: 9999;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+  }
+  .ppc-modal-bg.is-open { display: flex; }
+  .ppc-modal {
+    background: {{ section.settings.panel_bg }};
+    border-radius: 12px;
+    padding: 1.75rem;
+    width: min(500px, 100%);
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 8px 32px rgba(0,0,0,.18);
+  }
+  .ppc-modal-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: {{ section.settings.heading_color }};
+    margin: 0 0 1rem;
+  }
+  .ppc-modal-specs { margin-bottom: 1.25rem; }
+  .ppc-mrow {
+    display: flex;
+    justify-content: space-between;
+    padding: 7px 0;
+    font-size: 14px;
+    border-bottom: 1px solid {{ section.settings.border_color }};
+  }
+  .ppc-mrow:last-child { border-bottom: none; }
+  .ppc-mk { color: {{ section.settings.subtext_color }}; }
+  .ppc-mv { font-weight: 600; color: {{ section.settings.text_color }}; text-align: right; }
+  .ppc-contact-form { display: flex; flex-direction: column; gap: 10px; }
+  .ppc-cfield { display: flex; flex-direction: column; gap: 4px; }
+  .ppc-clabel { font-size: 12px; color: {{ section.settings.subtext_color }}; }
+  .ppc-cinput,
+  .ppc-ctextarea {
+    font-size: 13px;
+    padding: 8px 10px;
+    border: 1px solid {{ section.settings.border_color }};
+    border-radius: 8px;
+    background: {{ section.settings.bg_color }};
+    color: {{ section.settings.text_color }};
+    width: 100%;
+  }
+  .ppc-ctextarea { resize: vertical; min-height: 70px; }
+  .ppc-modal-foot {
+    display: flex;
+    gap: 8px;
+    margin-top: 1.25rem;
+  }
+  .ppc-mbtn {
+    flex: 1;
+    padding: 10px;
+    font-size: 14px;
+    font-weight: 500;
+    border-radius: 8px;
+    border: 1px solid {{ section.settings.border_color }};
+    background: {{ section.settings.panel_bg }};
+    color: {{ section.settings.text_color }};
+    cursor: pointer;
+  }
+  .ppc-mbtn--primary {
+    background: {{ section.settings.btn_bg }};
+    color: {{ section.settings.btn_text }};
+    border-color: {{ section.settings.btn_bg }};
+  }
+  .ppc-mbtn--primary:hover { opacity: .88; }
+  .ppc-success-note {
+    font-size: 12px;
+    color: {{ section.settings.subtext_color }};
+    margin-top: 1rem;
+    text-align: center;
+  }
+</style>
+
+<!-- ===================== JAVASCRIPT ===================== -->
+<script>
+(function() {
+  var sid = '{{ section.id }}';
+
+  var capColors = {
+    '500Wh':'#9FE1CB','1kWh':'#9FE1CB',
+    '2kWh':'#FAC775','5kWh':'#F0997B','10kWh':'#E24B4A'
+  };
+
+  function getSpecs() {
+    return {
+      cap:  document.getElementById('ppc-cap-'+sid).value,
+      vc:   document.getElementById('ppc-vc-'+sid).value,
+      wp:   document.getElementById('ppc-wp-'+sid).value,
+      three:document.getElementById('ppc-3p-'+sid).value,
+      sol:  document.getElementById('ppc-sol-'+sid).value,
+      enc:  document.getElementById('ppc-enc-'+sid).value,
+      qty:  document.getElementById('ppc-qty-'+sid).value || '1'
+    };
+  }
+
+  function updatePreview() {
+    var s = getSpecs();
+
+    // Capacity label colour
+    var capEl = document.getElementById('ppc-cap-label-'+sid);
+    if (s.cap) {
+      capEl.textContent = s.cap;
+      capEl.setAttribute('fill', capColors[s.cap] || '#9FE1CB');
+    } else {
+      capEl.textContent = '—';
+      capEl.setAttribute('fill', '#5F5E5A');
+    }
+
+    // Badges
+    var br = document.getElementById('ppc-badges-'+sid);
+    br.innerHTML = '';
+    var feats = [];
+    if (s.vc)                          feats.push({t:'Vehicle: '+s.vc, c:'teal'});
+    if (s.wp)                          feats.push({t:s.wp,             c:'blue'});
+    if (s.three)                       feats.push({t:s.three,          c:'purple'});
+    if (s.sol)                         feats.push({t:s.sol,            c:'yellow'});
+    if (s.enc && s.enc !== 'Standard casing') feats.push({t:s.enc,    c:'coral'});
+    feats.forEach(function(f) {
+      var b = document.createElement('span');
+      b.className = 'ppc-badge ppc-badge--'+f.c;
+      b.textContent = f.t;
+      br.appendChild(b);
+    });
+
+    // Spec list
+    var sl = document.getElementById('ppc-specs-'+sid);
+    var rows = [];
+    if (s.cap)   rows.push(['Capacity',        s.cap]);
+    if (s.vc)    rows.push(['Vehicle charge',   s.vc]);
+    if (s.wp)    rows.push(['Waterproofing',    s.wp]);
+    if (s.three) rows.push(['3-phase output',   s.three]);
+    if (s.sol)   rows.push(['Solar input',      s.sol]);
+    if (s.enc)   rows.push(['Enclosure',        s.enc]);
+    rows.push(['Quantity', s.qty]);
+    sl.innerHTML = rows.map(function(r) {
+      return '<div class="ppc-spec-row"><span>'+r[0]+'</span><span class="ppc-spec-val">'+r[1]+'</span></div>';
+    }).join('');
+  }
+
+  function buildModalSpecs(s) {
+    var rows = [
+      ['Battery capacity',  s.cap   || 'Not specified'],
+      ['Vehicle fast charge',s.vc   || 'Not required'],
+      ['Waterproofing',      s.wp   || 'Standard (indoor)'],
+      ['3-phase power',      s.three|| 'Not required'],
+      ['Solar input',        s.sol  || 'Not required'],
+      ['Enclosure',          s.enc  || 'Standard casing'],
+      ['Quantity',           s.qty]
+    ];
+    return rows.map(function(r) {
+      return '<div class="ppc-mrow"><span class="ppc-mk">'+r[0]+'</span><span class="ppc-mv">'+r[1]+'</span></div>';
+    }).join('');
+  }
+
+  function buildEmailBody(s, notes) {
+    return [
+      'POWER PACK ENQUIRY',
+      '--------------------------------------------------',
+      'SPECIFICATIONS REQUESTED:',
+      'Battery capacity: '  + (s.cap    || 'Not specified'),
+      'Vehicle fast charge: '+ (s.vc    || 'Not required'),
+      'Waterproofing: '      + (s.wp    || 'Standard (indoor)'),
+      '3-phase power: '      + (s.three || 'Not required'),
+      'Solar input: '        + (s.sol   || 'Not required'),
+      'Enclosure: '          + (s.enc   || 'Standard casing'),
+      'Quantity: '           + s.qty,
+      '--------------------------------------------------',
+      'Additional notes: '   + (notes || '—')
+    ].join('\n');
+  }
+
+  function openModal() {
+    var s = getSpecs();
+    document.getElementById('ppc-modal-specs-'+sid).innerHTML = buildModalSpecs(s);
+    document.getElementById('ppc-modal-bg-'+sid).classList.add('is-open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeModal() {
+    document.getElementById('ppc-modal-bg-'+sid).classList.remove('is-open');
+    document.body.style.overflow = '';
+  }
+
+  // Populate hidden body field just before form submit
+  document.getElementById('ppc-form-'+sid).addEventListener('submit', function() {
+    var s = getSpecs();
+    var notes = document.getElementById('ppc-cnotes-'+sid).value;
+    document.getElementById('ppc-hidden-body-'+sid).value = buildEmailBody(s, notes);
+  });
+
+  // Event listeners
+  document.querySelectorAll('#power-pack-configurator-'+sid+' .ppc-trigger')
+    .forEach(function(el) {
+      el.addEventListener('change', updatePreview);
+      el.addEventListener('input',  updatePreview);
+    });
+
+  document.getElementById('ppc-open-'+sid).addEventListener('click', openModal);
+  document.getElementById('ppc-close-'+sid).addEventListener('click', closeModal);
+  document.getElementById('ppc-modal-bg-'+sid).addEventListener('click', function(e) {
+    if (e.target === this) closeModal();
+  });
+
+  // Init
+  updatePreview();
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Power pack configurator",
+  "tag": "section",
+  "class": "section-power-pack-configurator",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Power pack configurator"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Build your ideal unit — we'll follow up with a tailored quote."
+    },
+    {
+      "type": "header",
+      "content": "Form"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_success_note",
+      "label": "Show note below submit button",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "success_note",
+      "label": "Note text",
+      "default": "We'll review your specs and be in touch within 1 business day."
+    },
+    {
+      "type": "header",
+      "content": "Colours"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Section background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "panel_bg",
+      "label": "Panel background",
+      "default": "#f9f9f7"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading colour",
+      "default": "#1a1a18"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Body text colour",
+      "default": "#2c2c2a"
+    },
+    {
+      "type": "color",
+      "id": "subtext_color",
+      "label": "Muted text colour",
+      "default": "#5f5e5a"
+    },
+    {
+      "type": "color",
+      "id": "border_color",
+      "label": "Border colour",
+      "default": "#e0ddd4"
+    },
+    {
+      "type": "color",
+      "id": "btn_bg",
+      "label": "Button background",
+      "default": "#185FA5"
+    },
+    {
+      "type": "color",
+      "id": "btn_text",
+      "label": "Button text",
+      "default": "#ffffff"
+    },
+    {
+      "type": "header",
+      "content": "Typography"
+    },
+    {
+      "type": "select",
+      "id": "font_family",
+      "label": "Font family",
+      "options": [
+        { "value": "inherit",           "label": "Theme default" },
+        { "value": "sans-serif",        "label": "System sans-serif" },
+        { "value": "Georgia, serif",    "label": "Georgia (serif)" }
+      ],
+      "default": "inherit"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Power pack configurator"
+    }
+  ]
+}
+{% endschema %}
