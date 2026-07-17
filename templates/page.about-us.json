@@ -38,6 +38,7 @@
         "enable_parallax": false,
         "image_size": "sm",
         "image": "shopify://shop_images/Peak_a00281de-5293-4b66-8424-9366c979ed4a.jpg",
+        "enable_clouds": false,
         "mobile_text_position": "place-self-center-start text-start",
         "desktop_text_position": "sm:place-self-center-start sm:text-start",
         "text_color": "#ffffff",
@@ -117,16 +118,22 @@
             "content": "<p>Sherpa Power are proud to be partnered with</p>"
           }
         },
-        "liquid_qdqAqM": {
-          "type": "liquid",
-          "settings": {
-            "liquid": "<a href=\"https://sunvault.co.uk/\">Sunvault Energy Solutions</a>"
-          }
-        },
         "liquid_qcGNP7": {
           "type": "liquid",
           "settings": {
             "liquid": "<a href=\"https://www.batteriesandsolar.co.uk/blog/blog-1/the-secret-to-endless-summer-adventures-17\">Batteries & Solar Ltd</a>"
+          }
+        },
+        "liquid_NVqdjQ": {
+          "type": "liquid",
+          "settings": {
+            "liquid": "<a href=\"https://www.promarinestore.co.uk/\">ProMarineStore</a>"
+          }
+        },
+        "liquid_qdqAqM": {
+          "type": "liquid",
+          "settings": {
+            "liquid": "<a href=\"https://sunvault.co.uk/\">Sunvault Energy Solutions</a>"
           }
         }
       },
@@ -134,8 +141,9 @@
         "heading_wd3Fep",
         "richtext_ym3B7i",
         "richtext_6GPUAz",
-        "liquid_qdqAqM",
-        "liquid_qcGNP7"
+        "liquid_qcGNP7",
+        "liquid_NVqdjQ",
+        "liquid_qdqAqM"
       ],
       "settings": {
         "full_width": true,
