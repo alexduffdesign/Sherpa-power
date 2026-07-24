@@ -157,6 +157,43 @@
         "text_color": ""
       }
     },
+    "1784897588ebeb5b16": {
+      "type": "_blocks",
+      "blocks": {
+        "ai_gen_block_ebb34dc_f6JRhK": {
+          "type": "ai_gen_block_ebb34dc",
+          "settings": {
+            "heading": "Request a hire quote",
+            "description": "<p>Fill out the form below and we'll get back to you with a tailored quote for your portable power needs.</p>",
+            "button_text": "Request quote",
+            "success_message": "<p>Thank you! We've received your quote request and will be in touch shortly.</p>",
+            "desktop_width_percent": 100,
+            "border_radius": 24,
+            "background_color": "#ffffff",
+            "heading_color": "#1a1a1a",
+            "text_color": "#3f4345",
+            "label_color": "#1a1a1a",
+            "input_background": "#ffffff",
+            "input_border_color": "#d1d5db",
+            "primary_color": "#25c293",
+            "button_color": "#25c293",
+            "button_text_color": "#ffffff",
+            "button_hover_color": "#1fa87a",
+            "success_color": "#25c293",
+            "error_color": "#f83a3a",
+            "heading_size": 32,
+            "text_size": 15,
+            "input_border_radius": 8,
+            "button_border_radius": 60
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "ai_gen_block_ebb34dc_f6JRhK"
+      ],
+      "settings": {}
+    },
     "featured_product_4rpqRz": {
       "type": "featured-product",
       "blocks": {
@@ -265,6 +302,7 @@
     "main",
     "featured_collection_xUtPF7",
     "rich_text_YdMUFC",
+    "1784897588ebeb5b16",
     "featured_product_4rpqRz"
   ]
 }
