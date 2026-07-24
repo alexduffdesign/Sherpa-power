@@ -1,6 +1,582 @@
+{% doc %}
+  @prompt
+    a hire quote form
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-hire-quote-form-{{ ai_gen_id }} {
+    display: block;
+    width: {{ block.settings.desktop_width_percent }}%;
+    max-width: 100%;
+    margin: 0 auto;
+  }
+
+  .ai-hire-quote-form__container-{{ ai_gen_id }} {
+    background-color: {{ block.settings.background_color }};
+    border-radius: {{ block.settings.border_radius }}px;
+    padding: 40px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  }
+
+  .ai-hire-quote-form__header-{{ ai_gen_id }} {
+    margin-bottom: 30px;
+  }
+
+  .ai-hire-quote-form__title-{{ ai_gen_id }} {
+    color: {{ block.settings.heading_color }};
+    font-size: {{ block.settings.heading_size }}px;
+    margin: 0 0 10px 0;
+    font-weight: 600;
+  }
+
+  .ai-hire-quote-form__description-{{ ai_gen_id }} {
+    color: {{ block.settings.text_color }};
+    font-size: {{ block.settings.text_size }}px;
+    margin: 0;
+    line-height: 1.5;
+  }
+
+  .ai-hire-quote-form__form-{{ ai_gen_id }} {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .ai-hire-quote-form__row-{{ ai_gen_id }} {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+
+  .ai-hire-quote-form__field-{{ ai_gen_id }} {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .ai-hire-quote-form__field--full-{{ ai_gen_id }} {
+    grid-column: 1 / -1;
+  }
+
+  .ai-hire-quote-form__label-{{ ai_gen_id }} {
+    color: {{ block.settings.label_color }};
+    font-size: 14px;
+    font-weight: 500;
+  }
+
+  .ai-hire-quote-form__label--required-{{ ai_gen_id }}::after {
+    content: '*';
+    color: {{ block.settings.error_color }};
+    margin-left: 4px;
+  }
+
+  .ai-hire-quote-form__input-{{ ai_gen_id }},
+  .ai-hire-quote-form__select-{{ ai_gen_id }},
+  .ai-hire-quote-form__textarea-{{ ai_gen_id }} {
+    padding: 12px 16px;
+    border: 1px solid {{ block.settings.input_border_color }};
+    border-radius: {{ block.settings.input_border_radius }}px;
+    font-size: 15px;
+    color: {{ block.settings.text_color }};
+    background-color: {{ block.settings.input_background }};
+    transition: border-color 0.2s ease;
+  }
+
+  .ai-hire-quote-form__input-{{ ai_gen_id }}:focus,
+  .ai-hire-quote-form__select-{{ ai_gen_id }}:focus,
+  .ai-hire-quote-form__textarea-{{ ai_gen_id }}:focus {
+    outline: none;
+    border-color: {{ block.settings.primary_color }};
+  }
+
+  .ai-hire-quote-form__select-{{ ai_gen_id }} {
+    cursor: pointer;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%233f4345' d='M1.41 0L6 4.58 10.59 0 12 1.41l-6 6-6-6z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 16px center;
+    padding-right: 40px;
+  }
+
+  .ai-hire-quote-form__textarea-{{ ai_gen_id }} {
+    min-height: 120px;
+    resize: vertical;
+    font-family: inherit;
+  }
+
+  .ai-hire-quote-form__button-{{ ai_gen_id }} {
+    padding: 16px 32px;
+    background-color: {{ block.settings.button_color }};
+    color: {{ block.settings.button_text_color }};
+    border: none;
+    border-radius: {{ block.settings.button_border_radius }}px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    margin-top: 10px;
+  }
+
+  .ai-hire-quote-form__button-{{ ai_gen_id }}:hover {
+    background-color: {{ block.settings.button_hover_color }};
+    transform: translateY(-2px);
+  }
+
+  .ai-hire-quote-form__message-{{ ai_gen_id }} {
+    padding: 16px;
+    border-radius: 8px;
+    margin-top: 20px;
+    font-size: 15px;
+  }
+
+  .ai-hire-quote-form__message--success-{{ ai_gen_id }} {
+    background-color: rgba(37, 194, 147, 0.1);
+    color: {{ block.settings.success_color }};
+    border: 1px solid {{ block.settings.success_color }};
+  }
+
+  .ai-hire-quote-form__message--error-{{ ai_gen_id }} {
+    background-color: rgba(248, 58, 58, 0.1);
+    color: {{ block.settings.error_color }};
+    border: 1px solid {{ block.settings.error_color }};
+  }
+
+  @media screen and (max-width: 749px) {
+    .ai-hire-quote-form__container-{{ ai_gen_id }} {
+      padding: 24px;
+    }
+
+    .ai-hire-quote-form__row-{{ ai_gen_id }} {
+      grid-template-columns: 1fr;
+    }
+
+    .ai-hire-quote-form__title-{{ ai_gen_id }} {
+      font-size: {{ block.settings.heading_size | times: 0.8 }}px;
+    }
+  }
+{% endstyle %}
+
+<hire-quote-form-{{ ai_gen_id }} class="ai-hire-quote-form-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
+  <div class="ai-hire-quote-form__container-{{ ai_gen_id }}">
+    <div class="ai-hire-quote-form__header-{{ ai_gen_id }}">
+      {% if block.settings.heading != blank %}
+        <h2 class="ai-hire-quote-form__title-{{ ai_gen_id }}">{{ block.settings.heading }}</h2>
+      {% endif %}
+      {% if block.settings.description != blank %}
+        <div class="ai-hire-quote-form__description-{{ ai_gen_id }}">{{ block.settings.description }}</div>
+      {% endif %}
+    </div>
+
+    {% form 'contact' %}
+      <input type="hidden" name="contact[subject]" value="Hire Quote Request">
+      
+      <div class="ai-hire-quote-form__form-{{ ai_gen_id }}">
+        <div class="ai-hire-quote-form__row-{{ ai_gen_id }}">
+          <div class="ai-hire-quote-form__field-{{ ai_gen_id }}">
+            <label class="ai-hire-quote-form__label-{{ ai_gen_id }} ai-hire-quote-form__label--required-{{ ai_gen_id }}" for="hire-name-{{ ai_gen_id }}">
+              Name
+            </label>
+            <input
+              type="text"
+              id="hire-name-{{ ai_gen_id }}"
+              name="contact[name]"
+              class="ai-hire-quote-form__input-{{ ai_gen_id }}"
+              required
+              {% if form.name %}value="{{ form.name }}"{% endif %}
+            >
+          </div>
+
+          <div class="ai-hire-quote-form__field-{{ ai_gen_id }}">
+            <label class="ai-hire-quote-form__label-{{ ai_gen_id }} ai-hire-quote-form__label--required-{{ ai_gen_id }}" for="hire-email-{{ ai_gen_id }}">
+              Email
+            </label>
+            <input
+              type="email"
+              id="hire-email-{{ ai_gen_id }}"
+              name="contact[email]"
+              class="ai-hire-quote-form__input-{{ ai_gen_id }}"
+              required
+              autocomplete="email"
+              {% if form.email %}value="{{ form.email }}"{% endif %}
+              {% if form.errors %}
+                aria-invalid="true"
+                aria-describedby="hire-form-error-{{ ai_gen_id }}"
+              {% endif %}
+            >
+          </div>
+        </div>
+
+        <div class="ai-hire-quote-form__row-{{ ai_gen_id }}">
+          <div class="ai-hire-quote-form__field-{{ ai_gen_id }}">
+            <label class="ai-hire-quote-form__label-{{ ai_gen_id }} ai-hire-quote-form__label--required-{{ ai_gen_id }}" for="hire-phone-{{ ai_gen_id }}">
+              Phone
+            </label>
+            <input
+              type="tel"
+              id="hire-phone-{{ ai_gen_id }}"
+              name="contact[phone]"
+              class="ai-hire-quote-form__input-{{ ai_gen_id }}"
+              required
+              autocomplete="tel"
+            >
+          </div>
+
+          <div class="ai-hire-quote-form__field-{{ ai_gen_id }}">
+            <label class="ai-hire-quote-form__label-{{ ai_gen_id }}" for="hire-company-{{ ai_gen_id }}">
+              Company
+            </label>
+            <input
+              type="text"
+              id="hire-company-{{ ai_gen_id }}"
+              name="contact[company]"
+              class="ai-hire-quote-form__input-{{ ai_gen_id }}"
+            >
+          </div>
+        </div>
+
+        <div class="ai-hire-quote-form__row-{{ ai_gen_id }}">
+          <div class="ai-hire-quote-form__field-{{ ai_gen_id }}">
+            <label class="ai-hire-quote-form__label-{{ ai_gen_id }} ai-hire-quote-form__label--required-{{ ai_gen_id }}" for="hire-equipment-{{ ai_gen_id }}">
+              Equipment required
+            </label>
+            <select
+              id="hire-equipment-{{ ai_gen_id }}"
+              name="contact[equipment]"
+              class="ai-hire-quote-form__select-{{ ai_gen_id }}"
+              required
+            >
+              <option value="">Select equipment</option>
+              <option value="Portable Power Station - Small">Portable Power Station - Small</option>
+              <option value="Portable Power Station - Medium">Portable Power Station - Medium</option>
+              <option value="Portable Power Station - Large">Portable Power Station - Large</option>
+              <option value="Solar Panel Kit">Solar Panel Kit</option>
+              <option value="Battery Pack">Battery Pack</option>
+              <option value="Complete System">Complete System</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+
+          <div class="ai-hire-quote-form__field-{{ ai_gen_id }}">
+            <label class="ai-hire-quote-form__label-{{ ai_gen_id }}" for="hire-quantity-{{ ai_gen_id }}">
+              Quantity
+            </label>
+            <input
+              type="number"
+              id="hire-quantity-{{ ai_gen_id }}"
+              name="contact[quantity]"
+              class="ai-hire-quote-form__input-{{ ai_gen_id }}"
+              min="1"
+              value="1"
+            >
+          </div>
+        </div>
+
+        <div class="ai-hire-quote-form__row-{{ ai_gen_id }}">
+          <div class="ai-hire-quote-form__field-{{ ai_gen_id }}">
+            <label class="ai-hire-quote-form__label-{{ ai_gen_id }} ai-hire-quote-form__label--required-{{ ai_gen_id }}" for="hire-start-date-{{ ai_gen_id }}">
+              Hire start date
+            </label>
+            <input
+              type="text"
+              id="hire-start-date-{{ ai_gen_id }}"
+              name="contact[start_date]"
+              class="ai-hire-quote-form__input-{{ ai_gen_id }}"
+              placeholder="DD/MM/YYYY"
+              required
+            >
+          </div>
+
+          <div class="ai-hire-quote-form__field-{{ ai_gen_id }}">
+            <label class="ai-hire-quote-form__label-{{ ai_gen_id }} ai-hire-quote-form__label--required-{{ ai_gen_id }}" for="hire-duration-{{ ai_gen_id }}">
+              Hire duration
+            </label>
+            <select
+              id="hire-duration-{{ ai_gen_id }}"
+              name="contact[duration]"
+              class="ai-hire-quote-form__select-{{ ai_gen_id }}"
+              required
+            >
+              <option value="">Select duration</option>
+              <option value="1 day">1 day</option>
+              <option value="2-3 days">2-3 days</option>
+              <option value="1 week">1 week</option>
+              <option value="2 weeks">2 weeks</option>
+              <option value="1 month">1 month</option>
+              <option value="3 months">3 months</option>
+              <option value="6 months">6 months</option>
+              <option value="12 months">12 months</option>
+              <option value="Custom">Custom</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="ai-hire-quote-form__field-{{ ai_gen_id }} ai-hire-quote-form__field--full-{{ ai_gen_id }}">
+          <label class="ai-hire-quote-form__label-{{ ai_gen_id }}" for="hire-location-{{ ai_gen_id }}">
+            Delivery location
+          </label>
+          <input
+            type="text"
+            id="hire-location-{{ ai_gen_id }}"
+            name="contact[location]"
+            class="ai-hire-quote-form__input-{{ ai_gen_id }}"
+            placeholder="City or postcode"
+          >
+        </div>
+
+        <div class="ai-hire-quote-form__field-{{ ai_gen_id }} ai-hire-quote-form__field--full-{{ ai_gen_id }}">
+          <label class="ai-hire-quote-form__label-{{ ai_gen_id }}" for="hire-message-{{ ai_gen_id }}">
+            Additional requirements
+          </label>
+          <textarea
+            id="hire-message-{{ ai_gen_id }}"
+            name="contact[body]"
+            class="ai-hire-quote-form__textarea-{{ ai_gen_id }}"
+            placeholder="Tell us about your project, power requirements, or any special needs..."
+          ></textarea>
+        </div>
+
+        <button type="submit" class="ai-hire-quote-form__button-{{ ai_gen_id }}">
+          {{ block.settings.button_text }}
+        </button>
+
+        {% if form.posted_successfully? %}
+          <div class="ai-hire-quote-form__message-{{ ai_gen_id }} ai-hire-quote-form__message--success-{{ ai_gen_id }}">
+            {{ block.settings.success_message }}
+          </div>
+        {% endif %}
+
+        {% if form.errors %}
+          <div id="hire-form-error-{{ ai_gen_id }}" class="ai-hire-quote-form__message-{{ ai_gen_id }} ai-hire-quote-form__message--error-{{ ai_gen_id }}">
+            {{ form.errors.messages.email }}
+          </div>
+        {% endif %}
+      </div>
+    {% endform %}
+  </div>
+</hire-quote-form-{{ ai_gen_id }}>
+
+<script>
+  (function() {
+    class HireQuoteForm{{ ai_gen_id }} extends HTMLElement {
+      constructor() {
+        super();
+      }
+
+      connectedCallback() {
+        this.form = this.querySelector('form');
+        if (this.form) {
+          this.setupValidation();
+        }
+      }
+
+      setupValidation() {
+        const inputs = this.form.querySelectorAll('input[required], select[required], textarea[required]');
+        
+        inputs.forEach(input => {
+          input.addEventListener('invalid', (e) => {
+            e.preventDefault();
+            input.style.borderColor = '#f83a3a';
+          });
+
+          input.addEventListener('input', () => {
+            if (input.validity.valid) {
+              input.style.borderColor = '';
+            }
+          });
+        });
+      }
+    }
+
+    customElements.define('hire-quote-form-{{ ai_gen_id }}', HireQuoteForm{{ ai_gen_id }});
+  })();
+</script>
+
 {% schema %}
- {
-   "name": "AI_Block",
-   "tag": "shopify-ai-generated-block"
- }
+{
+  "name": "Hire quote form",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Request a hire quote"
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "Description",
+      "default": "<p>Fill out the form below and we'll get back to you with a tailored quote for your portable power needs.</p>"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button text",
+      "default": "Request quote"
+    },
+    {
+      "type": "richtext",
+      "id": "success_message",
+      "label": "Success message",
+      "default": "<p>Thank you! We've received your quote request and will be in touch shortly.</p>"
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "range",
+      "id": "desktop_width_percent",
+      "label": "Desktop width",
+      "min": 50,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "default": 100
+    },
+    {
+      "type": "range",
+      "id": "border_radius",
+      "label": "Form border radius",
+      "min": 0,
+      "max": 40,
+      "step": 4,
+      "unit": "px",
+      "default": 24
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading",
+      "default": "#1a1a1a"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text",
+      "default": "#3f4345"
+    },
+    {
+      "type": "color",
+      "id": "label_color",
+      "label": "Label",
+      "default": "#1a1a1a"
+    },
+    {
+      "type": "color",
+      "id": "input_background",
+      "label": "Input background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "input_border_color",
+      "label": "Input border",
+      "default": "#d1d5db"
+    },
+    {
+      "type": "color",
+      "id": "primary_color",
+      "label": "Primary accent",
+      "default": "#25c293"
+    },
+    {
+      "type": "color",
+      "id": "button_color",
+      "label": "Button background",
+      "default": "#25c293"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Button text",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "button_hover_color",
+      "label": "Button hover",
+      "default": "#1fa87a"
+    },
+    {
+      "type": "color",
+      "id": "success_color",
+      "label": "Success",
+      "default": "#25c293"
+    },
+    {
+      "type": "color",
+      "id": "error_color",
+      "label": "Error",
+      "default": "#f83a3a"
+    },
+    {
+      "type": "header",
+      "content": "Typography"
+    },
+    {
+      "type": "range",
+      "id": "heading_size",
+      "label": "Heading size",
+      "min": 20,
+      "max": 48,
+      "step": 2,
+      "unit": "px",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "text_size",
+      "label": "Text size",
+      "min": 12,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "default": 15
+    },
+    {
+      "type": "header",
+      "content": "Style"
+    },
+    {
+      "type": "range",
+      "id": "input_border_radius",
+      "label": "Input border radius",
+      "min": 0,
+      "max": 20,
+      "step": 2,
+      "unit": "px",
+      "default": 8
+    },
+    {
+      "type": "range",
+      "id": "button_border_radius",
+      "label": "Button border radius",
+      "min": 0,
+      "max": 60,
+      "step": 4,
+      "unit": "px",
+      "default": 60
+    }
+  ],
+  "presets": [
+    {
+      "name": "Hire quote form"
+    }
+  ]
+}
 {% endschema %}
