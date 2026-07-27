@@ -62,7 +62,7 @@
         ".h3 {margin-top: 0em;}",
         ".xx-small {color: red;}",
         "@media screen and (max-width: 767px) {.prose {margin-bottom: 1rem; }}",
-        ".h1 {max-width: 1000ch; /* constrains line length so it wraps naturally */ margin: 0 auto; text-align: center; text-wrap: balance; /* balances line lengths evenly across 2 lines */ line-height: 1.2;}"
+        ".h1 {max-width: 1000ch; /* constrains line length so it wraps naturally */ margin: 0 auto; text-align: center; text-wrap: balance; /* balances line lengths evenly across 2 lines */ line-height: 1.2; margin-bottom: 1rem}"
       ],
       "name": "Hero",
       "settings": {
