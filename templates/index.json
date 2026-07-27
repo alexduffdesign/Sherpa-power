@@ -62,7 +62,7 @@
         ".h3 {margin-top: 0em;}",
         ".xx-small {color: red;}",
         "@media screen and (max-width: 767px) {.prose {margin-bottom: 1rem; }}",
-        ".h1 {max-width: 90%; /* let it use more of the available width here */ margin: 0 auto; text-align: center; font-size: clamp(1.8rem, 5vw, 3.5rem); /* shrinks on narrower screens instead of wrapping more */ line-height: 1.25; text-wrap: balance; margin-bottom: 2rem;}"
+        ".h1 {max-width: 100%; /* let it use more of the available width here */ margin: 0 auto; text-align: center; font-size: clamp( 1.8rem, 5vw, 3.5rem ); /* shrinks on narrower screens instead of wrapping more */ line-height: 1.25; text-wrap: balance; margin-bottom: 2rem;}"
       ],
       "name": "Hero",
       "settings": {
