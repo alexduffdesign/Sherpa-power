@@ -246,7 +246,7 @@ or change the format of some info
         "logo": {{ shop.brand.logo | image_url: width: shop.brand.logo.width | prepend: "https:" | json }},
       {%- endif -%}
       {%- if shop.brand.short_description -%}
-        "description": {{ shop.brand.short_description | json }},
+        "description": {{ shop.brand.short_description | strip_html | json }},
       {%- endif -%}
       {%- if shop.brand.slogan -%}
         "slogan": {{ shop.brand.slogan | json }},
