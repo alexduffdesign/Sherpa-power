@@ -38,7 +38,7 @@
     "show_page_transition": false,
     "heading_apparition": "split_fade",
     "show_secondary_image": true,
-    "show_sold_out_badge": false,
+    "show_sold_out_badge": true,
     "discount_mode": "saving",
     "product_color_display": "swatch",
     "product_info_alignment": "start",
