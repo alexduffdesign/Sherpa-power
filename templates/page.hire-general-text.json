@@ -250,6 +250,7 @@
         },
         "buy_buttons_GczUja": {
           "type": "buy_buttons",
+          "disabled": true,
           "settings": {
             "show_payment_button": true,
             "show_gift_card_recipient": true,
