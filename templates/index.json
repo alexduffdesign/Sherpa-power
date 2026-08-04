@@ -1235,6 +1235,29 @@
         "heading_color": "",
         "heading_gradient": "linear-gradient(180deg, rgba(35, 31, 37, 1) 55%, rgba(28, 160, 121, 1) 82%)"
       }
+    },
+    "power_pack_configurator_UYpeDb": {
+      "type": "power-pack-configurator",
+      "disabled": true,
+      "name": "Power pack configurator",
+      "settings": {
+        "text_alignment": "start",
+        "subheading": "",
+        "title": "Build your ideal power pack",
+        "content": "<p>Configure your Sherpa PRO MK2 - drag to rotate, then send us your spec.</p>",
+        "strip_url": "shopify://shop_images/sherpa_pro_mk2_strip.jpg",
+        "frame_count": 7,
+        "viewer_label": "Sherpa PRO MK2 - drag to rotate",
+        "cta_text": "Review & send enquiry →",
+        "modal_title": "Your power pack wishlist",
+        "show_modal_note": true,
+        "modal_note": "We'll review your specs and be in touch within 1 business day.",
+        "background": "",
+        "background_gradient": "",
+        "text_color": "",
+        "unit_bg": "#1a1c18",
+        "accent_color": "#00b87d"
+      }
     }
   },
   "order": [
@@ -1260,6 +1283,7 @@
     "image_with_text_overlay_zzgdjL",
     "image_with_text_overlay_RwjfPp",
     "image_with_text_overlay_DzeKnT",
-    "blog_posts_fRtbAP"
+    "blog_posts_fRtbAP",
+    "power_pack_configurator_UYpeDb"
   ]
 }
