@@ -1,16 +1,21 @@
 {% comment %}
-  Power Pack Configurator — Shopify Section
-  ==========================================
-  Built to match the Prestige/Sense OS2 theme conventions used in multi-column.liquid.
-  Uses the same section-properties, section-header, section-spacing-collapsing renders,
-  CSS variable system, and data-gradient heading pattern as the rest of the theme.
+  Sherpa PRO MK2 Power Pack Configurator — Shopify Section
+  =========================================================
+  Uses a single sprite-strip image for the 360° viewer.
+  GPU-accelerated CSS transform sliding — one HTTP request,
+  no frame flicker, works on touch.
 
-  Installation:
-  1. Online Store > Themes > Edit code
-  2. Sections > Add a new section > name it "power-pack-configurator"
-  3. Paste this file and save
-  4. Add to any page via the theme editor
-  Submissions go to Shopify Admin > Online Store > Contacts
+  SETUP:
+  1. Upload sherpa_pro_mk2_strip.jpg to Online Store > Content > Files
+  2. Copy its CDN URL and paste into the "Sprite strip image" setting
+     in the theme editor sidebar.
+  3. Set "Number of frames" to match how many shots are in your strip (default 7).
+
+  Matches multi-column.liquid theme conventions:
+  section-spacing-collapsing, section-properties, section-header,
+  CSS variable system, button classes, schema colour IDs.
+
+  Form submissions → Shopify Admin > Online Store > Contacts
 {% endcomment %}
 
 {%- render 'section-spacing-collapsing' -%}
@@ -20,185 +25,187 @@
 
     {%- render 'section-header'
       , subheading: section.settings.subheading
-      , heading: section.settings.title
-      , content: section.settings.content
+      , heading:    section.settings.title
+      , content:    section.settings.content
       , text_alignment: section.settings.text_alignment -%}
 
     <div class="ppc-layout">
 
-      <!-- ── Unit preview ─────────────────────────────────── -->
-      <div class="ppc-preview-wrap">
-        <div class="ppc-preview">
-          <p class="ppc-preview-label">{{ section.settings.preview_label }}</p>
+      <!-- ══════════════════════════════════════════════════
+           360° SPRITE VIEWER
+      ══════════════════════════════════════════════════ -->
+      <div class="ppc-viewer-card">
+        <p class="ppc-viewer-label">{{ section.settings.viewer_label }}</p>
 
-          <svg id="ppc-svg-{{ section.id }}"
-            viewBox="0 0 220 285" width="220" height="285"
-            xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-            <rect x="20" y="30" width="180" height="225" rx="14" fill="#2a2e28" stroke="#3d4239" stroke-width="1.2"/>
-            <rect x="34" y="30" width="152" height="3" rx="1.5" fill="#00E5A0" opacity=".6"/>
-            <rect x="20" y="16" width="40" height="14" rx="4" fill="#3d4239"/>
-            <rect x="160" y="16" width="40" height="14" rx="4" fill="#3d4239"/>
-            <rect x="20" y="30" width="8" height="2" rx="1" fill="#00E5A0" opacity=".4"/>
-            <rect x="20" y="30" width="2" height="8" rx="1" fill="#00E5A0" opacity=".4"/>
-            <rect x="192" y="30" width="8" height="2" rx="1" fill="#00E5A0" opacity=".4"/>
-            <rect x="198" y="30" width="2" height="8" rx="1" fill="#00E5A0" opacity=".4"/>
-            <rect x="30" y="42" width="160" height="96" rx="8" fill="#111310"/>
-            <rect x="36" y="48" width="148" height="84" rx="6" fill="#0d0f0c"/>
-            <circle cx="42" cy="54" r="2" fill="#1e231c"/>
-            <circle cx="178" cy="54" r="2" fill="#1e231c"/>
-            <text id="ppc-cap-{{ section.id }}" x="110" y="87"
-              text-anchor="middle" font-size="22" font-weight="700"
-              fill="#00E5A0" font-family="sans-serif">—</text>
-            <text x="110" y="106" text-anchor="middle" font-size="10"
-              fill="#4a5245" font-family="sans-serif" letter-spacing="2">CAPACITY</text>
-            <rect x="30" y="150" width="68" height="46" rx="6" fill="#1e1f4a"/>
-            <rect x="34" y="154" width="60" height="38" rx="4" fill="#141530"/>
-            <circle cx="64" cy="173" r="10" fill="none" stroke="#5a56c8" stroke-width="1.5"/>
-            <line x1="64" y1="163" x2="64" y2="169" stroke="#5a56c8" stroke-width="1.5"/>
-            <line x1="64" y1="177" x2="64" y2="183" stroke="#5a56c8" stroke-width="1.5"/>
-            <line x1="54" y1="173" x2="60" y2="173" stroke="#5a56c8" stroke-width="1.5"/>
-            <line x1="68" y1="173" x2="74" y2="173" stroke="#5a56c8" stroke-width="1.5"/>
-            <rect x="108" y="150" width="82" height="46" rx="6" fill="#0d2a1e"/>
-            <rect x="112" y="154" width="74" height="38" rx="4" fill="#081a12"/>
-            <rect x="120" y="159" width="16" height="26" rx="3" fill="#00b87d"/>
-            <rect x="142" y="159" width="6" height="20" rx="2" fill="#00E5A0" opacity=".7"/>
-            <rect x="154" y="161" width="6" height="18" rx="2" fill="#00E5A0" opacity=".45"/>
-            <text x="64" y="210" text-anchor="middle" font-size="9"
-              fill="#6a6eb8" font-family="sans-serif" letter-spacing="1">AC OUTPUT</text>
-            <text x="149" y="210" text-anchor="middle" font-size="9"
-              fill="#00b87d" font-family="sans-serif" letter-spacing="1">USB / DC</text>
-            <rect x="80" y="224" width="60" height="8" rx="4" fill="#1e231c"/>
+        {%- if section.settings.strip_url != blank -%}
+          {%- assign frame_count = section.settings.frame_count | default: 7 -%}
+          <div
+            class="ppc-stage"
+            id="ppc-stage-{{ section.id }}"
+            data-frames="{{ frame_count }}"
+            aria-label="Drag to rotate the Sherpa PRO MK2"
+            role="img"
+          >
+            <div
+              class="ppc-strip"
+              id="ppc-strip-{{ section.id }}"
+              style="background-image: url('{{ section.settings.strip_url | img_url: 'master' }}'); width: {{ frame_count }}00%;"
+            ></div>
+          </div>
+        {%- else -%}
+          <div class="ppc-stage ppc-stage--placeholder">
+            <p class="ppc-placeholder-text">Upload the sprite strip image<br/>in the theme editor to activate the 360° viewer.</p>
+          </div>
+        {%- endif -%}
+
+        <div class="ppc-viewer-hint">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+            <path d="M8 9l4-4 4 4M16 15l-4 4-4-4" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M4 12h16" stroke-linecap="round"/>
           </svg>
-
-          <div class="ppc-badge-row" id="ppc-badges-{{ section.id }}"></div>
-          <div class="ppc-spec-list" id="ppc-specs-{{ section.id }}"></div>
+          Drag left or right to rotate
+          <div class="ppc-dots" id="ppc-dots-{{ section.id }}">
+            {%- for i in (1..frame_count) -%}
+              <span class="ppc-dot{% if forloop.first %} ppc-dot--on{% endif %}"></span>
+            {%- endfor -%}
+          </div>
         </div>
+
+        <div class="ppc-badge-row" id="ppc-badges-{{ section.id }}"></div>
+        <div class="ppc-spec-list"  id="ppc-specs-{{ section.id }}"></div>
       </div>
 
-      <!-- ── Options ──────────────────────────────────────── -->
-      <div class="ppc-options-wrap">
-        <div class="ppc-options">
+      <!-- ══════════════════════════════════════════════════
+           CONFIGURATION OPTIONS
+      ══════════════════════════════════════════════════ -->
+      <div class="ppc-options">
 
+        <!-- Power output -->
+        <div class="ppc-group">
+          <p class="ppc-group-label">Power output</p>
           <div class="ppc-field">
-            <label class="ppc-label" for="ppc-cap-sel-{{ section.id }}">Battery capacity</label>
-            <select id="ppc-cap-sel-{{ section.id }}" class="ppc-select ppc-trigger">
+            <label class="ppc-label" for="ppc-mains-{{ section.id }}">Mains output voltage</label>
+            <select id="ppc-mains-{{ section.id }}" class="ppc-select ppc-trigger">
               <option value="">Select…</option>
-              <option value="500Wh">500Wh — compact</option>
-              <option value="1kWh">1kWh — standard</option>
-              <option value="2kWh">2kWh — extended</option>
-              <option value="5kWh">5kWh — high capacity</option>
-              <option value="10kWh">10kWh — industrial</option>
+              <option value="115V">115V</option>
+              <option value="230V">230V</option>
+              <option value="Dual 115V / 230V">Dual 115V / 230V</option>
+              <option value="3-Phase">3-Phase</option>
             </select>
           </div>
-
           <div class="ppc-field">
-            <label class="ppc-label" for="ppc-vc-{{ section.id }}">Vehicle fast charge</label>
-            <select id="ppc-vc-{{ section.id }}" class="ppc-select ppc-trigger">
-              <option value="">Not required</option>
-              <option value="CCS (DC fast charge)">CCS — DC fast charge</option>
-              <option value="CHAdeMO">CHAdeMO</option>
-              <option value="Type 2 AC (7kW)">Type 2 AC (7kW)</option>
-              <option value="Type 2 AC (22kW)">Type 2 AC (22kW)</option>
+            <label class="ppc-label" for="ppc-rating-{{ section.id }}">Output rating</label>
+            <select id="ppc-rating-{{ section.id }}" class="ppc-select ppc-trigger">
+              <option value="">Select…</option>
+              <option value="3,600W">3,600W</option>
+              <option value="5,000W">5,000W</option>
+              <option value="6,000W">6,000W</option>
+              <option value="10,000W">10,000W</option>
+              <option value="11,000W">11,000W</option>
+              <option value="12,000W">12,000W</option>
             </select>
           </div>
-
-          <div class="ppc-field">
-            <label class="ppc-label" for="ppc-wp-{{ section.id }}">Waterproofing</label>
-            <select id="ppc-wp-{{ section.id }}" class="ppc-select ppc-trigger">
-              <option value="">Standard (indoor)</option>
-              <option value="IP54 — splash resistant">IP54 — splash resistant</option>
-              <option value="IP65 — dust &amp; jet proof">IP65 — dust &amp; jet proof</option>
-              <option value="IP67 — full immersion">IP67 — full immersion</option>
-            </select>
-          </div>
-
-          <div class="ppc-field">
-            <label class="ppc-label" for="ppc-3p-{{ section.id }}">3-phase power output</label>
-            <select id="ppc-3p-{{ section.id }}" class="ppc-select ppc-trigger">
-              <option value="">Not required</option>
-              <option value="3-phase 16A (11kW)">3-phase 16A (11kW)</option>
-              <option value="3-phase 32A (22kW)">3-phase 32A (22kW)</option>
-              <option value="3-phase 63A (43kW)">3-phase 63A (43kW)</option>
-            </select>
-          </div>
-
-          <div class="ppc-field">
-            <label class="ppc-label" for="ppc-sol-{{ section.id }}">Solar input</label>
-            <select id="ppc-sol-{{ section.id }}" class="ppc-select ppc-trigger">
-              <option value="">Not required</option>
-              <option value="MPPT 400W solar input">MPPT 400W</option>
-              <option value="MPPT 800W solar input">MPPT 800W</option>
-              <option value="MPPT 1600W solar input">MPPT 1600W</option>
-            </select>
-          </div>
-
-          <div class="ppc-field">
-            <label class="ppc-label" for="ppc-enc-{{ section.id }}">Enclosure &amp; mounting</label>
-            <select id="ppc-enc-{{ section.id }}" class="ppc-select ppc-trigger">
-              <option value="">Standard casing</option>
-              <option value="Rack mount (2U)">Rack mount (2U)</option>
-              <option value="Wall mount bracket">Wall mount bracket</option>
-              <option value="Wheeled trolley case">Wheeled trolley case</option>
-              <option value="Pelican-style hard case">Pelican-style hard case</option>
-            </select>
-          </div>
-
-          <div class="ppc-field">
-            <label class="ppc-label" for="ppc-qty-{{ section.id }}">Quantity required</label>
-            <input
-              type="number"
-              id="ppc-qty-{{ section.id }}"
-              class="ppc-select ppc-trigger ppc-qty"
-              min="1" max="9999"
-              placeholder="e.g. 5"
-              value="1"
-            />
-          </div>
-
-          <button type="button" class="ppc-cta button" id="ppc-open-{{ section.id }}">
-            {{ section.settings.cta_text }}
-          </button>
-
         </div>
-      </div>
 
+        <!-- Storage -->
+        <div class="ppc-group">
+          <p class="ppc-group-label">Storage</p>
+          <div class="ppc-field">
+            <label class="ppc-label" for="ppc-cap-{{ section.id }}">Battery capacity</label>
+            <select id="ppc-cap-{{ section.id }}" class="ppc-select ppc-trigger">
+              <option value="">Select…</option>
+              <option value="2,300Wh">2,300Wh</option>
+              <option value="3,400Wh">3,400Wh</option>
+              <option value="5,400Wh">5,400Wh</option>
+              <option value="7,600Wh">7,600Wh</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Charging -->
+        <div class="ppc-group">
+          <p class="ppc-group-label">Charging options</p>
+          <div class="ppc-check-group">
+            <label class="ppc-check-item" id="ppc-ci-solar-{{ section.id }}">
+              <input type="checkbox" id="ppc-solar-{{ section.id }}" class="ppc-checkbox ppc-trigger"/>
+              <div>
+                <div class="ppc-check-text">Solar charging</div>
+                <div class="ppc-check-sub">MPPT solar input included</div>
+              </div>
+            </label>
+            <label class="ppc-check-item" id="ppc-ci-wind-{{ section.id }}">
+              <input type="checkbox" id="ppc-wind-{{ section.id }}" class="ppc-checkbox ppc-trigger"/>
+              <div>
+                <div class="ppc-check-text">Wind charging</div>
+                <div class="ppc-check-sub">Wind turbine input capability</div>
+              </div>
+            </label>
+          </div>
+        </div>
+
+        <!-- Additional -->
+        <div class="ppc-group">
+          <p class="ppc-group-label">Additional options</p>
+          <div class="ppc-check-group">
+            <label class="ppc-check-item" id="ppc-ci-gen-{{ section.id }}">
+              <input type="checkbox" id="ppc-gen-{{ section.id }}" class="ppc-checkbox ppc-trigger"/>
+              <div>
+                <div class="ppc-check-text">Generator auto-start link</div>
+                <div class="ppc-check-sub">Auto-triggers generator when battery is low</div>
+              </div>
+            </label>
+          </div>
+        </div>
+
+        <!-- Quantity -->
+        <div class="ppc-group">
+          <p class="ppc-group-label">Order quantity</p>
+          <div class="ppc-field">
+            <label class="ppc-label" for="ppc-qty-{{ section.id }}">Units required</label>
+            <input type="number" id="ppc-qty-{{ section.id }}"
+              class="ppc-select ppc-qty ppc-trigger"
+              min="1" max="9999" value="1" placeholder="e.g. 5"/>
+          </div>
+        </div>
+
+        <button type="button" class="button ppc-cta" id="ppc-open-{{ section.id }}">
+          {{ section.settings.cta_text }}
+        </button>
+
+      </div><!-- /.ppc-options -->
     </div><!-- /.ppc-layout -->
-  </div><!-- /.section-stack -->
+  </div>
 </div>
 
-<!-- ═══════════ MODAL ═══════════ -->
-<div class="ppc-modal-bg" id="ppc-modal-bg-{{ section.id }}"
-  role="dialog" aria-modal="true" aria-label="Send enquiry">
+<!-- ══════════════════════════════════════════════════
+     ENQUIRY MODAL
+══════════════════════════════════════════════════ -->
+<div class="ppc-modal-bg" id="ppc-modal-bg-{{ section.id }}" role="dialog" aria-modal="true">
   <div class="ppc-modal">
-
     <p class="ppc-modal-title h2">{{ section.settings.modal_title }}</p>
     <div id="ppc-modal-specs-{{ section.id }}" class="ppc-modal-specs"></div>
 
-    <form
-      method="post"
-      action="/contact#ppc-form-{{ section.id }}"
-      id="ppc-form-{{ section.id }}"
-      accept-charset="UTF-8"
-    >
+    <form method="post" action="/contact#ppc-form-{{ section.id }}"
+      id="ppc-form-{{ section.id }}" accept-charset="UTF-8">
       <input type="hidden" name="form_type" value="contact"/>
-      <input type="hidden" name="utf8" value="✓"/>
-      <input type="hidden" name="contact[body]" id="ppc-hidden-{{ section.id }}"/>
+      <input type="hidden" name="utf8"      value="✓"/>
+      <input type="hidden" name="contact[body]" id="ppc-body-{{ section.id }}"/>
 
       <div class="ppc-cfields">
         <div class="ppc-cfield">
           <label class="ppc-clabel" for="ppc-cname-{{ section.id }}">Your name</label>
-          <input type="text" id="ppc-cname-{{ section.id }}"
-            name="contact[name]" class="ppc-cinput" placeholder="Jane Smith" required/>
+          <input type="text" id="ppc-cname-{{ section.id }}" name="contact[name]"
+            class="ppc-cinput" placeholder="Jane Smith" required/>
         </div>
         <div class="ppc-cfield">
           <label class="ppc-clabel" for="ppc-cemail-{{ section.id }}">Email address</label>
-          <input type="email" id="ppc-cemail-{{ section.id }}"
-            name="contact[email]" class="ppc-cinput" placeholder="jane@company.com" required/>
+          <input type="email" id="ppc-cemail-{{ section.id }}" name="contact[email]"
+            class="ppc-cinput" placeholder="jane@company.com" required/>
         </div>
         <div class="ppc-cfield">
           <label class="ppc-clabel" for="ppc-cnotes-{{ section.id }}">Additional notes</label>
-          <textarea id="ppc-cnotes-{{ section.id }}"
-            name="contact[notes]" class="ppc-cinput ppc-ctextarea"
+          <textarea id="ppc-cnotes-{{ section.id }}" name="contact[notes]"
+            class="ppc-cinput ppc-ctextarea"
             placeholder="Delivery timeline, site requirements, etc."></textarea>
         </div>
       </div>
@@ -212,13 +219,14 @@
     {%- if section.settings.show_modal_note -%}
       <p class="ppc-modal-note prose">{{ section.settings.modal_note }}</p>
     {%- endif -%}
-
   </div>
 </div>
 
-{%- comment -%} ═══════ STYLES ═══════ {%- endcomment -%}
+<!-- ══════════════════════════════════════════════════
+     STYLES
+══════════════════════════════════════════════════ -->
 <style>
-  /* ── Layout ──────────────────────────────────────────── */
+  /* Layout */
   #shopify-section-{{ section.id }} .ppc-layout {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -226,23 +234,20 @@
     align-items: start;
   }
   @media screen and (max-width: 699px) {
-    #shopify-section-{{ section.id }} .ppc-layout {
-      grid-template-columns: 1fr;
-    }
+    #shopify-section-{{ section.id }} .ppc-layout { grid-template-columns: 1fr; }
   }
 
-  /* ── Preview panel ───────────────────────────────────── */
-  #shopify-section-{{ section.id }} .ppc-preview {
+  /* Viewer card */
+  #shopify-section-{{ section.id }} .ppc-viewer-card {
     background: {{ section.settings.unit_bg }};
     border-radius: var(--block-border-radius, 8px);
-    padding: var(--spacing-8, 2rem);
+    padding: var(--spacing-8);
     display: flex;
     flex-direction: column;
-    align-items: center;
-    gap: var(--spacing-4, 1rem);
+    align-items: flex-start;
+    gap: var(--spacing-4);
   }
-  #shopify-section-{{ section.id }} .ppc-preview-label {
-    align-self: flex-start;
+  #shopify-section-{{ section.id }} .ppc-viewer-label {
     font-size: var(--text-xs, 11px);
     font-weight: var(--text-font-bolder-weight, 700);
     letter-spacing: .1em;
@@ -250,248 +255,352 @@
     color: {{ section.settings.accent_color }};
     margin: 0;
   }
-  #shopify-section-{{ section.id }} .ppc-badge-row {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--spacing-2, 6px);
-    justify-content: center;
-    min-height: 1.5rem;
+
+  /* Sprite stage — clips to one frame */
+  #shopify-section-{{ section.id }} .ppc-stage {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    overflow: hidden;
+    border-radius: 6px;
+    cursor: grab;
+    user-select: none;
+    background: {{ section.settings.unit_bg }};
+    touch-action: pan-y;
   }
+  #shopify-section-{{ section.id }} .ppc-stage:active { cursor: grabbing; }
+
+  /* The strip — slides via transform */
+  #shopify-section-{{ section.id }} .ppc-strip {
+    position: absolute;
+    top: 0; left: 0;
+    height: 100%;
+    /* width set inline via Liquid: frame_count * 100% */
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    will-change: transform;
+  }
+
+  /* Placeholder when no strip uploaded */
+  #shopify-section-{{ section.id }} .ppc-stage--placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: default;
+  }
+  #shopify-section-{{ section.id }} .ppc-placeholder-text {
+    font-size: var(--text-sm, 13px);
+    color: rgba(255,255,255,.35);
+    text-align: center;
+    line-height: 1.55;
+  }
+
+  /* Drag hint + dots */
+  #shopify-section-{{ section.id }} .ppc-viewer-hint {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    color: rgba(255,255,255,.35);
+  }
+  #shopify-section-{{ section.id }} .ppc-viewer-hint svg { flex-shrink: 0; opacity: .5; }
+  #shopify-section-{{ section.id }} .ppc-dots { display: flex; gap: 5px; align-items: center; margin-left: 4px; }
+  #shopify-section-{{ section.id }} .ppc-dot {
+    display: inline-block;
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: rgba(255,255,255,.2);
+    transition: background .2s, width .2s, height .2s;
+  }
+  #shopify-section-{{ section.id }} .ppc-dot--on {
+    background: {{ section.settings.accent_color }};
+    width: 8px; height: 8px;
+  }
+
+  /* Badges */
+  #shopify-section-{{ section.id }} .ppc-badge-row { display: flex; flex-wrap: wrap; gap: var(--spacing-2); min-height: 1.25rem; }
   #shopify-section-{{ section.id }} .ppc-badge {
     font-size: var(--text-xs, 11px);
     font-weight: var(--text-font-bolder-weight, 700);
-    letter-spacing: .05em;
-    text-transform: uppercase;
-    padding: 3px 10px;
-    border-radius: 20px;
+    letter-spacing: .05em; text-transform: uppercase;
+    padding: 3px 10px; border-radius: 20px;
   }
-  #shopify-section-{{ section.id }} .ppc-badge--t { background: rgba(0,229,160,.15); color: #00E5A0; border: 1px solid rgba(0,229,160,.35); }
-  #shopify-section-{{ section.id }} .ppc-badge--b { background: rgba(56,138,221,.15); color: #7BC2F5; border: 1px solid rgba(56,138,221,.35); }
-  #shopify-section-{{ section.id }} .ppc-badge--p { background: rgba(127,119,221,.15); color: #BDB8F5; border: 1px solid rgba(127,119,221,.35); }
-  #shopify-section-{{ section.id }} .ppc-badge--y { background: rgba(239,159,39,.15); color: #F5C97A; border: 1px solid rgba(239,159,39,.35); }
-  #shopify-section-{{ section.id }} .ppc-badge--c { background: rgba(216,90,48,.15); color: #F5A07A; border: 1px solid rgba(216,90,48,.35); }
+  #shopify-section-{{ section.id }} .ppc-badge--g { background:rgba(0,229,160,.15);color:#00E5A0;border:1px solid rgba(0,229,160,.35); }
+  #shopify-section-{{ section.id }} .ppc-badge--b { background:rgba(56,138,221,.15);color:#7BC2F5;border:1px solid rgba(56,138,221,.35); }
+  #shopify-section-{{ section.id }} .ppc-badge--y { background:rgba(239,159,39,.15);color:#F5C97A;border:1px solid rgba(239,159,39,.35); }
+  #shopify-section-{{ section.id }} .ppc-badge--t { background:rgba(0,184,125,.15);color:#5DCAA5;border:1px solid rgba(0,184,125,.35); }
+  #shopify-section-{{ section.id }} .ppc-badge--p { background:rgba(127,119,221,.15);color:#BDB8F5;border:1px solid rgba(127,119,221,.35); }
+
+  /* Spec list */
   #shopify-section-{{ section.id }} .ppc-spec-list {
-    width: 100%;
-    font-size: var(--text-xs, 12px);
+    width: 100%; font-size: var(--text-xs, 12px);
     border-top: 1px solid rgba(255,255,255,.1);
-    padding-top: var(--spacing-3, 10px);
+    padding-top: var(--spacing-3);
   }
   #shopify-section-{{ section.id }} .ppc-spec-row {
-    display: flex;
-    justify-content: space-between;
-    padding: 4px 0;
-    border-bottom: 1px solid rgba(255,255,255,.07);
-    color: rgba(255,255,255,.45);
+    display: flex; justify-content: space-between;
+    padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,.06);
+    color: rgba(255,255,255,.4);
   }
   #shopify-section-{{ section.id }} .ppc-spec-row:last-child { border-bottom: none; }
   #shopify-section-{{ section.id }} .ppc-spec-val {
     font-weight: var(--text-font-bolder-weight, 600);
-    color: rgba(255,255,255,.85);
-    text-align: right;
-    max-width: 60%;
+    color: rgba(255,255,255,.82); text-align: right; max-width: 60%;
   }
 
-  /* ── Options panel ───────────────────────────────────── */
+  /* Options column */
   #shopify-section-{{ section.id }} .ppc-options {
-    display: flex;
-    flex-direction: column;
-    gap: var(--spacing-4, 1rem);
+    display: flex; flex-direction: column; gap: var(--spacing-6);
+  }
+  #shopify-section-{{ section.id }} .ppc-group {
+    display: flex; flex-direction: column; gap: var(--spacing-3);
+  }
+  #shopify-section-{{ section.id }} .ppc-group-label {
+    font-size: var(--text-xs, 11px);
+    font-weight: var(--text-font-bolder-weight, 700);
+    letter-spacing: .1em; text-transform: uppercase;
+    color: {{ section.settings.accent_color }};
+    border-bottom: 1px solid rgba(currentColor, .15);
+    padding-bottom: var(--spacing-2); margin: 0;
   }
   #shopify-section-{{ section.id }} .ppc-field {
-    display: flex;
-    flex-direction: column;
-    gap: var(--spacing-2, 5px);
+    display: flex; flex-direction: column; gap: var(--spacing-2);
   }
   #shopify-section-{{ section.id }} .ppc-label {
     font-size: var(--text-xs, 11px);
     font-weight: var(--text-font-bolder-weight, 700);
-    letter-spacing: .07em;
-    text-transform: uppercase;
-    color: currentColor;
-    opacity: .65;
+    letter-spacing: .06em; text-transform: uppercase; opacity: .6;
   }
   #shopify-section-{{ section.id }} .ppc-select {
-    width: 100%;
-    font-size: var(--text-sm, 13px);
+    width: 100%; font-size: var(--text-sm, 13px);
     padding: 10px 12px;
     border: 1px solid rgba(currentColor, .2);
     border-radius: var(--input-border-radius, 4px);
-    background: transparent;
-    color: currentColor;
-    appearance: auto;
+    background: transparent; color: currentColor; appearance: auto;
   }
   #shopify-section-{{ section.id }} .ppc-qty { width: 120px; }
-  #shopify-section-{{ section.id }} .ppc-cta {
-    align-self: stretch;
-    margin-top: var(--spacing-2, 4px);
-  }
 
-  /* ── Modal ───────────────────────────────────────────── */
+  /* Checkboxes */
+  #shopify-section-{{ section.id }} .ppc-check-group { display: flex; flex-direction: column; gap: var(--spacing-3); }
+  #shopify-section-{{ section.id }} .ppc-check-item {
+    display: flex; align-items: center; gap: 12px; cursor: pointer;
+    padding: 10px 12px;
+    border: 1px solid rgba(currentColor, .2);
+    border-radius: var(--input-border-radius, 4px);
+    transition: border-color .15s;
+  }
+  #shopify-section-{{ section.id }} .ppc-check-item:hover { border-color: {{ section.settings.accent_color }}; }
+  #shopify-section-{{ section.id }} .ppc-check-item.ppc-checked { border-color: {{ section.settings.accent_color }}; }
+  #shopify-section-{{ section.id }} .ppc-checkbox {
+    width: 16px; height: 16px;
+    accent-color: {{ section.settings.accent_color }};
+    cursor: pointer; flex-shrink: 0;
+  }
+  #shopify-section-{{ section.id }} .ppc-check-text { font-size: var(--text-sm, 13px); }
+  #shopify-section-{{ section.id }} .ppc-check-sub  { font-size: var(--text-xs, 11px); opacity: .55; }
+  #shopify-section-{{ section.id }} .ppc-cta { align-self: stretch; justify-content: center; }
+
+  /* Modal */
   .ppc-modal-bg {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,.55);
-    z-index: 10000;
-    align-items: center;
-    justify-content: center;
-    padding: var(--spacing-5, 1.25rem);
+    display: none; position: fixed; inset: 0;
+    background: rgba(0,0,0,.55); z-index: 10000;
+    align-items: center; justify-content: center;
+    padding: var(--spacing-5);
   }
   .ppc-modal-bg.is-open { display: flex; }
   .ppc-modal {
     background: rgb(var(--color-background));
     border-radius: var(--block-border-radius, 8px);
     border-top: 3px solid {{ section.settings.accent_color }};
-    padding: var(--spacing-8, 2rem);
-    width: min(520px, 100%);
-    max-height: 90vh;
-    overflow-y: auto;
+    padding: var(--spacing-8);
+    width: min(520px, 100%); max-height: 90vh; overflow-y: auto;
     box-shadow: var(--shadow-block-outer);
   }
-  .ppc-modal-title {
-    margin-bottom: var(--spacing-5, 1.25rem) !important;
-  }
+  .ppc-modal-title { margin-bottom: var(--spacing-5) !important; }
   .ppc-modal-specs {
-    margin-bottom: var(--spacing-5, 1.25rem);
+    margin-bottom: var(--spacing-5);
     border: 1px solid rgba(currentColor, .12);
-    border-radius: var(--block-border-radius, 6px);
-    overflow: hidden;
+    border-radius: var(--block-border-radius, 6px); overflow: hidden;
   }
   .ppc-mrow {
-    display: flex;
-    justify-content: space-between;
-    padding: 9px 14px;
-    font-size: var(--text-sm, 14px);
+    display: flex; justify-content: space-between;
+    padding: 9px 14px; font-size: var(--text-sm, 14px);
     border-bottom: 1px solid rgba(currentColor, .08);
   }
   .ppc-mrow:last-child { border-bottom: none; }
   .ppc-mrow:nth-child(odd) { background: rgba(currentColor, .02); }
   .ppc-mk { opacity: .55; }
   .ppc-mv { font-weight: var(--text-font-bolder-weight, 600); text-align: right; }
-  .ppc-cfields {
-    display: flex;
-    flex-direction: column;
-    gap: var(--spacing-4, 1rem);
-  }
-  .ppc-cfield {
-    display: flex;
-    flex-direction: column;
-    gap: var(--spacing-2, 5px);
-  }
-  .ppc-clabel {
+  .ppc-cfields { display: flex; flex-direction: column; gap: var(--spacing-4); }
+  .ppc-cfield  { display: flex; flex-direction: column; gap: var(--spacing-2); }
+  .ppc-clabel  {
     font-size: var(--text-xs, 11px);
     font-weight: var(--text-font-bolder-weight, 700);
-    letter-spacing: .07em;
-    text-transform: uppercase;
-    opacity: .6;
+    letter-spacing: .07em; text-transform: uppercase; opacity: .6;
   }
   .ppc-cinput {
-    width: 100%;
-    font-size: var(--text-sm, 14px);
+    width: 100%; font-size: var(--text-sm, 14px);
     padding: 10px 12px;
     border: 1px solid rgba(currentColor, .2);
     border-radius: var(--input-border-radius, 4px);
-    background: transparent;
-    color: currentColor;
+    background: transparent; color: currentColor;
   }
-  .ppc-ctextarea {
-    resize: vertical;
-    min-height: 80px;
-  }
-  .ppc-mfoot {
-    display: flex;
-    gap: var(--spacing-3, .75rem);
-    margin-top: var(--spacing-6, 1.5rem);
-  }
+  .ppc-ctextarea { resize: vertical; min-height: 80px; }
+  .ppc-mfoot { display: flex; gap: var(--spacing-3); margin-top: var(--spacing-6); }
   .ppc-mfoot .button { flex: 1; justify-content: center; }
-  .ppc-modal-note {
-    margin-top: var(--spacing-4, 1rem);
-    font-size: var(--text-xs, 12px);
-    opacity: .55;
-    text-align: center;
-  }
+  .ppc-modal-note { margin-top: var(--spacing-4); font-size: var(--text-xs); opacity: .55; text-align: center; }
 </style>
 
-{%- comment -%} ═══════ JAVASCRIPT ═══════ {%- endcomment -%}
+<!-- ══════════════════════════════════════════════════
+     JAVASCRIPT
+══════════════════════════════════════════════════ -->
 <script>
 (function () {
-  var sid = '{{ section.id }}';
-  var capColors = {
-    '500Wh': '#00E5A0', '1kWh': '#00E5A0',
-    '2kWh':  '#8BE5A0', '5kWh': '#F5C97A', '10kWh': '#F5907A'
-  };
+  var sid    = '{{ section.id }}';
+  var stage  = document.getElementById('ppc-stage-'  + sid);
+  var strip  = document.getElementById('ppc-strip-'  + sid);
+  var dotsEl = document.getElementById('ppc-dots-'   + sid);
 
-  function el(id) { return document.getElementById(id); }
-  function sv(id) { var e = el(id); return e ? e.value : ''; }
+  // ── 360 sprite viewer ────────────────────────────────────────
+  if (stage && strip) {
+    var FRAMES   = parseInt(stage.dataset.frames, 10) || 7;
+    var current  = 0;
+    var dragging = false;
+    var startX   = 0;
+    var accumX   = 0;
+    var DRAG_PX  = 55; // px drag required to advance one frame
+    var dots     = dotsEl ? Array.from(dotsEl.querySelectorAll('.ppc-dot')) : [];
+
+    function goTo(idx) {
+      current = ((idx % FRAMES) + FRAMES) % FRAMES;
+      // Each frame occupies (100 / FRAMES)% of the strip's own width.
+      // To show frame N we shift the strip left by N frames.
+      // Strip width = FRAMES * viewport_width, so one frame = (1/FRAMES * 100)% of strip.
+      strip.style.transform = 'translateX(-' + (current * (100 / FRAMES)) + '%)';
+      dots.forEach(function (d, i) {
+        d.classList.toggle('ppc-dot--on', i === current);
+      });
+    }
+
+    // Mouse
+    stage.addEventListener('mousedown', function (e) {
+      dragging = true; startX = e.clientX; accumX = 0; e.preventDefault();
+    });
+    window.addEventListener('mousemove', function (e) {
+      if (!dragging) return;
+      accumX += e.clientX - startX;
+      startX  = e.clientX;
+      if (Math.abs(accumX) >= DRAG_PX) {
+        goTo(current - Math.round(accumX / DRAG_PX));
+        accumX = accumX % DRAG_PX;
+      }
+    });
+    window.addEventListener('mouseup', function () { dragging = false; });
+
+    // Touch
+    stage.addEventListener('touchstart', function (e) {
+      startX = e.touches[0].clientX; accumX = 0;
+    }, { passive: true });
+    stage.addEventListener('touchmove', function (e) {
+      var dx = e.touches[0].clientX - startX;
+      startX = e.touches[0].clientX;
+      accumX += dx;
+      if (Math.abs(accumX) >= DRAG_PX) {
+        goTo(current - Math.round(accumX / DRAG_PX));
+        accumX = accumX % DRAG_PX;
+      }
+    }, { passive: true });
+
+    // Auto-spin once on load
+    goTo(0);
+    var sc = 0, sp = setInterval(function () {
+      goTo(current + 1);
+      if (++sc >= FRAMES) clearInterval(sp);
+    }, 160);
+  }
+
+  // ── Configurator ─────────────────────────────────────────────
+  function el(id)   { return document.getElementById(id); }
+  function sv(id)   { var e = el(id); return e ? e.value   : ''; }
+  function chkd(id) { var e = el(id); return e ? e.checked : false; }
 
   function getSpecs() {
     return {
-      cap:   sv('ppc-cap-sel-' + sid),
-      vc:    sv('ppc-vc-'      + sid),
-      wp:    sv('ppc-wp-'      + sid),
-      three: sv('ppc-3p-'      + sid),
-      sol:   sv('ppc-sol-'     + sid),
-      enc:   sv('ppc-enc-'     + sid),
-      qty:   sv('ppc-qty-'     + sid) || '1'
+      mains:  sv('ppc-mains-'  + sid),
+      rating: sv('ppc-rating-' + sid),
+      cap:    sv('ppc-cap-'    + sid),
+      solar:  chkd('ppc-solar-' + sid),
+      wind:   chkd('ppc-wind-'  + sid),
+      gen:    chkd('ppc-gen-'   + sid),
+      qty:    sv('ppc-qty-'    + sid) || '1'
     };
   }
 
+  // Checkbox highlight
+  ['solar','wind','gen'].forEach(function (k) {
+    var chkEl  = el('ppc-' + k + '-' + sid);
+    var itemEl = el('ppc-ci-' + k + '-' + sid);
+    if (!chkEl || !itemEl) return;
+    chkEl.addEventListener('change', function () {
+      itemEl.classList.toggle('ppc-checked', chkEl.checked);
+      updatePreview();
+    });
+  });
+
   function updatePreview() {
     var s  = getSpecs();
-    var cl = el('ppc-cap-' + sid);
-    if (s.cap) { cl.textContent = s.cap; cl.setAttribute('fill', capColors[s.cap] || '#00E5A0'); }
-    else       { cl.textContent = '—';  cl.setAttribute('fill', '#2a3a2a'); }
-
     var br = el('ppc-badges-' + sid);
     br.innerHTML = '';
-    var feats = [];
-    if (s.vc)    feats.push({ t: s.vc,    c: 't' });
-    if (s.wp)    feats.push({ t: s.wp,    c: 'b' });
-    if (s.three) feats.push({ t: s.three, c: 'p' });
-    if (s.sol)   feats.push({ t: s.sol,   c: 'y' });
-    if (s.enc && s.enc !== 'Standard casing') feats.push({ t: s.enc, c: 'c' });
-    feats.forEach(function (f) {
+    function badge(t, c) {
       var b = document.createElement('span');
-      b.className  = 'ppc-badge ppc-badge--' + f.c;
-      b.textContent = f.t;
-      br.appendChild(b);
-    });
+      b.className = 'ppc-badge ppc-badge--' + c;
+      b.textContent = t; br.appendChild(b);
+    }
+    if (s.mains)  badge(s.mains, 'g');
+    if (s.rating) badge(s.rating, 'b');
+    if (s.cap)    badge(s.cap, 'y');
+    if (s.solar)  badge('Solar', 't');
+    if (s.wind)   badge('Wind', 't');
+    if (s.gen)    badge('Auto-start', 'p');
 
-    var sl   = el('ppc-specs-' + sid);
+    var charging = [];
+    if (s.solar) charging.push('Solar');
+    if (s.wind)  charging.push('Wind');
     var rows = [];
-    if (s.cap)   rows.push(['Capacity',       s.cap]);
-    if (s.vc)    rows.push(['Vehicle charge',  s.vc]);
-    if (s.wp)    rows.push(['Waterproofing',   s.wp]);
-    if (s.three) rows.push(['3-phase output',  s.three]);
-    if (s.sol)   rows.push(['Solar input',     s.sol]);
-    if (s.enc)   rows.push(['Enclosure',       s.enc]);
+    if (s.mains)         rows.push(['Mains output',          s.mains]);
+    if (s.rating)        rows.push(['Output rating',          s.rating]);
+    if (s.cap)           rows.push(['Capacity',               s.cap]);
+    if (charging.length) rows.push(['Charging',               charging.join(' + ')]);
+    if (s.gen)           rows.push(['Generator auto-start',  'Yes']);
     rows.push(['Quantity', s.qty]);
-    sl.innerHTML = rows.map(function (r) {
+    el('ppc-specs-' + sid).innerHTML = rows.map(function (r) {
       return '<div class="ppc-spec-row"><span>' + r[0] + '</span>'
            + '<span class="ppc-spec-val">' + r[1] + '</span></div>';
     }).join('');
   }
 
-  /* Attach listeners */
-  var section = document.getElementById('shopify-section-' + sid);
-  if (section) {
-    section.querySelectorAll('.ppc-trigger').forEach(function (input) {
-      input.addEventListener('change', updatePreview);
-      input.addEventListener('input',  updatePreview);
+  var sectionEl = document.getElementById('shopify-section-' + sid);
+  if (sectionEl) {
+    sectionEl.querySelectorAll('.ppc-trigger').forEach(function (inp) {
+      inp.addEventListener('change', updatePreview);
+      inp.addEventListener('input',  updatePreview);
     });
   }
+  updatePreview();
 
-  /* Open modal */
+  // ── Modal ────────────────────────────────────────────────────
   el('ppc-open-' + sid).addEventListener('click', function () {
     var s = getSpecs();
+    var charging = [];
+    if (s.solar) charging.push('Solar');
+    if (s.wind)  charging.push('Wind');
     var rows = [
-      ['Battery capacity',    s.cap   || 'Not specified'],
-      ['Vehicle fast charge', s.vc    || 'Not required'],
-      ['Waterproofing',       s.wp    || 'Standard (indoor)'],
-      ['3-phase power',       s.three || 'Not required'],
-      ['Solar input',         s.sol   || 'Not required'],
-      ['Enclosure',           s.enc   || 'Standard casing'],
-      ['Quantity',            s.qty]
+      ['Mains output',         s.mains  || 'Not specified'],
+      ['Output rating',        s.rating || 'Not specified'],
+      ['Battery capacity',     s.cap    || 'Not specified'],
+      ['Charging options',     charging.length ? charging.join(' + ') : 'Not required'],
+      ['Generator auto-start', s.gen ? 'Yes' : 'No'],
+      ['Quantity',             s.qty]
     ];
     el('ppc-modal-specs-' + sid).innerHTML = rows.map(function (r) {
       return '<div class="ppc-mrow"><span class="ppc-mk">' + r[0]
@@ -501,7 +610,6 @@
     document.body.style.overflow = 'hidden';
   });
 
-  /* Close modal */
   function closeModal() {
     el('ppc-modal-bg-' + sid).classList.remove('is-open');
     document.body.style.overflow = '';
@@ -514,27 +622,25 @@
     if (e.key === 'Escape') closeModal();
   });
 
-  /* Build email body on submit */
   el('ppc-form-' + sid).addEventListener('submit', function () {
-    var s     = getSpecs();
-    var notes = el('ppc-cnotes-' + sid).value;
-    el('ppc-hidden-' + sid).value = [
-      'POWER PACK ENQUIRY',
-      '──────────────────────────────────',
+    var s = getSpecs();
+    var charging = [];
+    if (s.solar) charging.push('Solar');
+    if (s.wind)  charging.push('Wind');
+    el('ppc-body-' + sid).value = [
+      'SHERPA PRO MK2 — POWER PACK ENQUIRY',
+      Array(38).join('─'),
       'SPECIFICATIONS:',
-      'Battery capacity: '    + (s.cap   || 'Not specified'),
-      'Vehicle fast charge: ' + (s.vc    || 'Not required'),
-      'Waterproofing: '       + (s.wp    || 'Standard (indoor)'),
-      '3-phase power: '       + (s.three || 'Not required'),
-      'Solar input: '         + (s.sol   || 'Not required'),
-      'Enclosure: '           + (s.enc   || 'Standard casing'),
-      'Quantity: '            + s.qty,
-      '──────────────────────────────────',
-      'Notes: '               + (notes || '—')
+      'Mains output voltage: ' + (s.mains  || 'Not specified'),
+      'Output rating: '        + (s.rating || 'Not specified'),
+      'Battery capacity: '     + (s.cap    || 'Not specified'),
+      'Charging options: '     + (charging.length ? charging.join(' + ') : 'Not required'),
+      'Generator auto-start: ' + (s.gen ? 'Yes' : 'No'),
+      'Quantity: '             + s.qty,
+      Array(38).join('─'),
+      'Notes: ' + (el('ppc-cnotes-' + sid).value || '—')
     ].join('\n');
   });
-
-  updatePreview();
 })();
 </script>
 
@@ -554,7 +660,7 @@
       "label": "Text alignment",
       "options": [
         { "value": "start",  "label": "Left"   },
-        { "value": "center", "label": "Center" },
+        { "value": "center", "label": "Centre" },
         { "value": "end",    "label": "Right"  }
       ],
       "default": "start"
@@ -575,13 +681,37 @@
       "type": "richtext",
       "id": "content",
       "label": "Content",
-      "default": "<p>Configure your unit below — we'll follow up with a tailored quote.</p>"
+      "default": "<p>Configure your Sherpa PRO MK2 — drag to rotate, then send us your spec.</p>"
+    },
+    {
+      "type": "header",
+      "content": "360° Viewer"
+    },
+    {
+      "type": "image_picker",
+      "id": "strip_url",
+      "label": "Sprite strip image",
+      "info": "Upload sherpa_pro_mk2_strip.jpg here. This single image contains all 7 views side by side."
+    },
+    {
+      "type": "range",
+      "id": "frame_count",
+      "label": "Number of frames in strip",
+      "min": 2,
+      "max": 36,
+      "step": 1,
+      "default": 7,
+      "info": "Must match the number of shots stitched into your sprite strip image."
     },
     {
       "type": "text",
-      "id": "preview_label",
-      "label": "Preview panel label",
-      "default": "Unit preview"
+      "id": "viewer_label",
+      "label": "Viewer label text",
+      "default": "Sherpa PRO MK2 — drag to rotate"
+    },
+    {
+      "type": "header",
+      "content": "Form"
     },
     {
       "type": "text",
@@ -629,13 +759,13 @@
     {
       "type": "color",
       "id": "unit_bg",
-      "label": "Unit preview background",
+      "label": "Viewer background",
       "default": "#1a1c18"
     },
     {
       "type": "color",
       "id": "accent_color",
-      "label": "Accent colour (preview label + modal top border)",
+      "label": "Accent colour",
       "default": "#00b87d"
     }
   ],
