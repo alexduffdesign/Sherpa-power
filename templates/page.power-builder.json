@@ -66,15 +66,37 @@
     "main": {
       "type": "main-page",
       "custom_css": [
-        ".h1, .prose h1:not(.h0,.h1,.h2,.h3,.h4,.h5,.h6) {font-size: var(--text-h1); line-height: 1.1; white-space: nowrap; display: none;}"
+        ".h1,.prose h1:not(.h0, .h1, .h2, .h3, .h4, .h5, .h6) {font-size: var(--text-h1); line-height: 1.1; white-space: nowrap; display: none;}"
       ],
       "settings": {
         "content_width": "80ch"
+      }
+    },
+    "power_pack_configurator_Cq8LV7": {
+      "type": "power-pack-configurator",
+      "name": "Power pack configurator",
+      "settings": {
+        "text_alignment": "start",
+        "subheading": "Custom builds",
+        "title": "Build your ideal power pack",
+        "content": "<p>Configure your Sherpa PRO MK2 — drag to rotate, then send us your spec.</p>",
+        "frame_count": 7,
+        "viewer_label": "Sherpa PRO MK2 — drag to rotate",
+        "cta_text": "Review & send enquiry →",
+        "modal_title": "Your power pack wishlist",
+        "show_modal_note": true,
+        "modal_note": "We'll review your specs and be in touch within 1 business day.",
+        "background": "",
+        "background_gradient": "",
+        "text_color": "",
+        "unit_bg": "#1a1c18",
+        "accent_color": "#00b87d"
       }
     }
   },
   "order": [
     "image_with_text_overlay_gT6QRA",
+    "power_pack_configurator_Cq8LV7",
     "main"
   ]
 }
