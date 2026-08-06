@@ -1,0 +1,80 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "image_with_text_overlay_gT6QRA": {
+      "type": "image-with-text-overlay",
+      "blocks": {
+        "heading_kgHwRj": {
+          "type": "heading",
+          "settings": {
+            "range_text": "{{ page.title }}",
+            "text": "",
+            "heading_tag": "h2",
+            "heading_gradient": "linear-gradient(180deg, rgba(37, 194, 147, 1), rgba(247, 247, 247, 1) 100%)"
+          }
+        },
+        "subheading_y8XgbG": {
+          "type": "subheading",
+          "disabled": true,
+          "settings": {
+            "text": "Ask us about hire options of our portable power range. We can provide a greener solution to your event operations so you don't have to have noisy and smelly generators running to power your kit. We offer competitive rates and excellent customer support."
+          }
+        },
+        "richtext_Q48Bpb": {
+          "type": "richtext",
+          "disabled": true,
+          "settings": {
+            "content": "<p>Discounts apply to longer hire periods. </p><p>Further discounts available on a Hire Before Buy option.</p><p></p>"
+          }
+        },
+        "liquid_W3xzHg": {
+          "type": "liquid",
+          "disabled": true,
+          "settings": {
+            "liquid": "<a href=\"https://www.sherpapower.co.uk/pages/contact\">Contact Us About Product Hire</a>"
+          }
+        }
+      },
+      "block_order": [
+        "heading_kgHwRj",
+        "subheading_y8XgbG",
+        "richtext_Q48Bpb",
+        "liquid_W3xzHg"
+      ],
+      "settings": {
+        "full_width": true,
+        "allow_transparent_header": true,
+        "enable_parallax": false,
+        "image_size": "sm",
+        "image": "shopify://shop_images/Peak_a00281de-5293-4b66-8424-9366c979ed4a.jpg",
+        "enable_clouds": false,
+        "mobile_text_position": "place-self-center text-center",
+        "desktop_text_position": "sm:place-self-center sm:text-center",
+        "text_color": "#ffffff",
+        "overlay_color": "#000000",
+        "overlay_opacity": 30
+      }
+    },
+    "main": {
+      "type": "main-page",
+      "custom_css": [
+        ".h1, .prose h1:not(.h0,.h1,.h2,.h3,.h4,.h5,.h6) {font-size: var(--text-h1); line-height: 1.1; white-space: nowrap; display: none;}"
+      ],
+      "settings": {
+        "content_width": "80ch"
+      }
+    }
+  },
+  "order": [
+    "image_with_text_overlay_gT6QRA",
+    "main"
+  ]
+}
