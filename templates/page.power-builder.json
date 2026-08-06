@@ -17,22 +17,14 @@
           "settings": {
             "range_text": "{{ page.title }}",
             "text": "",
-            "heading_tag": "h2",
+            "heading_tag": "h1",
             "heading_gradient": "linear-gradient(180deg, rgba(37, 194, 147, 1), rgba(247, 247, 247, 1) 100%)"
-          }
-        },
-        "subheading_y8XgbG": {
-          "type": "subheading",
-          "disabled": true,
-          "settings": {
-            "text": "Ask us about hire options of our portable power range. We can provide a greener solution to your event operations so you don't have to have noisy and smelly generators running to power your kit. We offer competitive rates and excellent customer support."
           }
         },
         "richtext_Q48Bpb": {
           "type": "richtext",
-          "disabled": true,
           "settings": {
-            "content": "<p>Discounts apply to longer hire periods. </p><p>Further discounts available on a Hire Before Buy option.</p><p></p>"
+            "content": "<h2></h2><h2>Every site has different power demands. Yours should have a unit built around them.</h2><p>Off-the-shelf power stations are built for the majority. But if you're running industrial operations, managing events, powering welfare facilities, or working off-grid in demanding conditions, the majority spec isn't always right for you. That's why we built the Sherpa PRO MK2 Custom Configurator - so you can tell us exactly what you need, and we'll put it together.</p>"
           }
         },
         "liquid_W3xzHg": {
@@ -45,7 +37,6 @@
       },
       "block_order": [
         "heading_kgHwRj",
-        "subheading_y8XgbG",
         "richtext_Q48Bpb",
         "liquid_W3xzHg"
       ],
@@ -63,25 +54,17 @@
         "overlay_opacity": 30
       }
     },
-    "main": {
-      "type": "main-page",
-      "custom_css": [
-        ".h1,.prose h1:not(.h0, .h1, .h2, .h3, .h4, .h5, .h6) {font-size: var(--text-h1); line-height: 1.1; white-space: nowrap; display: none;}"
-      ],
-      "settings": {
-        "content_width": "80ch"
-      }
-    },
     "power_pack_configurator_Cq8LV7": {
       "type": "power-pack-configurator",
       "name": "Power pack configurator",
       "settings": {
         "text_alignment": "start",
-        "subheading": "Custom builds",
-        "title": "Build your ideal power pack",
-        "content": "<p>Configure your Sherpa PRO MK2 — drag to rotate, then send us your spec.</p>",
+        "subheading": "",
+        "title": "",
+        "content": "<h2>Spec your unit in minutes. We handle the rest.</h2><p>Use the configurator below to build your wishlist. Drag the unit to explore every angle, then choose from the options that matter most to your application. Once you're happy with the spec, hit send. One of the team will come back to you with availability, lead time, and pricing - usually within one business day.</p>",
+        "strip_url": "shopify://shop_images/sherpa_pro_mk2_strip.jpg",
         "frame_count": 7,
-        "viewer_label": "Sherpa PRO MK2 — drag to rotate",
+        "viewer_label": "Sherpa PRO MK2 - drag to rotate",
         "cta_text": "Review & send enquiry →",
         "modal_title": "Your power pack wishlist",
         "show_modal_note": true,
@@ -92,11 +75,99 @@
         "unit_bg": "#1a1c18",
         "accent_color": "#00b87d"
       }
+    },
+    "main": {
+      "type": "main-page",
+      "disabled": true,
+      "custom_css": [
+        ".h1,.prose h1:not(.h0, .h1, .h2, .h3, .h4, .h5, .h6) {font-size: var(--text-h1); line-height: 1.1; white-space: nowrap; display: none;}"
+      ],
+      "settings": {
+        "content_width": "80ch"
+      }
+    },
+    "faq_RyN9MB": {
+      "type": "faq",
+      "blocks": {
+        "item_9zdNpB": {
+          "type": "item",
+          "settings": {
+            "title": "Can I get a Sherpa power station in 3-phase?",
+            "content": "<p>Yes. The Sherpa PRO MK2 platform supports 3-phase power output as a custom configuration. Use the configurator above to select 3-phase under Mains Output, then submit your spec and we'll confirm availability and lead time.</p>"
+          }
+        },
+        "item_ibeDMc": {
+          "type": "item",
+          "settings": {
+            "title": "What's the largest capacity custom power pack you can supply?",
+            "content": "<p>The Sherpa PRO MK2 platform is available with up to 7,600Wh of onboard LiFePO4 battery storage and up to 12,000W continuous output. For larger requirements, multiple units can be linked. Tell us your load requirements in the notes field and we'll advise on the right configuration.</p>"
+          }
+        },
+        "item_DtcTta": {
+          "type": "item",
+          "settings": {
+            "title": "Can I add solar and wind charging to the same unit?",
+            "content": "<p>Yes - the PRO MK2 MPPT charge controller supports both solar and DC wind turbine input simultaneously. Select both options in the configurator and we'll ensure the input spec is matched to your panel and turbine setup.</p>"
+          }
+        },
+        "item_EERaYW": {
+          "type": "item",
+          "settings": {
+            "title": "How does generator auto-start work?",
+            "content": "<p>The generator auto-start option adds a control link between your Sherpa unit and a compatible petrol or diesel generator. When onboard battery charge falls below a set threshold, the unit automatically signals the generator to start and replenish. This is ideal for unattended operation or sites where overnight discharge would otherwise be a problem.</p>"
+          }
+        },
+        "item_G4XdJD": {
+          "type": "item",
+          "settings": {
+            "title": "How long does a custom order take?",
+            "content": "<p>Lead times vary depending on specification and quantity. Once you submit your wishlist via the configurator, a member of the team will be in touch within one business day with a full quote including lead time. For urgent requirements, let us know in the notes field.</p>"
+          }
+        },
+        "item_h6yUqh": {
+          "type": "item",
+          "settings": {
+            "title": "Do custom units come with a warranty?",
+            "content": "<p>Yes. All Sherpa PRO MK2 units - including custom configurations - are covered by our standard UK warranty. Specific terms are confirmed at point of order.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "item_9zdNpB",
+        "item_ibeDMc",
+        "item_DtcTta",
+        "item_EERaYW",
+        "item_G4XdJD",
+        "item_h6yUqh"
+      ],
+      "name": "FAQ",
+      "settings": {
+        "full_width": true,
+        "subheading": "",
+        "title": "FAQ",
+        "content": "",
+        "team_avatar_width": 160,
+        "support_hours": "Not sure which spec is right for you? That's exactly what we're here for. Tell us your site, load, and recharge requirements in the notes field and we'll come back with a recommendation - no obligation, no hard sell. Just straightforward advice from a UK team that knows portable power.",
+        "answer_time": "",
+        "button_text": "",
+        "button_url": "",
+        "text_position": "center",
+        "background": "",
+        "background_gradient": "",
+        "text_color": "",
+        "heading_color": "",
+        "heading_gradient": "",
+        "button_background": "",
+        "button_text_color": "",
+        "accordion_background": "",
+        "accordion_text_color": ""
+      }
     }
   },
   "order": [
     "image_with_text_overlay_gT6QRA",
     "power_pack_configurator_Cq8LV7",
-    "main"
+    "main",
+    "faq_RyN9MB"
   ]
 }
