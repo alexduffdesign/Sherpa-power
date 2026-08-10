@@ -164,7 +164,7 @@
           "type": "ai_gen_block_ebb34dc",
           "settings": {
             "heading": "Request a hire quote",
-            "description": "<p>Fill out the form below and we'll get back to you with a tailored quote for your portable power needs.</p>",
+            "description": "<p>Fill out the form below and we'll get back to you with a tailored quote for your portable power needs. For the Complete System option, please choose the size that best suits your requirements: S (Small), M (Medium), or L (Large).</p>",
             "button_text": "Request quote",
             "success_message": "<p>Thank you! We've received your quote request and will be in touch shortly.</p>",
             "desktop_width_percent": 100,
