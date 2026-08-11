@@ -89,6 +89,13 @@
     "faq_RyN9MB": {
       "type": "faq",
       "blocks": {
+        "item_zpMADk": {
+          "type": "item",
+          "settings": {
+            "title": "Are the PRO MK2 weatherproof?",
+            "content": "<p>Yes, the new PRO will berated IP43 to IP66 depending on your specification requirements.</p>"
+          }
+        },
         "item_9zdNpB": {
           "type": "item",
           "settings": {
@@ -133,6 +140,7 @@
         }
       },
       "block_order": [
+        "item_zpMADk",
         "item_9zdNpB",
         "item_ibeDMc",
         "item_DtcTta",
