@@ -38,7 +38,7 @@
         <p class="ppc-viewer-label">{{ section.settings.viewer_label }}</p>
 
         {%- if section.settings.strip_url != blank -%}
-          {%- assign frame_count = section.settings.frame_count | default: 7 -%}
+          {%- assign frame_count = section.settings.frame_count | default: 6 -%}
           <div
             class="ppc-stage"
             id="ppc-stage-{{ section.id }}"
@@ -691,7 +691,7 @@
       "type": "image_picker",
       "id": "strip_url",
       "label": "Sprite strip image",
-      "info": "Upload sherpa_pro_mk2_strip.jpg here. This single image contains all 7 views side by side."
+      "info": "Upload sherpa_pro_mk2_strip.jpg here. This single image contains all 6 views side by side."
     },
     {
       "type": "range",
@@ -700,7 +700,7 @@
       "min": 2,
       "max": 36,
       "step": 1,
-      "default": 7,
+      "default": 6,
       "info": "Must match the number of shots stitched into your sprite strip image."
     },
     {
