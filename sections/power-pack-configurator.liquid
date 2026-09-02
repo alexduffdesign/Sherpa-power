@@ -38,7 +38,7 @@
         <p class="ppc-viewer-label">{{ section.settings.viewer_label }}</p>
 
         {%- if section.settings.strip_url != blank -%}
-          {%- assign frame_count = section.settings.frame_count | default: 6 -%}
+          {%- assign frame_count = section.settings.frame_count | default: 7 -%}
           <div
             class="ppc-stage"
             id="ppc-stage-{{ section.id }}"
@@ -111,7 +111,7 @@
         <div class="ppc-group">
           <p class="ppc-group-label">Storage</p>
           <div class="ppc-field">
-            <label class="ppc-label" for="ppc-cap-{{ section.id }}">Battery capacity</label>
+            <label class="ppc-label" for="ppc-cap-{{ section.id }}">Onboard battery capacity</label>
             <select id="ppc-cap-{{ section.id }}" class="ppc-select ppc-trigger">
               <option value="">Select…</option>
               <option value="2,300Wh">2,300Wh</option>
@@ -119,6 +119,22 @@
               <option value="5,400Wh">5,400Wh</option>
               <option value="7,600Wh">7,600Wh</option>
             </select>
+          </div>
+          <div class="ppc-field">
+            <label class="ppc-label" for="ppc-extbat-{{ section.id }}">
+              Expansion batteries <span class="ppc-ext-badge">+up to 172kWh</span>
+            </label>
+            <select id="ppc-extbat-{{ section.id }}" class="ppc-select ppc-trigger">
+              <option value="">No extra batteries</option>
+              <option value="1 extra battery">+1 battery</option>
+              <option value="2 extra batteries">+2 batteries</option>
+              <option value="3 extra batteries">+3 batteries</option>
+              <option value="5 extra batteries">+5 batteries</option>
+              <option value="10 extra batteries">+10 batteries</option>
+              <option value="20 extra batteries">+20 batteries</option>
+              <option value="Maximum (up to 172kWh)">Maximum — up to 172kWh</option>
+            </select>
+            <p class="ppc-ext-hint">Each unit links to additional battery packs. Total system capacity can reach <strong>172,000Wh (172kWh)</strong> — enough to power a full site for days.</p>
           </div>
         </div>
 
@@ -449,6 +465,33 @@
   .ppc-mfoot { display: flex; gap: var(--spacing-3); margin-top: var(--spacing-6); }
   .ppc-mfoot .button { flex: 1; justify-content: center; }
   .ppc-modal-note { margin-top: var(--spacing-4); font-size: var(--text-xs); opacity: .55; text-align: center; }
+  /* Expansion battery hint */
+  #shopify-section-{{ section.id }} .ppc-ext-badge {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: var(--text-font-bolder-weight, 700);
+    letter-spacing: .04em;
+    text-transform: uppercase;
+    padding: 2px 8px;
+    border-radius: 20px;
+    background: rgba(0,229,160,.15);
+    color: {{ section.settings.accent_color }};
+    border: 1px solid rgba(0,229,160,.35);
+    margin-left: 6px;
+    vertical-align: middle;
+  }
+  #shopify-section-{{ section.id }} .ppc-ext-hint {
+    font-size: var(--text-xs, 11px);
+    line-height: 1.5;
+    margin-top: var(--spacing-2);
+    padding: 8px 12px;
+    border-radius: var(--input-border-radius, 4px);
+    border-left: 3px solid {{ section.settings.accent_color }};
+    opacity: .8;
+  }
+  #shopify-section-{{ section.id }} .ppc-ext-hint strong {
+    font-weight: var(--text-font-bolder-weight, 700);
+  }
 </style>
 
 <!-- ══════════════════════════════════════════════════
@@ -532,6 +575,7 @@
       solar:  chkd('ppc-solar-' + sid),
       wind:   chkd('ppc-wind-'  + sid),
       gen:    chkd('ppc-gen-'   + sid),
+      extbat: sv('ppc-extbat-' + sid),
       qty:    sv('ppc-qty-'    + sid) || '1'
     };
   }
@@ -559,6 +603,7 @@
     if (s.mains)  badge(s.mains, 'g');
     if (s.rating) badge(s.rating, 'b');
     if (s.cap)    badge(s.cap, 'y');
+    if (s.extbat) badge(s.extbat, 'y');
     if (s.solar)  badge('Solar', 't');
     if (s.wind)   badge('Wind', 't');
     if (s.gen)    badge('Auto-start', 'p');
@@ -569,7 +614,8 @@
     var rows = [];
     if (s.mains)         rows.push(['Mains output',          s.mains]);
     if (s.rating)        rows.push(['Output rating',          s.rating]);
-    if (s.cap)           rows.push(['Capacity',               s.cap]);
+    if (s.cap)           rows.push(['Onboard capacity',        s.cap]);
+    if (s.extbat)        rows.push(['Expansion batteries', s.extbat]);
     if (charging.length) rows.push(['Charging',               charging.join(' + ')]);
     if (s.gen)           rows.push(['Generator auto-start',  'Yes']);
     rows.push(['Quantity', s.qty]);
@@ -597,7 +643,8 @@
     var rows = [
       ['Mains output',         s.mains  || 'Not specified'],
       ['Output rating',        s.rating || 'Not specified'],
-      ['Battery capacity',     s.cap    || 'Not specified'],
+      ['Onboard capacity',     s.cap    || 'Not specified'],
+      ['Expansion batteries', s.extbat || 'None'],
       ['Charging options',     charging.length ? charging.join(' + ') : 'Not required'],
       ['Generator auto-start', s.gen ? 'Yes' : 'No'],
       ['Quantity',             s.qty]
@@ -633,7 +680,8 @@
       'SPECIFICATIONS:',
       'Mains output voltage: ' + (s.mains  || 'Not specified'),
       'Output rating: '        + (s.rating || 'Not specified'),
-      'Battery capacity: '     + (s.cap    || 'Not specified'),
+      'Onboard capacity: '     + (s.cap    || 'Not specified'),
+      'Expansion batteries: '  + (s.extbat || 'None'),
       'Charging options: '     + (charging.length ? charging.join(' + ') : 'Not required'),
       'Generator auto-start: ' + (s.gen ? 'Yes' : 'No'),
       'Quantity: '             + s.qty,
@@ -691,7 +739,7 @@
       "type": "image_picker",
       "id": "strip_url",
       "label": "Sprite strip image",
-      "info": "Upload sherpa_pro_mk2_strip.jpg here. This single image contains all 6 views side by side."
+      "info": "Upload sherpa_pro_mk2_strip.jpg here. This single image contains all 7 views side by side."
     },
     {
       "type": "range",
@@ -700,7 +748,7 @@
       "min": 2,
       "max": 36,
       "step": 1,
-      "default": 6,
+      "default": 7,
       "info": "Must match the number of shots stitched into your sprite strip image."
     },
     {
