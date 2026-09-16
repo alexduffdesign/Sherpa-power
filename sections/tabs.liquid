@@ -114,7 +114,7 @@
                 {%- capture accordion_content -%}
                   <div class="prose">{{ content }}</div>
                 {%- endcapture -%}
-                {%- render 'accordion', title: title, content: accordion_content, open: forloop.first and section.settings.first_tab_open -%}
+                {%- render 'accordion', title: title, content: accordion_content, open: forloop.first -%}
 
                 {% comment %}
                 Tech spec
@@ -374,3 +374,15 @@
   ]
 }
 {% endschema %}
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: "{%- render 'accordion', title: title, content: accordion_content, open: forloop.first
+    and section.settings.first_tab_open -%}"
+  to: "{%- render 'accordion', title: title, content: accordion_content, open: forloop.first
+    -%}"
+  position: 3986..4075
+{% endcomment %}
