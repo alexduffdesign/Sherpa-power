@@ -283,9 +283,7 @@
     {% if section.settings.is_section_chatbot %}
       <div class="chatbot-title">
         <h5 class="h5">
-          {%-
-            render 'styled-text', content: section.settings.calculator_title | default: 'Find Out How Long The BASE 5.0 Will Power Your Appliance!', text_color: section.settings.heading_color, gradient: section.settings.heading_gradient
-          -%}
+          {%- render 'styled-text', content: section.settings.calculator_title, default: 'Find Out How Long The BASE 5.0 Will Power Your Appliance!', text_color: section.settings.heading_color, gradient: section.settings.heading_gradient -%}
         </h5>
         <p class="chatbot-subtitle">
           {{
@@ -405,4 +403,18 @@
   {% endif %}
 <!-- Form Element ✉️ -->
 
-</div>
+</div>{%- comment -%}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: |-
+    {%-
+                render 'styled-text', content: section.settings.calculator_title | default: 'Find Out How Long The BASE 5.0 Will Power Your Appliance!', text_color: section.settings.heading_color, gradient: section.settings.heading_gradient
+              -%}
+  to: "{%- render 'styled-text', content: section.settings.calculator_title, default:
+    'Find Out How Long The BASE 5.0 Will Power Your Appliance!', text_color: section.settings.heading_color,
+    gradient: section.settings.heading_gradient -%}"
+  position: 5672..5903
+{%- endcomment -%}
