@@ -113,8 +113,8 @@
       "settings": {
         "full_width": true,
         "subheading": "",
-        "title": "{{ page.title }}",
-        "content": "",
+        "title": "",
+        "content": "<h1>{{ page.title }}</h1>",
         "team_avatar_width": 160,
         "support_hours": "Our customer support is available Monday to Friday: 8.30am-5pm.",
         "answer_time": "Average answer time: 24h",
