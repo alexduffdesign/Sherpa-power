@@ -278,6 +278,7 @@
         "buy_buttons_GczUja",
         "pickup_availability_NExtKK"
       ],
+      "disabled": true,
       "name": "Featured product",
       "settings": {
         "full_width": true,
