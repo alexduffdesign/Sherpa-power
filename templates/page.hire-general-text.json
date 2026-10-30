@@ -297,6 +297,67 @@
         "input_background": "rgba(0,0,0,0)",
         "input_text_color": ""
       }
+    },
+    "faq_jAG9g3": {
+      "type": "faq",
+      "blocks": {
+        "item_gFgzGQ": {
+          "type": "item",
+          "settings": {
+            "title": "How much does it cost to hire a portable power station?",
+            "content": "<p>Hire starts from £20 a day plus shipping. Hire and shipping are discounted for longer hire periods - request a quote for an exact price.</p>"
+          }
+        },
+        "item_GTxie4": {
+          "type": "item",
+          "settings": {
+            "title": "How long can I hire for?",
+            "content": "<p>From a single day up to 12 months, with custom hire periods available.</p>"
+          }
+        },
+        "item_fmVJwV": {
+          "type": "item",
+          "settings": {
+            "title": "Is a battery generator quieter than a petrol or diesel generator?",
+            "content": "<p>Yes. A portable power station has no engine, so it runs almost silently and produces no exhaust fumes at the point of use.</p>"
+          }
+        },
+        "item_CUaiLn": {
+          "type": "item",
+          "settings": {
+            "title": "Can I buy the power station after hiring it?",
+            "content": "<p>Yes - ask about our Hire-Before-Buy option, which includes further discounts if you decide to buy.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "item_gFgzGQ",
+        "item_GTxie4",
+        "item_fmVJwV",
+        "item_CUaiLn"
+      ],
+      "name": "FAQ",
+      "settings": {
+        "full_width": true,
+        "subheading": "",
+        "title": "",
+        "content": "<h2><strong>Portable power station hire FAQs</strong></h2>",
+        "team_avatar_width": 160,
+        "support_hours": "Our customer support is available Monday to Friday: 8am-8:30pm.",
+        "answer_time": "Average answer time: 24h",
+        "button_text": "",
+        "button_url": "",
+        "text_position": "center",
+        "background": "",
+        "background_gradient": "",
+        "text_color": "",
+        "heading_color": "",
+        "heading_gradient": "",
+        "button_background": "",
+        "button_text_color": "",
+        "accordion_background": "",
+        "accordion_text_color": ""
+      }
     }
   },
   "order": [
@@ -305,6 +366,7 @@
     "featured_collection_xUtPF7",
     "rich_text_YdMUFC",
     "1784897588ebeb5b16",
-    "featured_product_4rpqRz"
+    "featured_product_4rpqRz",
+    "faq_jAG9g3"
   ]
 }
