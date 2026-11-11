@@ -19,6 +19,13 @@
     "faq_Qa8dBm": {
       "type": "faq",
       "blocks": {
+        "item_hUztmM": {
+          "type": "item",
+          "settings": {
+            "title": "What does it do?",
+            "content": "<p>Essentially, it is a solar & vehicle chargeable battery with an inverter. Or simply put, it chargesfrom solar, mains or vehicle and gives you mains power on the move.</p>"
+          }
+        },
         "item_nKKiEe": {
           "type": "item",
           "settings": {
@@ -95,9 +102,31 @@
             "title": "What’s the difference between AC and DC power?",
             "content": "<p>In the UK, <strong>AC (alternating current)</strong> is what comes from your mains sockets — typically <strong>230V AC</strong>. It’s ideal for powering household appliances.</p><p><strong>DC (direct current)</strong>, on the other hand, is the type of power stored in batteries and used by most electronics. Portable power stations often convert <strong>DC to AC</strong> so you can plug in standard UK devices safely.</p>"
           }
+        },
+        "item_cXczjC": {
+          "type": "item",
+          "settings": {
+            "title": "What’s the idling power consumption of s Sherpa Power station?",
+            "content": "<p>Generally with only DC on, it uses between 1-3W. With AC on it uses up to 35W.</p>"
+          }
+        },
+        "item_LA9Vfn": {
+          "type": "item",
+          "settings": {
+            "title": "Can it charge and discharge simultaneously?",
+            "content": "<p>Yes, both AC and DC charge can work as the unit is discharging AC and DC simultaneously.</p>"
+          }
+        },
+        "item_E8QMPF": {
+          "type": "item",
+          "settings": {
+            "title": "Does it have remote control?",
+            "content": "<p>They can be controlled via the App, allowing remote ON/OFF of AC and DC separately. This canwork from long distances if the power unit is within a wifi signal.</p>"
+          }
         }
       },
       "block_order": [
+        "item_hUztmM",
         "item_nKKiEe",
         "item_FeXytH",
         "item_bk3fWL",
@@ -108,7 +137,10 @@
         "item_UNUaq9",
         "item_EjRCWx",
         "item_fmPceT",
-        "item_HgEGjQ"
+        "item_HgEGjQ",
+        "item_cXczjC",
+        "item_LA9Vfn",
+        "item_E8QMPF"
       ],
       "settings": {
         "full_width": true,
