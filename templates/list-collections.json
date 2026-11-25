@@ -71,6 +71,7 @@
         },
         "item_DddUrh": {
           "type": "item",
+          "disabled": true,
           "settings": {
             "image": "shopify://shop_images/Base_Range.jpg",
             "column_size": "3",
